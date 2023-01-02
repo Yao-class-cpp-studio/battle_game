@@ -1,0 +1,6 @@
+.idea
+.vscode
+.vs
+cmake-build-*
+build
+out
