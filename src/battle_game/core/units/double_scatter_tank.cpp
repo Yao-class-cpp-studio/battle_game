@@ -132,19 +132,8 @@ void DoubleScatterTank::Scatter() {
   if (player) {
     auto &input_data = player->GetInputData();
     auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-    GenerateBullet<bullet::CannonBall>(
-        position_ + Rotate({0.0f, 1.2f}, turret_rotation_), turret_rotation_,
-        GetDamageScale(), velocity);
-    // Generate another 6 bullets, with degree offset -3, -6, -9, 3, 6, 9.
-    for (int i = 0; i < 3; ++i) {
-      auto offset = glm::radians(-3.0f * (i + 1));
-      velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
-      GenerateBullet<bullet::CannonBall>(
-          position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
-          turret_rotation_ + offset, GetDamageScale(), velocity);
-    }
-    for (int i = 0; i < 3; ++i) {
-      auto offset = glm::radians(3.0f * (i + 1));
+    for (int i = -3; i <= 3; ++i) {
+      auto offset = glm::radians(3.0f * i);
       velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
       GenerateBullet<bullet::CannonBall>(
           position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
