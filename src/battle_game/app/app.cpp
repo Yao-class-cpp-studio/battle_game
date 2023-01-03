@@ -268,6 +268,15 @@ void App::UpdateImGui() {
           game_core_->PushEventRemoveUnit(unit->GetId());
         }
       }
+      auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
+      if (unit) {
+        ImGui::Text("Health: %.1f / %.1f",
+                    unit->GetHealth() * unit->GetMaxHealth(),
+                    unit->GetMaxHealth());
+      } else {
+        ImGui::Text("Dead. Respawn in %d second(s).",
+                    player->GetResurrectionCountDown() / kTickPerSecond);
+      }
     }
   }
   ImGui::Render();

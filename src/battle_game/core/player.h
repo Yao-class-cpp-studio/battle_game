@@ -24,6 +24,9 @@ class Player {
   }
 
   void Update();
+  [[nodiscard]] uint32_t GetResurrectionCountDown() const {
+    return resurrection_count_down_;
+  }
 
  private:
   GameCore *game_core_{};
