@@ -1,0 +1,32 @@
+name: "[PR] Clang-format"
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/**'
+      - '.github/workflows/clang-format.yml'
+
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CLANG_VERSION: 14
+
+jobs:
+  clang_format:
+    name: Run clang-format
+    runs-on: [self-hosted, Linux]
+    strategy:
+      matrix:
+        check_path:
+          - "src"
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: jidicula/clang-format-action@v4.6.2
+        with:
+          clang-format-version: '${{ env.CLANG_VERSION }}'
+          check-path: ${{ matrix.check_path }}
+          fallback-style: 'Google'
