@@ -11,7 +11,9 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-DoubleScatterTank::DoubleScatterTank(GameCore *game_core, uint32_t id, uint32_t player_id)
+DoubleScatterTank::DoubleScatterTank(GameCore *game_core,
+                                     uint32_t id,
+                                     uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -80,7 +82,8 @@ void DoubleScatterTank::Update() {
   Fire();
 }
 
-void DoubleScatterTank::DoubleScatterTankMove(float move_speed, float rotate_angular_speed) {
+void DoubleScatterTank::DoubleScatterTankMove(float move_speed,
+                                              float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -130,8 +133,8 @@ void DoubleScatterTank::Scatter() {
     auto &input_data = player->GetInputData();
     auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
     GenerateBullet<bullet::CannonBall>(
-        position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-        turret_rotation_, GetDamageScale(), velocity);
+        position_ + Rotate({0.0f, 1.2f}, turret_rotation_), turret_rotation_,
+        GetDamageScale(), velocity);
     // Generate another 6 bullets, with degree offset -3, -6, -9, 3, 6, 9.
     for (int i = 0; i < 3; ++i) {
       auto offset = glm::radians(-3.0f * (i + 1));
@@ -153,7 +156,7 @@ void DoubleScatterTank::Scatter() {
 void DoubleScatterTank::Fire() {
   // check whether to perform second scatter
   if (second_scatter_count_down_) {
-    second_scatter_count_down_ --;
+    second_scatter_count_down_--;
   } else {
     if (is_second_scatter_) {
       auto player = game_core_->GetPlayer(player_id_);
