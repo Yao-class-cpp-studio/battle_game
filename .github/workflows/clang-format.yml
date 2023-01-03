@@ -8,11 +8,11 @@ on:
       - '.github/workflows/clang-format.yml'
 
 concurrency:
-  group: build-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 env:
-  CLANG_VERSION: 14
+  CLANG_VERSION: 13
 
 jobs:
   clang_format:
