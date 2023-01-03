@@ -12,9 +12,9 @@ void GameCore::AddPrimaryUnitAllocationFunction(Args... args) {
 void GameCore::GeneratePrimaryUnitList() {
   std::unique_ptr<Unit> unit;
 
-#define ADD_SELECTABLE_UNIT(UnitType, ...)                                   \
-  unit = std::make_unique<UnitType>(nullptr, 0, 0, __VA_ARGS__);             \
-  AddPrimaryUnitAllocationFunction<UnitType>(__VA_ARGS__);                   \
+#define ADD_SELECTABLE_UNIT(UnitType)                                        \
+  unit = std::make_unique<UnitType>(nullptr, 0, 0);                          \
+  AddPrimaryUnitAllocationFunction<UnitType>();                              \
   selectable_unit_list_.push_back(unit->UnitName() + std::string(" - By ") + \
                                   unit->Author());
 
