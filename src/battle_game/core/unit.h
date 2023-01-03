@@ -52,7 +52,7 @@ class Unit : public Object {
   template <class BulletType, class... Args>
   void GenerateBullet(glm::vec2 position,
                       float rotation,
-                      float damage_scale,
+                      float damage_scale = 1.0f,
                       Args... args);
 
   [[nodiscard]] virtual const char *UnitName() const;
@@ -61,7 +61,6 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
-  uint32_t resurrection_count_down_{0};
 };
 
 }  // namespace battle_game
