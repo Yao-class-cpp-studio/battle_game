@@ -14,7 +14,7 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 DoubleScatterTank::DoubleScatterTank(GameCore *game_core,
                                      uint32_t id,
                                      uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Tank(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -77,54 +77,9 @@ void DoubleScatterTank::Render() {
 }
 
 void DoubleScatterTank::Update() {
-  DoubleScatterTankMove(3.0f, glm::radians(180.0f));
+  TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
-}
-
-void DoubleScatterTank::DoubleScatterTankMove(float move_speed,
-                                              float rotate_angular_speed) {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    glm::vec2 offset{0.0f};
-    if (input_data.key_down[GLFW_KEY_W]) {
-      offset.y += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_S]) {
-      offset.y -= 1.0f;
-    }
-    float speed = move_speed * GetSpeedScale();
-    offset *= kSecondPerTick * speed;
-    auto new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
-    if (!game_core_->IsBlockedByObstacles(new_position)) {
-      game_core_->PushEventMoveUnit(id_, new_position);
-    }
-    float rotation_offset = 0.0f;
-    if (input_data.key_down[GLFW_KEY_A]) {
-      rotation_offset += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_D]) {
-      rotation_offset -= 1.0f;
-    }
-    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-    game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
-  }
-}
-
-void DoubleScatterTank::TurretRotate() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
-    }
-    turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-  }
 }
 
 void DoubleScatterTank::Scatter() {
