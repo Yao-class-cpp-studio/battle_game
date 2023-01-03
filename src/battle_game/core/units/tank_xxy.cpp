@@ -1,8 +1,7 @@
-#include "tiny_tank.h"
-
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
+#include "tiny_tank.h"
 
 namespace battle_game::unit {
 
@@ -149,7 +148,7 @@ bool TankXxy::IsHit(glm::vec2 position) const {
 }
 
 const char *TankXxy::UnitName() const {
-  return "Tank xxy";
+  return "Tank Xxy";
 }
 
 const char *TankXxy::Author() const {
