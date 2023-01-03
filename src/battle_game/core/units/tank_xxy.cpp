@@ -11,7 +11,7 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-Tank_xxy::Tank_xxy(GameCore *game_core, uint32_t id, uint32_t player_id)
+TankXxy::TankXxy(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -65,7 +65,7 @@ Tank_xxy::Tank_xxy(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void Tank_xxy::Render() {
+void TankXxy::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -74,13 +74,13 @@ void Tank_xxy::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void Tank_xxy::Update() {
+void TankXxy::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 
-void Tank_xxy::TankMove(float move_speed, float rotate_angular_speed) {
+void TankXxy::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -112,7 +112,7 @@ void Tank_xxy::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void Tank_xxy::TurretRotate() {
+void TankXxy::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -124,7 +124,7 @@ void Tank_xxy::TurretRotate() {
   }
 }
 
-void Tank_xxy::Fire() {
+void TankXxy::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -142,17 +142,17 @@ void Tank_xxy::Fire() {
   }
 }
 
-bool Tank_xxy::IsHit(glm::vec2 position) const {
+bool TankXxy::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
 }
 
-const char *Tank_xxy::UnitName() const {
-  return "Tank_xxy";
+const char *TankXxy::UnitName() const {
+  return "Tank xxy";
 }
 
-const char *Tank_xxy::Author() const {
+const char *TankXxy::Author() const {
   return "Megumi X";
 }
 }  // namespace battle_game::unit
