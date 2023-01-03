@@ -263,20 +263,13 @@ void GameCore::SetScene() {
   boundary_high_ = {10.0f, 10.0f};
 }
 
-template <class UnitType, class... Args>
-void GameCore::AddPrimaryUnitAllocationFunction(Args... args) {
-  primary_unit_allocation_functions_.emplace_back([=](uint32_t player_id) {
-    return AddUnit<UnitType>(player_id, args...);
-  });
-}
-
-void GameCore::GeneratePrimaryUnitList() {
-  AddPrimaryUnitAllocationFunction<unit::Tank>();
-}
-
 uint32_t GameCore::AllocatePrimaryUnit(uint32_t player_id) {
-  auto unit_id = primary_unit_allocation_functions_[RandomInt(
-      0, int(primary_unit_allocation_functions_.size()) - 1)](player_id);
+  auto player = GetPlayer(player_id);
+  if (!player) {
+    return 0;
+  }
+  auto unit_id =
+      primary_unit_allocation_functions_[player->SelectedUnit()](player_id);
   auto unit = GetUnit(unit_id);
   auto respawn_point =
       respawn_points_[RandomInt(0, int(respawn_points_.size()) - 1)];
@@ -299,5 +292,13 @@ glm::vec2 GameCore::RandomInCircle() {
 bool GameCore::IsOutOfRange(glm::vec2 p) const {
   return p.x < boundary_low_.x || p.x > boundary_high_.x ||
          p.y < boundary_low_.y || p.y > boundary_high_.y;
+}
+
+std::vector<const char *> GameCore::GetSelectableUnitList() const {
+  std::vector<const char *> result;
+  for (auto &selectable_unit : selectable_unit_list_) {
+    result.emplace_back(selectable_unit.data());
+  }
+  return result;
 }
 }  // namespace battle_game

@@ -26,6 +26,7 @@ class App {
   void CaptureInput();
   void UpdateDrawCommands();
   void UpdateDynamicBuffer();
+  void UpdateImGui();
 
   void SetScene();
   [[nodiscard]] glm::mat4 GetCameraTransform(float fov_y) const;

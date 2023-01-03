@@ -1,9 +1,11 @@
 #pragma once
 #include "battle_game/core/bullet.h"
+#include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/input_data.h"
 #include "battle_game/core/obstacle.h"
 #include "battle_game/core/obstacles/obstacles.h"
 #include "battle_game/core/particle.h"
+#include "battle_game/core/particles/particles.h"
 #include "battle_game/core/player.h"
 #include "battle_game/core/unit.h"
 #include "battle_game/core/units/units.h"
@@ -29,6 +31,7 @@ class GameCore {
 
   void GeneratePrimaryUnitList();
   uint32_t AllocatePrimaryUnit(uint32_t player_id);
+  [[nodiscard]] std::vector<const char *> GetSelectableUnitList() const;
 
   void Update();
   void Render();
@@ -199,6 +202,7 @@ class GameCore {
   std::vector<std::pair<glm::vec2, float>> respawn_points_;
   std::vector<std::function<uint32_t(uint32_t)>>
       primary_unit_allocation_functions_;
+  std::vector<std::string> selectable_unit_list_;
 };
 
 template <class BulletType, class... Args>

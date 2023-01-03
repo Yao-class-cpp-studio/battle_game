@@ -1,4 +1,4 @@
-#include "battle_game/app/app.h"
+﻿#include "battle_game/app/app.h"
 
 #include "battle_game/graphics/util.h"
 
@@ -55,6 +55,8 @@ void App::OnInit() {
   BuildRenderNodes();
 
   SetScene();
+  core_->ImGuiInit(frame_image_.get(), "../../fonts/NotoSansSC-Regular.otf",
+                   20.0f);
 }
 
 void App::OnLoop() {
@@ -66,6 +68,7 @@ void App::OnClose() {
 }
 
 void App::OnUpdate() {
+  UpdateImGui();
   NewFrame();
   CaptureInput();
   UpdateDrawCommands();
@@ -90,7 +93,7 @@ void App::OnRender() {
                              device_model.index_buffer->Size(), obj_id);
   }
   render_node_->EndDraw();
-
+  core_->ImGuiRender();
   core_->Output(frame_image_.get());
   core_->EndCommandRecordAndSubmit();
 }
@@ -243,5 +246,30 @@ glm::mat4 App::GetCameraTransform(float fov_y) const {
                             glm::vec3{game_core_->GetCameraPosition(), 0.0f}) *
              glm::rotate(glm::mat4{1.0f}, game_core_->GetCameraRotation(),
                          glm::vec3{0.0f, 0.0f, 1.0f}));
+}
+
+void App::UpdateImGui() {
+  ImGui_ImplVulkan_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+  ImGui::SetNextWindowPos(ImVec2{0.0f, 0.0f}, ImGuiCond_Once);
+  ImGui::SetNextWindowBgAlpha(0.3f);
+  if (ImGui::Begin(u8"调试窗口", nullptr,
+                   ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
+                       ImGuiWindowFlags_AlwaysAutoResize)) {
+    auto player = game_core_->GetPlayer(my_player_id_);
+    if (player) {
+      auto selectable_list = game_core_->GetSelectableUnitList();
+      ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),
+                   selectable_list.data(), selectable_list.size());
+      if (ImGui::Button(u8"自毁")) {
+        auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
+        if (unit) {
+          game_core_->PushEventRemoveUnit(unit->GetId());
+        }
+      }
+    }
+  }
+  ImGui::Render();
 }
 }  // namespace battle_game

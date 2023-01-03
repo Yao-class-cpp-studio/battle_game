@@ -55,8 +55,8 @@ class Unit : public Object {
                       float damage_scale,
                       Args... args);
 
-  virtual const char *UnitName() const;
-  virtual const char *Author() const;
+  [[nodiscard]] virtual const char *UnitName() const;
+  [[nodiscard]] virtual const char *Author() const;
 
  protected:
   uint32_t player_id_{};

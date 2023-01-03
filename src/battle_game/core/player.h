@@ -19,6 +19,9 @@ class Player {
   [[nodiscard]] uint32_t GetPrimaryUnitId() const {
     return primary_unit_id_;
   }
+  int &SelectedUnit() {
+    return selected_unit_;
+  }
 
   void Update();
 
@@ -28,5 +31,6 @@ class Player {
   InputData input_data_{};
   uint32_t primary_unit_id_{};
   uint32_t resurrection_count_down_{1};
+  int selected_unit_{0};
 };
 }  // namespace battle_game
