@@ -75,6 +75,7 @@ void Tank::Render() {
 }
 
 void Tank::Update() {
+  DetectCollision();
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
@@ -85,11 +86,18 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
   if (player) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
-    if (input_data.key_down[GLFW_KEY_W]) {
-      offset.y += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_S]) {
+    // check if there is collision
+    if (is_collision_) {
+      // if there is collision, then move back
       offset.y -= 1.0f;
+      is_collision_ = false;
+    } else {
+      if (input_data.key_down[GLFW_KEY_W]) {
+        offset.y += 1.0f;
+      }
+      if (input_data.key_down[GLFW_KEY_S]) {
+        offset.y -= 1.0f;
+      }
     }
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
@@ -97,6 +105,7 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
                                           glm::vec3{0.0f, 0.0f, 1.0f}) *
                               glm::vec4{offset, 0.0f, 0.0f}};
+
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
@@ -137,6 +146,38 @@ void Tank::Fire() {
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+      }
+    }
+  }
+}
+
+std::vector<glm::vec2> Tank::GetVertices() const {
+  static std::vector<glm::vec2> vertices;
+  if (vertices.empty()) {
+    // collsion bound test, transfer to world coordinate
+    vertices.push_back(LocalToWorld({-0.8f, -1.0f}));
+    vertices.push_back(LocalToWorld({0.8f, -1.0f}));
+    vertices.push_back(LocalToWorld({0.8f, 1.0f}));
+    vertices.push_back(LocalToWorld({-0.8f, 1.0f}));
+  }
+  return vertices;
+}
+
+void Tank::DetectCollision() {
+  auto &units = game_core_->GetUnits();
+  for (auto &unit : units) {
+    if (unit.first == id_) {
+      continue;
+    } else {
+      // get all vertices of the other unit
+      auto other_vertices = unit.second->GetVertices();
+      for (auto &vertex : other_vertices) {
+        // transform to local coordinate
+        if (IsHit(vertex)) {
+          is_collision_ = true;
+          // just detect one collision
+          return;
+        }
       }
     }
   }

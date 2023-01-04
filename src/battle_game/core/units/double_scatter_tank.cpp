@@ -17,6 +17,7 @@ void DoubleScatterTank::Render() {
 }
 
 void DoubleScatterTank::Update() {
+  DetectCollision();
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();

@@ -26,6 +26,8 @@ class Unit : public Object {
     return std::max(GetHealthScale() * BasicMaxHealth(), 1.0f);
   }
 
+  [[nodiscard]] virtual std::vector<glm::vec2> GetVertices() const;
+
   /*
    * Health value is in range [0, 1], represents the remaining health in ratio
    * form. GetHealth() * GetMaxHealth() represent true remaining health of the

@@ -32,6 +32,10 @@ float Unit::GetHealthScale() const {
   return 1.0f;
 }
 
+std::vector<glm::vec2> Unit::GetVertices() const {
+  return {};
+}
+
 const char *Unit::UnitName() const {
   return "Unknown Unit";
 }
