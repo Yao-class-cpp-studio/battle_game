@@ -150,7 +150,8 @@ void Tank::Fire() {
 bool Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f;
+         position.y < 1.0f && position.x + position.y < 1.6f &&
+         position.y - position.x < 1.6f;
 }
 
 const char *Tank::UnitName() const {
