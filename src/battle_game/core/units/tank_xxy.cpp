@@ -17,10 +17,10 @@ TankXxy::TankXxy(GameCore *game_core, uint32_t id, uint32_t player_id)
     {
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
-          {{{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
+          {{{-0.7f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+           {{-0.7f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+           {{0.7f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+           {{0.7f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
           {0, 1, 2, 1, 2, 3});
     }
 
@@ -143,7 +143,7 @@ void TankXxy::Fire() {
 
 bool TankXxy::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
+  return position.x > -0.7f && position.x < 0.7f && position.y > -1.0f &&
          position.y < 1.0f;
 }
 
