@@ -56,7 +56,7 @@ class Player {
 
   void RebirthUpdateBuff();
   void UpdateBuff();
-  void AddBuff(int index);
+  void AddBuff(int buff);
   void Update();
   [[nodiscard]] uint32_t GetResurrectionCountDown() const {
     return resurrection_count_down_;
