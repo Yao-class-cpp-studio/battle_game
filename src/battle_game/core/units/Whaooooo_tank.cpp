@@ -22,7 +22,6 @@ void WhaoooooTank::Update() {
   Fire();
 }
 
-
 void WhaoooooTank::Fire() {
   Tank::Fire();
 }
