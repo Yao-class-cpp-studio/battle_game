@@ -32,7 +32,7 @@ void DoubleScatterTank::Scatter() {
       velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
       GenerateBullet<bullet::CannonBall>(
           position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
-          turret_rotation_ + offset, GetDamageScale(), velocity);
+          turret_rotation_ + offset, GetDamageScale() * 0.1f, velocity);
     }
   }
 }
