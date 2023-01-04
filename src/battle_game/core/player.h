@@ -1,8 +1,8 @@
 #pragma once
-#include<map>
-#include<vector>
 #include "cstdint"
 #include "input_data.h"
+#include "map"
+#include "vector"
 
 namespace battle_game {
 class GameCore;
