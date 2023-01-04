@@ -7,8 +7,8 @@
 namespace battle_game::unit {
 
 WhaoooooTank::WhaoooooTank(GameCore *game_core,
-                                     uint32_t id,
-                                     uint32_t player_id)
+                           uint32_t id,
+                           uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
@@ -23,12 +23,12 @@ void WhaoooooTank::Update() {
 }
 
 
-void WhaoooooTank::Fire() { 
-    Tank::Fire();
+void WhaoooooTank::Fire() {
+  Tank::Fire();
 }
 
 bool WhaoooooTank::IsHit(glm::vec2 position) const {
-    return Tank::IsHit(position);
+  return Tank::IsHit(position);
 }
 
 const char *WhaoooooTank::UnitName() const {
