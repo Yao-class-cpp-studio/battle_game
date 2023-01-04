@@ -34,7 +34,7 @@ check_PR
 
 ### 2、创建一个新的游戏单位类型 【10 pts】
 
-本游戏的框架涉及 4 中类型的元素：单位（Units）、障碍物（Obstacles）、子弹（Bullets）和粒子（Particles）。
+本游戏的框架涉及 4 种类型的元素：单位（Units）、障碍物（Obstacles）、子弹（Bullets）和粒子（Particles）。
 这些元素共同组成了游戏内容。每种类型的元素都有一个基类的定义，所有相应类型的设计实现都应通过继承对应类型元素的基类的方式实现。
 不同类型的元素也有一些符合各自定位的虚函数声明，你在实现的过程中需要给出相应的定义。
 更多框架相关信息的说明请前往 `src/battle_game/core/` 目录下的 [README.md](src/battle_game/core/README.md) 文件查阅。
