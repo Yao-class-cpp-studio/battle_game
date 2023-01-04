@@ -286,8 +286,9 @@ void App::UpdateImGui() {
         if (player->InBuff(BuffID[i])) {
           int layer = player->GetBuffLayer(BuffID[i]);
           for (int j = 0; j < layer; j++) {
-            ImGui::Text(BuffDisplay[BuffID[i]],
-                        kSecondPerTick * float(player->GetBuffTime(BuffID[i], j)));
+            ImGui::Text(
+                BuffDisplay[BuffID[i]],
+                kSecondPerTick * float(player->GetBuffTime(BuffID[i], j)));
           }
         }
       }
