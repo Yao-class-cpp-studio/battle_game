@@ -1,4 +1,5 @@
 #pragma once
+#include "battle_game/core/life_bar.h"
 #include "battle_game/core/object.h"
 #include "glm/glm.hpp"
 
@@ -42,6 +43,10 @@ class Unit : public Object {
     health_ = std::clamp(new_health, 0.0f, 1.0f);
   }
 
+  void RenderLifeBar() {
+    lifebar_.Render();
+  }
+
   /*
    * This virtual function is used to check whether a bullet at the position
    * have hit the unit. If the position is inside the unit area, then return
@@ -61,6 +66,7 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
+  LifeBar lifebar_;
 };
 
 }  // namespace battle_game
