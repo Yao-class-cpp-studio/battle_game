@@ -5,7 +5,8 @@
 namespace battle_game {
 Player::Player(GameCore *game_core, uint32_t id)
     : game_core_(game_core), id_(id) {
-  BuffList_.push_back(battle_game::Buff("stunning", 1.5, false, false, 0)); // Buff 0
+  BuffList_.push_back(
+      battle_game::Buff("stunning", 1.5, false, false, 0));  // BuffID 0
   buffs_[0].push_back(1);
 }
 
