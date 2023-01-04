@@ -4,10 +4,8 @@
 #include<map>
 #include<vector>
 
-
-
 namespace battle_game {
-  class GameCore;
+class GameCore;
 class Player {
  public:
   Player(GameCore *game_core, uint32_t id);
