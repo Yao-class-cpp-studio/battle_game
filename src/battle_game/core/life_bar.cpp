@@ -13,6 +13,8 @@ LifeBar::LifeBar(GameCore *game_core, uint32_t id)
   offset_ = {0.0f, 1.0f};
   background_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
   front_color_ = {0.0f, 1.0f, 0.0f, 0.9f};
+  fadeout_color_ = {1.0f, 1.0f, 1.0f, 0.5f};
+  fadeout_health_ = 1;
   if (!~life_bar_model_index) {
     auto mgr = AssetsManager::GetInstance();
     life_bar_model_index = mgr->RegisterModel(
@@ -36,6 +38,9 @@ void LifeBar::SetFrontColor(glm::vec4 new_color) {
 void LifeBar::SetBackgroundColor(glm::vec4 new_color) {
   background_color_ = new_color;
 }
+void LifeBar::SetFadeoutColor(glm::vec4 new_color) {
+  fadeout_color_ = new_color;
+}
 void LifeBar::Show() {
   display_ = true;
 }
@@ -56,6 +61,16 @@ void LifeBar::Render() {
     SetTransformation(pos - shift, 0.0f, {length_ * health, 1.0f});
     SetColor(front_color_);
     DrawModel(life_bar_model_index);
+    if (std::fabs(health - fadeout_health_) >= 0.01f) {
+      fadeout_health_ = health + (fadeout_health_ - health) * 0.93;
+      shift = {length_ * (health + fadeout_health_ - 1) / 2, 0.0f};
+      SetTransformation(pos + shift, 0.0f,
+                        {length_ * (health - fadeout_health_), 1.0f});
+      SetColor(fadeout_color_);
+      DrawModel(life_bar_model_index);
+    } else {
+      fadeout_health_ = health;
+    }
   }
 }
 
