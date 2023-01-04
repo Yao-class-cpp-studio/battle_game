@@ -2,6 +2,9 @@
 
 #include "battle_game/graphics/util.h"
 
+const char *Buff[] = {"Stunning: %.1f"};
+const int BN = sizeof(Buff)/sizeof(Buff[0]);
+
 namespace battle_game {
 App::App(const AppSettings &app_settings, GameCore *game_core) {
   game_core_ = game_core;
@@ -277,6 +280,15 @@ void App::UpdateImGui() {
       } else {
         ImGui::Text("Dead. Respawn in %d second(s).",
                     player->GetResurrectionCountDown() / kTickPerSecond);
+      }
+      for (int i = 0; i < BN; i++) {
+        if (player->InBuff(i)) {
+          int layer = player->GetBuffLayer(i);
+          for (int j = 0; j < layer; j++) {
+          ImGui::Text(Buff[i],
+                        kSecondPerTick * float(player->GetBuffTime(i, j)));
+          }
+        }
       }
     }
     ImGui::End();
