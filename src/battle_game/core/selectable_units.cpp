@@ -19,7 +19,7 @@ void GameCore::GeneratePrimaryUnitList() {
                                   unit->Author());
 
   /*
-   * Add Your Unit Here!
+   * TODO: Add Your Unit Here!
    * */
   ADD_SELECTABLE_UNIT(unit::Tank);
   ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);
