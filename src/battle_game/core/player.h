@@ -8,7 +8,9 @@ namespace battle_game {
 class GameCore;
 class Buff {
  public:
-  Buff(const char *BuffName, float Time, bool IsSupportManyLayer,
+  Buff(const char *BuffName,
+       float Time,
+       bool IsSupportManyLayer,
        bool IsInfiniteTime,
        int RemoveWhenDie)
       : BuffName_(BuffName),
