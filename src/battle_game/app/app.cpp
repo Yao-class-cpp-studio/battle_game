@@ -1,5 +1,6 @@
 ﻿#include "battle_game/app/app.h"
 
+#include "battle_game/core/object.h"
 #include "battle_game/graphics/util.h"
 
 namespace battle_game {
@@ -248,7 +249,7 @@ glm::mat4 App::GetCameraTransform(float fov_y) const {
              glm::rotate(glm::mat4{1.0f}, game_core_->GetCameraRotation(),
                          glm::vec3{0.0f, 0.0f, 1.0f}));
 }
-
+bool isok = true;
 void App::UpdateImGui() {
   ImGui_ImplVulkan_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -261,6 +262,7 @@ void App::UpdateImGui() {
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
       auto selectable_list = game_core_->GetSelectableUnitList();
+      auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
       ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),
                    selectable_list.data(), selectable_list.size());
       if (ImGui::Button(u8"自毁")) {
@@ -274,6 +276,20 @@ void App::UpdateImGui() {
         ImGui::Text("Health: %.1f / %.1f",
                     unit->GetHealth() * unit->GetMaxHealth(),
                     unit->GetMaxHealth());
+        for (int i = 0; i < selectable_list.size(); i++) {
+          if (selectable_list[i] ==
+              unit->UnitName() + std::string(" - By ") + unit->Author()) {
+            if (selectable_list_skill[i] == true) {
+              std::vector<Skill> skill_list = unit->GetSkill();
+              for (int i = 0; i < skill_list.size(); i++) {
+                ImGui::Text("%s skill cooldown: %d s / %d s",
+                            skill_list[i].name.c_str(),
+                            skill_list[i].time_remain / 60,
+                            skill_list[i].time_total / 60);
+              }
+            }
+          }
+        }
       } else {
         ImGui::Text("Dead. Respawn in %d second(s).",
                     player->GetResurrectionCountDown() / kTickPerSecond);

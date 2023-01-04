@@ -122,7 +122,27 @@ public:
   该函数可以帮助你通过只填写新生成的子弹对象的位置、朝向、伤害倍率等关键参数，自动根据单位信息进行补全并添加一个子弹生成事件。
   - 实现类似于“开火”一类的技能可以使用该函数
   - 函数的实现位于 `src/battle_game/core/game_core.h` 中
+- Skill
+  - units支持加入技能。
+  - 为了方便玩家操作，技能应当使用键盘快捷键完成。特别地，由于本游戏使用W/A/S/D控制转向，为方便起见，技能采用按键E/Q/R完成。我们规定E/Q/R表示的技能强度递增，并建议按照E/Q/R的顺序依次实现技能（可不足3个，但主动技能一般不会超过3个）。此外，P表示被动技能，这一技能不需要用户输入。
+  - 用户通常希望从UI界面获取技能的简略信息。因此，如果您希望技能被展示在UI界面中，请使用ADD_SELECTABLE_UNIT_WITH_SKILL()进行调用。此外，您需要维护一个名称为skill_的信息存储库，它已经是您的units类型中的protected类型。它的格式为std::vector<battle_game::Skill> 。
+其中Skill是一个用于交互的结构体。具体为：
+``` cpp
+enum SkillType { E, Q, M, P };
+struct Skill {
+  std::string name;
+  std::string description;
+  std::string src;
+  uint32_t time_remain;
+  uint32_t time_total;
+  SkillType type;
+  std::function<void(void)> function;
+};
+```
 
+ -
+    - 你需要在name中填写技能名称，description为技能简述（若有），src为技能图示路径（若有），time_remain为技能冷却时间，time_total为技能冷却总时间，type为技能类型，function为技能调用的接口（可选择不提供）。若选择提供，使用格式为example.function=SKILL_ADD_FUNCTION(YourUnits::YourFunction)。
+    - 使用示例请参考inferno_tank类型。技能显示页面可能会持续更新，但可以承诺skill_这一交互容器会保持不变。也即技能显示页面的更新会自动兼容您的数据，您无须再次编写。如果您发现了显示页面的BUG或者希望增加更多内容（如您可能希望加入用户状态，如加速/灼烧等），欢迎联系XuGW-Kevin。
 ## Obstacle
 
 障碍物类声明在 [obstacle.h](obstacle.h) 中，该类对象主要用于组成游戏场景。

@@ -1,9 +1,21 @@
 #pragma once
 #include "battle_game/graphics/graphics.h"
 #include "glm/glm.hpp"
+#define SKILL_ADD_FUNCTION(function_) std::bind(&function_, *this)
 
 namespace battle_game {
 class GameCore;
+enum SkillType { E, Q, M, P };
+struct Skill {
+  std::string name;
+  std::string description;
+  std::string src;
+  uint32_t time_remain;
+  uint32_t time_total;
+  SkillType type;
+  std::function<void(void)> function;
+};
+
 class Object {
  public:
   Object(GameCore *game_core,

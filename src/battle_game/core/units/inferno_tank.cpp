@@ -7,6 +7,21 @@ namespace battle_game::unit {
 
 InfernoTank::InfernoTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
+  Skill temp;
+  temp.name = "Hide";
+  temp.description = "Fast bullet";
+  temp.time_remain = 0;
+  temp.time_total = 360;
+  temp.type = E;
+  temp.function = SKILL_ADD_FUNCTION(InfernoTank::Hidden_CLICK);
+  skill_.push_back(temp);
+  temp.name = "Block";
+  temp.description = "Generate Block";
+  temp.time_remain = 0;
+  temp.time_total = 900;
+  temp.type = Q;
+  temp.function = SKILL_ADD_FUNCTION(InfernoTank::Block_CLICK);
+  skill_.push_back(temp);
 }
 
 void InfernoTank::Render() {
@@ -22,7 +37,20 @@ void InfernoTank::Update() {
   Fire();
 }
 
+void InfernoTank::Hidden_CLICK() {
+  isHidden = 3 * kTickPerSecond;
+  hidden_count_down_ = 6 * kTickPerSecond;
+}
+void InfernoTank::Block_CLICK() {
+  auto theta = game_core_->RandomFloat() * glm::pi<float>() * 2.0f;
+  game_core_->AddObstacle<battle_game::obstacle::Block>(
+      this->GetPosition() + glm::vec2{2 * cos(theta), 2 * sin(theta)});
+  block_count_down_ = 15 * kTickPerSecond;
+  isHidden += 3 * kTickPerSecond;
+}
+
 void InfernoTank::Hidden() {
+  skill_[0].time_remain = hidden_count_down_;
   if (hidden_count_down_) {
     hidden_count_down_--;
   } else {
@@ -30,14 +58,14 @@ void InfernoTank::Hidden() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_E]) {
-        isHidden = 3 * kTickPerSecond;
-        hidden_count_down_ = 6 * kTickPerSecond;
+        Hidden_CLICK();
       }
     }
   }
 }
 
 void InfernoTank::Block() {
+  skill_[1].time_remain = block_count_down_;
   if (block_count_down_) {
     block_count_down_--;
   } else {
@@ -45,11 +73,7 @@ void InfernoTank::Block() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_Q]) {
-        auto theta = game_core_->RandomFloat() * glm::pi<float>() * 2.0f;
-        game_core_->AddObstacle<battle_game::obstacle::Block>(
-            this->GetPosition() + glm::vec2{2 * cos(theta), 2 * sin(theta)});
-        block_count_down_ = 15 * kTickPerSecond;
-        isHidden += 4 * kTickPerSecond;
+        Block_CLICK();
       }
     }
   }
