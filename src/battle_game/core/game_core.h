@@ -142,6 +142,16 @@ class GameCore {
     });
   }
 
+  template <class ObstacleType, class... Args>
+  void PushEventGenerateObstacle(
+    glm::vec2 position,
+    float rotation = 0.0f,
+    Args... args) {
+    event_queue_.emplace([=]() { 
+      AddObstacle<ObstacleType>(position, rotation, args...);
+      });
+  }
+
   template <class ParticleType, class... Args>
   void PushEventGenerateParticle(glm::vec2 position,
                                  float rotation = 0.0f,
