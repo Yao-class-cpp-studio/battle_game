@@ -5,7 +5,7 @@
 
 namespace battle_game {
 class GameCore;
-enum SkillType { E, Q, M, P };
+enum SkillType { E, Q, R, P };
 struct Skill {
   std::string name;
   std::string description;

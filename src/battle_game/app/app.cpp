@@ -282,10 +282,27 @@ void App::UpdateImGui() {
             if (selectable_list_skill[i] == true) {
               std::vector<Skill> skill_list = unit->GetSkill();
               for (int i = 0; i < skill_list.size(); i++) {
-                ImGui::Text("%s skill cooldown: %d s / %d s",
-                            skill_list[i].name.c_str(),
-                            skill_list[i].time_remain / 60,
-                            skill_list[i].time_total / 60);
+                if (skill_list[i].type == E) {
+                  ImGui::Text("%s (E) skill cooldown: %d s / %d s",
+                              skill_list[i].name.c_str(),
+                              skill_list[i].time_remain / 60,
+                              skill_list[i].time_total / 60);
+                } else if (skill_list[i].type == Q) {
+                  ImGui::Text("%s (Q) skill cooldown: %d s / %d s",
+                              skill_list[i].name.c_str(),
+                              skill_list[i].time_remain / 60,
+                              skill_list[i].time_total / 60);
+                } else if (skill_list[i].type == battle_game::SkillType::R) {
+                  ImGui::Text("%s (R) skill cooldown: %d s / %d s",
+                              skill_list[i].name.c_str(),
+                              skill_list[i].time_remain / 60,
+                              skill_list[i].time_total / 60);
+                } else {
+                  ImGui::Text("%s (P) skill cooldown: %d s / %d s",
+                              skill_list[i].name.c_str(),
+                              skill_list[i].time_remain / 60,
+                              skill_list[i].time_total / 60);
+                }
               }
             }
           }
