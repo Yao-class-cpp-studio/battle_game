@@ -7,7 +7,7 @@ class Tank : public Unit {
   Tank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-  // a list of glm::vec2 for collision detection
+  // a list of glm::vec2 verteices for collision detection
   [[nodiscard]] std::vector<glm::vec2> GetVertices() const override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
