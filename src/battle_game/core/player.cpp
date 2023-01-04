@@ -12,6 +12,7 @@ int RemoveWhenDie[BN1] = {0};
 Player::Player(GameCore *game_core, uint32_t id)
     : game_core_(game_core), id_(id) {
   buffs_[0].push_back(0);
+  buffs_[0].push_back(0);
 }
 
 void Player::AddBuff(int buff) {
@@ -51,13 +52,15 @@ void Player::UpdateBuff() {
       int layer = buffs_[i].size();
       if (layer) {
         auto it = buffs_[i].cbegin();
+        int cnt = 0;
         for (int j = 0; j < layer; j++) {
-          if (!buffs_[i][j]) {
+          if (!buffs_[i][j - cnt]) {
             buffs_[i].erase(it);
+            cnt++;
           } else {
-            buffs_[i][j]--;
+            buffs_[i][j - cnt]--;
+            it++;
           }
-          it++;
         }
       }
     }
