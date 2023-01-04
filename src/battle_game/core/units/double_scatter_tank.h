@@ -8,7 +8,7 @@ class DoubleScatterTank : public Tank {
   DoubleScatterTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-  [[nodiscard]] bool IsHit(glm::vec2 position) const override;
+  // [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
   void Fire();
