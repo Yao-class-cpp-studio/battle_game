@@ -3,28 +3,23 @@
 #include "battle_game/core/game_core.h"
 
 namespace battle_game {
-const char *BuffType[] = {"Stunning"};
-const int BN1 = sizeof(BuffType) / sizeof(BuffType[0]);
-float Time[BN1] = {1.5};
-bool IsSupportManyLayer[BN1] = {false};
-bool IsInfiniteTime[BN1] = {false};
-int RemoveWhenDie[BN1] = {0};
 Player::Player(GameCore *game_core, uint32_t id)
     : game_core_(game_core), id_(id) {
-  buffs_[0].push_back(0);
+  BuffList_.push_back(battle_game::Buff("stunning", 1.5, false, false, 0));
   buffs_[0].push_back(0);
 }
 
 void Player::AddBuff(int buff) {
-  if (!IsSupportManyLayer[buff]) {
+  if (!BuffList_[buff].IsSupportManyLayer_) {
     buffs_[buff].pop_back();
   }
-  buffs_[buff].push_back(uint32_t(kTickPerSecond * Time[buff]));
+  buffs_[buff].push_back(uint32_t(kTickPerSecond * BuffList_[buff].Time_));
 }
 
 void Player::RebirthUpdateBuff() {
-  for (int i = 0; i < BN1; i++) {
-    int tmp = RemoveWhenDie[i];
+  int size = BuffList_.size();
+  for (int i = 0; i < size; i++) {
+    int tmp = BuffList_[i].RemoveWhenDie_;
     if (!tmp) {
       if (tmp < 0) {
         buffs_[i].clear();
@@ -39,7 +34,7 @@ void Player::RebirthUpdateBuff() {
       }
     }
     int layer = buffs_[i].size();
-    uint32_t time = kTickPerSecond * Time[i];
+    uint32_t time = kTickPerSecond * BuffList_[i].Time_;
     for (int j = 0; j < layer; j++) {
       buffs_[i][j] = time;
     }
@@ -47,8 +42,9 @@ void Player::RebirthUpdateBuff() {
 }
 
 void Player::UpdateBuff() {
-  for (int i = 0; i < BN1; i++) {
-    if (!IsInfiniteTime[i]) {
+  int size = BuffList_.size();
+  for (int i = 0; i < size; i++) {
+    if (!BuffList_[i].IsInfiniteTime_) {
       int layer = buffs_[i].size();
       if (layer) {
         auto it = buffs_[i].cbegin();

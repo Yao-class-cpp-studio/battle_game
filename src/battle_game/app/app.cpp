@@ -2,8 +2,8 @@
 
 #include "battle_game/graphics/util.h"
 
-const char *Buff[] = {"Stunning: %.1f"};
-const int BN = sizeof(Buff) / sizeof(Buff[0]);
+const char *BuffDisplay[] = {"Stunning: %.1f"};
+const int BN = sizeof(BuffDisplay) / sizeof(BuffDisplay[0]);
 
 namespace battle_game {
 App::App(const AppSettings &app_settings, GameCore *game_core) {
@@ -285,7 +285,7 @@ void App::UpdateImGui() {
         if (player->InBuff(i)) {
           int layer = player->GetBuffLayer(i);
           for (int j = 0; j < layer; j++) {
-            ImGui::Text(Buff[i],
+            ImGui::Text(BuffDisplay[i],
                         kSecondPerTick * float(player->GetBuffTime(i, j)));
           }
         }
