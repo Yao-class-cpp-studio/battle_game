@@ -73,10 +73,6 @@ public:
 
 单位类声明在 [unit.h](unit.h) 中，单位表示游戏中进行主动动作的对象，所有具体单位的实现都应继承自此基类。
 
-#### LifeBar
-
-声明位于 [unit.h](unit.h) 中，用于保存一个`Unit`对象的生命条设置。
-
 ### 成员变量
 
 - player_id_
@@ -87,8 +83,10 @@ public:
   - 单位实际生命值为 `GetMaxHealth() * health_`
   - 这样定义是为了方便动态地对最大声明值进行调整，以实现一些复杂机制。
   - 该值归 0 时单位死亡。
-- lifebar_
-  - 这个变量保存了生命条的设置
+- lifebar_*
+  - 这些变量保存了生命条的设置，请通过set来修改
+- fadeout_health_
+  - 保存生命条渐变的起始位置。（一般不需要修改）
 
 ### 成员函数
 
@@ -119,6 +117,7 @@ public:
 - Set/GetLifeBar*
   - 修改/获取各种生命条设置
 - RenderLifeBar
+  - 这是一个虚函数
   - 渲染该对象对应的生命条
 - Hide/ShowLifeBar
   - 隐藏/显示生命条
