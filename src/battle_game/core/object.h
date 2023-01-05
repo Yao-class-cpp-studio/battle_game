@@ -2,6 +2,9 @@
 #include "battle_game/graphics/graphics.h"
 #include "glm/glm.hpp"
 #define SKILL_ADD_FUNCTION(function_) std::bind(&function_, this)
+#define SKILL_SWITCH_BULLET(function_) \
+  std::bind(&function_, this, std::placeholders::_1)
+#define SKILL_ADD_NULL nullptr
 
 namespace battle_game {
 class GameCore;
@@ -16,6 +19,7 @@ struct Skill {
   uint32_t bullet_total_number;
   SkillType type;
   std::function<void(void)> function;
+  std::function<void(uint32_t)> switch_bullet;
   Skill(){};
   Skill(std::string name, SkillType type) : name(name), type(type){};
   Skill(std::string name,

@@ -4,6 +4,7 @@
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
+#define PI 3.141592653
 
 namespace battle_game::bullet {
 Rocket::Rocket(GameCore *core,
@@ -19,13 +20,13 @@ Rocket::Rocket(GameCore *core,
   auto &units = game_core_->GetUnits();
   auto player = game_core_->GetPlayer(player_id_);
   auto &input_data = player->GetInputData();
-  auto WhereCursorIs = input_data.mouse_cursor_position;
+  auto where_cursor_is = input_data.mouse_cursor_position;
   float distance = 1e30;
   for (auto &unit : units) {
     if (unit.first == unit_id_) {
       continue;
     }
-    auto diff = WhereCursorIs - unit.second->GetPosition();
+    auto diff = where_cursor_is - unit.second->GetPosition();
     float length = sqrt(diff.x * diff.x + diff.y * diff.y);
     if (length < distance) {
       distance = length;
@@ -64,9 +65,9 @@ void Rocket::Update() {
   float angle = 0;
   if (diff.x < 0) {
     if (diff.y < 0) {
-      angle = 3.141592653 / 2 + atan(abs(diff.y) / abs(diff.x));
+      angle = PI / 2 + atan(abs(diff.y) / abs(diff.x));
     } else if (diff.y == 0) {
-      angle = 3.141592653 / 2;
+      angle = PI / 2;
     } else {
       angle = atan(abs(diff.x) / abs(diff.y));
     }
@@ -74,15 +75,15 @@ void Rocket::Update() {
     if (diff.y >= 0) {
       angle = 0;
     } else {
-      angle = 3.141592653;
+      angle = PI;
     }
   } else {
     if (diff.y > 0) {
-      angle = 3.141592653 * 2 - atan(abs(diff.x) / abs(diff.y));
+      angle = PI * 2 - atan(abs(diff.x) / abs(diff.y));
     } else if (diff.y == 0) {
-      angle = 270;
+      angle = 1.5 * PI;
     } else {
-      angle = 3.141592653 + atan(abs(diff.x) / abs(diff.y));
+      angle = PI + atan(abs(diff.x) / abs(diff.y));
     }
   }
   rotation_ = angle;

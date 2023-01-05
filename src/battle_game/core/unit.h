@@ -57,7 +57,7 @@ class Unit : public Object {
 
   [[nodiscard]] virtual const char *UnitName() const;
   [[nodiscard]] virtual const char *Author() const;
-  std::vector<Skill> GetSkill() const {
+  const std::vector<Skill> &GetSkill() const {
     return skill_;
   }
 

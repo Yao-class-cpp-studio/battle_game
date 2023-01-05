@@ -13,14 +13,14 @@ InfernoTank::InfernoTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.time_remain = 0;
   temp.time_total = 360;
   temp.type = E;
-  temp.function = SKILL_ADD_FUNCTION(InfernoTank::Hidden_CLICK);
+  temp.function = SKILL_ADD_FUNCTION(InfernoTank::HiddenClick);
   skill_.push_back(temp);
   temp.name = "Block";
   temp.description = "Generate Block";
   temp.time_remain = 0;
   temp.time_total = 900;
   temp.type = Q;
-  temp.function = SKILL_ADD_FUNCTION(InfernoTank::Block_CLICK);
+  temp.function = SKILL_ADD_FUNCTION(InfernoTank::BlockClick);
   skill_.push_back(temp);
   temp.name = "Rocket";
   temp.description = "Little Bullet";
@@ -45,11 +45,11 @@ void InfernoTank::Update() {
   Fire();
 }
 
-void InfernoTank::Hidden_CLICK() {
+void InfernoTank::HiddenClick() {
   isHidden = 3 * kTickPerSecond;
   hidden_count_down_ = 6 * kTickPerSecond;
 }
-void InfernoTank::Block_CLICK() {
+void InfernoTank::BlockClick() {
   auto theta = game_core_->RandomFloat() * glm::pi<float>() * 2.0f;
   game_core_->AddObstacle<battle_game::obstacle::Block>(
       this->GetPosition() + glm::vec2{2 * cos(theta), 2 * sin(theta)});
@@ -66,7 +66,7 @@ void InfernoTank::Hidden() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_E]) {
-        Hidden_CLICK();
+        HiddenClick();
       }
     }
   }
@@ -81,7 +81,7 @@ void InfernoTank::Block() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_Q]) {
-        Block_CLICK();
+        BlockClick();
       }
     }
   }

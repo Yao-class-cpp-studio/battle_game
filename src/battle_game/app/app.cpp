@@ -273,7 +273,7 @@ void App::UpdateImGui() {
       }
       auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
       if (unit) {
-        ImGui::Text("生命值: %.1f / %.1f",
+        ImGui::Text(u8"生命值: %.1f / %.1f",
                     unit->GetHealth() * unit->GetMaxHealth(),
                     unit->GetMaxHealth());
         ImGui::ProgressBar(unit->GetHealth());
@@ -340,15 +340,27 @@ void App::UpdateImGui() {
                   if (skill_list[i].type == E) {
                     ImGui::Text(u8"%s (按E键释放) 技能可释放",
                                 skill_list[i].name.c_str());
-                    if (ImGui::Button(u8"点击释放")) {
-                      skill_list[i].function();
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
                     }
                   } else if (skill_list[i].type == Q) {
                     ImGui::Text(u8"%s (按Q键释放) 技能可释放",
                                 skill_list[i].name.c_str());
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
                   } else if (skill_list[i].type == battle_game::SkillType::R) {
                     ImGui::Text(u8"%s (按R键释放) 技能可释放",
                                 skill_list[i].name.c_str());
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
                   } else {
                     ImGui::Text(u8"%s (被动技能) 技能可释放",
                                 skill_list[i].name.c_str());
