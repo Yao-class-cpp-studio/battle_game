@@ -1,7 +1,5 @@
 #include "battle_game/core/bullets/missile.h"
 
-#include <iostream>
-
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
 
@@ -87,7 +85,7 @@ void Missile::Update() {
     if (speed > max_velocity_) {
       velocity_ = glm::normalize(velocity_) * max_velocity_;
     }
-    std::cout << glm::length(velocity_) << std::endl;
+
   } else {
     game_core_->PushEventRemoveBullet(id_);
   }
@@ -135,7 +133,7 @@ glm::vec2 Missile::CalcFix(glm::vec2 diff) {
 }
 
 Missile::~Missile() {
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 6; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
         position_, rotation_, game_core_->RandomInCircle() * 3.0f, 0.2f,
         glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
