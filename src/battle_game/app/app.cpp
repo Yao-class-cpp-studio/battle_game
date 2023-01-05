@@ -249,7 +249,7 @@ glm::mat4 App::GetCameraTransform(float fov_y) const {
              glm::rotate(glm::mat4{1.0f}, game_core_->GetCameraRotation(),
                          glm::vec3{0.0f, 0.0f, 1.0f}));
 }
-bool isok = true;
+
 void App::UpdateImGui() {
   ImGui_ImplVulkan_NewFrame();
   ImGui_ImplGlfw_NewFrame();
