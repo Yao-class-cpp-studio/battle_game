@@ -175,7 +175,7 @@ void ThreeBodyMan::SafetyDeclare() {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
-      if (input_data.key_down[GLFW_KEY_Z]) {
+      if (input_data.key_down[GLFW_KEY_E]) {
         game_core_->PushEventGenerateObstacle<obstacle::SafetyDeclaration>(
             position_, turret_rotation_,
             Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_));
