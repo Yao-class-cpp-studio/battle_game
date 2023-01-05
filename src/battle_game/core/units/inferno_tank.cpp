@@ -2,7 +2,6 @@
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/units/double_scatter_tank.h"
 #include "battle_game/graphics/graphics.h"
-
 namespace battle_game::unit {
 
 InfernoTank::InfernoTank(GameCore *game_core, uint32_t id, uint32_t player_id)
@@ -122,15 +121,13 @@ void InfernoTank::Fire() {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
-      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
+      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] &&
+          game_core_->GetUnits().size() > 1) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        for (int i = -3; i <= 3; i += 2) {
-          auto offset = glm::radians(3.0f * i);
-          velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
-          GenerateBullet<bullet::Rocket>(
-              position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
-              turret_rotation_ + offset, GetDamageScale(), velocity);
-        }
+        velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        GenerateBullet<bullet::Rocket>(
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+            turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
