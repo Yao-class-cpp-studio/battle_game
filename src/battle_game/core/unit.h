@@ -6,18 +6,6 @@ namespace battle_game {
 
 class Bullet;
 
-class LifeBar {
- public:
-  LifeBar();
-  bool display_{true};
-  glm::vec2 offset_{};
-  float length_{2.4f};
-  glm::vec4 front_color_{};
-  glm::vec4 background_color_{};
-  float fadeout_health_;
-  glm::vec4 fadeout_color_{};
-};
-
 class Unit : public Object {
  public:
   Unit(GameCore *game_core, uint32_t id, uint32_t player_id);
@@ -89,7 +77,15 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
-  LifeBar lifebar_;
+  bool lifebar_display_{true};
+  glm::vec2 lifebar_offset_{};
+  float lifebar_length_{2.4f};
+  glm::vec4 front_lifebar_color_{};
+  glm::vec4 background_lifebar_color_{};
+  glm::vec4 fadeout_lifebar_color_{};
+
+ private:
+  float fadeout_health_;
 };
 
 }  // namespace battle_game

@@ -8,11 +8,13 @@ namespace {
 uint32_t life_bar_model_index = 0xffffffffu;
 }  // namespace
 
-LifeBar::LifeBar() {
-  offset_ = {0.0f, 1.0f};
-  background_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
-  front_color_ = {0.0f, 1.0f, 0.0f, 0.9f};
-  fadeout_color_ = {1.0f, 1.0f, 1.0f, 0.5f};
+Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
+    : Object(game_core, id) {
+  player_id_ = player_id;
+  lifebar_offset_ = {0.0f, 1.0f};
+  background_lifebar_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
+  front_lifebar_color_ = {0.0f, 1.0f, 0.0f, 0.9f};
+  fadeout_lifebar_color_ = {1.0f, 1.0f, 1.0f, 0.5f};
   fadeout_health_ = 1;
   if (!~life_bar_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -23,11 +25,6 @@ LifeBar::LifeBar() {
          {{0.5f, -0.08f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
         {0, 1, 2, 1, 2, 3});
   }
-}
-
-Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Object(game_core, id) {
-  player_id_ = player_id;
 }
 
 void Unit::SetPosition(glm::vec2 position) {
@@ -55,68 +52,65 @@ float Unit::GetHealthScale() const {
 }
 
 void Unit::SetLifeBarLength(float new_length) {
-  lifebar_.length_ = std::min(new_length, 0.0f);
+  lifebar_length_ = std::min(new_length, 0.0f);
 }
 void Unit::SetLifeBarOffset(glm::vec2 new_offset) {
-  lifebar_.offset_ = new_offset;
+  lifebar_offset_ = new_offset;
 }
 void Unit::SetLifeBarFrontColor(glm::vec4 new_color) {
-  lifebar_.front_color_ = new_color;
+  front_lifebar_color_ = new_color;
 }
 void Unit::SetLifeBarBackgroundColor(glm::vec4 new_color) {
-  lifebar_.background_color_ = new_color;
+  background_lifebar_color_ = new_color;
 }
 void Unit::SetLifeBarFadeoutColor(glm::vec4 new_color) {
-  lifebar_.fadeout_color_ = new_color;
+  fadeout_lifebar_color_ = new_color;
 }
 float Unit::GetLifeBarLength() {
-  return lifebar_.length_;
+  return lifebar_length_;
 }
 glm::vec2 Unit::GetLifeBarOffset() {
-  return lifebar_.offset_;
+  return lifebar_offset_;
 }
 glm::vec4 Unit::GetLifeBarFrontColor() {
-  return lifebar_.front_color_;
+  return front_lifebar_color_;
 }
 glm::vec4 Unit::GetLifeBarBackgroundColor() {
-  return lifebar_.background_color_;
+  return background_lifebar_color_;
 }
 glm::vec4 Unit::GetLifeBarFadeoutColor() {
-  return lifebar_.fadeout_color_;
+  return fadeout_lifebar_color_;
 }
 
 void Unit::ShowLifeBar() {
-  lifebar_.display_ = true;
+  lifebar_display_ = true;
 }
 void Unit::HideLifeBar() {
-  lifebar_.display_ = false;
+  lifebar_display_ = false;
 }
 
 void Unit::RenderLifeBar() {
-  if (lifebar_.display_) {
+  if (lifebar_display_) {
     auto parent_unit = game_core_->GetUnit(id_);
-    auto pos = parent_unit->GetPosition() + lifebar_.offset_;
+    auto pos = parent_unit->GetPosition() + lifebar_offset_;
     auto health = parent_unit->GetHealth();
-    SetTransformation(pos, 0.0f, {lifebar_.length_, 1.0f});
-    SetColor(lifebar_.background_color_);
+    SetTransformation(pos, 0.0f, {lifebar_length_, 1.0f});
+    SetColor(background_lifebar_color_);
     SetTexture(0);
     DrawModel(life_bar_model_index);
-    glm::vec2 shift = {(float)lifebar_.length_ * (1 - health) / 2, 0.0f};
-    SetTransformation(pos - shift, 0.0f, {lifebar_.length_ * health, 1.0f});
-    SetColor(lifebar_.front_color_);
+    glm::vec2 shift = {(float)lifebar_length_ * (1 - health) / 2, 0.0f};
+    SetTransformation(pos - shift, 0.0f, {lifebar_length_ * health, 1.0f});
+    SetColor(front_lifebar_color_);
     DrawModel(life_bar_model_index);
-    if (std::fabs(health - lifebar_.fadeout_health_) >= 0.01f) {
-      lifebar_.fadeout_health_ =
-          health + (lifebar_.fadeout_health_ - health) * 0.93;
-      shift = {lifebar_.length_ * (health + lifebar_.fadeout_health_ - 1) / 2,
-               0.0f};
-      SetTransformation(
-          pos + shift, 0.0f,
-          {lifebar_.length_ * (health - lifebar_.fadeout_health_), 1.0f});
-      SetColor(lifebar_.fadeout_color_);
+    if (std::fabs(health - fadeout_health_) >= 0.01f) {
+      fadeout_health_ = health + (fadeout_health_ - health) * 0.93;
+      shift = {lifebar_length_ * (health + fadeout_health_ - 1) / 2, 0.0f};
+      SetTransformation(pos + shift, 0.0f,
+                        {lifebar_length_ * (health - fadeout_health_), 1.0f});
+      SetColor(fadeout_lifebar_color_);
       DrawModel(life_bar_model_index);
     } else {
-      lifebar_.fadeout_health_ = health;
+      fadeout_health_ = health;
     }
   }
 }
