@@ -273,42 +273,61 @@ void App::UpdateImGui() {
       }
       auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
       if (unit) {
-        ImGui::Text("Health: %.1f / %.1f",
+        ImGui::Text("生命值: %.1f / %.1f",
                     unit->GetHealth() * unit->GetMaxHealth(),
                     unit->GetMaxHealth());
+        ImGui::ProgressBar(unit->GetHealth());
         for (int i = 0; i < selectable_list.size(); i++) {
           if (selectable_list[i] ==
               unit->UnitName() + std::string(" - By ") + unit->Author()) {
             if (selectable_list_skill[i] == true) {
               std::vector<Skill> skill_list = unit->GetSkill();
               for (int i = 0; i < skill_list.size(); i++) {
-                if (skill_list[i].type == E) {
-                  ImGui::Text("%s (E) skill cooldown: %d s / %d s",
-                              skill_list[i].name.c_str(),
-                              skill_list[i].time_remain / 60,
-                              skill_list[i].time_total / 60);
-                } else if (skill_list[i].type == Q) {
-                  ImGui::Text("%s (Q) skill cooldown: %d s / %d s",
-                              skill_list[i].name.c_str(),
-                              skill_list[i].time_remain / 60,
-                              skill_list[i].time_total / 60);
-                } else if (skill_list[i].type == battle_game::SkillType::R) {
-                  ImGui::Text("%s (R) skill cooldown: %d s / %d s",
-                              skill_list[i].name.c_str(),
-                              skill_list[i].time_remain / 60,
-                              skill_list[i].time_total / 60);
+                if (skill_list[i].time_remain) {
+                  if (skill_list[i].type == E) {
+                    ImGui::Text(u8"%s (按E键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].name.c_str(),
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else if (skill_list[i].type == Q) {
+                    ImGui::Text(u8"%s (按Q键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].name.c_str(),
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else if (skill_list[i].type == battle_game::SkillType::R) {
+                    ImGui::Text(u8"%s (按R键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].name.c_str(),
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else {
+                    ImGui::Text(u8"%s (被动技能) 技能冷却时间: %d s / %d s",
+                                skill_list[i].name.c_str(),
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  }
+                  ImGui::ProgressBar((double)skill_list[i].time_remain /
+                                     skill_list[i].time_total);
                 } else {
-                  ImGui::Text("%s (P) skill cooldown: %d s / %d s",
-                              skill_list[i].name.c_str(),
-                              skill_list[i].time_remain / 60,
-                              skill_list[i].time_total / 60);
+                  if (skill_list[i].type == E) {
+                    ImGui::Text(u8"%s (按E键释放) 技能可释放",
+                                skill_list[i].name.c_str());
+                  } else if (skill_list[i].type == Q) {
+                    ImGui::Text(u8"%s (按Q键释放) 技能可释放",
+                                skill_list[i].name.c_str());
+                  } else if (skill_list[i].type == battle_game::SkillType::R) {
+                    ImGui::Text(u8"%s (按R键释放) 技能可释放",
+                                skill_list[i].name.c_str());
+                  } else {
+                    ImGui::Text(u8"%s (被动技能) 技能可释放",
+                                skill_list[i].name.c_str());
+                  }
                 }
               }
             }
           }
         }
       } else {
-        ImGui::Text("Dead. Respawn in %d second(s).",
+        ImGui::Text("已死亡,等待%d秒后复活。",
                     player->GetResurrectionCountDown() / kTickPerSecond);
       }
     }
