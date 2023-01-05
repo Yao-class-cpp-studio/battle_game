@@ -14,8 +14,8 @@ Missile::Missile(GameCore *core,
                  glm::vec2 velocity,
                  float max_velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
-      velocity_(velocity),
-      max_velocity_(max_velocity) {
+      velocity_(velocity) {
+  max_velocity_ = std::max(1.0f, max_velocity);
 }
 
 float Missile::GetMaxVelocity() {
@@ -51,43 +51,68 @@ void Missile::Update() {
   }
 
   if (!should_die) {
-    glm::vec2 best_diff = {160.0f, 160.0f};
-    float best_cost = CalcCost(best_diff);
+    glm::vec2 best_diff = velocity_;
+    float best_cost = 200.0f;
     for (auto &unit : units) {
-      if (unit.first == player_id_) {
+      if (unit.first == unit_id_) {
+        continue;
+      }
+      if (unit.second->GetPlayerId() == player_id_) {
         continue;
       }
       auto target_pos = unit.second->GetPosition();
       auto diff = target_pos - position_;
+
       if (glm::length(diff) > 8.0f) {
         continue;
       }
-      float cost = CalcCost(best_diff);
+      if (glm::length(diff) < 0.1f) {
+        game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
+        return;
+      }
+      float cost = CalcCost(diff);
       if (cost < best_cost) {
         best_cost = cost;
         best_diff = diff;
       }
     }
     auto fix = CalcFix(best_diff);
-    velocity_ =
-        (1 - resistance_ * glm::length(velocity_) / max_velocity_) * velocity_ +
-        fix;
+
+    velocity_ *= (1 - resistance_ * glm::length(velocity_) / max_velocity_);
+    velocity_ += fix;
   } else {
     game_core_->PushEventRemoveBullet(id_);
   }
 }
 
 float Missile::CalcCost(glm::vec2 diff) {
+  float distance = glm::length(diff);
+  glm::normalize(diff);
+  float speed = glm::length(velocity_) / max_velocity_;
+  if (speed < 1e-3) {
+    return distance;
+  }
+  auto v = velocity_;
+  glm::normalize(v);
+  auto angel = glm::acos(glm::dot(diff, v));
+  return distance * (1 - speed * glm::cos(angel));
 }
 
 glm::vec2 Missile::CalcFix(glm::vec2 diff) {
   float distance = glm::length(diff);
   glm::normalize(diff);
   float speed = glm::length(velocity_);
-  auto v = velocity_;
-  glm::normalize(v);
-  if (speed < 1e-4)
-    return resistance_ * max_velocity_ * diff;
+  if (speed < 1e-3) {
+    return 2 * resistance_ * max_velocity_ * diff;
+  }
+  auto v = velocity_ / speed;
+  auto angel = glm::acos(glm::dot(diff, v));
+  auto per = Rotate(v, glm::radians(90.0f));
+  if (glm::dot(per, diff) <= 0) {
+    angel = -angel;
+  }
+  return resistance_ * max_velocity_ * diff;
+  // return resistance_ * max_velocity_ * v;
 }
 
 Missile::~Missile() {
