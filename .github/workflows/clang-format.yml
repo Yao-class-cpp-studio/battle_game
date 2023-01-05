@@ -23,7 +23,7 @@ jobs:
         check_path:
           - "src"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.2.0
 
       - uses: jidicula/clang-format-action@v4.6.2
         with:
