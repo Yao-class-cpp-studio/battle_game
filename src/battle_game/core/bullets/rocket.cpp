@@ -42,6 +42,10 @@ void Rocket::Render() {
 
 void Rocket::Update() {
   auto &units = game_core_->GetUnits();
+  if (units.find(player_locked_) == units.end()) {
+    game_core_->PushEventRemoveBullet(id_);
+    return;
+  }
   if (harmful_ < 20)
     harmful_ *= 1.02;
   glm::vec2 diff;
