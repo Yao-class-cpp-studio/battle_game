@@ -16,6 +16,45 @@ struct Skill {
   uint32_t bullet_total_number;
   SkillType type;
   std::function<void(void)> function;
+  Skill(std::string name, SkillType type) : name(name), type(type){};
+  Skill(std::string name,
+        SkillType type,
+        uint32_t time_remain,
+        uint32_t time_total)
+      : name(name),
+        type(type),
+        time_remain(time_remain),
+        time_total(time_total){};
+  Skill(std::string name,
+        SkillType type,
+        uint32_t time_remain,
+        uint32_t time_total,
+        uint32_t bullet_type,
+        uint32_t bullet_total_number)
+      : name(name),
+        type(type),
+        time_remain(time_remain),
+        time_total(time_total),
+        bullet_type(bullet_type),
+        bullet_total_number(bullet_total_number){};
+  Skill(std::string name,
+        SkillType type,
+        uint32_t time_remain,
+        uint32_t time_total,
+        uint32_t bullet_type,
+        uint32_t bullet_total_number,
+        std::string description,
+        std::string src,
+        std::function<void(void)> function)
+      : name(name),
+        type(type),
+        time_remain(time_remain),
+        time_total(time_total),
+        bullet_type(bullet_type),
+        bullet_total_number(bullet_total_number),
+        description(description),
+        src(src),
+        function(function){};
 };
 
 class Object {
