@@ -1,7 +1,6 @@
 #include "battle_game/core/bullets/rocket.h"
 
 #include <cmath>
-#include <iostream>
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
@@ -45,7 +44,6 @@ void Rocket::Update() {
   auto &units = game_core_->GetUnits();
   if (harmful_ < 20)
     harmful_ *= 1.02;
-  std::cout << harmful_ << std::endl;
   glm::vec2 diff;
   for (auto &unit : units) {
     if (unit.first == player_locked_) {
