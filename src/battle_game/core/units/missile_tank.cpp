@@ -1,7 +1,8 @@
+#include "missile_tank.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "tiny_tank.h"
 
 namespace battle_game::unit {
 
@@ -10,7 +11,7 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
+MissileTank::MissileTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -64,7 +65,7 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void Tank::Render() {
+void MissileTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -73,13 +74,13 @@ void Tank::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void Tank::Update() {
+void MissileTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 
-void Tank::TankMove(float move_speed, float rotate_angular_speed) {
+void MissileTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -111,7 +112,7 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void Tank::TurretRotate() {
+void MissileTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -123,7 +124,7 @@ void Tank::TurretRotate() {
   }
 }
 
-void Tank::Fire() {
+void MissileTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -131,27 +132,27 @@ void Tank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::CannonBall>(
+        auto velocity = Rotate(glm::vec2{0.0f, 12.0f}, turret_rotation_);
+        GenerateBullet<bullet::Missile>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-            turret_rotation_, GetDamageScale(), velocity);
+            turret_rotation_, GetDamageScale(), velocity, 24.0f);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
   }
 }
 
-bool Tank::IsHit(glm::vec2 position) const {
+bool MissileTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
 }
 
-const char *Tank::UnitName() const {
-  return "Tiny Tank";
+const char *MissileTank::UnitName() const {
+  return "Missile Tank";
 }
 
-const char *Tank::Author() const {
-  return "LazyJazz";
+const char *MissileTank::Author() const {
+  return "unprintable123";
 }
 }  // namespace battle_game::unit
