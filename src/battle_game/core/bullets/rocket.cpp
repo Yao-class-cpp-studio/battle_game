@@ -4,6 +4,7 @@
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
+
 namespace battle_game::bullet {
 Rocket::Rocket(GameCore *core,
                uint32_t id,
@@ -15,6 +16,7 @@ Rocket::Rocket(GameCore *core,
                glm::vec2 velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
+
   auto &units = game_core_->GetUnits();
   auto player = game_core_->GetPlayer(player_id_);
   auto &input_data = player->GetInputData();
@@ -86,11 +88,11 @@ void Rocket::Update() {
     }
   }
   rotation_ = angle;
-
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;
   }
+
 
   for (auto &unit : units) {
     if (unit.first == unit_id_) {
