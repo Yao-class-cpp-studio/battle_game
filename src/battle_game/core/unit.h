@@ -1,5 +1,4 @@
 #pragma once
-#include "battle_game/core/life_bar.h"
 #include "battle_game/core/object.h"
 #include "glm/glm.hpp"
 
@@ -7,10 +6,21 @@ namespace battle_game {
 
 class Bullet;
 
+class LifeBar {
+ public:
+  LifeBar();
+  bool display_{true};
+  glm::vec2 offset_{};
+  float length_{2.4f};
+  glm::vec4 front_color_{};
+  glm::vec4 background_color_{};
+  float fadeout_health_;
+  glm::vec4 fadeout_color_{};
+};
+
 class Unit : public Object {
  public:
   Unit(GameCore *game_core, uint32_t id, uint32_t player_id);
-  ~Unit();
 
   uint32_t &GetPlayerId() {
     return player_id_;
@@ -45,12 +55,20 @@ class Unit : public Object {
     health_ = std::clamp(new_health, 0.0f, 1.0f);
   }
 
-  virtual void RenderLifeBar() {
-    if (!lifebar_) {
-      lifebar_ = new LifeBar(game_core_, id_);
-    }
-    lifebar_->Render();
-  }
+  void SetLifeBarLength(float new_length);
+  void SetLifeBarOffset(glm::vec2 new_offset);
+  void SetLifeBarFrontColor(glm::vec4 new_color);
+  void SetLifeBarBackgroundColor(glm::vec4 new_color);
+  void SetLifeBarFadeoutColor(glm::vec4 new_color);
+  float GetLifeBarLength();
+  glm::vec2 GetLifeBarOffset();
+  glm::vec4 GetLifeBarFrontColor();
+  glm::vec4 GetLifeBarBackgroundColor();
+  glm::vec4 GetLifeBarFadeoutColor();
+
+  void ShowLifeBar();
+  void HideLifeBar();
+  virtual void RenderLifeBar();
 
   /*
    * This virtual function is used to check whether a bullet at the position
@@ -71,7 +89,7 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
-  LifeBar *lifebar_{nullptr};
+  LifeBar lifebar_;
 };
 
 }  // namespace battle_game
