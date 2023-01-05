@@ -69,13 +69,13 @@ public:
   - 传入参数为**世界空间**坐标
   - 返回对应的**本地空间**坐标
 
-## LifeBar
-
-声明位于 [unit.h](unit.h) 中，用于保存一个`Unit`对象的生命条设置。
-
 ## Unit
 
 单位类声明在 [unit.h](unit.h) 中，单位表示游戏中进行主动动作的对象，所有具体单位的实现都应继承自此基类。
+
+#### LifeBar
+
+声明位于 [unit.h](unit.h) 中，用于保存一个`Unit`对象的生命条设置。
 
 ### 成员变量
 
@@ -120,8 +120,7 @@ public:
   - 修改/获取各种生命条设置
 - RenderLifeBar
   - 渲染该对象对应的生命条
-- HideLifeBar
-- ShowLifeBar
+- Hide/ShowLifeBar
   - 隐藏/显示生命条
 - IsHit
   - 这是一个虚函数
