@@ -1,6 +1,7 @@
 #include "battle_game/core/game_core.h"
 
 namespace battle_game {
+
 GameCore::GameCore() {
   auto mgr = AssetsManager::GetInstance();
   boundary_model_ = mgr->RegisterModel(
@@ -34,13 +35,7 @@ void GameCore::Update() {
     bullet.second->Update();
   }
   for (auto &units : units_) {
-    if (players_.count(units.second->GetPlayerId())) {
-      if (!players_[units.second->GetPlayerId()]->InBuff(0)) {
-        units.second->Update();
-      }
-    } else {
-      units.second->Update();
-    }
+    units.second->Update();
   }
   for (auto &particle : particles_) {
     if (IsOutOfRange(particle.second->GetPosition())) {
@@ -243,16 +238,6 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
   event_queue_.emplace([=]() {
     if (units_.count(unit_id)) {
       units_.erase(unit_id);
-    }
-  });
-}
-
-void GameCore::PushEventBuffUnit(int buff, uint32_t unit_id) {
-  event_queue_.emplace([=]() {
-    if (units_.count(unit_id)) {
-      if (players_.count(units_[unit_id]->GetPlayerId())) {
-        players_[units_[unit_id]->GetPlayerId()]->AddBuff(buff);
-      }
     }
   });
 }
