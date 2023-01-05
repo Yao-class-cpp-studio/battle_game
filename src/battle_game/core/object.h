@@ -16,7 +16,7 @@ struct Skill {
   uint32_t bullet_total_number;
   SkillType type;
   std::function<void(void)> function;
-  Skill();
+  Skill(){};
   Skill(std::string name, SkillType type) : name(name), type(type){};
   Skill(std::string name,
         SkillType type,
