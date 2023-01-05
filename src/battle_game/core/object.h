@@ -1,7 +1,7 @@
 #pragma once
 #include "battle_game/graphics/graphics.h"
 #include "glm/glm.hpp"
-#define SKILL_ADD_FUNCTION(function_) std::bind(&function_, *this)
+#define SKILL_ADD_FUNCTION(function_) std::bind(&function_, this)
 
 namespace battle_game {
 class GameCore;

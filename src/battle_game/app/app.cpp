@@ -340,6 +340,9 @@ void App::UpdateImGui() {
                   if (skill_list[i].type == E) {
                     ImGui::Text(u8"%s (按E键释放) 技能可释放",
                                 skill_list[i].name.c_str());
+                    if (ImGui::Button(u8"点击释放")) {
+                      skill_list[i].function();
+                    }
                   } else if (skill_list[i].type == Q) {
                     ImGui::Text(u8"%s (按Q键释放) 技能可释放",
                                 skill_list[i].name.c_str());
