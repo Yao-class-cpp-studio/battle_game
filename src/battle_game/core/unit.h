@@ -10,6 +10,8 @@ class Bullet;
 class Unit : public Object {
  public:
   Unit(GameCore *game_core, uint32_t id, uint32_t player_id);
+  ~Unit();
+
   uint32_t &GetPlayerId() {
     return player_id_;
   }
@@ -43,8 +45,11 @@ class Unit : public Object {
     health_ = std::clamp(new_health, 0.0f, 1.0f);
   }
 
-  void RenderLifeBar() {
-    lifebar_.Render();
+  virtual void RenderLifeBar() {
+    if (!lifebar_) {
+      lifebar_ = new LifeBar(game_core_, id_);
+    }
+    lifebar_->Render();
   }
 
   /*
@@ -66,7 +71,7 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
-  LifeBar lifebar_;
+  LifeBar *lifebar_{nullptr};
 };
 
 }  // namespace battle_game

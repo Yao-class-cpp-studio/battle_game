@@ -90,11 +90,11 @@ void GameCore::Render() {
   for (auto &units : units_) {
     units.second->Render();
   }
-  for (auto &units : units_) {
-    units.second->RenderLifeBar();
-  }
   for (auto &particle : particles_) {
     particle.second->Render();
+  }
+  for (auto &units : units_) {
+    units.second->RenderLifeBar();
   }
 }
 

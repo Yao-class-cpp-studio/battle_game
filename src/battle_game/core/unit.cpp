@@ -4,8 +4,14 @@
 
 namespace battle_game {
 Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Object(game_core, id), lifebar_(game_core, id) {
+    : Object(game_core, id) {
   player_id_ = player_id;
+}
+
+Unit::~Unit() {
+  if (lifebar_) {
+    delete lifebar_;
+  }
 }
 
 void Unit::SetPosition(glm::vec2 position) {

@@ -22,7 +22,7 @@ class LifeBar {
 
  protected:
   uint32_t id_;
-  GameCore *game_core_{nullptr};
+  GameCore *game_core_;
   bool display_{true};
   glm::vec2 offset_{};
   float length_{2.4f};
