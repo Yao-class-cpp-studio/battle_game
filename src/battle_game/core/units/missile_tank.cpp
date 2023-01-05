@@ -7,22 +7,27 @@
 namespace battle_game::unit {
 
 namespace {
-uint32_t tank_body_model_index = 0xffffffffu;
-uint32_t tank_turret_model_index = 0xffffffffu;
+uint32_t missile_tank_body_model_index = 0xffffffffu;
+uint32_t missle_tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
 MissileTank::MissileTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
-  if (!~tank_body_model_index) {
+  if (!~missile_tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
       /* Tank Body */
-      tank_body_model_index = mgr->RegisterModel(
-          {{{-0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
-          {0, 1, 2, 1, 2, 3});
+      missile_tank_body_model_index = mgr->RegisterModel(
+          {
+              {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              // distinguish front and back
+              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          },
+          {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
     }
 
     {
@@ -46,20 +51,20 @@ MissileTank::MissileTank(GameCore *game_core, uint32_t id, uint32_t player_id)
       turret_vertices.push_back(
           {{0.0f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_vertices.push_back(
-          {{-0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{-0.2f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_vertices.push_back(
-          {{0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{0.2f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_vertices.push_back(
-          {{-0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{-0.2f, 1.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_vertices.push_back(
-          {{0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+          {{0.2f, 1.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_indices.push_back(precision + 1 + 0);
       turret_indices.push_back(precision + 1 + 1);
       turret_indices.push_back(precision + 1 + 2);
       turret_indices.push_back(precision + 1 + 1);
       turret_indices.push_back(precision + 1 + 2);
       turret_indices.push_back(precision + 1 + 3);
-      tank_turret_model_index =
+      missle_tank_turret_model_index =
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
@@ -69,9 +74,9 @@ void MissileTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(tank_body_model_index);
+  battle_game::DrawModel(missile_tank_body_model_index);
   battle_game::SetRotation(turret_rotation_);
-  battle_game::DrawModel(tank_turret_model_index);
+  battle_game::DrawModel(missle_tank_turret_model_index);
 }
 
 void MissileTank::Update() {
@@ -145,7 +150,8 @@ void MissileTank::Fire() {
 bool MissileTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f;
+         position.y < 1.0f && position.x + position.y < 1.6f &&
+         position.y - position.x < 1.6f;
 }
 
 const char *MissileTank::UnitName() const {

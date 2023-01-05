@@ -4,6 +4,11 @@
 #include "battle_game/core/particles/particles.h"
 
 namespace battle_game::bullet {
+
+namespace {
+uint32_t missile_model_index = 0xffffffffu;
+}  // namespace
+
 Missile::Missile(GameCore *core,
                  uint32_t id,
                  uint32_t unit_id,
@@ -16,6 +21,14 @@ Missile::Missile(GameCore *core,
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
   max_velocity_ = std::max(1.0f, max_velocity);
+  if (!~missile_model_index) {
+    auto mgr = AssetsManager::GetInstance();
+    missile_model_index = mgr->RegisterModel(
+        {{{-0.3f, -0.6f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+         {{0.3f, -0.6f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+         {{0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
+        {0, 1, 2});
+  }
 }
 
 float Missile::GetMaxVelocity() {
@@ -23,14 +36,15 @@ float Missile::GetMaxVelocity() {
 }
 
 void Missile::Render() {
-  SetTransformation(position_, rotation_, glm::vec2{0.2f});
+  SetTransformation(position_, rotation_);
   SetColor(game_core_->GetPlayerColor(player_id_));
-  SetTexture("../../textures/particle3.png");
-  DrawModel(0);
+  SetTexture(0);
+  DrawModel(missile_model_index);
 }
 
 void Missile::Update() {
   position_ += velocity_ * kSecondPerTick;
+  rotation_ = std::atan2(velocity_.y, velocity_.x) - glm::radians(90.0f);
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;
