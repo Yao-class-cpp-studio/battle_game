@@ -12,8 +12,8 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
 Triple_shot_star_tank::Triple_shot_star_tank(GameCore *game_core,
-                            uint32_t id,
-                            uint32_t player_id)
+                                             uint32_t id,
+                                             uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -131,7 +131,7 @@ void Triple_shot_star_tank::TurretRotate() {
 }
 
 void Triple_shot_star_tank::Fire() {
-  if (fire_count_down_ != 0 && fire_count_down_ != 3 && fire_count_down_ != 6) {
+  if (fire_count_down_ != 0 && fire_count_down_ != 4 && fire_count_down_ != 8) {
     fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
