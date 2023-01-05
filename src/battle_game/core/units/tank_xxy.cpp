@@ -5,11 +5,6 @@
 
 namespace battle_game::unit {
 
-namespace {
-uint32_t tank_body_model_index = 0xffffffffu;
-uint32_t tank_turret_model_index = 0xffffffffu;
-}  // namespace
-
 TankXxy::TankXxy(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
