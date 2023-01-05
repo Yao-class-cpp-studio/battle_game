@@ -19,7 +19,7 @@ Rocket::Rocket(GameCore *core,
 void Rocket::Render() {
   SetTransformation(position_, rotation_, glm::vec2{0.1f});
   SetColor(game_core_->GetPlayerColor(player_id_));
-  SetTexture("../../textures/particle4.png");
+  SetTexture("../../textures/rocket.png");
   DrawModel(0);
 }
 
