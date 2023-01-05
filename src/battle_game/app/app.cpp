@@ -327,7 +327,7 @@ void App::UpdateImGui() {
           }
         }
       } else {
-        ImGui::Text("已死亡,等待%d秒后复活。",
+        ImGui::Text(u8"已死亡,等待%d秒后复活。",
                     player->GetResurrectionCountDown() / kTickPerSecond);
       }
     }

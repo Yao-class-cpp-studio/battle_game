@@ -125,7 +125,7 @@ public:
 - Skill
   - units支持加入技能。
   - 为了方便玩家操作，技能应当使用键盘快捷键完成。特别地，由于本游戏使用W/A/S/D控制转向，为方便起见，技能采用按键E/Q/R完成。我们规定E/Q/R表示的技能强度递增，并建议按照E/Q/R的顺序依次实现技能（可不足3个，但主动技能一般不会超过3个）。此外，P表示被动技能，这一技能不需要用户输入。
-  - 用户通常希望从UI界面获取技能的简略信息。因此，如果您希望技能被展示在UI界面中，请使用ADD_SELECTABLE_UNIT_WITH_SKILL()进行调用。此外，您需要维护一个名称为skill_的信息存储库，它已经是您的units类型中的protected类型。它的格式为std::vector<battle_game::Skill> 。
+  - 用户通常希望从UI界面获取技能的简略信息。因此，如果您不希望技能被展示在UI界面中，请使用ADD_SELECTABLE_UNIT_WITHOUT_SKILL()进行调用（如果您没有设置技能，则不会显示任何信息。因此技能界面向前兼容）。此外，您需要维护一个名称为skill_的信息存储库，它已经是您的units类型中的protected类型。它的格式为std::vector<battle_game::Skill> 。
 其中Skill是一个用于交互的结构体。具体为：
 ``` cpp
 enum SkillType { E, Q, R, P };
