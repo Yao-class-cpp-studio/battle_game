@@ -1,5 +1,7 @@
 #include "battle_game/core/bullets/missile.h"
 
+#include <iostream>
+
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
 
@@ -23,7 +25,7 @@ float Missile::GetMaxVelocity() {
 }
 
 void Missile::Render() {
-  SetTransformation(position_, rotation_, glm::vec2{0.5f});
+  SetTransformation(position_, rotation_, glm::vec2{0.2f});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/particle3.png");
   DrawModel(0);
@@ -52,7 +54,7 @@ void Missile::Update() {
 
   if (!should_die) {
     glm::vec2 best_diff = velocity_;
-    float best_cost = 200.0f;
+    float best_cost = 500.0f;
     for (auto &unit : units) {
       if (unit.first == unit_id_) {
         continue;
@@ -63,11 +65,12 @@ void Missile::Update() {
       auto target_pos = unit.second->GetPosition();
       auto diff = target_pos - position_;
 
-      if (glm::length(diff) > 8.0f) {
+      if (glm::length(diff) > 12.0f) {
         continue;
       }
-      if (glm::length(diff) < 0.1f) {
+      if (glm::length(diff) < 1.0f) {
         game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
+        game_core_->PushEventRemoveBullet(id_);
         return;
       }
       float cost = CalcCost(diff);
@@ -80,6 +83,11 @@ void Missile::Update() {
 
     velocity_ *= (1 - resistance_ * glm::length(velocity_) / max_velocity_);
     velocity_ += fix;
+    auto speed = glm::length(velocity_);
+    if (speed > max_velocity_) {
+      velocity_ = glm::normalize(velocity_) * max_velocity_;
+    }
+    std::cout << glm::length(velocity_) << std::endl;
   } else {
     game_core_->PushEventRemoveBullet(id_);
   }
@@ -87,38 +95,49 @@ void Missile::Update() {
 
 float Missile::CalcCost(glm::vec2 diff) {
   float distance = glm::length(diff);
-  glm::normalize(diff);
-  float speed = glm::length(velocity_) / max_velocity_;
+
+  diff = glm::normalize(diff);
+  float speed = glm::length(velocity_);
   if (speed < 1e-3) {
     return distance;
   }
-  auto v = velocity_;
-  glm::normalize(v);
+  auto v = glm::normalize(velocity_);
   auto angel = glm::acos(glm::dot(diff, v));
-  return distance * (1 - speed * glm::cos(angel));
+  return distance * (1 - speed * glm::cos(angel) / max_velocity_);
 }
 
 glm::vec2 Missile::CalcFix(glm::vec2 diff) {
   float distance = glm::length(diff);
-  glm::normalize(diff);
+  diff = glm::normalize(diff);
   float speed = glm::length(velocity_);
   if (speed < 1e-3) {
     return 2 * resistance_ * max_velocity_ * diff;
   }
-  auto v = velocity_ / speed;
-  auto angel = glm::acos(glm::dot(diff, v));
-  auto per = Rotate(v, glm::radians(90.0f));
-  if (glm::dot(per, diff) <= 0) {
-    angel = -angel;
+  auto v = glm::normalize(velocity_);
+  auto dot = glm::dot(diff, v);
+  if (dot > 1 && dot < 1 + 1e-3) {
+    dot = 1;
   }
-  return resistance_ * max_velocity_ * diff;
-  // return resistance_ * max_velocity_ * v;
+  auto angel = glm::acos(dot);
+  auto fangel = std::atan2(resistance_ * max_velocity_,
+                           (1 - resistance_ * speed / max_velocity_) * speed);
+  if (angel < fangel) {
+    return resistance_ * max_velocity_ * diff;
+  }
+  auto per = Rotate(v, glm::radians(90.0f));
+  auto rad = glm::radians(60.0f);
+  if (glm::dot(per, diff) < 0) {
+    rad = -rad;
+  }
+
+  return Rotate(resistance_ * max_velocity_ * v, rad) +
+         glm::sin(angel) * resistance_ * max_velocity_ * v;
 }
 
 Missile::~Missile() {
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 8; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
-        position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
+        position_, rotation_, game_core_->RandomInCircle() * 3.0f, 0.2f,
         glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
   }
 }
