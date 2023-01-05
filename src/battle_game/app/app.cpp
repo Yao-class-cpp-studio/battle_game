@@ -2,6 +2,10 @@
 
 #include "battle_game/graphics/util.h"
 
+const int TotalBuffNumber = 1;
+const char *BuffDisplay[] = {"Stunning: %.1f"};
+int BuffID[] = {0};
+
 namespace battle_game {
 App::App(const AppSettings &app_settings, GameCore *game_core) {
   game_core_ = game_core;
@@ -277,6 +281,16 @@ void App::UpdateImGui() {
       } else {
         ImGui::Text("Dead. Respawn in %d second(s).",
                     player->GetResurrectionCountDown() / kTickPerSecond);
+      }
+      for (int i = 0; i < TotalBuffNumber; i++) {
+        if (player->InBuff(BuffID[i])) {
+          int layer = player->GetBuffLayer(BuffID[i]);
+          for (int j = 0; j < layer; j++) {
+            ImGui::Text(
+                BuffDisplay[BuffID[i]],
+                kSecondPerTick * float(player->GetBuffTime(BuffID[i], j)));
+          }
+        }
       }
     }
     ImGui::End();
