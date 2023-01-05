@@ -124,8 +124,9 @@ void Tank::TurretRotate() {
     auto diff = input_data.mouse_cursor_position - position_;
     if (glm::length(diff) < 1e-4) {
       turret_rotation_ = rotation_;
+    } else {
+      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
     }
-    turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
   }
 }
 
