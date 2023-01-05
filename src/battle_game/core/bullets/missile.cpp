@@ -38,7 +38,10 @@ void Missile::Update() {
 
   auto &units = game_core_->GetUnits();
   for (auto &unit : units) {
-    if (unit.first == player_id_) {
+    if (unit.first == unit_id_) {
+      continue;
+    }
+    if (unit.second->GetPlayerId() == player_id_) {
       continue;
     }
     if (unit.second->IsHit(position_)) {
@@ -78,8 +81,13 @@ float Missile::CalcCost(glm::vec2 diff) {
 }
 
 glm::vec2 Missile::CalcFix(glm::vec2 diff) {
-  float rel_angel = std::atan2(diff.y, diff.x) - std::atan2(diff.y, diff.x);
-  return resistance_ * max_velocity_ * glm::normalize(diff);
+  float distance = glm::length(diff);
+  glm::normalize(diff);
+  float speed = glm::length(velocity_);
+  auto v = velocity_;
+  glm::normalize(v);
+  if (speed < 1e-4)
+    return resistance_ * max_velocity_ * diff;
 }
 
 Missile::~Missile() {
