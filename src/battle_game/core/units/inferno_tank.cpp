@@ -45,7 +45,6 @@ void InfernoTank::Update() {
   Fire();
 }
 
-
 void InfernoTank::Hidden_CLICK() {
   isHidden = 3 * kTickPerSecond;
   hidden_count_down_ = 6 * kTickPerSecond;
