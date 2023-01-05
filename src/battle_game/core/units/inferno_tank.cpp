@@ -22,6 +22,14 @@ InfernoTank::InfernoTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.type = Q;
   temp.function = SKILL_ADD_FUNCTION(InfernoTank::Block_CLICK);
   skill_.push_back(temp);
+  temp.name = "Rocket";
+  temp.description = "Little Bullet";
+  temp.time_remain = 0;
+  temp.time_total = 0;
+  temp.bullet_type = 1;
+  temp.bullet_total_number = 1;
+  temp.type = B;
+  skill_.push_back(temp);
 }
 
 void InfernoTank::Render() {

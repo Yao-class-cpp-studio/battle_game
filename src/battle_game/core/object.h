@@ -5,13 +5,15 @@
 
 namespace battle_game {
 class GameCore;
-enum SkillType { E, Q, R, P };
+enum SkillType { E, Q, R, P, B };
 struct Skill {
   std::string name;
   std::string description;
   std::string src;
   uint32_t time_remain;
   uint32_t time_total;
+  uint32_t bullet_type;
+  uint32_t bullet_total_number;
   SkillType type;
   std::function<void(void)> function;
 };

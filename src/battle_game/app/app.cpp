@@ -283,6 +283,35 @@ void App::UpdateImGui() {
             if (selectable_list_skill[i] == true) {
               std::vector<Skill> skill_list = unit->GetSkill();
               for (int i = 0; i < skill_list.size(); i++) {
+                if (skill_list[i].type == B) {
+                  if (skill_list[i].bullet_total_number > 1) {
+                    if (skill_list[i].time_total > 0) {
+                      if (skill_list[i].time_remain > 0) {
+                        ImGui::Text(
+                            u8"当前子弹类型：%s 第%d种 / 共%d种 "
+                            u8"子弹切换冷却时间：%d "
+                            u8"s "
+                            u8"/ %d s",
+                            skill_list[i].name.c_str(),
+                            skill_list[i].bullet_type,
+                            skill_list[i].bullet_total_number,
+                            skill_list[i].time_remain / 60,
+                            skill_list[i].time_total / 60);
+                      }
+                    } else {
+                      ImGui::Text(u8"当前子弹类型：%s 第%d种/共%d种 子弹可切换",
+                                  skill_list[i].name.c_str(),
+                                  skill_list[i].bullet_type,
+                                  skill_list[i].bullet_total_number);
+                    }
+                  } else if (skill_list[i].bullet_total_number == 1) {
+                    ImGui::Text(u8"子弹类型：%s", skill_list[i].name.c_str());
+                  }
+                }
+              }
+              for (int i = 0; i < skill_list.size(); i++) {
+                if (skill_list[i].type == B)
+                  continue;
                 if (skill_list[i].time_remain) {
                   if (skill_list[i].type == E) {
                     ImGui::Text(u8"%s (按E键释放) 技能冷却时间: %d s / %d s",

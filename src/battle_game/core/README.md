@@ -128,13 +128,15 @@ public:
   - 用户通常希望从UI界面获取技能的简略信息。因此，如果您不希望技能被展示在UI界面中，请使用ADD_SELECTABLE_UNIT_WITHOUT_SKILL()进行调用（如果您没有设置技能，则不会显示任何信息。因此技能界面向前兼容）。此外，您需要维护一个名称为skill_的信息存储库，它已经是您的units类型中的protected类型。它的格式为std::vector<battle_game::Skill> 。
 其中Skill是一个用于交互的结构体。具体为：
 ``` cpp
-enum SkillType { E, Q, R, P };
+enum SkillType { E, Q, R, P, B };
 struct Skill {
   std::string name;
   std::string description;
   std::string src;
   uint32_t time_remain;
   uint32_t time_total;
+  uint32_t bullet_type;
+  uint32_t bullet_total_number;
   SkillType type;
   std::function<void(void)> function;
 };
