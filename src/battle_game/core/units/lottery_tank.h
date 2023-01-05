@@ -3,6 +3,7 @@
 
 namespace battle_game::unit {
 class LotteryTank : public Unit {
+  // Basic Settings
  public:
   LotteryTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
@@ -10,8 +11,6 @@ class LotteryTank : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-
-  //Basic Settings
   void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
   void Fire();
@@ -22,10 +21,10 @@ class LotteryTank : public Unit {
 
   // Bullet Settings
   enum BulletType {
-	  Normal = 0,	//1.0x
-	  Big,			//10.0x
-	  Scatter,		//1.0x, 5 bullets
-	  BigScatter	//10.0x, 5 bullets
+    Normal = 0,  // 1.0x
+    Big,         // 10.0x
+    Scatter,     // 1.0x, 5 bullets
+    BigScatter   // 10.0x, 5 bullets
   };
   const float NormalDamageRange{1.0f};
   const float BigDamageRange{10.0f};
@@ -36,7 +35,7 @@ class LotteryTank : public Unit {
   BulletType GetBulletType();
   void ScatterFire(uint32_t BulletsCount, bool IsBig);
 
-  //Lottery Probability Settings
+  // Lottery Probability Settings
   uint32_t GetNormalTimes{0};
   uint32_t GetOnceTimes{0};
   const uint32_t BigBulletFloor{10};
@@ -46,6 +45,9 @@ class LotteryTank : public Unit {
   const float InitProb_Big{0.2f};
   const float InitProb_Scatter{0.02f};
   uint32_t MinusClamp(uint32_t x, uint32_t y, uint32_t floor);
-  bool CardLottery(uint32_t times, float init_prob, uint32_t floor, uint32_t ceil);
+  bool CardLottery(uint32_t times,
+                   float init_prob,
+                   uint32_t floor,
+                   uint32_t ceil);
 };
 }  // namespace battle_game::unit
