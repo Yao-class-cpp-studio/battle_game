@@ -71,8 +71,7 @@ public:
 
 ## LifeBar
 
-声明位于 [life_bar.h](life_bar.h) 中，用于渲染一个`Unit`对象的生命条。
-在初始化时与一个`Unit`对象绑定（可以通过虚函数继承`Render()`强行取消绑定）。
+声明位于 [unit.h](unit.h) 中，用于保存一个`Unit`对象的生命条设置。
 
 ## Unit
 
@@ -89,8 +88,7 @@ public:
   - 这样定义是为了方便动态地对最大声明值进行调整，以实现一些复杂机制。
   - 该值归 0 时单位死亡。
 - lifebar_
-  - 这个变量绑定了一个`LifeBar`类型的生命条
-  - 可以通过`lifebar_->Hide()`隐藏生命条
+  - 这个变量保存了生命条的设置
 
 ### 成员函数
 
@@ -118,8 +116,13 @@ public:
 - GetMaxHealth
   - 最大生命值
   - 定义为基础生命值乘以生命值倍率
+- Set/GetLifeBar*
+  - 修改/获取各种生命条设置
 - RenderLifeBar
   - 渲染该对象对应的生命条
+- HideLifeBar
+- ShowLifeBar
+  - 隐藏/显示生命条
 - IsHit
   - 这是一个虚函数
   - 用于判断若一个事件发生于传入参数**世界空间**坐标 `position`，该事件是否会对当前单位产生影响
