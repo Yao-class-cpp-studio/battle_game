@@ -131,7 +131,7 @@ void Triple_shot_star_tank::TurretRotate() {
 }
 
 void Triple_shot_star_tank::Fire() {
-  if (fire_count_down_ != 0 && fire_count_down_ != 4 && fire_count_down_ != 8) {
+  if (fire_count_down_ != 0 && fire_count_down_ != 3 && fire_count_down_ != 6) {
     fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
