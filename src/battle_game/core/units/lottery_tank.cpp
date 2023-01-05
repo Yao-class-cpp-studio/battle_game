@@ -1,7 +1,8 @@
+#include "lottery_tank.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "lottery_tank.h"
 
 namespace battle_game::unit {
 
@@ -137,7 +138,7 @@ void LotteryTank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-          switch (GetBulletType()) { 
+        switch (GetBulletType()) {
           case BigScatter:
             ScatterFire(ScatterBulletsCount, true);
             break;
@@ -186,14 +187,15 @@ LotteryTank::BulletType LotteryTank::GetBulletType() {
     GetOnceTimes = 0;
   else
     ++GetOnceTimes;
-  
-  switch (Type) { 
+
+  switch (Type) {
     case 1:
       return Big;
     case 2:
       return Scatter;
     case 3:
       return BigScatter;
+    case 0:
     default:
       return Normal;
   }
@@ -201,7 +203,8 @@ LotteryTank::BulletType LotteryTank::GetBulletType() {
 
 void LotteryTank::ScatterFire(uint32_t BulletsCount, bool IsBig) {
   auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-  float Damage = GetDamageScale() * (IsBig ? BigDamageRange : NormalDamageRange);
+  float Damage =
+      GetDamageScale() * (IsBig ? BigDamageRange : NormalDamageRange);
   int lim = BulletsCount - 1;
   for (int i = -lim; i <= lim; i += 2) {
     auto offset = glm::radians(3.0f * i);
@@ -212,8 +215,8 @@ void LotteryTank::ScatterFire(uint32_t BulletsCount, bool IsBig) {
           turret_rotation_ + offset, Damage, velocity);
     else
       GenerateBullet<bullet::CannonBall>(
-        position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
-        turret_rotation_ + offset, Damage, velocity);
+          position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
+          turret_rotation_ + offset, Damage, velocity);
   }
 }
 
@@ -221,9 +224,14 @@ uint32_t LotteryTank::MinusClamp(uint32_t x, uint32_t y, uint32_t floor) {
   return x < y + floor ? floor : x - y;
 }
 
-bool LotteryTank::CardLottery(uint32_t times, float init_prob, uint32_t floor, uint32_t ceil) {
+bool LotteryTank::CardLottery(uint32_t times,
+                              float init_prob,
+                              uint32_t floor,
+                              uint32_t ceil) {
   float rand_num_ = game_core_->RandomFloat();
-  return rand_num_ <= init_prob + (1.0f - init_prob) * (MinusClamp(times, floor, 0) * 1.0f / MinusClamp(ceil, floor, 1)) ;
+  return rand_num_ <=
+         init_prob + (1.0f - init_prob) * (MinusClamp(times, floor, 0) * 1.0f /
+                                           MinusClamp(ceil, floor, 1));
 }
 
 const char *LotteryTank::UnitName() const {
