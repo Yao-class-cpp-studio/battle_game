@@ -145,7 +145,15 @@ void ZibengDog::Fire() {
       auto velocity = Rotate(glm::vec2{0.0f, 30.0f}, muzzle_rotation_);
       GenerateBullet<bullet::SweatySoybean>(
           position_ + Rotate({0.0f, 1.2f}, muzzle_rotation_), muzzle_rotation_,
-          0.0f, velocity);
+          0.02f, velocity);
+    } else {
+      if (should_beng_) {
+        auto velocity = Rotate(glm::vec2{0.0f, 30.0f}, muzzle_rotation_);
+        GenerateBullet<bullet::SweatySoybean>(
+            position_ + Rotate({0.0f, 1.2f}, muzzle_rotation_),
+            muzzle_rotation_, GetDamageScale(), velocity);
+        should_beng_ = false;
+      }
     }
   } else {
     auto player = game_core_->GetPlayer(player_id_);
@@ -155,9 +163,10 @@ void ZibengDog::Fire() {
         auto velocity = Rotate(glm::vec2{0.0f, 30.0f}, muzzle_rotation_);
         GenerateBullet<bullet::SweatySoybean>(
             position_ + Rotate({0.0f, 1.2f}, muzzle_rotation_),
-            muzzle_rotation_, GetDamageScale(), velocity);
+            muzzle_rotation_, 0.02f, velocity);
         fire_count_down_ = kTickPerSecond;
-        zibeng_line_time_ = kTickPerSecond;  // Fire interval 1 second.
+        zibeng_line_time_ = kTickPerSecond;
+        should_beng_ = true;  // Fire interval 1 second.
       }
     }
   }

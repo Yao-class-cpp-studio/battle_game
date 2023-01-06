@@ -17,7 +17,7 @@ SweatySoybean::SweatySoybean(GameCore *core,
 }
 
 void SweatySoybean::Render() {
-  SetTransformation(position_, rotation_, glm::vec2{0.5f});
+  SetTransformation(position_, rotation_, glm::vec2{0.4f});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/sweaty_soybean.png");
   DrawModel(0);
