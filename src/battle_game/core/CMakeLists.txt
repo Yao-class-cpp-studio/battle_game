@@ -1,7 +1,7 @@
 set(lib_name battle_game_${COMPONENT_NAME}_lib)
 list(APPEND LIBRARY_LIST ${lib_name})
 
-add_library(${lib_name})
+add_library(${lib_name} units/Split_bullet_cannon.cpp units/Split_bullet_cannon.h bullets/split_bullet.cpp bullets/split_bullet.h)
 file(GLOB_RECURSE source_files *.cpp *.h)
 target_sources(${lib_name} PRIVATE ${source_files})
 target_link_libraries(${lib_name} PRIVATE grassland)
