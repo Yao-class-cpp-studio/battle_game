@@ -93,6 +93,7 @@ void App::OnRender() {
                              device_model.index_buffer->Size(), obj_id);
   }
   render_node_->EndDraw();
+  core_->TemporalSubmit();
   core_->ImGuiRender();
   core_->Output(frame_image_.get());
   core_->EndCommandRecordAndSubmit();
@@ -278,6 +279,7 @@ void App::UpdateImGui() {
                     player->GetResurrectionCountDown() / kTickPerSecond);
       }
     }
+    ImGui::End();
   }
   ImGui::Render();
 }

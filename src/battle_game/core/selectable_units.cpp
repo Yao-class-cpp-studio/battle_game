@@ -19,9 +19,13 @@ void GameCore::GeneratePrimaryUnitList() {
                                   unit->Author());
 
   /*
-   * Add Your Unit Here!
+   * TODO: Add Your Unit Here!
    * */
   ADD_SELECTABLE_UNIT(unit::Tank);
+  ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);
+  ADD_SELECTABLE_UNIT(unit::ThreeBodyMan);
+  ADD_SELECTABLE_UNIT(unit::InfernoTank);
+  ADD_SELECTABLE_UNIT(unit::WhaoooooTank);
   ADD_SELECTABLE_UNIT(unit::ZibengDog);
 
   unit.reset();

@@ -1,5 +1,5 @@
 #pragma once
-#include "battle_game/graphics/util.h";
+#include "battle_game/graphics/util.h"
 #include "grassland/grassland.h"
 
 namespace battle_game {
