@@ -9,6 +9,8 @@ namespace battle_game::unit {
 namespace {
 uint32_t tank_gx_body_model_index = 0xffffffffu;
 uint32_t tank_gx_turret_model_index = 0xffffffffu;
+glm::highp_vec2 good_luck;
+glm::highp_vec2 bad_luck;
 }  // namespace
 
 Tank_gx::Tank_gx(GameCore *game_core, uint32_t id, uint32_t player_id)
@@ -75,6 +77,11 @@ void Tank_gx::Render() {
 }
 
 void Tank_gx::Update() {
+  good_luck[0] = float(20.0f * rand() / RAND_MAX - 10.0f);
+  good_luck[1] = float(20.0f * rand() / RAND_MAX - 10.0f);
+  bad_luck[0] = float(20.0f * rand() / RAND_MAX - 10.0f);
+  bad_luck[1] = float(20.0f * rand() / RAND_MAX - 10.0f);
+  printf("See your luck\r");
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
@@ -100,6 +107,23 @@ void Tank_gx::TankMove(float move_speed, float rotate_angular_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
+    /* if (IsHit(good_luck)) {
+      srand(static_cast<unsigned>(time(nullptr)));
+      volatile float luckgood = (float)(10 * rand() / RAND_MAX);
+      luckgood /= BasicMaxHealth();
+      health_ += luckgood;
+      printf("\nGood Luck!\n\n");
+    }
+    if (IsHit(bad_luck)) {
+      srand(static_cast<unsigned>(time(nullptr)));
+      volatile float luckbad = (float)(10 * rand() / RAND_MAX);
+      luckbad /= BasicMaxHealth();
+      health_ -= luckbad;
+      if (health_ < 0)
+        ;
+      // game_core_->PushEventRemoveUnit(id_);
+      printf("\nBad Luck!\n\n");
+    }*/
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
       rotation_offset += 1.0f;
@@ -121,6 +145,21 @@ void Tank_gx::TurretRotate() {
       turret_rotation_ = rotation_;
     }
     turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
+  }
+  
+  if (IsHit(good_luck)) {
+    volatile float luckgood = (float)(10.0f * rand() / RAND_MAX);
+    luckgood /= BasicMaxHealth();
+    health_ += luckgood;
+    printf("\nGood Luck!\n\n");
+  }
+  if (IsHit(bad_luck)) {
+    volatile float luckbad = (float)(10.0f * rand() / RAND_MAX);
+    luckbad /= BasicMaxHealth();
+    health_ -= luckbad;
+    if (health_ < 0)
+      game_core_->PushEventRemoveUnit(id_);
+    printf("\nBad Luck!\n\n");
   }
 }
 
