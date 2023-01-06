@@ -18,5 +18,7 @@ class Rocket : public Bullet {
 
  private:
   glm::vec2 velocity_{};
+  uint32_t player_locked_{};
+  float harmful_{5.0f};
 };
 }  // namespace battle_game::bullet
