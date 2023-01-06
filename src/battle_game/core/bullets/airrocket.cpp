@@ -1,4 +1,4 @@
-#include "battle_game/core/bullets/rocket.h"
+#include "battle_game/core/bullets/airrocket.h"
 #include "battle_game/core/game_core.h"
 
 namespace battle_game::bullet {
@@ -42,7 +42,7 @@ void Rocket::Update() {
     }
     if (unit.second->IsHit(position_)) {
       if (hit_==false)
-      game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
+      game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 5.0f);
       hit_=true;
     }
   }
