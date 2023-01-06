@@ -117,7 +117,7 @@ void Cart::Fire(){
   if (fire_count_down_) {
     fire_count_down_--;
     if (fire_count_down_==2*kTickPerSecond){
-        GenerateBullet<bullet::Rocket>(target_+game_core_->RandomInCircle()*0.15f*distance_,0.0f, 3*GetDamageScale());
+        GenerateBullet<bullet::AirRocket>(target_+game_core_->RandomInCircle()*0.15f*distance_,0.0f, 3*GetDamageScale());
     }
   } 
   else {

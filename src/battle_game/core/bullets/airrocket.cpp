@@ -2,7 +2,7 @@
 #include "battle_game/core/game_core.h"
 
 namespace battle_game::bullet {
-Rocket::Rocket(GameCore *core,
+AirRocket::AirRocket(GameCore *core,
                         uint32_t id,
                         uint32_t unit_id,
                         uint32_t player_id,
@@ -12,7 +12,7 @@ Rocket::Rocket(GameCore *core,
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),lifetime_{kTickPerSecond}{
 }
 
-void Rocket::Render() {
+void AirRocket::Render() {
   if(lifetime_>=kTickPerSecond-2){
     for (int i = 0; i < 3; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
@@ -28,7 +28,7 @@ void Rocket::Render() {
   }
 }
 
-void Rocket::Update() {
+void AirRocket::Update() {
   bool should_die = false;
   lifetime_--;
   if (lifetime_<=0) {
