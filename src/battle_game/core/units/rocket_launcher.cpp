@@ -1,4 +1,4 @@
-#include "tiny_tank.h"
+#include "rocket_launcher.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
