@@ -83,7 +83,6 @@ void Tank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
-  SetMine();
 }
 
 void Tank::TankMove(float move_speed, float rotate_angular_speed) {
@@ -144,24 +143,6 @@ void Tank::Fire() {
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-      }
-    }
-  }
-}
-
-void Tank::SetMine() {
-  if (mine_count_down_) {
-    mine_count_down_--;
-  }
-  else {
-    auto player = game_core_->GetPlayer(player_id_);
-    if (player) {
-      auto& input_data = player->GetInputData();
-      if (input_data.key_down[GLFW_KEY_R]) {
-        GenerateBullet<bullet::Mine>(
-          position_ + Rotate({ 0.0f, 1.2f }, turret_rotation_),
-          turret_rotation_, GetDamageScale(), 0);
-        mine_count_down_ = 3 * kTickPerSecond;  // Declare interval 5 second.
       }
     }
   }
