@@ -21,5 +21,6 @@ class ZibengDog : public Unit {
 
   float muzzle_rotation_{0.0f};
   uint32_t fire_count_down_{0};
+  uint32_t zibeng_line_time_{0};
 };
 }  // namespace battle_game::unit

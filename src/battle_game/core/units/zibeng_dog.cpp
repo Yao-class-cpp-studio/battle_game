@@ -140,6 +140,13 @@ void ZibengDog::MuzzleRotate() {
 void ZibengDog::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
+    if (zibeng_line_time_) {
+      zibeng_line_time_--;
+      auto velocity = Rotate(glm::vec2{0.0f, 30.0f}, muzzle_rotation_);
+      GenerateBullet<bullet::SweatySoybean>(
+          position_ + Rotate({0.0f, 1.2f}, muzzle_rotation_), muzzle_rotation_,
+          0.0f, velocity);
+    }
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -149,7 +156,8 @@ void ZibengDog::Fire() {
         GenerateBullet<bullet::SweatySoybean>(
             position_ + Rotate({0.0f, 1.2f}, muzzle_rotation_),
             muzzle_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+        fire_count_down_ = kTickPerSecond;
+        zibeng_line_time_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
   }
