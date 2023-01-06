@@ -73,10 +73,14 @@ class Unit : public Object {
 
   [[nodiscard]] virtual const char *UnitName() const;
   [[nodiscard]] virtual const char *Author() const;
+  const std::vector<Skill> &GetSkills() const {
+    return skills_;
+  }
 
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
+  
   bool lifebar_display_{true};
   glm::vec2 lifebar_offset_{};
   float lifebar_length_{2.4f};
@@ -86,6 +90,7 @@ class Unit : public Object {
 
  private:
   float fadeout_health_;
+  std::vector<Skill> skills_;
 };
 
 }  // namespace battle_game
