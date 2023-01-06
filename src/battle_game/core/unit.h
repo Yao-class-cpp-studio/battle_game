@@ -80,17 +80,17 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
-  
+
   bool lifebar_display_{true};
   glm::vec2 lifebar_offset_{};
   float lifebar_length_{2.4f};
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
+  std::vector<Skill> skills_;
 
  private:
   float fadeout_health_;
-  std::vector<Skill> skills_;
 };
 
 }  // namespace battle_game
