@@ -281,7 +281,7 @@ void App::UpdateImGui() {
           if (selectable_list[i] ==
               unit->UnitName() + std::string(" - By ") + unit->Author()) {
             if (selectable_list_skill[i] == true) {
-              std::vector<Skill> skill_list = unit->GetSkill();
+              std::vector<Skill> skill_list = unit->GetSkills();
               for (int i = 0; i < skill_list.size(); i++) {
                 if (skill_list[i].type == B) {
                   if (skill_list[i].bullet_total_number > 1) {

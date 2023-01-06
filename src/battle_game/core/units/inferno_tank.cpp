@@ -14,14 +14,14 @@ InfernoTank::InfernoTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.time_total = 360;
   temp.type = E;
   temp.function = SKILL_ADD_FUNCTION(InfernoTank::HiddenClick);
-  skill_.push_back(temp);
+  skills_.push_back(temp);
   temp.name = "Block";
   temp.description = "Generate Block";
   temp.time_remain = 0;
   temp.time_total = 900;
   temp.type = Q;
   temp.function = SKILL_ADD_FUNCTION(InfernoTank::BlockClick);
-  skill_.push_back(temp);
+  skills_.push_back(temp);
   temp.name = "Rocket";
   temp.description = "Little Bullet";
   temp.time_remain = 0;
@@ -29,7 +29,7 @@ InfernoTank::InfernoTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.bullet_type = 1;
   temp.bullet_total_number = 1;
   temp.type = B;
-  skill_.push_back(temp);
+  skills_.push_back(temp);
 }
 
 void InfernoTank::Render() {
@@ -58,7 +58,7 @@ void InfernoTank::BlockClick() {
 }
 
 void InfernoTank::Hidden() {
-  skill_[0].time_remain = hidden_count_down_;
+  skills_[0].time_remain = hidden_count_down_;
   if (hidden_count_down_) {
     hidden_count_down_--;
   } else {
@@ -73,7 +73,7 @@ void InfernoTank::Hidden() {
 }
 
 void InfernoTank::Block() {
-  skill_[1].time_remain = block_count_down_;
+  skills_[1].time_remain = block_count_down_;
   if (block_count_down_) {
     block_count_down_--;
   } else {

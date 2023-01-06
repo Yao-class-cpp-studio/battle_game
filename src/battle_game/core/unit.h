@@ -57,14 +57,14 @@ class Unit : public Object {
 
   [[nodiscard]] virtual const char *UnitName() const;
   [[nodiscard]] virtual const char *Author() const;
-  const std::vector<Skill> &GetSkill() const {
-    return skill_;
+  const std::vector<Skill> &GetSkills() const {
+    return skills_;
   }
 
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
-  std::vector<Skill> skill_;
+  std::vector<Skill> skills_;
 };
 
 }  // namespace battle_game
