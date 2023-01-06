@@ -37,12 +37,12 @@ Cart::Cart(GameCore *game_core, uint32_t id, uint32_t player_id)
     }
     {
       /* Cart Turret */
-      cart_turret_model_index =
-          mgr->RegisterModel({{{-0.2f, 0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
-          {{0.2f, 0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
-          {{-0.2f, -0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
-          {{0.2f, -0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
-          {{0.0f, 1.1f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}}}, 
+      cart_turret_model_index = mgr->RegisterModel(
+          {{{-0.2f, 0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
+           {{0.2f, 0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
+           {{-0.2f, -0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
+           {{0.2f, -0.9f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}},
+           {{0.0f, 1.1f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}}},
           {0, 1, 2, 1, 2, 3, 0, 1, 4});
     }
   }
@@ -65,9 +65,9 @@ void Cart::CartMove(float move_speed, float rotate_angular_speed) {
   if (player) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
-    if(fire_count_down_>=3*kTickPerSecond)
-      offset.y-=0.3f;
-    else{
+    if (fire_count_down_ >= 3 * kTickPerSecond)
+      offset.y -= 0.3f;
+    else {
       if (input_data.key_down[GLFW_KEY_W]) {
         offset.y += 1.0f;
       }
@@ -78,16 +78,17 @@ void Cart::CartMove(float move_speed, float rotate_angular_speed) {
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
     glm::vec2 new_position;
-    if(fire_count_down_>=3*kTickPerSecond)
-      new_position = 
-          position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, backforce_direction_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
+    if (fire_count_down_ >= 3 * kTickPerSecond)
+      new_position =
+          position_ +
+          glm::vec2{glm::rotate(glm::mat4{1.0f}, backforce_direction_,
+                                glm::vec3{0.0f, 0.0f, 1.0f}) *
+                    glm::vec4{offset, 0.0f, 0.0f}};
     else
       new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
+          position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
+                                            glm::vec3{0.0f, 0.0f, 1.0f}) *
+                                glm::vec4{offset, 0.0f, 0.0f}};
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
@@ -113,25 +114,26 @@ void Cart::TurretRotate() {
     turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
   }
 }
-void Cart::Fire(){
+void Cart::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
-    if (fire_count_down_==2*kTickPerSecond){
-        GenerateBullet<bullet::AirRocket>(target_+game_core_->RandomInCircle()*0.15f*distance_,0.0f, 3*GetDamageScale());
+    if (fire_count_down_ == 2 * kTickPerSecond) {
+      GenerateBullet<bullet::AirRocket>(
+          target_ + game_core_->RandomInCircle() * 0.15f * distance_, 0.0f,
+          3 * GetDamageScale());
     }
-  } 
-  else {
+  } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        target_=input_data.mouse_cursor_position;
-        glm::vec2 diff=input_data.mouse_cursor_position-position_;
-        distance_=glm::length(diff);
-        backforce_direction_=turret_rotation_;
-        game_core_->PushEventGenerateParticle<particle::Target>(target_, 0.0f,
-        game_core_->GetPlayerColor(player_id_));
-        fire_count_down_=4 * kTickPerSecond;
+        target_ = input_data.mouse_cursor_position;
+        glm::vec2 diff = input_data.mouse_cursor_position - position_;
+        distance_ = glm::length(diff);
+        backforce_direction_ = turret_rotation_;
+        game_core_->PushEventGenerateParticle<particle::Target>(
+            target_, 0.0f, game_core_->GetPlayerColor(player_id_));
+        fire_count_down_ = 4 * kTickPerSecond;
       }
     }
   }
@@ -149,4 +151,4 @@ const char *Cart::Author() const {
   return "Photon Zheng";
 }
 
-}
+}  // namespace battle_game::unit

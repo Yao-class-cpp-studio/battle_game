@@ -5,10 +5,10 @@ namespace battle_game::particle {
 class Target : public Particle {
  public:
   Target(GameCore *game_core,
-        uint32_t id,
-        glm::vec2 position,
-        float rotation,
-        glm::vec4 color = glm::vec4{1.0f});
+         uint32_t id,
+         glm::vec2 position,
+         float rotation,
+         glm::vec4 color = glm::vec4{1.0f});
   void Render() override;
   void Update() override;
 
