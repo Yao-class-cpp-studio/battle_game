@@ -1,4 +1,5 @@
 #pragma once
+
 #include "battle_game/core/bullet.h"
 
 namespace battle_game::bullet {
@@ -18,6 +19,6 @@ class Mine : public Bullet {
 
  private:
   glm::vec2 velocity_{};
-  uint32_t ready_count_down_{ 0 };
+  uint32_t ready_count_down_{0};
 };
 }  // namespace battle_game::bullet

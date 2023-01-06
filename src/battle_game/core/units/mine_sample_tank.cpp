@@ -40,11 +40,11 @@ void MineSampleTank::PutMine() {
   }
 }
 
-const char *TripleShotTank::UnitName() const {
+const char *MineSampleTank::UnitName() const {
   return "Mine Sample Tank";
 }
 
-const char *TripleShotTank::Author() const {
+const char *MineSampleTank::Author() const {
   return "EDGE_qy & JasonL";
 }
 }  // namespace battle_game::unit
