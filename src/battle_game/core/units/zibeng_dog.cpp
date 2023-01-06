@@ -63,7 +63,7 @@ ZibengDog::ZibengDog(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(muzzle_vertices, muzzle_indices);
     }
   }
- }
+}
 
 void ZibengDog::Render() {
   battle_game::SetTransformation(position_, rotation_);
@@ -73,25 +73,25 @@ void ZibengDog::Render() {
   battle_game::SetRotation(muzzle_rotation_);
   battle_game::SetTexture("../../textures/sweaty_soybean.png");
   battle_game::DrawModel(dog_muzzle_model_index);
-  }
+}
 
 void ZibengDog::Update() {
   DogMove(3.0f, glm::radians(180.0f));
   MuzzleRotate();
   Fire();
-  }
+}
 
 float ZibengDog::GetSpeedScale() const {
   return 3.0f;
- }
+}
 
 float ZibengDog::GetHealthScale() const {
   return 0.5f;
- }
+}
 
 float ZibengDog::GetDamageScale() const {
   return 0.8f;
- }
+}
 
 void ZibengDog::DogMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
@@ -123,7 +123,7 @@ void ZibengDog::DogMove(float move_speed, float rotate_angular_speed) {
     rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
-  }
+}
 
 void ZibengDog::MuzzleRotate() {
   auto player = game_core_->GetPlayer(player_id_);
@@ -135,7 +135,7 @@ void ZibengDog::MuzzleRotate() {
     }
     muzzle_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
   }
-  }
+}
 
 void ZibengDog::Fire() {
   if (fire_count_down_) {
@@ -153,19 +153,19 @@ void ZibengDog::Fire() {
       }
     }
   }
-  }
+}
 
 bool ZibengDog::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
-  }
+}
 
-  const char *ZibengDog::UnitName() const {
+const char *ZibengDog::UnitName() const {
   return "Zibeng Dog";
-  }
+}
 
-  const char *ZibengDog::Author() const {
+const char *ZibengDog::Author() const {
   return "Aoarashi";
-  }
-  }  // namespace battle_game::unit
+}
+}  // namespace battle_game::unit
