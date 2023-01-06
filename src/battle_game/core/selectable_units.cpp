@@ -21,6 +21,7 @@ void GameCore::GeneratePrimaryUnitList() {
   /*
    * Add Your Unit Here!
    * */
+  ADD_SELECTABLE_UNIT(unit::Pentagon_zzk882);
   ADD_SELECTABLE_UNIT(unit::Tank);
 
   unit.reset();
