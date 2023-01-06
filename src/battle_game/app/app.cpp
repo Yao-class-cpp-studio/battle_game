@@ -231,7 +231,7 @@ void App::CaptureInput() {
 
 void App::SetScene() {
   my_player_id_ = game_core_->AddPlayer();
-  auto enemy_player_id = game_core_->AddPlayer();
+  auto enemy_player_id = game_core_->AddAiPlayer();
   game_core_->SetRenderPerspective(my_player_id_);
 }
 

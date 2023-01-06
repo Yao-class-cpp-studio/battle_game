@@ -101,6 +101,12 @@ uint32_t GameCore::AddPlayer() {
   return player_id;
 }
 
+uint32_t GameCore::AddAiPlayer() {
+  uint32_t player_id = player_index_++;
+  players_[player_id] = std::make_unique<AiPlayer>(this, player_id);
+  return player_id;
+}
+
 glm::vec4 GameCore::GetPlayerColor(uint32_t player_id) const {
   if (render_perspective_ == 0) {
     return glm::vec4{0.5f, 1.0f, 0.5f, 1.0f};

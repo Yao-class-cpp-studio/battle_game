@@ -19,4 +19,19 @@ void Player::Update() {
     }
   }
 }
+
+void AiPlayer::Update() {
+  auto primary_unit = game_core_->GetUnit(primary_unit_id_);
+  if (!primary_unit) {
+    if (!resurrection_count_down_) {
+      resurrection_count_down_ = kTickPerSecond * 5;  // Respawn after 5 seconds
+    }
+    resurrection_count_down_--;
+    if (!resurrection_count_down_) {
+      primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
+    }
+  } else {
+  }
+}
+
 }  // namespace battle_game

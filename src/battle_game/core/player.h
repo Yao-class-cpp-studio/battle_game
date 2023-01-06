@@ -23,17 +23,24 @@ class Player {
     return selected_unit_;
   }
 
-  void Update();
+  virtual void Update();
   [[nodiscard]] uint32_t GetResurrectionCountDown() const {
     return resurrection_count_down_;
   }
 
- private:
+ protected:
   GameCore *game_core_{};
   uint32_t id_{};
   InputData input_data_{};
   uint32_t primary_unit_id_{};
   uint32_t resurrection_count_down_{1};
   int selected_unit_{0};
+};
+
+class AiPlayer : public Player {
+ public:
+  AiPlayer(GameCore *game_core, uint32_t id) : Player(game_core, id) {
+  }
+  void Update();
 };
 }  // namespace battle_game

@@ -84,6 +84,7 @@ class GameCore {
   }
 
   uint32_t AddPlayer();
+  uint32_t AddAiPlayer();
 
   [[nodiscard]] Unit *GetUnit(uint32_t unit_id) const;
   [[nodiscard]] Bullet *GetBullet(uint32_t bullet_id) const;
