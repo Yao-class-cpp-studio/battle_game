@@ -1,7 +1,5 @@
 #include "battle_game/core/player.h"
 
-#include <iostream>
-
 #include "battle_game/core/game_core.h"
 
 namespace battle_game {
@@ -30,6 +28,7 @@ void AiPlayer::Update() {
     }
     resurrection_count_down_--;
     if (!resurrection_count_down_) {
+      fire_count_ = kTickPerSecond;
       primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
     }
   } else {
@@ -56,11 +55,10 @@ void AiPlayer::Update() {
     if (should_fire && fire_count_ == 0) {
       fire_count_ = 2 * kTickPerSecond;
       input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
-    }
-
-    else {
+    } else {
       input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = false;
-      fire_count_--;
+      if (fire_count_ > 0)
+        fire_count_--;
     }
     auto &bullets = game_core_->GetBullets();
     input_data_.key_down[GLFW_KEY_W] = false;
