@@ -42,5 +42,8 @@ class AiPlayer : public Player {
   AiPlayer(GameCore *game_core, uint32_t id) : Player(game_core, id) {
   }
   void Update();
+
+ protected:
+  uint32_t fire_count_down_{30};
 };
 }  // namespace battle_game
