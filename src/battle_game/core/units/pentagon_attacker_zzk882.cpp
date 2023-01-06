@@ -169,7 +169,7 @@ bool Pentagon_zzk882::IsHit(glm::vec2 position) const {
 }
 
 const char *Pentagon_zzk882::UnitName() const {
-  return "Pentagon_attacker";
+  return "Pentagon_attacker_ver_1.0";
 }
 
 const char *Pentagon_zzk882::Author() const {
