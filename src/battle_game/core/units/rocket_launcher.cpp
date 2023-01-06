@@ -4,6 +4,15 @@
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
 
+/*这是一个火箭车，较宽一端为车头
+-开火：每四秒可以发射一枚火箭，直接瞄准方框内任意一点（无视障碍）
+-开火后先出现瞄准标记，2秒后火箭打击目标点附近，打击后1秒内可以造成伤害
+-打击后出现短暂烟雾，若击中敌方目标，则出现长期烟雾
+-距离目标越远，精度越低，可能无法击中目标
+-火箭伤害为正常伤害的三倍
+-火箭车会受到后坐力影响，开火后1秒内向开火方向反方向移动，且该秒内不受控制
+*/
+
 namespace battle_game::unit {
 namespace {
 uint32_t cart_body_model_index = 0xffffffffu;
