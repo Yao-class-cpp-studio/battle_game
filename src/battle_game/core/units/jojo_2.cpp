@@ -6,8 +6,8 @@
 
 namespace battle_game::unit {
 
-TwoWayJet::TwoWayJet(GameCore *game_core, uint32_t id, uint32_t player_id) 
-	: JoJo(game_core, id, player_id) {
+TwoWayJet::TwoWayJet(GameCore *game_core, uint32_t id, uint32_t player_id)
+    : JoJo(game_core, id, player_id) {
 }
 
 void TwoWayJet::Render() {
@@ -41,23 +41,22 @@ void TwoWayJet::Fire() {
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
-        auto &input_data = player->GetInputData();
-        if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-          float isBackward = game_core_->RandomFloat();
-          auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-          if (isBackward < 0.5f)
-            ShootFowardandBackward();
-          else {
-            GenerateBullet<bullet::BasketBall>(
-            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-            turret_rotation_, GetDamageScale(), velocity);
-          }
+      auto &input_data = player->GetInputData();
+      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
+        float isBackward = game_core_->RandomFloat();
+        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        if (isBackward < 0.5f)
+          ShootFowardandBackward();
+        else {
+          GenerateBullet<bullet::BasketBall>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+              turret_rotation_, GetDamageScale(), velocity);
+        }
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
   }
 }
-
 
 bool TwoWayJet::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);

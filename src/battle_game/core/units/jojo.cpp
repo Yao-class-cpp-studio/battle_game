@@ -1,7 +1,8 @@
+#include "jojo.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "jojo.h"
 
 namespace battle_game::unit {
 
@@ -18,7 +19,9 @@ JoJo::JoJo(GameCore *game_core, uint32_t id, uint32_t player_id)
       /* JoJo Body */
       jojo_body_model_index = mgr->RegisterModel(
           {
-              {{-0.76f/20-0.20f, 26.75f/20} ,{0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.76f / 20 - 0.20f, 26.75f / 20},
+               {0.0f, 0.0f},
+               {1.0f, 1.0f, 1.0f, 1.0f}},
               {{-8.32f / 20 - 0.20f, 15.72f / 20},
                {0.0f, 0.0f},
                {1.0f, 1.0f, 1.0f, 1.0f}},
@@ -69,13 +72,13 @@ JoJo::JoJo(GameCore *game_core, uint32_t id, uint32_t player_id)
                {1.0f, 1.0f, 1.0f, 1.0f}},
               {{22.89f / 20 - 0.20f, 27.25f / 20},
                {0.0f, 0.0f},
-               {1.0f, 1.0f, 1.0f, 1.0f}}, 
+               {1.0f, 1.0f, 1.0f, 1.0f}},
               {{19.03f / 20 - 0.20f, 31.47f / 20},
                {0.0f, 0.0f},
-               {1.0f, 1.0f, 1.0f, 1.0f}}, 
+               {1.0f, 1.0f, 1.0f, 1.0f}},
               {{13.59f / 20 - 0.20f, 32.09f / 20},
                {0.0f, 0.0f},
-               {1.0f, 1.0f, 1.0f, 1.0f}}, 
+               {1.0f, 1.0f, 1.0f, 1.0f}},
               {{10.32f / 20 - 0.20f, 27.05f / 20},
                {0.0f, 0.0f},
                {1.0f, 1.0f, 1.0f, 1.0f}},
@@ -107,9 +110,13 @@ JoJo::JoJo(GameCore *game_core, uint32_t id, uint32_t player_id)
                {0.0f, 0.0f},
                {0.5f, 0.5f, 0.5f, 1.0f}},
           },
-          {0,1,2,2,3,6,3,6,4,4,6,5,2,7,6,2,7,12,7,12,8,12,8,11,8,11,9,11,9,10,12,13,14,14,15,20,0,20,14,14,12,0,0,2,12,20,15,16,20,16,17,20,17,18,20,18,19,21,22,23,22,23,24,24,25,26,26,25,27,23,25,28,25,28,29,23,24,25});
+          {0,  1,  2,  2,  3,  6,  3,  6,  4,  4,  6,  5,  2,  7,  6,  2,
+           7,  12, 7,  12, 8,  12, 8,  11, 8,  11, 9,  11, 9,  10, 12, 13,
+           14, 14, 15, 20, 0,  20, 14, 14, 12, 0,  0,  2,  12, 20, 15, 16,
+           20, 16, 17, 20, 17, 18, 20, 18, 19, 21, 22, 23, 22, 23, 24, 24,
+           25, 26, 26, 25, 27, 23, 25, 28, 25, 28, 29, 23, 24, 25});
     }
-  
+
     {
       /* JoJo Turret */
       std::vector<ObjectVertex> turret_vertices;
@@ -164,7 +171,7 @@ void JoJo::JoJoMove(float move_speed, float rotate_angular_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-   }
+  }
 }
 
 void JoJo::TurretRotate() {

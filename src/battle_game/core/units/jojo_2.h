@@ -3,7 +3,7 @@
 #include "battle_game/core/units/jojo.h"
 
 namespace battle_game::unit {
-class TwoWayJet : public JoJo{
+class TwoWayJet : public JoJo {
  public:
   TwoWayJet(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
