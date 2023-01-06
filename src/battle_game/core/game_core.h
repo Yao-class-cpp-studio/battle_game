@@ -128,6 +128,7 @@ class GameCore {
   void PushEventRemoveBullet(uint32_t bullet_id);
   void PushEventRemoveParticle(uint32_t particle_id);
   void PushEventRemoveUnit(uint32_t unit_id);
+  void PushEventBuffUnit(int buff, uint32_t unit_id);
 
   template <class BulletType, class... Args>
   void PushEventGenerateBullet(uint32_t unit_id,
