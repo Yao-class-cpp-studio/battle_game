@@ -1,5 +1,7 @@
 #include "battle_game/core/player.h"
 
+#include <iostream>
+
 #include "battle_game/core/game_core.h"
 
 namespace battle_game {
@@ -22,8 +24,6 @@ void Player::Update() {
 
 void AiPlayer::Update() {
   auto primary_unit = game_core_->GetUnit(primary_unit_id_);
-  const auto pos = primary_unit->GetPosition();
-  const auto primary_rotation = primary_unit->GetRotation();
   if (!primary_unit) {
     if (!resurrection_count_down_) {
       resurrection_count_down_ = kTickPerSecond * 2;  // Respawn after 2 seconds
@@ -33,34 +33,40 @@ void AiPlayer::Update() {
       primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
     }
   } else {
+    auto pos = primary_unit->GetPosition();
+    auto primary_rotation = primary_unit->GetRotation();
     // shot to the cloest enemy
-    if (!fire_count_down_) {
-      auto &units = game_core_->GetUnits();
+    auto &units = game_core_->GetUnits();
 
-      glm::vec2 target_pos;
-      float best_diff = 2048.0f;
-      bool should_fire = false;
-      for (auto &unit : units) {
-        if (unit.second->GetPlayerId() == id_) {
-          continue;
-        }
-        auto diff = pos - unit.second->GetPosition();
-        if (glm::length(diff) < best_diff) {
-          best_diff = glm::length(diff);
-          should_fire = true;
-          target_pos = unit.second->GetPosition();
-        }
+    glm::vec2 target_pos;
+    float best_diff = 2048.0f;
+    bool should_fire = false;
+    for (auto &unit : units) {
+      if (unit.second->GetPlayerId() == id_) {
+        continue;
       }
-      if (should_fire) {
-        fire_count_down_ = 2 * kTickPerSecond;
-        input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
-        input_data_.mouse_cursor_position = target_pos;
+      auto diff = pos - unit.second->GetPosition();
+      if (glm::length(diff) < best_diff) {
+        best_diff = glm::length(diff);
+        should_fire = true;
+        target_pos = unit.second->GetPosition();
       }
+    }
+    input_data_.mouse_cursor_position = target_pos;
+    if (should_fire && fire_count_ == 0) {
+      fire_count_ = 2 * kTickPerSecond;
+      input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
+    }
 
-    } else {
-      fire_count_down_--;
+    else {
+      input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = false;
+      fire_count_--;
     }
     auto &bullets = game_core_->GetBullets();
+    input_data_.key_down[GLFW_KEY_W] = false;
+    input_data_.key_down[GLFW_KEY_S] = false;
+    input_data_.key_down[GLFW_KEY_A] = false;
+    input_data_.key_down[GLFW_KEY_D] = false;
     for (auto &bullet : bullets) {
       if (bullet.second->GetPlayerId() == id_) {
         continue;
@@ -76,13 +82,25 @@ void AiPlayer::Update() {
       }
       auto bullet_rotation = bullet.second->GetRotation();
 
-      auto l = glm::length(diff) *
-               std::fabs(glm::sin(rel_rotation - bullet_rotation));
-      if (l < 1.0f) {
-        if (glm::sin(primary_rotation - bullet_rotation) > 0) {
+      auto l = glm::length(diff) * glm::sin(rel_rotation - bullet_rotation);
+      if (std::fabs(l) < 2.2f) {
+        bool forward_turn = true;
+        if (glm::sin(primary_rotation - bullet_rotation) > 0)
+          forward_turn = !forward_turn;
+        if (l > 0)
+          forward_turn = !forward_turn;
+        if (forward_turn) {
           input_data_.key_down[GLFW_KEY_W] = true;
         } else {
           input_data_.key_down[GLFW_KEY_S] = true;
+          primary_rotation += glm::radians(180.0f);
+        }
+        if (glm::cos(primary_rotation - bullet_rotation) < 0)
+          forward_turn = !forward_turn;
+        if (forward_turn) {
+          input_data_.key_down[GLFW_KEY_A] = true;
+        } else {
+          input_data_.key_down[GLFW_KEY_D] = true;
         }
         break;
       }

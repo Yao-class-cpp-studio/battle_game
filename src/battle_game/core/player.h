@@ -44,6 +44,6 @@ class AiPlayer : public Player {
   void Update();
 
  protected:
-  uint32_t fire_count_down_{30};
+  uint32_t fire_count_{30};
 };
 }  // namespace battle_game
