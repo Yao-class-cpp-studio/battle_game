@@ -15,6 +15,9 @@ class Bullet : public Object {
          float rotation,
          float damage_scale);
   ~Bullet() override;
+  [[nodiscard]] uint32_t GetPlayerId() {
+    return player_id_;
+  }
 
  protected:
   uint32_t unit_id_{};

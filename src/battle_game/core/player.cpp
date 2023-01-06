@@ -22,6 +22,8 @@ void Player::Update() {
 
 void AiPlayer::Update() {
   auto primary_unit = game_core_->GetUnit(primary_unit_id_);
+  const auto pos = primary_unit->GetPosition();
+  const auto primary_rotation = primary_unit->GetRotation();
   if (!primary_unit) {
     if (!resurrection_count_down_) {
       resurrection_count_down_ = kTickPerSecond * 2;  // Respawn after 2 seconds
@@ -31,9 +33,9 @@ void AiPlayer::Update() {
       primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
     }
   } else {
+    // shot to the cloest enemy
     if (!fire_count_down_) {
       auto &units = game_core_->GetUnits();
-      auto pos = primary_unit->GetPosition();
 
       glm::vec2 target_pos;
       float best_diff = 2048.0f;
@@ -57,6 +59,33 @@ void AiPlayer::Update() {
 
     } else {
       fire_count_down_--;
+    }
+    auto &bullets = game_core_->GetBullets();
+    for (auto &bullet : bullets) {
+      if (bullet.second->GetPlayerId() == id_) {
+        continue;
+      }
+      auto bullet_pos = bullet.second->GetPosition();
+      auto diff = pos - bullet_pos;
+      float rel_rotation;
+      auto distance = glm::length(diff);
+      if (distance < 1e-4) {
+        break;
+      } else {
+        rel_rotation = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
+      }
+      auto bullet_rotation = bullet.second->GetRotation();
+
+      auto l = glm::length(diff) *
+               std::fabs(glm::sin(rel_rotation - bullet_rotation));
+      if (l < 1.0f) {
+        if (glm::sin(primary_rotation - bullet_rotation) > 0) {
+          input_data_.key_down[GLFW_KEY_W] = true;
+        } else {
+          input_data_.key_down[GLFW_KEY_S] = true;
+        }
+        break;
+      }
     }
   }
 }
