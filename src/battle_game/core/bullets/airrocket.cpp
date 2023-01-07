@@ -43,7 +43,7 @@ void AirRocket::Update() {
     }
     if (unit.second->IsHit(position_)) {
       if (hit_ == false)
-        game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 5.0f);
+        game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
       hit_ = true;
     }
   }
