@@ -15,7 +15,7 @@ RoundUFO::RoundUFO(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
-    { //TODO:Draw circle
+    {  // TODO:Draw circle
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
           {
@@ -59,9 +59,9 @@ RoundUFO::RoundUFO(GameCore *game_core, uint32_t id, uint32_t player_id)
       turret_vertices.push_back(
           {{0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_indices.push_back(precision + 1 + 0);
-	  turret_indices.push_back(precision + 1 + 1);
-	  turret_indices.push_back(precision + 1 + 2);
-	  turret_indices.push_back(precision + 1 + 1);
+      turret_indices.push_back(precision + 1 + 1);
+      turret_indices.push_back(precision + 1 + 2);
+      turret_indices.push_back(precision + 1 + 1);
       turret_indices.push_back(precision + 1 + 2);
       turret_indices.push_back(precision + 1 + 3);
       tank_turret_model_index =
@@ -132,9 +132,9 @@ void RoundUFO::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_); 
+        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         auto angle = 360.0f / 20;
-        for (int i = - 10; i < 10; ++i) {
+        for (int i = -10; i < 10; ++i) {
           auto angle_offset = glm::radians(angle * i);
           velocity =
               Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + angle_offset);
@@ -154,7 +154,6 @@ bool RoundUFO::IsHit(glm::vec2 position) const {
          position.y < 1.0f && position.x + position.y < 1.6f &&
          position.y - position.x < 1.6f;
 }
-
 
 const char *RoundUFO::UnitName() const {
   return "Round UFO";
