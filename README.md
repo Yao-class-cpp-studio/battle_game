@@ -1,5 +1,7 @@
 # Project 2: Battle Game
 
+a new word
+
 [![Linux Build](https://github.com/Yao-class-cpp-studio/battle_game/actions/workflows/linux-build.yml/badge.svg)](https://github.com/Yao-class-cpp-studio/battle_game/actions/workflows/linux-build.yml)
 
 经过一个学期的学习，我们已经一起学习了许多编程知识，大家的编程技能想必也有了显著的提高。
