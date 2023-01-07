@@ -5,16 +5,16 @@
 namespace battle_game {
 class Buff {
  public:
-  Buff(const char *BuffName,
-       float Time,
-       bool IsSupportManyLayer,
-       bool IsInfiniteTime,
-       int RemoveWhenDie)
-      : buffname_(BuffName),
-        time_(Time),
-        issupportmanylayer_(IsSupportManyLayer),
-        isinfinitetime_(IsInfiniteTime),
-        removewhendie_(RemoveWhenDie) {
+  Buff(const char *buffName,
+       float time,
+       bool issupportmanylayer,
+       bool isinfinitetime,
+       int removewhendie)
+      : buffname_(buffName),
+        time_(time),
+        issupportmanylayer_(issupportmanylayer),
+        isinfinitetime_(isinfinitetime),
+        removewhendie_(removewhendie) {
   }
   float Gettime() {
     return time_;
