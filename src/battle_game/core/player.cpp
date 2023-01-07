@@ -37,7 +37,7 @@ void AiPlayer::Update() {
     // shot to the cloest enemy
     auto &units = game_core_->GetUnits();
 
-    glm::vec2 target_pos;
+    glm::vec2 target_pos = pos;
     float best_diff = 2048.0f;
     bool should_fire = false;
     for (auto &unit : units) {
@@ -93,7 +93,10 @@ void AiPlayer::Update() {
           input_data_.key_down[GLFW_KEY_S] = true;
           primary_rotation += glm::radians(180.0f);
         }
-        if (glm::cos(primary_rotation - bullet_rotation) < 0)
+        auto cos = glm::cos(primary_rotation - bullet_rotation);
+        if (cos < 0)
+          forward_turn = !forward_turn;
+        if (std::fabs(cos) < 0.4)
           forward_turn = !forward_turn;
         if (forward_turn) {
           input_data_.key_down[GLFW_KEY_A] = true;
