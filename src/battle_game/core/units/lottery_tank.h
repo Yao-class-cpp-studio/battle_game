@@ -17,6 +17,7 @@ class LotteryTank : public Tank {
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
+  uint32_t fire_count_down_{0};
 
   // Bullet Settings
   enum BulletType {
