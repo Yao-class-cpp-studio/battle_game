@@ -29,11 +29,11 @@ class Buff {
     return removewhendie_;
   }
 
-  private:
+ private:
   const char *buffname_;
   float time_;
   bool issupportmanylayer_;
   bool isinfinitetime_;
   int removewhendie_;
 };
-}
+}  // namespace battle_game
