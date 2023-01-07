@@ -1,8 +1,9 @@
 #pragma once
 #include "battle_game/core/unit.h"
+#include "tiny_tank.h"
 
 namespace battle_game::unit {
-class LotteryTank : public Unit {
+class LotteryTank : public Tank {
   // Basic Settings
  public:
   LotteryTank(GameCore *game_core, uint32_t id, uint32_t player_id);
@@ -16,8 +17,6 @@ class LotteryTank : public Unit {
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
-  float turret_rotation_{0.0f};
-  uint32_t fire_count_down_{0};
 
   // Bullet Settings
   enum BulletType {
