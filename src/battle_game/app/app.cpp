@@ -232,7 +232,7 @@ void App::CaptureInput() {
 
 void App::SetScene() {
   my_player_id_ = game_core_->AddPlayer();
-  auto enemy_player_id = game_core_->AddAiPlayer();
+  enemy_player_id_ = game_core_->AddAiPlayer();
   game_core_->SetRenderPerspective(my_player_id_);
 }
 
@@ -260,10 +260,13 @@ void App::UpdateImGui() {
                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_AlwaysAutoResize)) {
     auto player = game_core_->GetPlayer(my_player_id_);
+    auto enemy_player = game_core_->GetPlayer(enemy_player_id_);
     if (player) {
       auto selectable_list = game_core_->GetSelectableUnitList();
       auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
       ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),
+                   selectable_list.data(), selectable_list.size());
+      ImGui::Combo(u8"选择敌方的单位", &enemy_player->SelectedUnit(),
                    selectable_list.data(), selectable_list.size());
       if (ImGui::Button(u8"自毁")) {
         auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
