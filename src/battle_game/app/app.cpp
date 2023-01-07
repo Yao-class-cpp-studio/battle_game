@@ -3,9 +3,11 @@
 #include "battle_game/core/object.h"
 #include "battle_game/graphics/util.h"
 
-const int TotalBuffNumber = 1;
-const char *BuffDisplay[] = {"Stunning: %.1f"};
-int BuffID[] = {0};
+namespace {
+const int totalbuffnumber = 1;
+const char *buffdisplay[] = {"Stunning: %.1f"};
+int buffid[] = {0};
+}  // namespace
 
 namespace battle_game {
 App::App(const AppSettings &app_settings, GameCore *game_core) {
@@ -378,13 +380,13 @@ void App::UpdateImGui() {
         ImGui::Text(u8"已死亡,等待%d秒后复活。",
                     player->GetResurrectionCountDown() / kTickPerSecond);
       }
-      for (int i = 0; i < TotalBuffNumber; i++) {
-        if (player->InBuff(BuffID[i])) {
-          int layer = player->GetBuffLayer(BuffID[i]);
+      for (int i = 0; i < totalbuffnumber; i++) {
+        if (player->InBuff(buffid[i])) {
+          int layer = player->GetBuffLayer(buffid[i]);
           for (int j = 0; j < layer; j++) {
             ImGui::Text(
-                BuffDisplay[BuffID[i]],
-                kSecondPerTick * float(player->GetBuffTime(BuffID[i], j)));
+                buffdisplay[buffid[i]],
+                kSecondPerTick * float(player->GetBuffTime(buffid[i], j)));
           }
         }
       }

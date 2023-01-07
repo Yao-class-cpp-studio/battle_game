@@ -1,31 +1,10 @@
 #pragma once
 #include "cstdint"
 #include "input_data.h"
-#include "map"
-#include "vector"
+#include "buff.h"
 
 namespace battle_game {
 class GameCore;
-class Buff {
- public:
-  Buff(const char *BuffName,
-       float Time,
-       bool IsSupportManyLayer,
-       bool IsInfiniteTime,
-       int RemoveWhenDie)
-      : BuffName_(BuffName),
-        Time_(Time),
-        IsSupportManyLayer_(IsSupportManyLayer),
-        IsInfiniteTime_(IsInfiniteTime),
-        RemoveWhenDie_(RemoveWhenDie) {
-  }
-
-  const char *BuffName_;
-  float Time_;
-  bool IsSupportManyLayer_;
-  bool IsInfiniteTime_;
-  int RemoveWhenDie_;
-};
 class Player {
  public:
   Player(GameCore *game_core, uint32_t id);
@@ -70,6 +49,6 @@ class Player {
   uint32_t resurrection_count_down_{1};
   int selected_unit_{0};
   std::map<int, std::vector<uint32_t>> buffs_;
-  std::vector<battle_game::Buff> BuffList_;
+  std::vector<battle_game::Buff> bufflist_;
 };
 }  // namespace battle_game
