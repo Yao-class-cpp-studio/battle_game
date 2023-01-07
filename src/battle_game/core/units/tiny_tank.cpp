@@ -59,9 +59,9 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
       turret_vertices.push_back(
           {{0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
       turret_indices.push_back(precision + 1 + 0);
-      turret_indices.push_back(precision + 1 + 1);
-      turret_indices.push_back(precision + 1 + 2);
-      turret_indices.push_back(precision + 1 + 1);
+	  turret_indices.push_back(precision + 1 + 1);
+	  turret_indices.push_back(precision + 1 + 2);
+	  turret_indices.push_back(precision + 1 + 1);
       turret_indices.push_back(precision + 1 + 2);
       turret_indices.push_back(precision + 1 + 3);
       tank_turret_model_index =
