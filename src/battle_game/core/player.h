@@ -42,6 +42,7 @@ class AiPlayer : public Player {
   AiPlayer(GameCore *game_core, uint32_t id) : Player(game_core, id) {
   }
   void Update();
+  void UpdateLogic();
 
  protected:
   uint32_t fire_count_{30};
