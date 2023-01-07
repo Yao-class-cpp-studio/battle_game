@@ -18,11 +18,16 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     {
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
-          {{{-0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
-          {0, 1, 2, 1, 2, 3});
+          {
+              {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              // distinguish front and back
+              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          },
+          {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
     }
 
     {
@@ -146,7 +151,8 @@ void Tank::Fire() {
 bool Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f;
+         position.y < 1.0f && position.x + position.y < 1.6f &&
+         position.y - position.x < 1.6f;
 }
 
 const char *Tank::UnitName() const {
