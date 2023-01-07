@@ -1,7 +1,7 @@
 #pragma once
+#include "buff.h"
 #include "cstdint"
 #include "input_data.h"
-#include "buff.h"
 
 namespace battle_game {
 class GameCore;
