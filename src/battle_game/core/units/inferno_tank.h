@@ -15,6 +15,8 @@ class InfernoTank : public Tank {
   void Inferno();
   void Hidden();
   void Block();
+  void HiddenClick();
+  void BlockClick();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
