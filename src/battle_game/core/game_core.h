@@ -210,7 +210,6 @@ class GameCore {
 
   std::mt19937 random_device_{0};
 
-  std::vector<std::pair<glm::vec2, float>> respawn_points_;
   std::vector<std::function<uint32_t(uint32_t)>>
       primary_unit_allocation_functions_;
   std::vector<std::string> selectable_unit_list_;
