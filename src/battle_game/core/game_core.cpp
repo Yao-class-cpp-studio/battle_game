@@ -11,6 +11,7 @@ GameCore::GameCore() {
           {{-1.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}},
           {{1.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}}},
       std::vector<uint32_t>{0, 1, 2, 1, 2, 3});
+
   SetScene();
   GeneratePrimaryUnitList();
 }
@@ -258,8 +259,14 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
                                             high_bound)(random_device_);
 }
 
+void GameCore::NewTreasure() {
+  AddUnit<unit::HiddenTreasure>(0);
+}
+
 void GameCore::SetScene() {
   AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
+  //  NewTreasure();
+  //  NewTreasure();
   respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
   respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
   boundary_low_ = {-10.0f, -10.0f};
