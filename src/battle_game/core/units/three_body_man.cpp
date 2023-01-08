@@ -73,6 +73,9 @@ ThreeBodyMan::ThreeBodyMan(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
+  Skill SafetyDeclare("SafetyDeclaration", E, 0, 5 * kTickPerSecond);
+  SafetyDeclare.function = SKILL_ADD_FUNCTION(ThreeBodyMan::SafetyDeclareClick);
+  skills_.push_back(SafetyDeclare);
 }
 
 void ThreeBodyMan::Render() {
@@ -168,7 +171,12 @@ void ThreeBodyMan::Fire() {
   }
 }
 
+void ThreeBodyMan::SafetyDeclareClick() {
+  declare_count_down_ = 5 * kTickPerSecond;
+}
+
 void ThreeBodyMan::SafetyDeclare() {
+  skills_[0].time_remain = declare_count_down_;
   if (declare_count_down_) {
     declare_count_down_--;
   } else {
@@ -179,7 +187,7 @@ void ThreeBodyMan::SafetyDeclare() {
         game_core_->PushEventGenerateObstacle<obstacle::SafetyDeclaration>(
             position_, turret_rotation_,
             Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_));
-        declare_count_down_ = 5 * kTickPerSecond;  // Declare interval 5 second.
+        SafetyDeclareClick();
       }
     }
   }

@@ -17,6 +17,7 @@ class ThreeBodyMan : public Unit {
   void TurretRotate();
   void Fire();
   void SafetyDeclare();
+  void SafetyDeclareClick();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
