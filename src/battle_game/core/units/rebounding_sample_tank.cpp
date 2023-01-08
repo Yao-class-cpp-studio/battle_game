@@ -16,8 +16,8 @@ void ReboundingSampleTank::Render() {
 }
 
 void ReboundingSampleTank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
-  TurretRotate();
+  Tank::TankMove(3.0f, glm::radians(180.0f));
+  Tank::TurretRotate();
   Fire();
 }
 
