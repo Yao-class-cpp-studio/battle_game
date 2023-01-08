@@ -1,5 +1,4 @@
 #pragma once
-#include "battle_game/core/unit.h"
 #include "tiny_tank.h"
 
 namespace battle_game::unit {
@@ -17,33 +16,35 @@ class LotteryTank : public Tank {
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
-  uint32_t fire_count_down_{0};
+#define next_bullet_ skills_[0];
+  uint32_t next_bullet_type_{0};
+
+  // Skill Settings
+  Skill passive_skill_info_;
+  void ResetSkillInfo();
 
   // Bullet Settings
-  enum BulletType {
-    Normal = 0,  // 1.0x
-    Big,         // 10.0x
-    Scatter,     // 1.0x, 5 bullets
-    BigScatter   // 10.0x, 5 bullets
-  };
-  const float NormalDamageRange{1.0f};
-  const float BigDamageRange{10.0f};
-  const uint32_t NormalBulletsCount{1};
-  const uint32_t ScatterBulletsCount{5};
+  std::vector<Skill> bullet_info_;
+  void ResetBulletInfo();
+  const float normal_damage_range_{1.0f};
+  const float big_damage_range_{10.0f};
+  const uint32_t normal_bullets_count_{1};
+  const uint32_t scatter_bullets_count_{5};
   bool IsBig();
   bool IsScatter();
-  BulletType GetBulletType();
+  uint32_t GetNextBulletType();
+  void SwitchBullet(uint32_t type);
   void ScatterFire(uint32_t BulletsCount, bool IsBig);
 
   // Lottery Probability Settings
-  uint32_t GetNormalTimes{0};
-  uint32_t GetOnceTimes{0};
-  const uint32_t BigBulletFloor{10};
-  const uint32_t BigBulletCeil{20};
-  const uint32_t ScatterBulletFloor{20};
-  const uint32_t ScatterBulletCeil{50};
-  const float InitProb_Big{0.2f};
-  const float InitProb_Scatter{0.02f};
+  uint32_t get_normal_times_{1};
+  uint32_t get_once_times_{1};
+  const uint32_t big_bullet_floor_{10};
+  const uint32_t big_bullet_ceil_{20};
+  const uint32_t scatter_bullet_floor_{20};
+  const uint32_t scatter_bullet_ceil_{50};
+  const float init_prob_big_{0.2f};
+  const float init_prob_scatter_{0.02f};
   uint32_t MinusClamp(uint32_t x, uint32_t y, uint32_t floor);
   bool CardLottery(uint32_t times,
                    float init_prob,
