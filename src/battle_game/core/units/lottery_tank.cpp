@@ -14,9 +14,9 @@ LotteryTank::LotteryTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void LotteryTank::ResetSkillInfo() {
-  passive_skill_info_.name = u8"Lottery Time！";
+  passive_skill_info_.name = "Lottery Time!";
   passive_skill_info_.description =
-      u8"发射子弹时进行检定，若检定成功，子弹伤害倍率变大/转换为散射弹。";
+      "Change bullets according to the result of lottery after each shot.";
   passive_skill_info_.time_remain = 0;
   passive_skill_info_.time_total = 0;
   passive_skill_info_.type = P;
@@ -29,25 +29,23 @@ void LotteryTank::ResetBulletInfo() {
   temp.bullet_total_number = 4;
   temp.type = B;
 
-  temp.name = u8"普通弹药";
-  temp.description = u8"对敌人造成10点伤害。";
+  temp.name = "Little Bullet";
+  temp.description = "Cause 10 points of damage to the enemy.";
   temp.bullet_type = 1;
   bullet_info_.push_back(temp);
 
-  temp.name = u8"暴击星";
-  temp.description = u8"对敌人造成100点伤害。";
+  temp.name = "Critical Strike Star";
+  temp.description = "Cause 100 points of damage to the enemy.";
   temp.bullet_type = 2;
   bullet_info_.push_back(temp);
 
-  temp.name = u8"爆裂弹";
-  temp.description =
-      u8"向前方扇形区域发射 5 发普通弹药，每发对敌人造成 10 点伤害。";
+  temp.name = "Scattered Bullet";
+  temp.description = "Be split into 5 little bullets.";
   temp.bullet_type = 3;
   bullet_info_.push_back(temp);
 
   temp.name = "SSR!";
-  temp.description =
-      u8"向前方扇形区域发射 5 发暴击星，每发对敌人造成 100 点伤害。";
+  temp.description = "Be split into 5 critical strike stars.";
   temp.bullet_type = 4;
   bullet_info_.push_back(temp);
 }
