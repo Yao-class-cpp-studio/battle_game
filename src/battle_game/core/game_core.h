@@ -32,6 +32,9 @@ class GameCore {
   void GeneratePrimaryUnitList();
   uint32_t AllocatePrimaryUnit(uint32_t player_id);
   [[nodiscard]] std::vector<const char *> GetSelectableUnitList() const;
+  [[nodiscard]] const std::vector<bool> &GetSelectableUnitListSkill() const {
+    return selectable_unit_list_skill_;
+  }
 
   void Update();
   void Render();
@@ -142,6 +145,14 @@ class GameCore {
     });
   }
 
+  template <class ObstacleType, class... Args>
+  void PushEventGenerateObstacle(glm::vec2 position,
+                                 float rotation = 0.0f,
+                                 Args... args) {
+    event_queue_.emplace(
+        [=]() { AddObstacle<ObstacleType>(position, rotation, args...); });
+  }
+
   template <class ParticleType, class... Args>
   void PushEventGenerateParticle(glm::vec2 position,
                                  float rotation = 0.0f,
@@ -203,6 +214,7 @@ class GameCore {
   std::vector<std::function<uint32_t(uint32_t)>>
       primary_unit_allocation_functions_;
   std::vector<std::string> selectable_unit_list_;
+  std::vector<bool> selectable_unit_list_skill_;
 };
 
 template <class BulletType, class... Args>
