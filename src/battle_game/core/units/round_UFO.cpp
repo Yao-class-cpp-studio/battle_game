@@ -60,7 +60,6 @@ void RoundUFO::Render() {
 
 void RoundUFO::Update() {
   UFOMove(10.0f);
-  TurretRotate();
   Fire();
 }
 
@@ -96,13 +95,6 @@ void RoundUFO::UFOMove(float move_speed) {
   }
 }
 
-void RoundUFO::TurretRotate() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    turret_rotation_ = rotation_;
-  }
-}
-
 void RoundUFO::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
@@ -129,9 +121,7 @@ void RoundUFO::Fire() {
 
 bool RoundUFO::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
+  return glm::length(position) < 1.0f;
 }
 
 const char *RoundUFO::UnitName() const {
