@@ -164,7 +164,7 @@ void ZibengDog::Fire() {
         GenerateBullet<bullet::SweatySoybean>(
             position_ + Rotate({0.0f, 1.2f}, muzzle_rotation_),
             muzzle_rotation_, 0.02f, velocity);
-        fire_count_down_ = kTickPerSecond;
+        fire_count_down_ = kTickPerSecond + 1;
         zibeng_line_time_ = kTickPerSecond;
         should_beng_ = true;  // Fire interval 1 second.
       }
