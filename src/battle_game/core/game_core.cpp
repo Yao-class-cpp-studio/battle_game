@@ -35,7 +35,7 @@ void GameCore::Update() {
   }
   for (auto &units : units_) {
     if (players_.count(units.second->GetPlayerId())) {
-      if (!players_[units.second->GetPlayerId()]->InBuff(0)) {
+      if (!players_[units.second->GetPlayerId()]->InBuff(100)) {
         units.second->Update();
       }
     } else {

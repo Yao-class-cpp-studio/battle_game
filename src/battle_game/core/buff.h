@@ -6,15 +6,20 @@ namespace battle_game {
 class Buff {
  public:
   Buff(const char *buffName,
+       int buffid,
        float time,
        bool issupportmanylayer,
        bool isinfinitetime,
        int removewhendie)
       : buffname_(buffName),
+        buffid_(buffid),
         time_(time),
         issupportmanylayer_(issupportmanylayer),
         isinfinitetime_(isinfinitetime),
         removewhendie_(removewhendie) {
+  }
+  int Getbuffid() {
+    return buffid_;
   }
   float Gettime() {
     return time_;
@@ -31,6 +36,7 @@ class Buff {
 
  private:
   const char *buffname_;
+  int buffid_;
   float time_;
   bool issupportmanylayer_;
   bool isinfinitetime_;

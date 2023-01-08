@@ -6,7 +6,7 @@
 namespace {
 const int totalbuffnumber = 1;
 const char *buffdisplay[] = {"Stunning: %.1f"};
-int buffid[] = {0};
+int buffid[] = {100};
 }  // namespace
 
 namespace battle_game {
@@ -385,7 +385,7 @@ void App::UpdateImGui() {
           int layer = player->GetBuffLayer(buffid[i]);
           for (int j = 0; j < layer; j++) {
             ImGui::Text(
-                buffdisplay[buffid[i]],
+                buffdisplay[i],
                 kSecondPerTick * float(player->GetBuffTime(buffid[i], j)));
           }
         }

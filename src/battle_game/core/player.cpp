@@ -6,8 +6,8 @@ namespace battle_game {
 Player::Player(GameCore *game_core, uint32_t id)
     : game_core_(game_core), id_(id) {
   bufflist_.push_back(
-      battle_game::Buff("stunning", 1.5, false, false, 0));  // BuffID 0
-  buffs_[0].push_back(1);
+      battle_game::Buff("stunning", 100, 1.5, false, false, 0));  // BuffID 100
+  buffs_[100].push_back(1);
 }
 
 void Player::AddBuff(int buff) {
@@ -21,23 +21,24 @@ void Player::RebirthUpdateBuff() {
   int size = bufflist_.size();
   for (int i = 0; i < size; i++) {
     int tmp = bufflist_[i].Getremovewhendie();
+    int id = bufflist_[i].Getbuffid();
     if (!tmp) {
       if (tmp < 0) {
-        buffs_[i].clear();
+        buffs_[id].clear();
       } else {
-        if (buffs_[i].size() > tmp) {
+        if (buffs_[id].size() > tmp) {
           for (int j = 0; j < tmp; j++) {
-            buffs_[i].pop_back();
+            buffs_[id].pop_back();
           }
         } else {
-          buffs_[i].clear();
+          buffs_[id].clear();
         }
       }
     }
-    int layer = buffs_[i].size();
+    int layer = buffs_[id].size();
     uint32_t time = kTickPerSecond * bufflist_[i].Gettime();
     for (int j = 0; j < layer; j++) {
-      buffs_[i][j] = time;
+      buffs_[id][j] = time;
     }
   }
 }
@@ -46,16 +47,17 @@ void Player::UpdateBuff() {
   int size = bufflist_.size();
   for (int i = 0; i < size; i++) {
     if (!bufflist_[i].Getisinfinitetime()) {
-      int layer = buffs_[i].size();
+      int id = bufflist_[i].Getbuffid();
+      int layer = buffs_[id].size();
       if (layer) {
-        auto it = buffs_[i].cbegin();
+        auto it = buffs_[id].cbegin();
         int cnt = 0;
         for (int j = 0; j < layer; j++) {
-          if (!buffs_[i][j - cnt]) {
-            buffs_[i].erase(it);
+          if (!buffs_[id][j - cnt]) {
+            buffs_[id].erase(it);
             cnt++;
           } else {
-            buffs_[i][j - cnt]--;
+            buffs_[id][j - cnt]--;
             it++;
           }
         }
