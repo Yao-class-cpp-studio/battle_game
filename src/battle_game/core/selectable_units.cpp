@@ -36,11 +36,8 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::TripleShotTank);
   ADD_SELECTABLE_UNIT(unit::TankXxy);
   ADD_SELECTABLE_UNIT(unit::WhaoooooTank);
-<<<<<<< HEAD
-  ADD_SELECTABLE_UNIT(unit::DarkFury)
-  == == == = ADD_SELECTABLE_UNIT(unit::DarkFury);
+  ADD_SELECTABLE_UNIT(unit::DarkFury);
   ADD_SELECTABLE_UNIT(unit::SquareTank);
->>>>>>> f2d874b260f51c42328eb02f3485e09fad681bfd
 
   unit.reset();
 }
