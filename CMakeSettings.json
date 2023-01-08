@@ -1,4 +1,5 @@
-﻿{
+
+{
   "configurations": [
     {
       "name": "x64-Debug",
@@ -25,3 +26,4 @@
     }
   ]
 }
+
