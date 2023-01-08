@@ -90,11 +90,11 @@ void AiPlayer::UpdateLogic() {
     } else {
       fix_vec += game_core_->RandomInCircle();
     }
-    fixed_pos_ += fix_vec * 0.06f + (target_pos - last_target_pos_);
+    fixed_pos_ += fix_vec * 0.04f + (target_pos - last_target_pos_);
     last_target_pos_ = target_pos;
 
-    if (fire_count_ == 0 && glm::length(fixed_pos_ - target_pos) < 1.2f) {
-      fire_count_ = 1.8 * kTickPerSecond;
+    if (fire_count_ == 0 && glm::length(fixed_pos_ - target_pos) < 1.6f) {
+      fire_count_ = 2 * kTickPerSecond;
       input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
     } else {
       if (fire_count_ > 0)
