@@ -15,7 +15,6 @@ class DarkFury : public Tank {
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
-
   uint32_t fire_count_down_{0};
   uint32_t switch_mode_count_down_{0};
   bool is_berserk{false};
