@@ -9,6 +9,5 @@ int main() {
   battle_game::App app(app_settings, &game_core);
   
   srand(static_cast<unsigned>(time(nullptr)));
-
   app.Run();
 }
