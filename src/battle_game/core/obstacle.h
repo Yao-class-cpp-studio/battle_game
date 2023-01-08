@@ -18,6 +18,6 @@ class Obstacle : public Object {
     return std::make_pair(glm::vec2(0, 0), glm::vec2(0, 0));
   }
 
-  protected:
+ protected:
 };
 }  // namespace battle_game
