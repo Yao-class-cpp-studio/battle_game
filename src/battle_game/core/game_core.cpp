@@ -141,6 +141,16 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
+Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const{
+  if (!IsOutOfRange(p)) {
+      for (auto &obstacle : obstacles_)
+        if (obstacle.second->IsBlocked(p)) {
+          return obstacle.second.get();
+        }
+  }
+  return nullptr;
+}
+
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
   event_queue_.emplace([this, unit_id, new_position]() {
     auto unit = GetUnit(unit_id);
