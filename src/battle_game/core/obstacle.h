@@ -17,5 +17,7 @@ class Obstacle : public Object {
       glm::vec2 terminus) {
     return std::make_pair(glm::vec2(0, 0), glm::vec2(0, 0));
   }
+
+  protected:
 };
 }  // namespace battle_game
