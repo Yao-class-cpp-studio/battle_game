@@ -40,7 +40,6 @@ class Player {
 class AiPlayer : public Player {
  public:
   AiPlayer(GameCore *game_core, uint32_t id) : Player(game_core, id) {
-    input_data_.key_down[GLFW_KEY_E] = true;
   }
   void Update();
   void UpdateLogic();

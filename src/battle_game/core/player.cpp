@@ -30,8 +30,13 @@ void AiPlayer::Update() {
     if (!resurrection_count_down_) {
       fire_count_ = kTickPerSecond;
       primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
-      last_target_pos_ = game_core_->GetUnit(primary_unit_id_)->GetPosition();
+      primary_unit = game_core_->GetUnit(primary_unit_id_);
+      last_target_pos_ = primary_unit->GetPosition();
       fixed_pos_ = last_target_pos_ + game_core_->RandomInCircle();
+      if (typeid(*primary_unit) == typeid(unit::InfernoTank))
+        input_data_.key_down[GLFW_KEY_E] = true;
+      else
+        input_data_.key_down[GLFW_KEY_E] = false;
     }
   } else {
     UpdateLogic();
@@ -89,7 +94,7 @@ void AiPlayer::UpdateLogic() {
     last_target_pos_ = target_pos;
 
     if (fire_count_ == 0 && glm::length(fixed_pos_ - target_pos) < 1.2f) {
-      fire_count_ = 1.6 * kTickPerSecond;
+      fire_count_ = 1.8 * kTickPerSecond;
       input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
     } else {
       if (fire_count_ > 0)
