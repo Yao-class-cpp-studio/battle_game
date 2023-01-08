@@ -24,12 +24,14 @@ void AiPlayer::Update() {
   auto primary_unit = game_core_->GetUnit(primary_unit_id_);
   if (!primary_unit) {
     if (!resurrection_count_down_) {
-      resurrection_count_down_ = kTickPerSecond * 2;  // Respawn after 2 seconds
+      resurrection_count_down_ = kTickPerSecond * 3;  // Respawn after 3 seconds
     }
     resurrection_count_down_--;
     if (!resurrection_count_down_) {
       fire_count_ = kTickPerSecond;
       primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
+      last_target_pos_ = game_core_->GetUnit(primary_unit_id_)->GetPosition();
+      fixed_pos_ = last_target_pos_ + game_core_->RandomInCircle();
     }
   } else {
     UpdateLogic();
@@ -38,35 +40,64 @@ void AiPlayer::Update() {
 
 void AiPlayer::UpdateLogic() {
   auto primary_unit = game_core_->GetUnit(primary_unit_id_);
-
   auto pos = primary_unit->GetPosition();
   auto primary_rotation = primary_unit->GetRotation();
-  // shot to the cloest enemy
-  auto &units = game_core_->GetUnits();
 
-  glm::vec2 target_pos = pos;
+  auto &units = game_core_->GetUnits();
+  glm::vec2 cloest_pos = pos;
+  glm::vec2 target_pos;
+  float target_diff = 2048.0f;
   float best_diff = 2048.0f;
-  bool should_fire = false;
+  bool find_target = false;
   for (auto &unit : units) {
     if (unit.second->GetPlayerId() == id_) {
       continue;
     }
-    auto diff = pos - unit.second->GetPosition();
+    auto unit_pos = unit.second->GetPosition();
+    auto diff = pos - unit_pos;
     if (glm::length(diff) < best_diff) {
       best_diff = glm::length(diff);
-      should_fire = true;
-      target_pos = unit.second->GetPosition();
+      find_target = true;
+      cloest_pos = unit_pos;
+    }
+    diff = last_target_pos_ - unit_pos;
+    if (glm::length(diff) < best_diff) {
+      target_diff = glm::length(diff);
+      target_pos = unit_pos;
     }
   }
-  input_data_.mouse_cursor_position = target_pos;
-  if (should_fire && fire_count_ == 0) {
-    fire_count_ = 2 * kTickPerSecond;
-    input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
-  } else {
-    input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = false;
-    if (fire_count_ > 0)
-      fire_count_--;
+  if (request_change_target_ > 0) {
+    request_change_target_--;
   }
+  input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = false;
+  if (find_target) {
+    if (cloest_pos != target_pos) {
+      request_change_target_ += 4;
+      if (request_change_target_ > 40) {
+        target_pos = cloest_pos;
+        request_change_target_ = 0;
+      }
+    }
+    auto fix_vec = target_pos - fixed_pos_;
+    auto len = glm::length(fix_vec);
+    if (len > 1.0f) {
+      fix_vec += sqrt(len) * game_core_->RandomInCircle();
+    } else {
+      fix_vec += game_core_->RandomInCircle();
+    }
+    fixed_pos_ += fix_vec * 0.05f;
+    last_target_pos_ = target_pos;
+
+    if (fire_count_ == 0 && glm::length(fixed_pos_ - target_pos) < 1.2f) {
+      fire_count_ = 1.6 * kTickPerSecond;
+      input_data_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] = true;
+    } else {
+      if (fire_count_ > 0)
+        fire_count_--;
+    }
+  }
+  input_data_.mouse_cursor_position = fixed_pos_;
+
   auto &bullets = game_core_->GetBullets();
   input_data_.key_down[GLFW_KEY_W] = false;
   input_data_.key_down[GLFW_KEY_S] = false;

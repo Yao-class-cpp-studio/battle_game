@@ -46,6 +46,9 @@ class AiPlayer : public Player {
   void UpdateLogic();
 
  protected:
+  glm::vec2 last_target_pos_;
+  glm::vec2 fixed_pos_;
+  uint32_t request_change_target_{};
   uint32_t fire_count_{30};
 };
 }  // namespace battle_game
