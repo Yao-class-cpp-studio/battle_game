@@ -9,6 +9,14 @@ namespace battle_game::unit {
 
 DarkFury::DarkFury(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
+  Skill temp;
+  temp.name = "Switch Mode";
+  temp.description = "Switch Mode";
+  temp.time_remain = 0;
+  temp.time_total = 120;
+  temp.type = E;
+  temp.function = SKILL_ADD_FUNCTION(DarkFury::SwitchMode);
+  skills_.push_back(temp);
 }
 
 void DarkFury::Render() {
@@ -17,10 +25,11 @@ void DarkFury::Render() {
 
 void DarkFury::Update() {
   SwitchMode();
-  if (is_berserk) {
+  skills_[0].time_remain = switch_mode_count_down_;
+  if (is_berserk_) {
     game_core_->PushEventDealDamage(id_, id_, 0.1);
   }
-  TankMove(is_berserk ? 6.0f : 3.0f, glm::radians(180.0f));
+  TankMove(is_berserk_ ? 6.0f : 3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
@@ -32,11 +41,11 @@ void DarkFury::SwitchMode() {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
-      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_RIGHT]) {
-        is_berserk = !is_berserk;
+      if (input_data.key_down[GLFW_KEY_E]) {
+        is_berserk_ = !is_berserk_;
+        switch_mode_count_down_ = 2 * kTickPerSecond;
       }
     }
-    switch_mode_count_down_ = kTickPerSecond;
   }
 }
 
@@ -48,7 +57,7 @@ void DarkFury::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        if (is_berserk) {
+        if (is_berserk_) {
           auto err = glm::radians(0.0);
           err = (0.5 - game_core_->RandomFloat()) * glm::radians(30.0);
           auto velocity =
@@ -61,7 +70,7 @@ void DarkFury::Fire() {
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = is_berserk ? kTickPerSecond / 5 : kTickPerSecond;
+        fire_count_down_ = is_berserk_ ? kTickPerSecond / 5 : kTickPerSecond;
       }
     }
   }

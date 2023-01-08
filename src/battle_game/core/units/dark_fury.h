@@ -17,6 +17,6 @@ class DarkFury : public Tank {
 
   uint32_t fire_count_down_{0};
   uint32_t switch_mode_count_down_{0};
-  bool is_berserk{false};
+  bool is_berserk_{false};
 };
 }  // namespace battle_game::unit
