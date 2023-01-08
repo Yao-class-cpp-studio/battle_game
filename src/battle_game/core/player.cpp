@@ -85,7 +85,7 @@ void AiPlayer::UpdateLogic() {
     } else {
       fix_vec += game_core_->RandomInCircle();
     }
-    fixed_pos_ += fix_vec * 0.05f;
+    fixed_pos_ += fix_vec * 0.06f + (target_pos - last_target_pos_);
     last_target_pos_ = target_pos;
 
     if (fire_count_ == 0 && glm::length(fixed_pos_ - target_pos) < 1.2f) {
