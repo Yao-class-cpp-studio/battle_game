@@ -86,7 +86,7 @@ void AiPlayer::UpdateLogic() {
     auto fix_vec = target_pos - fixed_pos_;
     auto len = glm::length(fix_vec);
     if (len > 1.0f) {
-      fix_vec += sqrt(len) * game_core_->RandomInCircle();
+      fix_vec += float(sqrt(len)) * game_core_->RandomInCircle();
     } else {
       fix_vec += game_core_->RandomInCircle();
     }
