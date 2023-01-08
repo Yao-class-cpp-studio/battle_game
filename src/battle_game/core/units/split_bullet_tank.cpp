@@ -7,7 +7,9 @@
 
 namespace battle_game::unit {
 
-SplitBulletTank::SplitBulletTank(GameCore *game_core, uint32_t id, uint32_t player_id)
+SplitBulletTank::SplitBulletTank(GameCore *game_core,
+                                 uint32_t id,
+                                 uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
@@ -25,7 +27,7 @@ void SplitBulletTank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        auto velocity = Rotate(glm::vec2{0.0f, 5.0f}, turret_rotation_);
         GenerateBullet<bullet::SplitBullet>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
