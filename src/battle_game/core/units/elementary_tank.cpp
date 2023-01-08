@@ -149,7 +149,7 @@ void ElementaryTank::Accelerate() {
   if (accelerate_time <= 360)
     accelerate_time += 1;
   else
-    accelerate_flag = FALSE;
+    accelerate_flag = false;
   if (skills_[0].time_remain) {
     skills_[0].time_remain -= 1;
   } else {
@@ -157,7 +157,7 @@ void ElementaryTank::Accelerate() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_Q]) {
-        accelerate_flag = TRUE;
+        accelerate_flag = true;
         accelerate_time = 0;
         skills_[0].time_remain = skills_[0].time_total;
         num_strong_bullets = 3;

@@ -19,7 +19,7 @@ class ElementaryTank : public Unit {
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  bool accelerate_flag = FALSE;
+  bool accelerate_flag = false;
   int accelerate_time;
   int num_strong_bullets = 0;
 };
