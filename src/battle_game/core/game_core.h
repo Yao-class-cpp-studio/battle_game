@@ -19,12 +19,14 @@
 
 namespace battle_game {
 constexpr int kTickPerSecond = 60;
+
 constexpr float kSecondPerTick = 1.0f / float(kTickPerSecond);
 class GameCore {
  public:
   GameCore();
 
   void SetScene();
+  void NewTreasure();
 
   template <class UnitType, class... Args>
   void AddPrimaryUnitAllocationFunction(Args... args);
@@ -41,7 +43,11 @@ class GameCore {
 
   template <class UnitType, class... Args>
   uint32_t AddUnit(uint32_t player_id, Args... args) {
-    auto unit_index = unit_index_++;
+    uint32_t unit_index;
+    if (!player_id)
+      unit_index = neutral_index_++;
+    else
+      unit_index = unit_index_++;
     units_[unit_index] =
         std::make_unique<UnitType>(this, unit_index, player_id, args...);
     return unit_index;
@@ -186,6 +192,7 @@ class GameCore {
  private:
   std::map<uint32_t, std::unique_ptr<Unit>> units_;
   uint32_t unit_index_{1};
+  uint32_t neutral_index_{998244};
   std::map<uint32_t, std::unique_ptr<Bullet>> bullets_;
   uint32_t bullet_index_{1};
   std::map<uint32_t, std::unique_ptr<Particle>> particles_;
