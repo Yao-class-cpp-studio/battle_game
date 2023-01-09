@@ -14,7 +14,7 @@ class HiddenTreasure : public Unit {
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
-  int obstacle_id;
-  int type_id;
+  int obstacle_id_;
+  int type_id_;
 };
 }  // namespace battle_game::unit
