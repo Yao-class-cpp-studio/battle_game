@@ -47,8 +47,7 @@ void ReboundingSampleTank::Fire() {
           velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
           GenerateBullet<bullet::ReboundingBall>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-              turret_rotation_, GetDamageScale(), velocity,
-              rebound_times_);
+              turret_rotation_, GetDamageScale(), velocity, rebound_times_);
         }
         skills_[0].time_remain =
             skills_[0].time_total;  // Fire interval 1 second.

@@ -13,8 +13,6 @@ App::App(const AppSettings &app_settings, GameCore *game_core) {
   core_ = std::make_unique<vulkan::framework::Core>(core_settings);
   SetGlobalCore(core_.get());
 }
-  
-  
 
 void App::Run() {
   OnInit();
