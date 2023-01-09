@@ -13,7 +13,7 @@ class Target : public Particle {
   void Update() override;
 
  private:
-  float strength_;
+  float strength_{1.0f};
   float size_{1.0f};
   glm::vec4 color_{};
   float lifetime_{2.0f};
