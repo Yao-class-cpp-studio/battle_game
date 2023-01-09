@@ -73,9 +73,9 @@ ThreeBodyMan::ThreeBodyMan(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
-  Skill SafetyDeclare("SafetyDeclaration", E, 0, 5 * kTickPerSecond);
-  SafetyDeclare.function = SKILL_ADD_FUNCTION(ThreeBodyMan::SafetyDeclareClick);
-  skills_.push_back(SafetyDeclare);
+  Skill safety_declare("SafetyDeclaration", E, 0, 5 * kTickPerSecond);
+  safety_declare.function = SKILL_ADD_FUNCTION(ThreeBodyMan::SafetyDeclareClick);
+  skills_.push_back(safety_declare);
 }
 
 void ThreeBodyMan::Render() {
