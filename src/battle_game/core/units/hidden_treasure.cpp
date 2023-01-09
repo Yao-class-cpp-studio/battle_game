@@ -58,18 +58,18 @@ HiddenTreasure::HiddenTreasure(GameCore *game_core,
   while (used[nw_id]) {
     nw_id = game_core_->RandomInt(0, 4);
   }
-  type_id = nw_id;
-  used[type_id] = true;
-  position_ = selectable_position[type_id];
-  obstacle_id = game_core_->AddObstacle<obstacle::Block>(position_);
+  type_id_ = nw_id;
+  used[type_id_] = true;
+  position_ = selectable_position[type_id_];
+  obstacle_id_ = game_core_->AddObstacle<obstacle::Block>(position_);
   health_ = 0.1f * (float)game_core_->RandomInt(0, 10);
 }
 
 void HiddenTreasure::Render() {
-  position_ = selectable_position[type_id];
+  position_ = selectable_position[type_id_];
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
-  battle_game::SetColor(selectable_color[type_id]);
+  battle_game::SetColor(selectable_color[type_id_]);
   battle_game::DrawModel(tank_body_model_index);
 }
 
@@ -77,9 +77,9 @@ void HiddenTreasure::Update() {
 }
 
 HiddenTreasure::~HiddenTreasure() {
-  game_core_->PushEventRemoveObstacle(obstacle_id);
+  game_core_->PushEventRemoveObstacle(obstacle_id_);
   game_core_->NewTreasure();
-  used[type_id] = false;
+  used[type_id_] = false;
 }
 
 bool HiddenTreasure::IsHit(glm::vec2 position) const {
