@@ -73,8 +73,8 @@ std::pair<glm::vec2, glm::vec2> ReboundingBlock::GetSurfaceNormal(
   return std::make_pair(intersection, direction);
 }
 void ReboundingBlock::Render() {
-  battle_game::SetColor(glm::vec4{89.0f / 256.0f, 140.0f / 256.0f, 248.0f / 256.0f, 1.0f});
-  battle_game::SetTexture(0);
+  battle_game::SetColor(glm::vec4{1.0f, 1.0f, 1.0f, 0.9f});
+  battle_game::SetTexture("../../textures/slime_block.png");
   battle_game::SetTransformation(position_, rotation_, scale_);
   battle_game::DrawModel(0);
 }
