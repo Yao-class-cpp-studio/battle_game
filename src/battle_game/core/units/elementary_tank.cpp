@@ -216,7 +216,6 @@ void ElementaryTank::Fire() {
               turret_rotation_, GetDamageScale(), velocity);
           num_strong_bullets -= 1;
         } else
-
           GenerateBullet<bullet::CannonBall>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);
