@@ -10,6 +10,7 @@ TripleShotTank::TripleShotTank(GameCore *game_core,
                                uint32_t id,
                                uint32_t player_id)
     : Tank(game_core, id, player_id) {
+      fire_count_down_ = 6;
 }
 
 void TripleShotTank::Render() {
