@@ -1,14 +1,24 @@
+#include "battle_game/core/units/rebounding_sample_tank.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
-#include "battle_game/core/units/rebounding_sample_tank.h"
 #include "battle_game/graphics/graphics.h"
 
 namespace battle_game::unit {
 
 ReboundingSampleTank::ReboundingSampleTank(GameCore *game_core,
-                                   uint32_t id,
-                                   uint32_t player_id)
+                                           uint32_t id,
+                                           uint32_t player_id)
     : Tank(game_core, id, player_id) {
+  Skill temp;
+  temp.name = "Rebounding Bullet";
+  temp.description =
+      "Bullets that can rebound at most 2 times. Cause 10 points of damage to "
+      "enemies." temp.time_remain = 0;
+  temp.time_total = kTickPerSecond;
+  temp.bullet_type = 1;
+  temp.bullet_total_number = 1;
+  skills_.push_back(temp);
 }
 
 void ReboundingSampleTank::Render() {
@@ -22,8 +32,8 @@ void ReboundingSampleTank::Update() {
 }
 
 void ReboundingSampleTank::Fire() {
-  if (fire_count_down_) {
-    fire_count_down_--;
+  if (skills_[0].time_remain) {
+    skills_[0].time_remain--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -38,7 +48,8 @@ void ReboundingSampleTank::Fire() {
               turret_rotation_, GetDamageScale(), velocity,
               2);  // Rebound 2 times.
         }
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+        skills_[0].time_remain =
+            skills_[0].time_total;  // Fire interval 1 second.
       }
     }
   }
