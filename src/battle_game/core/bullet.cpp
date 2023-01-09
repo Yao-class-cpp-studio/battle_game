@@ -12,7 +12,7 @@ Bullet::Bullet(GameCore *core,
       unit_id_(unit_id),
       player_id_(player_id),
       damage_scale_(damage_scale) {
-}
+}  //
 
 Bullet::~Bullet() = default;
 }  // namespace battle_game
