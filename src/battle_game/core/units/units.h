@@ -10,4 +10,6 @@
 #include "battle_game/core/units/three_body_man.h"
 #include "battle_game/core/units/tiny_tank.h"
 #include "battle_game/core/units/triple_shot_tank.h"
+#include "battle_game/core/units/zibeng_dog.h"
+#include "battle_game/core/units/rage_tank_yangyr.h"
 #include "battle_game/core/units/heal_tank.h"
