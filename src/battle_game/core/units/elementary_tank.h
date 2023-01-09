@@ -14,13 +14,16 @@ class ElementaryTank : public Unit {
   void TurretRotate();
   void Fire();
   void Accelerate();
+  void RageShoot();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
   bool accelerate_flag = false;
+  bool rageshoot_flag = false;
   int accelerate_time;
+  int rageshoot_time;
   int num_strong_bullets = 0;
 };
 }  // namespace battle_game::unit

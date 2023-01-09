@@ -20,5 +20,6 @@ class Bullet : public Object {
   uint32_t unit_id_{};
   uint32_t player_id_{};
   float damage_scale_{1.0f};
+  float CRIT_rate = 0.3;
 };
 }  // namespace battle_game

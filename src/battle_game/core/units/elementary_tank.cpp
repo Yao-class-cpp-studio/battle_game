@@ -80,6 +80,12 @@ ElementaryTank::ElementaryTank(GameCore *game_core,
   tmp.type = Q;
   tmp.function = SKILL_ADD_FUNCTION(ElementaryTank::Accelerate);
   skills_.push_back(tmp);
+  tmp.name = "Rage Shooting";
+  tmp.time_remain = 0;
+  tmp.time_total = 800;
+  tmp.type = E;
+  tmp.function = SKILL_ADD_FUNCTION(ElementaryTank::RageShoot);
+  skills_.push_back(tmp);
 }
 
 void ElementaryTank::Render() {
@@ -95,6 +101,7 @@ void ElementaryTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Accelerate();
+  RageShoot();
   Fire();
 }
 
@@ -166,6 +173,34 @@ void ElementaryTank::Accelerate() {
   }
 }
 
+void ElementaryTank::RageShoot() {
+  if (rageshoot_time <= 400)
+    rageshoot_time += 1;
+  else
+    rageshoot_flag = false;
+  if (skills_[1].time_remain) {
+    skills_[1].time_remain -= 1;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_E]) {
+        rageshoot_flag = true;
+        rageshoot_time = 0;
+        skills_[1].time_remain = skills_[1].time_total;
+        for (int i = -10; i <= 10; ++i) {
+          auto offset = glm::radians(7.0f * i);
+          auto velocity =
+              Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
+          GenerateBullet<bullet::CannonBall>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
+              turret_rotation_ + offset, GetDamageScale(), velocity);
+        }
+      }
+    }
+  }
+}
+
 void ElementaryTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
@@ -184,7 +219,10 @@ void ElementaryTank::Fire() {
           GenerateBullet<bullet::CannonBall>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+        if (rageshoot_flag)
+          fire_count_down_ = kTickPerSecond * 0.5;
+        else
+          fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
   }
