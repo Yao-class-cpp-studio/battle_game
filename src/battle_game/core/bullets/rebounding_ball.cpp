@@ -11,9 +11,10 @@ ReboundingBall::ReboundingBall(GameCore *core,
                        glm::vec2 position,
                        float rotation,
                        float damage_scale,
-                       glm::vec2 velocity)
+                       glm::vec2 velocity, uint32_t rebounding_times)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
-      velocity_(velocity){
+      velocity_(velocity),
+      rebounding_times_left_(rebounding_times) {
 }
 
 void ReboundingBall::Render() {

@@ -30,9 +30,14 @@ void ReboundingSampleTank::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::ReboundingBall>(
-            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-            turret_rotation_, GetDamageScale(), velocity);
+        for (int i = -2; i <= 2; ++i) {
+          auto offset = glm::radians(30.0f * i);
+          velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
+          GenerateBullet<bullet::ReboundingBall>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+              turret_rotation_, GetDamageScale(), velocity,
+              2);  // Rebound 2 times.
+        }
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
