@@ -18,8 +18,8 @@ class Cart : public Unit {
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  glm::vec2 target_;
-  float distance_;
-  float backforce_direction_;
+  glm::vec2 target_{glm::vec2{0.0f,0.0f}};
+  float distance_{0.0f};
+  float backforce_direction_{0.0f};
 };
 }  // namespace battle_game::unit
