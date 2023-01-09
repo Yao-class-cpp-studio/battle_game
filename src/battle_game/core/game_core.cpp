@@ -141,12 +141,12 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
-Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const{
+Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
   if (!IsOutOfRange(p)) {
-      for (auto &obstacle : obstacles_)
-        if (obstacle.second->IsBlocked(p)) {
-          return obstacle.second.get();
-        }
+    for (auto &obstacle : obstacles_)
+      if (obstacle.second->IsBlocked(p)) {
+        return obstacle.second.get();
+      }
   }
   return nullptr;
 }
