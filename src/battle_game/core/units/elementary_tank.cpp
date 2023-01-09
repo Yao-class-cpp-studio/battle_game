@@ -215,14 +215,18 @@ void ElementaryTank::Fire() {
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);
           num_strong_bullets -= 1;
-        } else
-          GenerateBullet<bullet::CannonBall>(
-              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-              turret_rotation_, GetDamageScale(), velocity);
-        if (rageshoot_flag)
           fire_count_down_ = kTickPerSecond * 0.5;
-        else
+        } else if (rageshoot_flag) {
+          GenerateBullet<bullet::Shuriken>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+              turret_rotation_, GetDamageScale(), velocity, true);
+          fire_count_down_ = kTickPerSecond * 0.25;
+        } else {
+          GenerateBullet<bullet::Shuriken>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+              turret_rotation_, GetDamageScale(), velocity, false);
           fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+        }
       }
     }
   }
