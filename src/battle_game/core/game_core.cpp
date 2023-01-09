@@ -50,7 +50,7 @@ void GameCore::Update() {
 
 /*
  * Render the objects
- * Order: obstacles, bullets, units, particles
+ * Order: obstacles, bullets, units, particles, life bars, helper
  * */
 void GameCore::Render() {
   auto observer = GetPlayer(render_perspective_);
@@ -96,6 +96,12 @@ void GameCore::Render() {
   }
   for (auto &units : units_) {
     units.second->RenderLifeBar();
+  }
+  if (observer) {
+    auto observing_unit = GetUnit(observer->GetPrimaryUnitId());
+    if (observing_unit) {
+      observing_unit->RenderHelper();
+    }
   }
 }
 
