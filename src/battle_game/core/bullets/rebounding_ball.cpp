@@ -2,7 +2,6 @@
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
-#include "iostream";
 
 namespace battle_game::bullet {
 ReboundingBall::ReboundingBall(GameCore *core,
