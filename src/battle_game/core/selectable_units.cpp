@@ -40,6 +40,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::MineSampleTank);
   ADD_SELECTABLE_UNIT(unit::SquareTank);
   ADD_SELECTABLE_UNIT(unit::ZibengDog);
+  ADD_SELECTABLE_UNIT(unit::RageTank);
 
   unit.reset();
 }
