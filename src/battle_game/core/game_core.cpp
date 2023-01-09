@@ -210,6 +210,10 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
         PushEventKillUnit(dst_unit_id, src_unit_id);
       }
     }
+    unit = GetUnit(src_unit_id);
+    if (unit) {
+      unit->AddAttackCount();
+    }
   });
 }
 
