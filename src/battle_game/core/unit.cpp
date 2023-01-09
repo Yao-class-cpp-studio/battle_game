@@ -11,7 +11,7 @@ uint32_t life_bar_model_index = 0xffffffffu;
 Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Object(game_core, id) {
   player_id_ = player_id;
-  lifebar_offset_ = {0.0f, 1.0f};
+  lifebar_offset_ = {0.0f, 1.05f};
   background_lifebar_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
   front_lifebar_color_ = {0.0f, 1.0f, 0.0f, 0.9f};
   fadeout_lifebar_color_ = {1.0f, 1.0f, 1.0f, 0.5f};

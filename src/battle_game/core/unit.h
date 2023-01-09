@@ -83,7 +83,7 @@ class Unit : public Object {
   std::vector<Skill> skills_;
   bool lifebar_display_{true};
   glm::vec2 lifebar_offset_{};
-  float lifebar_length_{2.4f};
+  float lifebar_length_{2.0f};
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
