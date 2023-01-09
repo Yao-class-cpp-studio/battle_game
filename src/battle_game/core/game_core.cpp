@@ -259,11 +259,9 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 }
 
 void GameCore::SetScene() {
-  float Obstacle_x = boundary_low_[0] + RandomFloat() * 
-                      (boundary_high_[0] - boundary_low_[0]);
-  float Obstacle_y = boundary_low_[1] + RandomFloat() * 
-                      (boundary_high_[1] - boundary_low_[1]);
-  AddObstacle<obstacle::Block>(glm::vec2{Obstacle_x, Obstacle_y});
+  AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
+  respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
+  respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
   boundary_low_ = {-10.0f, -10.0f};
   boundary_high_ = {10.0f, 10.0f};
 }
@@ -276,25 +274,8 @@ uint32_t GameCore::AllocatePrimaryUnit(uint32_t player_id) {
   auto unit_id =
       primary_unit_allocation_functions_[player->SelectedUnit()](player_id);
   auto unit = GetUnit(unit_id);
-  float respawn_x;
-  float respawn_y;
-  bool blocked = false;
-  do
-  {
-    respawn_x = boundary_low_[0] + RandomFloat() * 
-                (boundary_high_[0] - boundary_low_[0]);
-    respawn_y = boundary_low_[1] + RandomFloat() * 
-                (boundary_high_[1] - boundary_low_[1]);
-    for(uint32_t i = 1; i < obstacle_index_; i++)
-      if(obstacles_[i]->IsBlocked({respawn_x, respawn_y}))
-      {
-        blocked = true;
-        break;
-      }
-  }
-  while(blocked == true);
-  float rotation = RandomFloat() * 360;
-  auto respawn_point = std::pair(glm::vec2{respawn_x, respawn_y}, rotation);
+  auto respawn_point =
+      respawn_points_[RandomInt(0, int(respawn_points_.size()) - 1)];
   unit->SetPosition(respawn_point.first);
   unit->SetRotation(respawn_point.second);
   return unit_id;
