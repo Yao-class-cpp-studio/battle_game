@@ -12,5 +12,6 @@ class ReboundingSampleTank : public Tank {
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
+  uint32_t rebound_times_{2};
 };
 }  // namespace battle_game::unit
