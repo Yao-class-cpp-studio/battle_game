@@ -33,7 +33,7 @@ namespace battle_game::unit {
               turret_rotation_, GetDamageScale(), velocity);
           firetimes_ += 1;
           if (firetimes_ % 3 == 0) {
-            for (int i = 0 ； i < 4 ； i++) {
+            for (int i = 0; i < 4; i++) {
               GenerateBullet<bullet::CannonBall>(
                   position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
                   turret_rotation_, GetDamageScale(), velocity);
