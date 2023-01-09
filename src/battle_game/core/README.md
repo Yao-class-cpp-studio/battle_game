@@ -156,6 +156,13 @@ struct Skill {
  -
     - 你需要在name中填写技能名称，description为技能简述（若有），src为技能图示路径（若有），time_remain为技能冷却时间，time_total为技能冷却总时间，type为技能类型，function为技能调用的接口（可选择不提供）。若选择提供，使用格式为example.function=SKILL_ADD_FUNCTION(YourUnits::YourFunction)。
     - 使用示例请参考inferno_tank类型。技能显示页面可能会持续更新，但可以承诺skill_这一交互容器会保持不变。也即技能显示页面的更新会自动兼容您的数据，您无须再次编写。如果您发现了显示页面的BUG或者希望增加更多内容（如您可能希望加入用户状态，如加速/灼烧等），欢迎联系XuGW-Kevin。
+
+- Buff
+  - Buff 是一个枚举，内有多种多样的buff和debuff，你可以通过查找来观察每种效果的具体作用。
+    - 可以在枚举中添加你需要的新效果。
+  - state_ 用于记录单位的状态。
+  - isBuffed 用于检查单位是否处在某种状态。
+  - SetBuff 用于为单位加上一个持续若干时间的状态。
 ## Obstacle
 
 障碍物类声明在 [obstacle.h](obstacle.h) 中，该类对象主要用于组成游戏场景。

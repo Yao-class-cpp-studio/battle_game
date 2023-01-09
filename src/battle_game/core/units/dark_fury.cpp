@@ -62,7 +62,7 @@ void DarkFury::Fire() {
           err = (0.5 - game_core_->RandomFloat()) * glm::radians(30.0);
           auto velocity =
               Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + err);
-          GenerateBullet<bullet::CannonBall>(
+          GenerateBullet<bullet::HESH>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);
         }

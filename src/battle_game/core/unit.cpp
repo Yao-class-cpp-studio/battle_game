@@ -25,6 +25,33 @@ Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
          {{0.5f, -0.08f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
         {0, 1, 2, 1, 2, 3});
   }
+  state_ = {{Immune, 2 * kTickPerSecond},
+            {SpeedUp, 0},
+            {SpeedDown, 0},
+            {OnFire, 0}};  // Immune to all damage for 2 seconds.
+}
+
+bool Unit::isBuffed(Buff b) const {
+  if (state_[b])
+    return true;
+  return false;
+}
+
+void Unit::SetBuff(Buff b, uint32_t time) {
+  state_[b] = time;
+}
+
+void Unit::UpdateState() {
+  if (isBuffed(Immune))
+    state_[Immune]--;
+  if (isBuffed(SpeedUp))
+    state_[SpeedUp]--;
+  if (isBuffed(SpeedDown))
+    state_[SpeedDown]--;
+  if (isBuffed(OnFire)) {
+    game_core_->PushEventDealDamage(id_, id_, 0.05);
+    state_[OnFire]--;
+  }
 }
 
 void Unit::SetPosition(glm::vec2 position) {
@@ -36,7 +63,12 @@ void Unit::SetRotation(float rotation) {
 }
 
 float Unit::GetSpeedScale() const {
-  return 1.0f;
+  float s = 1.0f;
+  if (isBuffed(SpeedUp))
+    s *= 2;
+  if (isBuffed(SpeedDown))
+    s *= 0.5;
+  return s;
 }
 
 float Unit::GetDamageScale() const {

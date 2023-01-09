@@ -36,6 +36,7 @@ void GameCore::Update() {
   }
   for (auto &units : units_) {
     units.second->Update();
+    units.second->UpdateState();
   }
   for (auto &particle : particles_) {
     if (IsOutOfRange(particle.second->GetPosition())) {
@@ -205,7 +206,11 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
   event_queue_.emplace([=]() {
     auto unit = GetUnit(dst_unit_id);
     if (unit) {
-      unit->SetHealth(unit->GetHealth() - damage / unit->GetMaxHealth());
+      float scale = 1;
+      if (unit->isBuffed(Unit::Immune))
+        scale = 0;
+      unit->SetHealth(unit->GetHealth() -
+                      damage * scale / unit->GetMaxHealth());
       if (unit->GetHealth() <= 0.0f) {
         PushEventKillUnit(dst_unit_id, src_unit_id);
       }

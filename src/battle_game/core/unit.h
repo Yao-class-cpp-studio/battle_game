@@ -77,10 +77,13 @@ class Unit : public Object {
     return skills_;
   }
 
-  enum Buff { SpeedUp, SpeedDown, Toxic };
+  enum Buff { Immune, SpeedUp, SpeedDown, OnFire };
+  bool isBuffed(Buff b) const;
+  void SetBuff(Buff b, uint32_t time);
+  void UpdateState();
 
  protected:
-  std::map<Buff, bool> state_;
+  mutable std::map<enum Buff, uint32_t> state_;
   uint32_t player_id_{};
   float health_{1.0f};
   std::vector<Skill> skills_;
