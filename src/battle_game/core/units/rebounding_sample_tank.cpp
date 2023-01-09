@@ -14,10 +14,12 @@ ReboundingSampleTank::ReboundingSampleTank(GameCore *game_core,
   temp.name = "Rebounding Bullet";
   temp.description =
       "Bullets that can rebound at most 2 times. Cause 10 points of damage to "
-      "enemies." temp.time_remain = 0;
+      "enemies.";
+  temp.time_remain = 0;
   temp.time_total = kTickPerSecond;
   temp.bullet_type = 1;
   temp.bullet_total_number = 1;
+  temp.type = B;
   skills_.push_back(temp);
 }
 
