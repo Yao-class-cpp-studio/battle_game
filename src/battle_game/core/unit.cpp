@@ -36,12 +36,16 @@ void Unit::SetRotation(float rotation) {
 }
 
 float Unit::GetSpeedScale() const {
-  return 1.0f;
+  return speed_scale_ * effects_.at("speed");
 }
 
 float Unit::GetDamageScale() const {
-  return 1.0f;
+  return damage_scale_ * effects_.at("damage");
 }
+
+float Unit::GetShieldScale() const {
+  return std::clamp(shield_scale_ * effects_.at("shield"), 1.0f, 2.0f);
+};
 
 float Unit::BasicMaxHealth() const {
   return 100.0f;
@@ -112,6 +116,24 @@ void Unit::RenderLifeBar() {
     } else {
       fadeout_health_ = health;
     }
+  }
+}
+
+void Unit::RenderEffect() {
+  std::vector<std::string> effect_list;
+  for (auto it : effects_) {
+    if (it.second != 1.0)
+      effect_list.push_back(it.first);
+  }
+  for (int i = 0; i < effect_list.size(); i++) {
+    auto parent_unit = game_core_->GetUnit(id_);
+    auto pos = parent_unit->GetPosition();
+    auto offset = glm::vec2{-0.2f * (effect_list.size() - 1) + 0.4f * i, 0.0f};
+    SetTransformation(pos + offset, 0.0f, glm::vec2{0.3f});
+    SetColor(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
+    SetTexture(std::string("../../textures/") + effect_list[i] +
+               std::string(".png"));
+    DrawModel(0);
   }
 }
 

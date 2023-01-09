@@ -23,6 +23,7 @@ class Unit : public Object {
   [[nodiscard]] virtual float GetSpeedScale() const;
   [[nodiscard]] virtual float BasicMaxHealth() const;
   [[nodiscard]] virtual float GetHealthScale() const;
+  [[nodiscard]] virtual float GetShieldScale() const;
   [[nodiscard]] virtual float GetMaxHealth() const {
     return std::max(GetHealthScale() * BasicMaxHealth(), 1.0f);
   }
@@ -43,6 +44,24 @@ class Unit : public Object {
     health_ = std::clamp(new_health, 0.0f, 1.0f);
   }
 
+  void SetSpeed(float speed) {
+    if (speed >= 0.0f)
+      speed_scale_ = speed * speed_scale_;
+  }
+
+  void SetDamage(float damage) {
+    if (damage >= 0.0f)
+      damage_scale_ = damage * damage_scale_;
+  }
+  void SetShield(float shield) {
+    shield_scale_ = std::clamp(shield * shield_scale_, 1.0f, 2.0f);
+  }
+  void SetEffect(const std::string effect, float scale) {
+    if (scale >= 0.0f) {
+      effects_[effect] = scale;
+    }
+  }
+
   void SetLifeBarLength(float new_length);
   void SetLifeBarOffset(glm::vec2 new_offset);
   void SetLifeBarFrontColor(glm::vec4 new_color);
@@ -57,6 +76,8 @@ class Unit : public Object {
   void ShowLifeBar();
   void HideLifeBar();
   virtual void RenderLifeBar();
+
+  virtual void RenderEffect();
 
   /*
    * This virtual function is used to check whether a bullet at the position
@@ -80,6 +101,11 @@ class Unit : public Object {
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
+  float speed_scale_{1.0f};
+  float damage_scale_{1.0f};
+  float shield_scale_{1.0f};
+  std::map<std::string, float> effects_{
+      {{"speed", 1.0f}, {"damage", 1.0f}, {"shield", 1.0f}}};
   std::vector<Skill> skills_;
   bool lifebar_display_{true};
   glm::vec2 lifebar_offset_{};

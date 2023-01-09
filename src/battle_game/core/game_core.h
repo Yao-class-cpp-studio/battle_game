@@ -126,6 +126,10 @@ class GameCore {
   void PushEventDealDamage(uint32_t dst_unit_id,
                            uint32_t src_unit_id,
                            float damage);
+  void PushEventHeal(uint32_t unit_id, float health);
+  void PushEventSetEffect(uint32_t unit_id,
+                          const std::string effect,
+                          float scale);
   void PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id);
   void PushEventRemoveObstacle(uint32_t obstacle_id);
   void PushEventRemoveBullet(uint32_t bullet_id);
