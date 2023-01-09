@@ -12,6 +12,7 @@ class SplitBulletTank : public Tank {
   void Fire();
   uint32_t fire_count_down_{0};
   [[nodiscard]] const char *UnitName() const override;
+
   [[nodiscard]] const char *Author() const override;
 };
 }  // namespace battle_game::unit
