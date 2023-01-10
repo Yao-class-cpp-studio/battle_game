@@ -17,9 +17,9 @@ PoisonousBullet::PoisonousBullet(GameCore *core,
 }
 
 void PoisonousBullet::Render() {
-  SetTransformation(position_, rotation_, glm::vec2{0.1f});
+  SetTransformation(position_, rotation_, glm::vec2{0.5f});
   SetColor(game_core_->GetPlayerColor(player_id_));
-  SetTexture("../../textures/particle3.png");
+  SetTexture("../../textures/poison.png");
   DrawModel(0);
 }
 
