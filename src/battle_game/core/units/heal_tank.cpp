@@ -36,7 +36,6 @@ void HealTank::Update() {
   Expand();
   Inhale();
   Refresh();
-  DealInhale();
   Fire();
 }
 
@@ -52,9 +51,18 @@ float HealTank::BasicMaxHealth() const {
   return 150.0f;
 }
 
+bool HealTank::IsInhale() const {
+  return isinhale_count_down_;
+}
+
+void HealTank::AddAttackBuff() {
+  if(IsInhale())
+    SetHealth(GetHealth() + 2.0f / GetMaxHealth());
+}
+
 void HealTank::Fire()
 {
-  if (isinhale_ && fire_count_down_ > 30)
+  if (IsInhale() && fire_count_down_ > 30)
     fire_count_down_ = 30;
   if (fire_count_down_)
     fire_count_down_--;
@@ -66,7 +74,7 @@ void HealTank::Fire()
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT])
       {
-        if (isinhale_)
+        if (IsInhale())
         {
           for (int i = -4; i <= 4; i++)
           {
@@ -94,13 +102,13 @@ void HealTank::Fire()
       }
     }
   }
-  if (isinhale_)
-    isinhale_--;
+  if (IsInhale())
+    isinhale_count_down_--;
 }
 
 void HealTank::InhaleClick()
 {
-  isinhale_ = 5 * kTickPerSecond;
+  isinhale_count_down_ = 5 * kTickPerSecond;
   inhale_count_down_ = 15 * kTickPerSecond;
 }
 
@@ -158,15 +166,6 @@ void HealTank::Expand()
     health_scale_ += 10.0f / BasicMaxHealth();
     expand_count_down_ = 15 * kTickPerSecond;
   }
-}
-
-void HealTank::DealInhale()
-{
-  if (isinhale_)
-  {
-    SetHealth(GetHealth() + attack_count_ * 2.0f / GetMaxHealth());
-  }
-  attack_count_ = 0;
 }
 
 bool HealTank::IsHit(glm::vec2 position) const {

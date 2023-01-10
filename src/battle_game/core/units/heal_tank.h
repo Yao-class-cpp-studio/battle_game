@@ -13,6 +13,8 @@ class HealTank : public Tank {
   [[nodiscard]] float GetHealthScale() const override;
   [[nodiscard]] float BasicMaxHealth() const override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
+  bool IsInhale() const;
+  void AddAttackBuff() override;
 
  protected:
   void Fire();
@@ -22,13 +24,12 @@ class HealTank : public Tank {
   void RefreshClick();
   void Inhale();
   void Refresh();
-  void DealInhale();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
   uint32_t fire_count_down_{0};
   uint32_t inhale_count_down_{900};
-  uint32_t isinhale_{0};
+  uint32_t isinhale_count_down_{0};
   uint32_t refresh_count_down_{2700};
   uint32_t heal_count_down_{5};
   uint32_t expand_count_down_{900};

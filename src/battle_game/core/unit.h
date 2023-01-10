@@ -58,7 +58,7 @@ class Unit : public Object {
   void HideLifeBar();
   virtual void RenderLifeBar();
 
-  void AddAttackCount() { attack_count_++; }
+  virtual void AddAttackBuff() {}
 
   /*
    * This virtual function is used to render some extra helpers, such as
@@ -96,7 +96,6 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
-  uint32_t attack_count_{0};
 
  private:
   float fadeout_health_;
