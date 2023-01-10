@@ -16,6 +16,7 @@ Smoke::Smoke(GameCore *game_core,
       size_(size),
       color_(color),
       decay_scale_(decay_scale) {
+        particle_type_ = smoke;
 }
 
 void Smoke::Render() {

@@ -3,6 +3,14 @@
 #include "glm/glm.hpp"
 
 namespace battle_game {
+enum ObstacleType // use lowercase to avoid class name
+{
+  untracked_obstacle,
+  block
+  // add your obstacle here:
+
+};
+
 class Obstacle : public Object {
  public:
   Obstacle(GameCore *game_core,
@@ -16,7 +24,11 @@ class Obstacle : public Object {
                                                            glm::vec2 terminus) {
     return std::make_pair(glm::vec2(0, 0), glm::vec2(0, 0));
   }
+  [[nodiscard]] ObstacleType GetObstacleType() const {
+    return obstacle_type_;
+  }
 
  protected:
+  ObstacleType obstacle_type_{untracked_obstacle};
 };
 }  // namespace battle_game

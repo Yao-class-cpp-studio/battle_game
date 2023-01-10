@@ -62,6 +62,15 @@ struct Skill {
         function(function){};
 };
 
+enum ObjectType // add an underline to avoid the namespace name
+{ 
+  untracked_object,
+  unit_,
+  bullet_,
+  obstacle_,
+  particle_
+};
+
 class Object {
  public:
   Object(GameCore *game_core,
@@ -83,6 +92,9 @@ class Object {
   [[nodiscard]] uint32_t GetId() const {
     return id_;
   }
+  [[nodiscard]] ObjectType GetObjectType() const {
+    return object_type_;
+  }
 
   virtual void Render() = 0;
   virtual void Update() = 0;
@@ -92,5 +104,6 @@ class Object {
   glm::vec2 position_{0.0f};  // offset from the origin (0, 0)
   float rotation_{0.0f};      // angle in radians
   uint32_t id_{0};
+  ObjectType object_type_{untracked_object};
 };
 }  // namespace battle_game

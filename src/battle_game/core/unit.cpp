@@ -25,6 +25,7 @@ Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
          {{0.5f, -0.08f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
         {0, 1, 2, 1, 2, 3});
   }
+  object_type_ = unit_;
 }
 
 void Unit::SetPosition(glm::vec2 position) {

@@ -4,6 +4,14 @@
 
 namespace battle_game {
 
+enum UnitType // use lowercase to avoid class name
+{
+  untracked_unit,
+  tiny_tank
+  // add your unit here:
+
+};
+
 class Bullet;
 
 class Unit : public Object {
@@ -83,6 +91,9 @@ class Unit : public Object {
   const std::vector<Skill> &GetSkills() const {
     return skills_;
   }
+  [[nodiscard]] UnitType GetUnitType() const {
+    return unit_type_;
+  }
 
  protected:
   uint32_t player_id_{};
@@ -94,6 +105,7 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
+  UnitType unit_type_{untracked_unit};
 
  private:
   float fadeout_health_;
