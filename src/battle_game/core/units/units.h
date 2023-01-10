@@ -10,6 +10,7 @@
 #include "battle_game/core/units/rebounding_sample_tank.h"
 #include "battle_game/core/units/smoke_bomb_tank.h"
 #include "battle_game/core/units/square_tank.h"
+#include "battle_game/core/units/super_minesweeper_.h"
 #include "battle_game/core/units/tank_xxy.h"
 #include "battle_game/core/units/three_body_man.h"
 #include "battle_game/core/units/tiny_tank.h"

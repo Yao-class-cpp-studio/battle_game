@@ -8,7 +8,7 @@
 
 namespace battle_game {
 class GameCore;
-enum SkillType { E, Q, R, P, B };
+enum SkillType { E, Q, R, P, B, C, T };
 struct Skill {
   std::string name;
   std::string description;
@@ -18,6 +18,8 @@ struct Skill {
   uint32_t bullet_type;
   uint32_t bullet_total_number;
   SkillType type;
+  bool is_prompt = false;
+  const char *prompt;
   std::function<void(void)> function;
   std::function<void(uint32_t)> switch_bullet;
   Skill(){};

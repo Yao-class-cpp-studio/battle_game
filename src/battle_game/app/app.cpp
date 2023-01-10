@@ -380,6 +380,14 @@ void App::UpdateImGui() {
                     ImGui::Text(u8" (按R键释放) 技能冷却时间: %d s / %d s",
                                 skill_list[i].time_remain / 60,
                                 skill_list[i].time_total / 60);
+                  } else if (skill_list[i].type == battle_game::SkillType::C) {
+                    ImGui::Text(u8" (点击释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else if (skill_list[i].type == battle_game::SkillType::T) {
+                    ImGui::Text(u8" (按T键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
                   } else {
                     ImGui::Text(u8" (被动技能) 技能冷却时间: %d s / %d s",
                                 skill_list[i].time_remain / 60,
@@ -395,7 +403,11 @@ void App::UpdateImGui() {
                       HelpMarker(skill_list[i].description.c_str());
                     }
                     ImGui::SameLine();
-                    ImGui::Text(u8" (按E键释放) 技能可释放");
+                    if (skill_list[i].is_prompt) {
+                      ImGui::Text(skill_list[i].prompt);
+                    } else {
+                      ImGui::Text(u8" (按E键释放) 技能可释放");
+                    }
                     if (skill_list[i].function) {
                       if (ImGui::Button(u8"点击释放")) {
                         skill_list[i].function();
@@ -408,7 +420,11 @@ void App::UpdateImGui() {
                       HelpMarker(skill_list[i].description.c_str());
                     }
                     ImGui::SameLine();
-                    ImGui::Text(u8" (按Q键释放) 技能可释放");
+                    if (skill_list[i].is_prompt) {
+                      ImGui::Text(skill_list[i].prompt);
+                    } else {
+                      ImGui::Text(u8" (按Q键释放) 技能可释放");
+                    }
                     if (skill_list[i].function) {
                       if (ImGui::Button(u8"点击释放")) {
                         skill_list[i].function();
@@ -421,7 +437,45 @@ void App::UpdateImGui() {
                       HelpMarker(skill_list[i].description.c_str());
                     }
                     ImGui::SameLine();
-                    ImGui::Text(u8" (按R键释放) 技能可释放");
+                    if (skill_list[i].is_prompt) {
+                      ImGui::Text(skill_list[i].prompt);
+                    } else {
+                      ImGui::Text(u8" (按R键释放) 技能可释放");
+                    }
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
+                  } else if (skill_list[i].type == battle_game::SkillType::C) {
+                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                    ImGui::SameLine();
+                    if (skill_list[i].is_prompt) {
+                      ImGui::Text(skill_list[i].prompt);
+                    } else {
+                      ImGui::Text(u8" (点击释放) 技能可释放");
+                    }
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
+                  } else if (skill_list[i].type == battle_game::SkillType::T) {
+                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                    ImGui::SameLine();
+                    if (skill_list[i].is_prompt) {
+                      ImGui::Text(skill_list[i].prompt);
+                    } else {
+                      ImGui::Text(u8" (按T键释放) 技能可释放");
+                    }
                     if (skill_list[i].function) {
                       if (ImGui::Button(u8"点击释放")) {
                         skill_list[i].function();
