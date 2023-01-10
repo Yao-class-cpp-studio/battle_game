@@ -6,9 +6,9 @@ namespace battle_game {
 enum ObstacleType // use lowercase to avoid class name
 {
   untracked_obstacle,
-  block
+  block,
   // add your obstacle here:
-
+  bramble
 };
 
 class Obstacle : public Object {

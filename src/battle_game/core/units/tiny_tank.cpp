@@ -106,6 +106,13 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
+    else {
+      if (!(game_core_->IsOutOfRange(new_position)) && game_core_
+      ->GetBlockedObstacle(new_position)->GetObstacleType() == bramble) {
+        game_core_->PushEventMoveUnit(id_, new_position);
+        game_core_->PushEventDealDamage(id_, id_, 0.08f);
+      }
+    }
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
       rotation_offset += 1.0f;
