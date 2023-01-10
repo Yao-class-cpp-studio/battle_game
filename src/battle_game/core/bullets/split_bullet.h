@@ -20,6 +20,6 @@ class SplitBullet : public Bullet {
  private:
   glm::vec2 velocity_{};
   uint32_t split_count_down_{0};
-  uint32_t split_interval = 15;
+  uint32_t split_interval_ = 15;
 };
 }  // namespace battle_game::bullet

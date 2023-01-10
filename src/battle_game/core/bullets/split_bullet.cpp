@@ -26,7 +26,7 @@ void SplitBullet::Render() {
 }
 
 void SplitBullet::ResetCountDown() {
-  split_count_down_ = split_interval;
+  split_count_down_ = split_interval_;
 }
 
 void SplitBullet::Update() {
