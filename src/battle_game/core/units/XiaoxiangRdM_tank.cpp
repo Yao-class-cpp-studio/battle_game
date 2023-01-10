@@ -88,7 +88,7 @@ XXRdMTank::XXRdMTank(GameCore *game_core, uint32_t id, uint32_t player_id)
         theta *= glm::pi<float>() * 2.0f;
         auto sin_theta = std::sin(theta);
         auto cos_theta = std::cos(theta);
-        auto x= sin_theta * x_0, y = cos_theta * y_0;
+        auto x= sin_theta * x_0_, y = cos_theta * y_0_;
         if(y > 0 && abs(x) < .6 && abs(x) > .5) y = .1;
         body_vertices.push_back({{x, y},
                                    {0.0f, 0.0f},
@@ -230,10 +230,8 @@ void XXRdMTank::Teleport(){
 }
 
 void XXRdMTank::HealthcareClick(){
-  teleport_count_down_ = 3 * kTickPerSecond;
   healthcare_count_down_ = 20 * kTickPerSecond;
-  GameCore x;
-  float new_health = health_ + .05 + 0.15 * x.RandomFloat();
+  float new_health = health_ + .1;
   if(new_health > 1) new_health = 1;
   SetHealth(new_health);
 }
@@ -255,7 +253,7 @@ void XXRdMTank::Healthcare(){
 
 bool XXRdMTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
-  return pow(position.x/x_0, 2) + pow(position.y/y_0, 2) <= 1;
+  return pow(position.x/x_0_ , 2) + pow(position.y/y_0_ , 2) <= 1;
 }
 
 const char *XXRdMTank::UnitName() const {

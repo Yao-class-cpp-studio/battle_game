@@ -28,7 +28,7 @@ class XXRdMTank : public Unit {
   uint32_t teleport_count_down_{360};
   uint32_t healthcare_count_down_{1200};
 
-  float x_0 = 0.8; //semi-minor axis
-  float y_0 = 1.2; //semi-major axis
+  float x_0_ = 0.8; //semi-minor axis
+  float y_0_ = 1.2; //semi-major axis
 };
 }  // namespace battle_game::unit
