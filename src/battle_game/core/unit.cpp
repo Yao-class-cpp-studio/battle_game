@@ -135,6 +135,7 @@ void Unit::RenderEffect() {
                std::string(".png"));
     DrawModel(0);
   }
+void Unit::RenderHelper() {
 }
 
 const char *Unit::UnitName() const {
