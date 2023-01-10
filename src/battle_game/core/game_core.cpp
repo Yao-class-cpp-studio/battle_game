@@ -227,9 +227,7 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
       }
     }
     unit = GetUnit(src_unit_id);
-    if (unit) {
-      unit->AddAttackCount();
-    }
+    unit->AddAttackBuff();
   });
 }
 
