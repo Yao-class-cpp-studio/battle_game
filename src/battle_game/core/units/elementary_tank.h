@@ -1,8 +1,9 @@
 #pragma once
 #include "battle_game/core/unit.h"
+#include "battle_game/core/units/tiny_tank.h"
 
 namespace battle_game::unit {
-class ElementaryTank : public Unit {
+class ElementaryTank : public Tank {
  public:
   ElementaryTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
@@ -11,19 +12,18 @@ class ElementaryTank : public Unit {
 
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);
-  void TurretRotate();
   void Fire();
   void Accelerate();
   void RageShoot();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
-  float turret_rotation_{0.0f};
+  // float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  bool accelerate_flag = false;
-  bool rageshoot_flag = false;
-  int accelerate_time;
-  int rageshoot_time;
-  int num_strong_bullets = 0;
+  bool accelerate_flag_ = false;
+  bool rageshoot_flag_ = false;
+  int accelerate_time_;
+  int rageshoot_time_;
+  int num_strong_bullets_ = 0;
 };
 }  // namespace battle_game::unit
