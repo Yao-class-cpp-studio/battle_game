@@ -18,5 +18,8 @@ class PoisonousBullet : public Bullet {
 
  private:
   glm::vec2 velocity_{};
+  float damage_rate{0.4};
+  bool using_current_health{1}; // if 0: using max health
+  bool is_round_down{1}; // if 0: for health count round up when hitted
 };
 }  // namespace battle_game::bullet

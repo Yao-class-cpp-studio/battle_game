@@ -36,7 +36,16 @@ void PoisonousBullet::Update() {
       continue;
     }
     if (unit.second->IsHit(position_)) {
-      game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
+      float damage_scale_ = damage_rate;
+      damage_scale_ *= unit.second->GetMaxHealth();
+      if(using_current_health) 
+        damage_scale_ *= unit.second->GetHealth();
+      int actual_damage = (int) damage_scale_;
+      if(is_round_down) {
+        if(damage_scale_ != actual_damage) 
+          actual_damage = (int) damage_scale_ + 1;
+      }
+      game_core_->PushEventDealDamage(unit.first, id_, actual_damage);
       should_die = true;
     }
   }
