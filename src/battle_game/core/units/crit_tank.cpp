@@ -67,17 +67,15 @@ CritTank::CritTank(GameCore *game_core, uint32_t id, uint32_t player_id)
       tank_turret_model_index =
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
-
-    /*Unknown Error
-    Skill temp;
-    temp.name = "Blessings of the abyssal moon";
-    temp.description = "The crtical chance and critical damage increase";
-    temp.time_remain = 0;
-    temp.time_total = 600;
-    temp.type = E;
-    skills_.push_back(temp);
-    */
   }
+
+  Skill temp;
+  temp.name = "Blessings of the abyssal moon";
+  temp.description = "The crtical chance and critical damage increase";
+  temp.time_remain = 0;
+  temp.time_total = 600;
+  temp.type = E;
+  skills_.push_back(temp);
 }
 
 void CritTank::Render() {
@@ -163,6 +161,7 @@ void CritTank::Fire() {
 }
 
 void CritTank::BlessingsOfTheAbyssalMoon() {
+  skills_[0].time_remain = blessings_count_down_;
   if (blessings_count_down_) {
     blessings_count_down_--;
     if (blessings_duration_) {
