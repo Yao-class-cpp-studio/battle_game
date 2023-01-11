@@ -2,9 +2,9 @@
 #include "battle_game/core/bullet.h"
 
 namespace battle_game::bullet {
-class HealBullet : public Bullet {
+class InhaleBullet : public Bullet {
  public:
-  HealBullet(GameCore *core,
+  InhaleBullet(GameCore *core,
              uint32_t id,
              uint32_t unit_id,
              uint32_t player_id,
@@ -12,7 +12,7 @@ class HealBullet : public Bullet {
              float rotation,
              float damage_scale,
              glm::vec2 velocity);
-  ~HealBullet() override;
+  ~InhaleBullet() override;
   void Render() override;
   void Update() override;
 
