@@ -96,23 +96,28 @@ Super_minesweeper::Super_minesweeper(GameCore *game_core,
   }
   std::string a("penetrate");
   Skill penetrate(a, Q, 0, 600, 1, 1);
+  penetrate.description = "Shoots through all targets, excluding obstacles";
   skills_.push_back(penetrate);
   std::string b("tracking");
   Skill tracking(b, R, 0, 1200, 1, 1);
+  tracking.description = "Guided by the mouse cursor with a 10-second lifespan";
   skills_.push_back(tracking);
   std::string c("airborne_attack");
   Skill airborne_attack(c, E, 0, 1800, 1, 1);
+  airborne_attack.description = "Bombard the target";
   airborne_attack.prompt =
       "Choose your target with direction keys and then press space to "
-      "launch.\nPress E again to cancel.\0";
+      "launch.\nPress E again to cancel.";
   skills_.push_back(airborne_attack);
   std::string d("bullets");
   Skill bullets(d, C, 0, 600, 1, 1);
+  bullets.description = "In all directions and 3x";
   skills_.push_back(bullets);
   std::string e("teleportation");
   Skill teleportation(e, T, 0, 600, 1, 1);
+  teleportation.description = "Go wherever you want";
   teleportation.prompt =
-      "Choose your position by clicking.\nPress T again to cancel.\0";
+      "Choose your position by clicking.\nPress T again to cancel.";
   skills_.push_back(teleportation);
 }
 void Super_minesweeper::Render() {
