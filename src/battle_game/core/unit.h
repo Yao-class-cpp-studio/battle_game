@@ -83,6 +83,7 @@ class Unit : public Object {
   const std::vector<Skill> &GetSkills() const {
     return skills_;
   }
+  void InvincibleTime();
 
  protected:
   uint32_t player_id_{};
@@ -94,7 +95,8 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
-
+  float invincibleTime{3 * 60};
+  
  private:
   float fadeout_health_;
 };

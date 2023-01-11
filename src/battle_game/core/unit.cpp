@@ -115,6 +115,20 @@ void Unit::RenderLifeBar() {
   }
 }
 
+void Unit::InvincibleTime() {
+  if (invincibleTime) {
+    invincibleTime--;
+    SetLifeBarFrontColor(glm::vec4{0, 0, 1, 0.5});
+    SetLifeBarFadeoutColor(glm::vec4{0, 0, 1, 0.5});
+    SetLifeBarBackgroundColor(glm::vec4{0, 0, 1, 0.5});
+    health_ = 1.0f;
+  } else {
+    SetLifeBarFrontColor(glm::vec4{0.0f, 1.0f, 0.0f, 0.9f});
+    SetLifeBarFadeoutColor(glm::vec4{1.0f, 1.0f, 1.0f, 0.5f});
+    SetLifeBarBackgroundColor(glm::vec4{1.0f, 0.0f, 0.0f, 0.9f});
+  }
+}
+
 void Unit::RenderHelper() {
 }
 
