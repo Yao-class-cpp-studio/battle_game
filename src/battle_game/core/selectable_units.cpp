@@ -16,11 +16,20 @@ void GameCore::GeneratePrimaryUnitList() {
   unit = std::make_unique<UnitType>(nullptr, 0, 0);                          \
   AddPrimaryUnitAllocationFunction<UnitType>();                              \
   selectable_unit_list_.push_back(unit->UnitName() + std::string(" - By ") + \
-                                  unit->Author());
+                                  unit->Author());                           \
+  selectable_unit_list_skill_.push_back(true);
+
+#define ADD_SELECTABLE_UNIT_WITHOUT_SKILL(UnitType)                          \
+  unit = std::make_unique<UnitType>(nullptr, 0, 0);                          \
+  AddPrimaryUnitAllocationFunction<UnitType>();                              \
+  selectable_unit_list_.push_back(unit->UnitName() + std::string(" - By ") + \
+                                  unit->Author());                           \
+  selectable_unit_list_skill_.push_back(false);
 
   /*
-   * Add Your Unit Here!
+   * TODO: Add Your Unit Here!
    * */
+  ADD_SELECTABLE_UNIT(unit::RoundUFO);
   ADD_SELECTABLE_UNIT(unit::Tank);
   ADD_SELECTABLE_UNIT(unit::wmj_Tank);
   ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);

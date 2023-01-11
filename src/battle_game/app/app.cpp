@@ -1,8 +1,21 @@
 ﻿#include "battle_game/app/app.h"
 
-#include "battle_game/graphics/util.h"
+#include <string>
 
+#include "battle_game/core/object.h"
+#include "battle_game/graphics/util.h"
 namespace battle_game {
+static void HelpMarker(const char *desc) {
+  ImGui::TextColored(ImVec4(1, 1, 0, 1), "(?)");
+  if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort)) {
+    ImGui::BeginTooltip();
+    ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+    ImGui::TextUnformatted(desc);
+    ImGui::PopTextWrapPos();
+    ImGui::EndTooltip();
+  }
+}
+
 App::App(const AppSettings &app_settings, GameCore *game_core) {
   game_core_ = game_core;
   vulkan::framework::CoreSettings core_settings;
@@ -93,6 +106,7 @@ void App::OnRender() {
                              device_model.index_buffer->Size(), obj_id);
   }
   render_node_->EndDraw();
+  core_->TemporalSubmit();
   core_->ImGuiRender();
   core_->Output(frame_image_.get());
   core_->EndCommandRecordAndSubmit();
@@ -260,6 +274,7 @@ void App::UpdateImGui() {
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
       auto selectable_list = game_core_->GetSelectableUnitList();
+      auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
       ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),
                    selectable_list.data(), selectable_list.size());
       if (ImGui::Button(u8"自毁")) {
@@ -270,14 +285,168 @@ void App::UpdateImGui() {
       }
       auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
       if (unit) {
-        ImGui::Text("Health: %.1f / %.1f",
+        ImGui::Text(u8"生命值: %.1f / %.1f",
                     unit->GetHealth() * unit->GetMaxHealth(),
                     unit->GetMaxHealth());
+        ImGui::ProgressBar(unit->GetHealth());
+        for (int i = 0; i < selectable_list.size(); i++) {
+          if (selectable_list[i] ==
+              unit->UnitName() + std::string(" - By ") + unit->Author()) {
+            if (selectable_list_skill[i] == true) {
+              std::vector<Skill> skill_list = unit->GetSkills();
+              for (int i = 0; i < skill_list.size(); i++) {
+                if (skill_list[i].type == B) {
+                  if (skill_list[i].bullet_total_number > 1) {
+                    if (skill_list[i].time_total > 0 &&
+                        skill_list[i].time_remain > 0) {
+                      ImGui::Text(u8"当前子弹类型：%s ",
+                                  skill_list[i].name.c_str());
+                      if (!skill_list[i].description.empty()) {
+                        ImGui::SameLine();
+                        HelpMarker(skill_list[i].description.c_str());
+                      }
+                      ImGui::SameLine();
+                      ImGui::Text(
+                          u8" 第%d种 / 共%d种"
+                          u8" 子弹切换冷却时间：%d "
+                          u8"s "
+                          u8"/ %d s",
+                          skill_list[i].bullet_type,
+                          skill_list[i].bullet_total_number,
+                          skill_list[i].time_remain / 60,
+                          skill_list[i].time_total / 60);
+                      ImGui::ProgressBar((double)skill_list[i].time_remain /
+                                         skill_list[i].time_total);
+                    } else {
+                      ImGui::Text(u8"当前子弹类型：%s ",
+                                  skill_list[i].name.c_str());
+                      if (!skill_list[i].description.empty()) {
+                        ImGui::SameLine();
+                        HelpMarker(skill_list[i].description.c_str());
+                      }
+                      ImGui::SameLine();
+                      if (skill_list[i].switch_bullet) {
+                        ImGui::Text(u8" 第%d种/共%d种 子弹可切换至",
+                                    skill_list[i].bullet_type,
+                                    skill_list[i].bullet_total_number);
+                        {
+                          ImGui::BeginGroup();
+                          for (int j = 1;
+                               j <= skill_list[i].bullet_total_number; j++) {
+                            if (skill_list[i].bullet_type != j) {
+                              if (ImGui::Button(std::to_string(j).c_str())) {
+                                skill_list[i].switch_bullet(j);
+                              }
+                              if (j != skill_list[i].bullet_total_number)
+                                ImGui::SameLine();
+                            }
+                          }
+                          ImGui::EndGroup();
+                        }
+                      } else {
+                        ImGui::Text(u8" 第%d种/共%d种 子弹可切换",
+                                    skill_list[i].bullet_type,
+                                    skill_list[i].bullet_total_number);
+                      }
+                    }
+                  } else if (skill_list[i].bullet_total_number == 1) {
+                    ImGui::Text(u8"子弹类型：%s", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                  }
+                }
+              }
+              for (int i = 0; i < skill_list.size(); i++) {
+                if (skill_list[i].type == B)
+                  continue;
+                if (skill_list[i].time_remain) {
+                  ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                  if (!skill_list[i].description.empty()) {
+                    ImGui::SameLine();
+                    HelpMarker(skill_list[i].description.c_str());
+                  }
+                  ImGui::SameLine();
+                  if (skill_list[i].type == E) {
+                    ImGui::Text(u8" (按E键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else if (skill_list[i].type == Q) {
+                    ImGui::Text(u8" (按Q键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else if (skill_list[i].type == battle_game::SkillType::R) {
+                    ImGui::Text(u8" (按R键释放) 技能冷却时间: %d s / %d s",
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  } else {
+                    ImGui::Text(u8" (被动技能) 技能冷却时间: %d s / %d s",
+                                skill_list[i].time_remain / 60,
+                                skill_list[i].time_total / 60);
+                  }
+                  ImGui::ProgressBar((double)skill_list[i].time_remain /
+                                     skill_list[i].time_total);
+                } else {
+                  if (skill_list[i].type == E) {
+                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                    ImGui::SameLine();
+                    ImGui::Text(u8" (按E键释放) 技能可释放");
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
+                  } else if (skill_list[i].type == Q) {
+                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                    ImGui::SameLine();
+                    ImGui::Text(u8" (按Q键释放) 技能可释放");
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
+                  } else if (skill_list[i].type == battle_game::SkillType::R) {
+                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                    ImGui::SameLine();
+                    ImGui::Text(u8" (按R键释放) 技能可释放");
+                    if (skill_list[i].function) {
+                      if (ImGui::Button(u8"点击释放")) {
+                        skill_list[i].function();
+                      }
+                    }
+                  } else {
+                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    if (!skill_list[i].description.empty()) {
+                      ImGui::SameLine();
+                      HelpMarker(skill_list[i].description.c_str());
+                    }
+                    ImGui::SameLine();
+                    ImGui::Text(u8" (被动技能) 技能可释放");
+                  }
+                }
+              }
+            }
+          }
+        }
       } else {
-        ImGui::Text("Dead. Respawn in %d second(s).",
+        ImGui::Text(u8"已死亡,等待%d秒后复活。",
                     player->GetResurrectionCountDown() / kTickPerSecond);
       }
     }
+    ImGui::End();
   }
   ImGui::Render();
 }
