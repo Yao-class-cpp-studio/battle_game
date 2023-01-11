@@ -249,30 +249,26 @@ void Super_minesweeper::ItemMove(float move_speed, float rotate_angular_speed) {
       if (player) {
         auto &input_data = player->GetInputData();
         if (input_data.key_down[GLFW_KEY_UP]) {
-          airborne_target += glm::vec2{0.0f, 1.0f};
-          if (game_core_->IsBlockedByObstacles(airborne_target)) {
-            airborne_target -= glm::vec2{0.0f, 1.0f};
+          if (airborne_target.y <= 9) {
+            airborne_target += glm::vec2{0.0f, 1.0f};
           }
           airborne_control_buffer = 20;
         }
         if (input_data.key_down[GLFW_KEY_DOWN]) {
-          airborne_target += glm::vec2{0.0f, -1.0f};
-          if (game_core_->IsBlockedByObstacles(airborne_target)) {
-            airborne_target -= glm::vec2{0.0f, -1.0f};
+          if (airborne_target.y >= -9) {
+            airborne_target += glm::vec2{0.0f, -1.0f};
           }
           airborne_control_buffer = 20;
         }
         if (input_data.key_down[GLFW_KEY_LEFT]) {
-          airborne_target += glm::vec2{-1.0f, 0.0f};
-          if (game_core_->IsBlockedByObstacles(airborne_target)) {
-            airborne_target -= glm::vec2{-1.0f, 0.0f};
+          if (airborne_target.x >= -9) {
+            airborne_target += glm::vec2{-1.0f, 0.0f};
           }
           airborne_control_buffer = 20;
         }
         if (input_data.key_down[GLFW_KEY_RIGHT]) {
-          airborne_target += glm::vec2{1.0f, 0.0f};
-          if (game_core_->IsBlockedByObstacles(airborne_target)) {
-            airborne_target -= glm::vec2{1.0f, 0.0f};
+          if (airborne_target.x <= 9) {
+            airborne_target += glm::vec2{1.0f, 0.0f};
           }
           airborne_control_buffer = 20;
         }
