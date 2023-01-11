@@ -15,6 +15,7 @@ Bullet_storage::Bullet_storage(GameCore *game_core,
       size_(size),
       color_(color),
       decay_scale_(decay_scale) {
+  decay_timer_ = 0;
 }
 void Bullet_storage::Render() {
   SetTransformation(position_, rotation_, glm::vec2{size_});
