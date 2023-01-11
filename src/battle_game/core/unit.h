@@ -84,6 +84,8 @@ class Unit : public Object {
     return skills_;
   }
   void InvincibleTime();
+  bool IsBrick();
+  [[nodiscard]] virtual bool IsBlocked(glm::vec2 p) const;
 
  protected:
   uint32_t player_id_{};
@@ -96,7 +98,8 @@ class Unit : public Object {
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
   float invincibleTime{3 * 60};
-  
+  bool isBrick = false;
+
  private:
   float fadeout_health_;
 };

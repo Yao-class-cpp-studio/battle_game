@@ -116,7 +116,7 @@ void Unit::RenderLifeBar() {
 }
 
 void Unit::InvincibleTime() {
-  if (invincibleTime) {
+  if (invincibleTime && !IsBrick()) {
     invincibleTime--;
     SetLifeBarFrontColor(glm::vec4{0, 0, 1, 0.5});
     SetLifeBarFadeoutColor(glm::vec4{0, 0, 1, 0.5});
@@ -127,6 +127,14 @@ void Unit::InvincibleTime() {
     SetLifeBarFadeoutColor(glm::vec4{1.0f, 1.0f, 1.0f, 0.5f});
     SetLifeBarBackgroundColor(glm::vec4{1.0f, 0.0f, 0.0f, 0.9f});
   }
+}
+
+bool Unit::IsBrick() {
+  return isBrick;
+}
+
+bool Unit::IsBlocked(glm::vec2 p) const {
+  return false;
 }
 
 void Unit::RenderHelper() {

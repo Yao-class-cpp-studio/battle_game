@@ -145,6 +145,12 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
       return true;
     }
   }
+  for (auto &unit : units_) {
+    if (unit.second->IsBrick()) {
+      if (unit.second->IsBlocked(p))
+        return true;
+    }
+  }
   return false;
 }
 
