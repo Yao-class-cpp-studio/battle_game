@@ -49,7 +49,7 @@ void StunningBullet::Update() {
 
 StunningBullet::~StunningBullet() {
   for (int i = 0; i < 5; i++) {
-    game_core_->PushEventGenerateParticle<particle::Smoke>(
+    game_core_->PushEventGenerateParticle<particle::Stunning>(
         position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
         glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
   }
