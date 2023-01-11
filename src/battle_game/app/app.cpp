@@ -6,7 +6,7 @@
 #include "battle_game/graphics/util.h"
 namespace battle_game {
 static void HelpMarker(const char *desc) {
-  ImGui::TextColored(ImVec4(1, 1, 0, 1), desc);
+  ImGui::TextColored(ImVec4(1, 1, 0, 1), "(?)");
   if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort)) {
     ImGui::BeginTooltip();
     ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
