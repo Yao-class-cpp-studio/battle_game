@@ -11,10 +11,19 @@ Player::Player(GameCore *game_core, uint32_t id)
 }
 
 void Player::AddBuff(int buff) {
-  if (!bufflist_[buff].Getissupportmanylayer()) {
-    buffs_[buff].pop_back();
+  int number = bufflist_.size();
+  int index = -1;
+  for (int i = 0; i < number; i++) {
+    if (bufflist_[i].Getbuffid() == buff)
+      index = i;
   }
-  buffs_[buff].push_back(uint32_t(kTickPerSecond * bufflist_[buff].Gettime()));
+  if (index > -1) {
+    if (!bufflist_[index].Getissupportmanylayer()) {
+      buffs_[buff].clear();
+    }
+    buffs_[buff].push_back(
+        uint32_t(kTickPerSecond * bufflist_[index].Gettime()));
+  }
 }
 
 void Player::RebirthUpdateBuff() {
