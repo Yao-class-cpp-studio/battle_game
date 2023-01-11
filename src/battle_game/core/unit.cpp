@@ -28,10 +28,13 @@ Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
   state_ = {{Immune, 2 * kTickPerSecond},
             {SpeedUp, 0},
             {SpeedDown, 0},
-            {OnFire, 0}};  // Immune to all damage for 2 seconds.
+            {OnFire, 0},
+            {Weak, 0},
+            {Strong, 0},
+            {Stunning, 0}};  // Immune to all damage for 2 seconds.
 }
 
-bool Unit::isBuffed(Buff b) const {
+bool Unit::IsBuffed(Buff b) const {
   if (state_[b])
     return true;
   return false;
@@ -42,16 +45,22 @@ void Unit::SetBuff(Buff b, uint32_t time) {
 }
 
 void Unit::UpdateState() {
-  if (isBuffed(Immune))
+  if (IsBuffed(Immune))
     state_[Immune]--;
-  if (isBuffed(SpeedUp))
+  if (IsBuffed(SpeedUp))
     state_[SpeedUp]--;
-  if (isBuffed(SpeedDown))
+  if (IsBuffed(SpeedDown))
     state_[SpeedDown]--;
-  if (isBuffed(OnFire)) {
+  if (IsBuffed(OnFire)) {
     game_core_->PushEventDealDamage(id_, id_, 0.05);
     state_[OnFire]--;
   }
+  if (IsBuffed(Weak))
+    state_[Weak]--;
+  if (IsBuffed(Strong))
+    state_[Strong]--;
+  if (IsBuffed(Stunning))
+    state_[Stunning]--;
 }
 
 void Unit::SetPosition(glm::vec2 position) {
@@ -64,15 +73,20 @@ void Unit::SetRotation(float rotation) {
 
 float Unit::GetSpeedScale() const {
   float s = 1.0f;
-  if (isBuffed(SpeedUp))
+  if (IsBuffed(SpeedUp))
     s *= 2;
-  if (isBuffed(SpeedDown))
+  if (IsBuffed(SpeedDown))
     s *= 0.5;
   return s;
 }
 
 float Unit::GetDamageScale() const {
-  return 1.0f;
+  float s = 1.0f;
+  if (IsBuffed(Strong))
+    s *= 2;
+  if (IsBuffed(Weak))
+    s *= 0.5;
+  return s;
 }
 
 float Unit::BasicMaxHealth() const {

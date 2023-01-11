@@ -84,8 +84,8 @@ class Unit : public Object {
     return skills_;
   }
 
-  enum Buff { Immune, SpeedUp, SpeedDown, OnFire };
-  bool isBuffed(Buff b) const;
+  enum Buff { Immune, SpeedUp, SpeedDown, OnFire, Weak, Strong, Stunning };
+  bool IsBuffed(Buff b) const;
   void SetBuff(Buff b, uint32_t time);
   void UpdateState();
 

@@ -162,7 +162,8 @@ void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
   event_queue_.emplace([this, unit_id, new_position]() {
     auto unit = GetUnit(unit_id);
     if (unit) {
-      unit->SetPosition(new_position);
+      if (!unit->IsBuffed(Unit::Stunning))
+        unit->SetPosition(new_position);
     }
   });
 }
@@ -171,7 +172,8 @@ void GameCore::PushEventRotateUnit(uint32_t unit_id, float new_rotation) {
   event_queue_.emplace([this, unit_id, new_rotation]() {
     auto unit = GetUnit(unit_id);
     if (unit) {
-      unit->SetRotation(new_rotation);
+      if (!unit->IsBuffed(Unit::Stunning))
+        unit->SetRotation(new_rotation);
     }
   });
 }
@@ -223,7 +225,7 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
     auto unit = GetUnit(dst_unit_id);
     if (unit) {
       float scale = 1;
-      if (unit->isBuffed(Unit::Immune))
+      if (unit->IsBuffed(Unit::Immune))
         scale = 0;
       unit->SetHealth(unit->GetHealth() -
                       damage * scale / unit->GetMaxHealth());
