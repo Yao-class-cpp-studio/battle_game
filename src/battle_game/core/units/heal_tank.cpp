@@ -55,11 +55,6 @@ bool HealTank::IsInhale() const {
   return isinhale_count_down_;
 }
 
-void HealTank::AddAttackBuff() {
-  if(IsInhale())
-    SetHealth(GetHealth() + 2.0f / GetMaxHealth());
-}
-
 void HealTank::Fire()
 {
   if (IsInhale() && fire_count_down_ > 30)
@@ -81,7 +76,7 @@ void HealTank::Fire()
             auto offset = glm::radians(7.5f * i);
             auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_
                                     + offset);
-            GenerateBullet<bullet::CannonBall>(
+            GenerateBullet<bullet::HealBullet>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_ + offset, 0.2f, velocity);
           }

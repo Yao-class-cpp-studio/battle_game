@@ -14,7 +14,6 @@ class HealTank : public Tank {
   [[nodiscard]] float BasicMaxHealth() const override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
   bool IsInhale() const;
-  void AddAttackBuff() override;
 
  protected:
   void Fire();
