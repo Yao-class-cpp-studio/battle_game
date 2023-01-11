@@ -25,10 +25,15 @@ SpellCaster::SpellCaster(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void SpellCaster::Render() {
+  battle_game::SetTransformation(position_, 0.0f, glm::vec2{1.0f, 114.0f/80.0f});
+  battle_game::SetTexture("../../textures/udongein_model.png");
+  battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
+  battle_game::DrawModel(0);
+  /*
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(model_index);
+  battle_game::DrawModel(model_index);*/
 }
 
 void SpellCaster::Update() {
@@ -55,7 +60,7 @@ float SpellCaster::getCursorDirection(glm::vec2 mouse_position) {
     return std::atan2(diff.y, diff.x) - glm::radians(90.0f);
 }
 
-float SpellCaster::CheckSlowMode(float speed) {
+float SpellCaster::SlowModeScale(float speed) {
   if (input_.key_down[GLFW_KEY_LEFT_SHIFT])
     return speed / 2;
   else
@@ -162,7 +167,9 @@ void SpellCaster::Move() {
         offset = diff;
       break;
   }
-  offset *= kSecondPerTick * CheckSlowMode(speed_) * GetSpeedScale();
+  is_moving_ = (offset != glm::vec2{0.0f});
+  move_direction_ = std::atan2(offset.y, offset.x) - glm::radians(90.0f);
+  offset *= kSecondPerTick * SlowModeScale(speed_) * GetSpeedScale();
   auto new_position = position_;
   if (!game_core_->IsBlockedByObstacles(new_position + glm::vec2{offset.x, 0.0f}))
     new_position += glm::vec2{offset.x, 0.0f};

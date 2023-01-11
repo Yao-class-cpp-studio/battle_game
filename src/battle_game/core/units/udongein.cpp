@@ -17,21 +17,46 @@ Udongein::Udongein(GameCore *game_core, uint32_t id, uint32_t player_id)
   hitbox_radius_ = 0.5f;
   speed_ = 10.0f;
   }
+/*
+void Udongein::Render() {
+  battle_game::SetTransformation(position_, rotation_, glm::vec2{20.f});
+  battle_game::SetTexture("../../textures/udongein_model.png");
+  battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
+  battle_game::DrawModel(model_index);
+  }*/
 
 void Udongein::Spell() {
   if (input_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT])
+    FocusedFire();
+  if (input_.key_down[GLFW_KEY_Z])
     DirectionalFire();
-  else if (input_.mouse_button_down[GLFW_MOUSE_BUTTON_RIGHT])
+  if (input_.key_down[GLFW_KEY_X])
     BoundaryBetweenWavesAndParticles();
 }
 
 void Udongein::DirectionalFire() {
-  if (directional_fire.clock > 0)
-    directional_fire.clock -= 10;
+  if (is_moving_) {
+    auto rotate = Rotate({0.0f, 1.0f}, directional_fire.direction_) -
+                  Rotate({0.0f, 1.0f}, move_direction_);
+    directional_fire.direction_ =
+        std::atan2(rotate.y, rotate.x) - glm::radians(90.0f);
+  }
+  if (focused_fire.clock > 0)
+    focused_fire.clock -= 10;
   else {
-    Udongein::Fire<bullet::CannonBall>(
+    Udongein::Fire<bullet::UdongeinDirectionalBullet>(
+        directional_fire.direction_, 20.0f);
+    focused_fire.clock = kTickPerSecond;
+  }
+}
+
+void Udongein::FocusedFire() {
+  if (focused_fire.clock > 0)
+    focused_fire.clock -= 10;
+  else {
+    Fire<bullet::CannonBall>(
         getCursorDirection(input_.mouse_cursor_position), 20.0f);
-    directional_fire.clock = kTickPerSecond;  // Fire interval 1 second.
+    focused_fire.clock = kTickPerSecond;
   }
 }
 
@@ -45,7 +70,7 @@ void Udongein::BoundaryBetweenWavesAndParticles() {
         (boundary_between_waves_and_particles.angle_increment +=
          glm::radians(0.5f));
     for (uint32_t i = 0; i < boundary_between_waves_and_particles.line; i++)
-      Udongein::Fire<bullet::CannonBall>(
+      Fire<bullet::CannonBall>(
           boundary_between_waves_and_particles.angle + i * angle_diff_, 5.0f);
     boundary_between_waves_and_particles.clock =
         kTickPerSecond;

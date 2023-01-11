@@ -19,7 +19,7 @@ class SpellCaster : public Unit {
     GenerateBullet<BulletType>(position_ + Rotate({0.0f, 0.5f}, direction),
                                direction, GetDamageScale(), velocity);
   }
-  float CheckSlowMode(float speed);
+  float SlowModeScale(float speed);
   void Move();
   virtual void Spell();
   enum {
@@ -31,7 +31,9 @@ class SpellCaster : public Unit {
   InputData input_{};
   InputData last_input_{};
   InputData input_to_act_{};
+  bool is_moving_{false};
   float hitbox_radius_{0.5f};
   float speed_{6.0f};
+  float move_direction_{glm::radians(270.0f)};
 };
 }  // namespace battle_game::unit
