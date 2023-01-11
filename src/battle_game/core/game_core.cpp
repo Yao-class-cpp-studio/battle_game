@@ -37,6 +37,14 @@ void GameCore::Update() {
     if (players_.count(units.second->GetPlayerId())) {
       if (!players_[units.second->GetPlayerId()]->InBuff(100)) {
         units.second->Update();
+      } else {
+        glm::vec2 unit_position = units.second->GetPosition();
+        float unit_rotation = units.second->GetRotation();
+        event_queue_.emplace([=]() {
+          AddParticle<particle::Stunning>(
+              unit_position, unit_rotation, RandomInCircle() * 4.0f, 0.2f,
+              glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+        });
       }
     } else {
       units.second->Update();
