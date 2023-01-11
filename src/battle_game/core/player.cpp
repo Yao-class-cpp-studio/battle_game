@@ -6,15 +6,23 @@ namespace battle_game {
 Player::Player(GameCore *game_core, uint32_t id)
     : game_core_(game_core), id_(id) {
   bufflist_.push_back(
-      battle_game::Buff("stunning", 100, 1.5, false, false, 0));  // BuffID 100
-  buffs_[100].push_back(1);
+      battle_game::Buff("stunning", 100, 3.0, false, false, 0));  // BuffID 100
 }
 
 void Player::AddBuff(int buff) {
-  if (!bufflist_[buff].Getissupportmanylayer()) {
-    buffs_[buff].pop_back();
+  int number = bufflist_.size();
+  int index = -1;
+  for (int i = 0; i < number; i++) {
+    if (bufflist_[i].Getbuffid() == buff)
+      index = i;
   }
-  buffs_[buff].push_back(uint32_t(kTickPerSecond * bufflist_[buff].Gettime()));
+  if (index > -1) {
+    if (!bufflist_[index].Getissupportmanylayer()) {
+      buffs_[buff].clear();
+    }
+    buffs_[buff].push_back(
+        uint32_t(kTickPerSecond * bufflist_[index].Gettime()));
+  }
 }
 
 void Player::RebirthUpdateBuff() {
