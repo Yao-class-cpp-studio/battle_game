@@ -2,7 +2,7 @@
 #include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
-class soilder : public Unit {
+class soilder : public Tank {
  public:
   soilder(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
@@ -11,7 +11,6 @@ class soilder : public Unit {
 
  protected:
   void soilderMove(float move_speed, float rotate_angular_speed);
-  void bulletRotate();
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
