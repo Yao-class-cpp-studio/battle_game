@@ -125,7 +125,7 @@ void InfernoTank::Fire() {
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] &&
           game_core_->GetUnits().size() > 1) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        velocity = Rotate(glm::vec2{0.0f, 17.0f}, turret_rotation_);
         GenerateBullet<bullet::Rocket>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
