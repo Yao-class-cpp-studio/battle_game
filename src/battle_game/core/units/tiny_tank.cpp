@@ -1,8 +1,5 @@
 #include "tiny_tank.h"
 
-#include <cstdlib>
-#include <ctime>
-
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
@@ -89,19 +86,15 @@ void Tank::Update() {
 }
 
 void Tank::TankMove(float move_speed, float rotate_angular_speed) {
-  // rand(time(0));
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
-    bool fx = 0;
     if (input_data.key_down[GLFW_KEY_W]) {
       offset.y += 1.0f;
-      fx = 1;
     }
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
-      fx = 1;
     }
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
@@ -109,22 +102,9 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
                                           glm::vec3{0.0f, 0.0f, 1.0f}) *
                               glm::vec4{offset, 0.0f, 0.0f}};
-    // printf("Before:%f %f\n",new_position.x,new_position.y);
-    if (fx) {
-      glm::vec2 offset2{0.0f};
-      // printf("%d\n",rand());
-      offset2.y += (rand() - (1 << 30)) / 1000000000.0;
-      offset2 *= kSecondPerTick * speed;
-      new_position = new_position +
-                     glm::vec2{glm::rotate(glm::mat4{1.0f},
-                                           (float)(rotation_ + acos(-1) / 2),
-                                           glm::vec3{0.0f, 0.0f, 1.0f}) *
-                               glm::vec4{offset2, 0.0f, 0.0f}};
-    }
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-    // printf("After:%f %f\n",new_position.x,new_position.y);
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
       rotation_offset += 1.0f;
@@ -158,13 +138,9 @@ void Tank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity =
-            Rotate(glm::vec2{0.0f, 20.0f},
-                   turret_rotation_ + (rand() - (1 << 30)) / 5000000000.0);
+        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         GenerateBullet<bullet::CannonBall>(
-            position_ +
-                Rotate({0.0f, 1.2f},
-                       turret_rotation_ /*+(rand()-(1<<30))/100000000.0*/),
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
