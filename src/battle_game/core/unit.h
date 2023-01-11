@@ -85,7 +85,7 @@ class Unit : public Object {
   }
 
   enum Buff { Immune, SpeedUp, SpeedDown, OnFire };
-  bool isBuffed(Buff b) const;
+  bool IsBuffed(Buff b) const;
   void SetBuff(Buff b, uint32_t time);
   void UpdateState();
 
