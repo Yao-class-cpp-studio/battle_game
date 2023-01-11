@@ -77,8 +77,7 @@ void Player::Update() {
       RebirthUpdateBuff();
       primary_unit_id_ = game_core_->AllocatePrimaryUnit(id_);
     }
-  } else {
-    UpdateBuff();
-  }
+  } 
+  UpdateBuff();
 }
 }  // namespace battle_game
