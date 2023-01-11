@@ -42,7 +42,7 @@ void GameCore::Update() {
         float unit_rotation = units.second->GetRotation();
         event_queue_.emplace([=]() {
           AddParticle<particle::Stunning>(
-              unit_position, unit_rotation, RandomInCircle() * 4.0f, 0.2f,
+              unit_position, unit_rotation, RandomInCircle() * 4.0f, 1.0f,
               glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
         });
       }
