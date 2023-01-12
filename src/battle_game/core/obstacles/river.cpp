@@ -1,4 +1,5 @@
 #include "battle_game/core/obstacles/river.h"
+
 #include "battle_game/core/game_core.h"
 
 namespace battle_game::obstacle {
@@ -14,7 +15,7 @@ River::River(GameCore *game_core,
 bool River::IsBlocked(glm::vec2 p) const {
   auto pl = WorldToLocal(p);
   if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
-         pl.y >= -scale_.y) {
+      pl.y >= -scale_.y) {
     for (auto &bullet : game_core_->GetBullets()) {
       if (bullet.second->GetPosition() == p) {
         return false;
