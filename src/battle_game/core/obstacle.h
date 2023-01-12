@@ -12,6 +12,7 @@ class Obstacle : public Object {
   [[nodiscard]] virtual bool IsBlocked(glm::vec2 p) const = 0;
   void Update() override;
   void Render() override;
+  [[nodiscard]] virtual void handle_collision(glm::vec2 &p) const = 0;
 
  protected:
 };

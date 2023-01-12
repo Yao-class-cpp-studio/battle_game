@@ -141,6 +141,26 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
+void GameCore::handle_collision(glm::vec2 &p) {
+  if (IsOutOfRange(p)) {
+    if (p.x < boundary_low_.x)
+      p.x = boundary_low_.x;
+    if (p.y < boundary_low_.x)
+      p.y = boundary_low_.y;
+    if (p.x > boundary_high_.x)
+      p.x = boundary_high_.x;
+    if (p.y > boundary_high_.y)
+      p.y = boundary_high_.y;
+    return;
+  }
+  for (auto &obstacle : obstacles_) {
+    if (obstacle.second->IsBlocked(p)) {
+      obstacle.second->handle_collision(p);
+    }
+    continue;
+  }
+}
+
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
   event_queue_.emplace([this, unit_id, new_position]() {
     auto unit = GetUnit(unit_id);

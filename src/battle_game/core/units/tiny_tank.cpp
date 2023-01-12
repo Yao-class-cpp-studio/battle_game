@@ -105,16 +105,9 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-
-    if (game_core_->IsOutOfRange(new_position)) {
-      if (new_position.x < game_core_->get_boundary_low().x)
-        new_position.x = game_core_->get_boundary_low().x;
-      if (new_position.y < game_core_->get_boundary_low().y)
-        new_position.y = game_core_->get_boundary_low().y;
-      if (new_position.x > game_core_->get_boundary_high().x)
-        new_position.x = game_core_->get_boundary_high().x;
-      if (new_position.y > game_core_->get_boundary_high().y)
-        new_position.y = game_core_->get_boundary_high().y;
+    // collision with the wall
+    else {
+      game_core_->handle_collision(new_position);
       game_core_->PushEventMoveUnit(id_, new_position);
     }
     float rotation_offset = 0.0f;
