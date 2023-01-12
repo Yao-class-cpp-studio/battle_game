@@ -1,4 +1,4 @@
-#include "crash_tank_yangyr.h"
+#include "crash_tank.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
