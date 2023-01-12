@@ -1,4 +1,4 @@
-#include "pentagon_attacker_zzk882.h"
+#include "pentagon_attacker.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
@@ -11,14 +11,12 @@ uint32_t penta_body_model_index = 0xffffffffu;
 uint32_t penta_turret_model_index = 0xffffffffu;
 }  // namespace
 
-Pentagon_zzk882::Pentagon_zzk882(GameCore *game_core,
-                                 uint32_t id,
-                                 uint32_t player_id)
+Pentagon::Pentagon(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~penta_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
-      /* Pentagon_zzk882 Body */
+      /* Pentagon Body */
       penta_body_model_index = mgr->RegisterModel(
           {{{-0.8f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
            {{0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
@@ -77,7 +75,7 @@ Pentagon_zzk882::Pentagon_zzk882(GameCore *game_core,
   }
 }
 
-void Pentagon_zzk882::Render() {
+void Pentagon::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -86,13 +84,13 @@ void Pentagon_zzk882::Render() {
   battle_game::DrawModel(penta_turret_model_index);
 }
 
-void Pentagon_zzk882::Update() {
+void Pentagon::Update() {
   PentaMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 
-void Pentagon_zzk882::PentaMove(float move_speed, float rotate_angular_speed) {
+void Pentagon::PentaMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -124,7 +122,7 @@ void Pentagon_zzk882::PentaMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void Pentagon_zzk882::TurretRotate() {
+void Pentagon::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -136,7 +134,7 @@ void Pentagon_zzk882::TurretRotate() {
   }
 }
 
-void Pentagon_zzk882::Fire() {
+void Pentagon::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -159,7 +157,7 @@ void Pentagon_zzk882::Fire() {
   }
 }
 
-bool Pentagon_zzk882::IsHit(glm::vec2 position) const {
+bool Pentagon::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   if (position.y > 0.0f)
     return (4.0f * position.y - 5.0f * position.x < 4.0f) &&
@@ -168,11 +166,11 @@ bool Pentagon_zzk882::IsHit(glm::vec2 position) const {
     return position.y > -1.0f && position.x > -0.8f && position.x < 0.8f;
 }
 
-const char *Pentagon_zzk882::UnitName() const {
+const char *Pentagon::UnitName() const {
   return "Pentagon_attacker_ver_1.0";
 }
 
-const char *Pentagon_zzk882::Author() const {
+const char *Pentagon::Author() const {
   return "ZigZagKmp";
 }
 }  // namespace battle_game::unit

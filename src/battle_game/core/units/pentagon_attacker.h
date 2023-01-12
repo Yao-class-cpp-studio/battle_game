@@ -2,9 +2,9 @@
 #include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
-class Pentagon_zzk882 : public Unit {
+class Pentagon : public Unit {
  public:
-  Pentagon_zzk882(GameCore *game_core, uint32_t id, uint32_t player_id);
+  Pentagon(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
