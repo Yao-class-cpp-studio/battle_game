@@ -58,11 +58,12 @@ void CrashTank::Render() {
 }
 
 void CrashTank::Update() {
-  UFOMove(10.0f);
-  Fire();
+  Move(10.0f, glm ::radians(180.0f));
+  TurretRotate();
+  Crash();
 }
 
-void CrashTank::Move(float move_speed) {
+void CrashTank::Move(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -82,43 +83,74 @@ void CrashTank::Move(float move_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-
-    auto diff = input_data.mouse_cursor_position - position_;
-    float new_rotation;
-    if (glm::length(diff) < 1e-4) {
-      new_rotation = rotation_;
-    } else {
-      new_rotation = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
+    float rotation_offset = 0.0f;
+    if (input_data.key_down[GLFW_KEY_A]) {
+      rotation_offset += 1.0f;
     }
-    game_core_->PushEventRotateUnit(id_, new_rotation);
+    if (input_data.key_down[GLFW_KEY_D]) {
+      rotation_offset -= 1.0f;
+    }
+    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+    game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
 
 void CrashTank::Crash() {
-  if (fire_count_down_) {
-    fire_count_down_--;
-  } else {
+  if (is_crashed_ == false && is_crashing_ == true)
+  {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
-      auto &input_data = player->GetInputData();
-      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        auto angle = 360.0f / 20;
-        for (int i = -10; i < 10; ++i) {
-          auto angle_offset = glm::radians(angle * i);
-          velocity =
-              Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + angle_offset);
-          GenerateBullet<bullet::CannonBall>(
-              position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + angle_offset),
-              turret_rotation_ + angle_offset, GetDamageScale(), velocity);
-        }
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-      }
+      auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+      GenerateBullet<bullet::CannonBall>(
+          position_ + Rotate({0.0f, 1.2f}, turret_rotation_), turret_rotation_,
+          GetDamageScale(), velocity);
+    }
+    is_crashed_ = true;
+  }
+}
+
+glm::highp_vec2 CrashTank::FindEnemy() {
+  auto &units = game_core_->GetUnits();
+  auto it = units.begin();
+  auto itEnd = units.end();
+  auto diff = position_ - position_;
+  while (glm::length(diff) < 1e-4 && it != itEnd) {
+    diff = (it)->second->GetPosition() - position_;
+    it++;
+  }
+  auto next_diff = diff;
+  while (it != itEnd) {
+    next_diff = (it)->second->GetPosition() - position_;
+    if (glm::length(next_diff) >= 1e-4)
+      diff = glm::length(next_diff) < glm::length(diff) ? next_diff : diff;
+    it++;
+  }
+  if (glm::length(diff) < 2.0f) {
+    is_crashing_ = true;
+    return diff;
+  } else {
+    is_crashed_ = false;
+    is_crashing_ = false;
+    return position_ - position_;
+  }
+}
+
+void CrashTank::TurretRotate() {
+  auto player = game_core_->GetPlayer(player_id_);
+  if (player) {
+    auto diff = FindEnemy();
+    if (glm::length(diff) < 1e-4) {
+      // turret_rotation_ = rotation_;
+      fire_count_down_ = 1;
+    } else {
+      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
     }
   }
 }
 
 bool CrashTank::IsHit(glm::vec2 position) const {
+  if (is_crashed_ == false && is_crashing_ == true)
+    return true;
   position = WorldToLocal(position);
   return glm::length(position) < 1.0f;
 }
