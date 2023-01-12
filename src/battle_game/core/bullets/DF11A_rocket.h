@@ -2,9 +2,9 @@
 #include "battle_game/core/bullet.h"
 
 namespace battle_game::bullet {
-class DF11A_rocket : public Bullet {
+class dfRocket : public Bullet {
  public:
-  DF11A_rocket(GameCore *core,
+  dfRocket(GameCore *core,
              uint32_t id,
              uint32_t unit_id,
              uint32_t player_id,
@@ -12,7 +12,7 @@ class DF11A_rocket : public Bullet {
              float rotation,
              float damage_scale,
              glm::vec2 velocity);
-  ~DF11A_rocket() override;
+  ~dfRocket() override;
   void Render() override;
   void Update() override;
 
