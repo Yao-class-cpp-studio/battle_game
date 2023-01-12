@@ -100,7 +100,7 @@ void DoomTank::DestroyAll() {
   for (auto &unit : units) {
     
       if (unit.first == unit_id_) {
-        game_core_->PushEventDealDamage(unit.first, id_, 60.0f);
+        game_core_->PushEventDealDamage(unit.first, id_, 30.0f);
       } else {
         game_core_->PushEventDealDamage(unit.first, id_, 60.0f);
       }
