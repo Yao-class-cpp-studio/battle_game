@@ -1,7 +1,6 @@
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include <iostream>
 
 namespace battle_game::unit {
 
@@ -106,23 +105,23 @@ void RandomAttackingTank::TankMove(float move_speed, float rotate_angular_speed)
     float rotation_offset = 0.0f;
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
-    } 
+    }
     else {
       auto blocked_obstacle = game_core_->GetBlockedObstacle(new_position);
       if (blocked_obstacle != nullptr){
         auto normal = blocked_obstacle->GetSurfaceNormal(position_, new_position);
-        rotation_offset = - 2 * rotation_ 
+        rotation_offset = -2 * rotation_
           + 2 * std::atan2(normal.second.y, normal.second.x);
       }
     }
     if (move_rotation_count_down_) {
       move_rotation_count_down_--;
-    } 
+    }
     else {
-      rotation_offset += 
+      rotation_offset +=
         glm::radians(game_core_->RandomFloat() * 360.0f);
       rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-      move_rotation_count_down_ = kTickPerSecond/3;
+      move_rotation_count_down_ = kTickPerSecond / 3;
     }
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
@@ -134,20 +133,20 @@ void RandomAttackingTank::TurretRotate() {
     bool is_anti_clockwise = change_of_turret_rotation_ > 0;
     if (change_of_turret_rotation_ > glm::radians(5.0f)) {
       turret_rotation_count_down_ = 15;
-    } else if (change_of_turret_rotation_ < glm::radians(-5.0f) ) {
+    } else if (change_of_turret_rotation_ < glm::radians(-5.0f)) {
       turret_rotation_count_down_ = 15;
     }
     if (turret_rotation_count_down_) {
       turret_rotation_count_down_--;
-      if (is_anti_clockwise){
+      if (is_anti_clockwise) {
         change_of_turret_rotation_ -= glm::radians(0.4f);
       }
       else {
         change_of_turret_rotation_ += glm::radians(0.4f);
       }
-    } 
+    }
     else {
-      change_of_turret_rotation_ += 
+      change_of_turret_rotation_ +=
         glm::radians((game_core_->RandomFloat() - 0.5f) * 1.2f);
     }
     turret_rotation_ += change_of_turret_rotation_;
@@ -166,7 +165,7 @@ void RandomAttackingTank::Fire() {
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = 0.8*kTickPerSecond;  // Fire interval 0.8 second.
+        fire_count_down_ = 0.8 * kTickPerSecond;  // Fire interval 0.8 second.
       }
     }
   }

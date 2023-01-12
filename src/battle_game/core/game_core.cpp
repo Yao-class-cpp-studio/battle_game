@@ -105,17 +105,17 @@ void GameCore::Render() {
   }
 }
 /*
- * This function is used to update third-party-units. Some units are not 
- * operated by players nor future opponents, but are built-in moving units, 
- * which can also be considered as a part of the scene. 
+ * This function is used to update third-party-units. Some units are not
+ * operated by players nor future opponents, but are built-in moving units,
+ * which can also be considered as a part of the scene.
  * Thus this function is written to implement the generation or other utilities.
  * */
-void GameCore::SceneUpdate(){
+void GameCore::SceneUpdate() {
   if (generating_time_count_down_) {
     generating_time_count_down_--;
   } else {
     AddUnit<unit::RandomAttackingTank>(2);
-    generating_time_count_down_ = 10 * kTickPerSecond; 
+    generating_time_count_down_ = 10 * kTickPerSecond;
     // generating one RandomAttackingTank per 10 second
   }
 }
