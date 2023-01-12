@@ -13,7 +13,7 @@ class CrashTank : public Unit {
   void Move(float move_speed, float rotate_angular_speed);
   void Crash();
   glm::highp_vec2 FindEnemy();
-  void CrashTank::TurretRotate();
+  void TurretRotate();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
