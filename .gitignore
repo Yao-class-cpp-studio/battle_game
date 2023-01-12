@@ -5,5 +5,7 @@ cmake-build-*
 build
 out
 CMakeSettings.json
+compile_commands.json
+.cache/
 /.vs/
 /out/
