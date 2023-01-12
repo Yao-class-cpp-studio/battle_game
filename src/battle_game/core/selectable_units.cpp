@@ -29,6 +29,7 @@ void GameCore::GeneratePrimaryUnitList() {
   /*
    * TODO: Add Your Unit Here!
    * */
+  ADD_SELECTABLE_UNIT(unit::TwoWayJet);
   ADD_SELECTABLE_UNIT(unit::JoJo);
   ADD_SELECTABLE_UNIT(unit::RoundUFO);
   ADD_SELECTABLE_UNIT(unit::Tank);
