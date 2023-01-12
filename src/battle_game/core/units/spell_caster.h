@@ -1,6 +1,6 @@
 #pragma once
-#include "battle_game/core/unit.h"
 #include "battle_game/core/input_data.h"
+#include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
 class SpellCaster : public Unit {
@@ -11,7 +11,9 @@ class SpellCaster : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  [[nodiscard]] const char *SpellCaster::Author() const override { return "BAN_43_32532"; }
+  [[nodiscard]] const char *SpellCaster::Author() const override {
+    return "BAN_43_32532";
+  }
   float getCursorDirection(glm::vec2 mouse_position);
   template <class BulletType>
   void Fire(float direction, float speed) {
@@ -22,10 +24,7 @@ class SpellCaster : public Unit {
   float SlowModeScale(float speed);
   void Move();
   virtual void Spell();
-  enum {
-    Arrow,
-    WASD,
-    Mouse } move_mode_{Arrow};
+  enum { Arrow, WASD, Mouse } move_mode_{Arrow};
   bool auto_move_{false};
   bool auto_spell_{true};
   InputData input_{};
