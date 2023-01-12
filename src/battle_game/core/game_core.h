@@ -23,6 +23,9 @@ constexpr float kSecondPerTick = 1.0f / float(kTickPerSecond);
 class GameCore {
  public:
   GameCore();
+  int get_score();
+  void increase_score();
+  void decrease_score();
 
   void SetScene();
 
@@ -215,6 +218,8 @@ class GameCore {
       primary_unit_allocation_functions_;
   std::vector<std::string> selectable_unit_list_;
   std::vector<bool> selectable_unit_list_skill_;
+
+  int score_{0};
 };
 
 template <class BulletType, class... Args>

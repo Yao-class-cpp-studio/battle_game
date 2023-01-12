@@ -28,6 +28,7 @@ void CannonBall::Update() {
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;
+    game_core_->decrease_score();
   }
 
   auto &units = game_core_->GetUnits();
@@ -38,6 +39,7 @@ void CannonBall::Update() {
     if (unit.second->IsHit(position_)) {
       game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
       should_die = true;
+      game_core_->increase_score();
     }
   }
 

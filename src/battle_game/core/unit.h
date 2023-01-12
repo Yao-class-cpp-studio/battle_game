@@ -88,6 +88,9 @@ class Unit : public Object {
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
 
+
+
+
  private:
   float fadeout_health_;
 };

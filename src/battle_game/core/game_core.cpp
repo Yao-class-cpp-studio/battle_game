@@ -173,6 +173,12 @@ Bullet *GameCore::GetBullet(uint32_t bullet_id) const {
   return bullets_.at(bullet_id).get();
 }
 
+int GameCore::get_score(){return score_;}
+
+void GameCore::increase_score(){score_+=5;}
+
+void GameCore::decrease_score(){score_-=5;if(score_<0)score_ = 0;}
+
 Particle *GameCore::GetParticle(uint32_t particle_id) const {
   if (!particles_.count(particle_id)) {
     return nullptr;
