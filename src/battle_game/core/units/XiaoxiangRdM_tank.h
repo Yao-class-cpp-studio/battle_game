@@ -20,7 +20,6 @@ class XXRdMTank : public Tank {
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
-  uint32_t fire_count_down_{0};
   uint32_t teleport_count_down_{360};
   uint32_t healthcare_count_down_{1200};
 
