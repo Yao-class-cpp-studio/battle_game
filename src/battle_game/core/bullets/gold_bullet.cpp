@@ -3,7 +3,7 @@
 #include "battle_game/core/particles/particles.h"
 
 namespace battle_game::bullet {
-gold_bullet::gold_bullet(GameCore *core,
+goldBullet::goldBullet(GameCore *core,
                        uint32_t id,
                        uint32_t unit_id,
                        uint32_t player_id,
@@ -15,14 +15,14 @@ gold_bullet::gold_bullet(GameCore *core,
       velocity_(velocity) {
 }
 
-void gold_bullet::Render() {
+void goldBullet::Render() {
   SetTransformation(position_, rotation_, glm::vec2{1.0f});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/gold.png");
   DrawModel(0);
 }
 
-void gold_bullet::Update() {
+void goldBullet::Update() {
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
@@ -45,7 +45,7 @@ void gold_bullet::Update() {
   }
 }
 
-gold_bullet::~gold_bullet() {
+goldBullet::~goldBullet() {
   for (int i = 0; i < 5; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
         position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
