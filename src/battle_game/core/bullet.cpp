@@ -12,7 +12,6 @@ Bullet::Bullet(GameCore *core,
       unit_id_(unit_id),
       player_id_(player_id),
       damage_scale_(damage_scale) {
-        object_type_ = bullet_;
 }
 
 Bullet::~Bullet() = default;

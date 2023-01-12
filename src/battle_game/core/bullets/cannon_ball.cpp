@@ -14,7 +14,6 @@ CannonBall::CannonBall(GameCore *core,
                        glm::vec2 velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
-        bullet_type_ = cannon_ball;
 }
 
 void CannonBall::Render() {
@@ -28,11 +27,7 @@ void CannonBall::Update() {
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
-    if(!(game_core_->IsOutOfRange(position_)) && 
-    game_core_->GetBlockedObstacle(position_)->GetObstacleType() == river)
-      should_die = false;
-    else
-      should_die = true;
+    should_die = true;
   }
 
   auto &units = game_core_->GetUnits();

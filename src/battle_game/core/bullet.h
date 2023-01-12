@@ -4,14 +4,6 @@
 #include "cstdint"
 
 namespace battle_game {
-enum BulletType // use lowercase to avoid class name
-{
-  untracked_bullet,     
-  cannon_ball
-  // add your bullet here:
-  
-};
-
 class GameCore;
 class Bullet : public Object {
  public:
@@ -23,14 +15,10 @@ class Bullet : public Object {
          float rotation,
          float damage_scale);
   ~Bullet() override;
-  [[nodiscard]] BulletType GetBulletType() const {
-      return bullet_type_;
-  }
 
  protected:
   uint32_t unit_id_{};
   uint32_t player_id_{};
   float damage_scale_{1.0f};
-  BulletType bullet_type_{untracked_bullet};
 };
 }  // namespace battle_game

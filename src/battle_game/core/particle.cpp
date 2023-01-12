@@ -6,6 +6,5 @@ Particle::Particle(GameCore *game_core,
                    glm::vec2 position,
                    float rotation)
     : Object(game_core, id, position, rotation) {
-        object_type_ = particle_;
 }
 }  // namespace battle_game
