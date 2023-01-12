@@ -14,24 +14,28 @@ Tankyzc::Tankyzc(GameCore *game_core,uint32_t id,uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
+////////////////////////////////////
+////////////Slower speed////////////
+////////////////////////////////////
 void Tankyzc::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  TankMove(2.0f, glm::radians(180.0f));
   TurretRotate();
-  BigFire();
+  Machinegun();
 }
 
 /////////////////////////////////////////////////
-//////////////////200 health/////////////////////
+//////////////////200 maxhealth//////////////////
 /////////////////////////////////////////////////
 float Tankyzc::BasicMaxHealth() const {
   return 200.0f;
 }
 
 //////////////////////////////////////////////////
-///////////////////Modify Fire////////////////////
+//Modify Fire to make it like a machine gun
+//It can fire continuous bullet
 /////////////////////////////////////////////////
 
-void Tankyzc::BigFire() {
+void Tankyzc::Machinegun() {
   if (fire_count_down_==0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {

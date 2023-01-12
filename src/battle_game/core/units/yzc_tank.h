@@ -8,7 +8,7 @@ class Tankyzc : public Tank {
   void Update() override;
   [[nodiscard]] float BasicMaxHealth() const override;
  protected:
-  void BigFire();
+  void Machinegun();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
