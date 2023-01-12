@@ -37,6 +37,7 @@ Rocket::Rocket(GameCore *core,
 
 void Rocket::Render() {
   SetTransformation(position_, rotation_, glm::vec2{1.0f});
+  SetColor(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
   SetTexture("../../textures/rocket.png");
   DrawModel(0);
 }
