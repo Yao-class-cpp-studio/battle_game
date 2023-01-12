@@ -1,7 +1,8 @@
+#include "crash_tank_yangyr.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "crash_tank.h"
 
 namespace battle_game::unit {
 
@@ -96,8 +97,7 @@ void CrashTank::Move(float move_speed, float rotate_angular_speed) {
 }
 
 void CrashTank::Crash() {
-  if (is_crashed_ == false && is_crashing_ == true)
-  {
+  if (is_crashed_ == false && is_crashing_ == true) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
