@@ -11,7 +11,7 @@ class SpellCaster : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  [[nodiscard]] const char *SpellCaster::Author() const override {
+  [[nodiscard]] const char *Author() const override {
     return "BAN_43_32532";
   }
   float getCursorDirection(glm::vec2 mouse_position);
