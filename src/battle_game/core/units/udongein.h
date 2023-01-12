@@ -1,12 +1,12 @@
 #pragma once
-#include "battle_game/core/units/spell_caster.h"
 #include "battle_game/core/unit.h"
+#include "battle_game/core/units/spell_caster.h"
 
 namespace battle_game::unit {
 class Udongein : public SpellCaster {
  public:
   Udongein(GameCore *game_core, uint32_t id, uint32_t player_id);
-  //void Render() override;
+  // void Render() override;
 
  protected:
   [[nodiscard]] const char *UnitName() const override {

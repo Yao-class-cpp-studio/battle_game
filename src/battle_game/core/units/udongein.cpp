@@ -1,9 +1,9 @@
 #include "udongein.h"
-#include "spell_caster.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
+#include "spell_caster.h"
 
 namespace battle_game::unit {
 
@@ -16,7 +16,7 @@ Udongein::Udongein(GameCore *game_core, uint32_t id, uint32_t player_id)
   move_mode_ = Arrow;
   hitbox_radius_ = 0.5f;
   speed_ = 10.0f;
-  }
+}
 /*
 void Udongein::Render() {
   battle_game::SetTransformation(position_, rotation_, glm::vec2{20.f});
@@ -54,8 +54,8 @@ void Udongein::FocusedFire() {
   if (focused_fire.clock > 0)
     focused_fire.clock -= 10;
   else {
-    Fire<bullet::CannonBall>(
-        getCursorDirection(input_.mouse_cursor_position), 20.0f);
+    Fire<bullet::CannonBall>(getCursorDirection(input_.mouse_cursor_position),
+                             20.0f);
     focused_fire.clock = kTickPerSecond;
   }
 }
@@ -72,8 +72,7 @@ void Udongein::BoundaryBetweenWavesAndParticles() {
     for (uint32_t i = 0; i < boundary_between_waves_and_particles.line; i++)
       Fire<bullet::CannonBall>(
           boundary_between_waves_and_particles.angle + i * angle_diff_, 5.0f);
-    boundary_between_waves_and_particles.clock =
-        kTickPerSecond;
+    boundary_between_waves_and_particles.clock = kTickPerSecond;
   }
 }
 }  // namespace battle_game::unit

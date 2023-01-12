@@ -25,7 +25,8 @@ SpellCaster::SpellCaster(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void SpellCaster::Render() {
-  battle_game::SetTransformation(position_, 0.0f, glm::vec2{1.0f, 114.0f/80.0f});
+  battle_game::SetTransformation(position_, 0.0f,
+                                 glm::vec2{1.0f, 114.0f / 80.0f});
   battle_game::SetTexture("../../textures/udongein_model.png");
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
   battle_game::DrawModel(0);
@@ -171,9 +172,11 @@ void SpellCaster::Move() {
   move_direction_ = std::atan2(offset.y, offset.x) - glm::radians(90.0f);
   offset *= kSecondPerTick * SlowModeScale(speed_) * GetSpeedScale();
   auto new_position = position_;
-  if (!game_core_->IsBlockedByObstacles(new_position + glm::vec2{offset.x, 0.0f}))
+  if (!game_core_->IsBlockedByObstacles(new_position +
+                                        glm::vec2{offset.x, 0.0f}))
     new_position += glm::vec2{offset.x, 0.0f};
-  if (!game_core_->IsBlockedByObstacles(new_position + glm::vec2{0.0f, offset.y}))
+  if (!game_core_->IsBlockedByObstacles(new_position +
+                                        glm::vec2{0.0f, offset.y}))
     new_position += glm::vec2{0.0f, offset.y};
   game_core_->PushEventMoveUnit(id_, new_position);
 }
