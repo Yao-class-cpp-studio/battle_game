@@ -1,7 +1,8 @@
 #pragma once
+
+#include "battle_game/core/game_core.h"
 #include "battle_game/core/unit.h"
 #include "battle_game/core/units/tiny_tank.h"
-#include "battle_game/core/game_core.h"
 
 namespace battle_game::unit {
 class HealTank : public Tank {

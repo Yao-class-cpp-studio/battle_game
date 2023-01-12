@@ -5,13 +5,13 @@
 
 namespace battle_game::bullet {
 InhaleBullet::InhaleBullet(GameCore *core,
-                       uint32_t id,
-                       uint32_t unit_id,
-                       uint32_t player_id,
-                       glm::vec2 position,
-                       float rotation,
-                       float damage_scale,
-                       glm::vec2 velocity)
+                           uint32_t id,
+                           uint32_t unit_id,
+                           uint32_t player_id,
+                           glm::vec2 position,
+                           float rotation,
+                           float damage_scale,
+                           glm::vec2 velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
 }
@@ -36,9 +36,11 @@ void InhaleBullet::Update() {
       continue;
     }
     if (unit.second->IsHit(position_)) {
-      game_core_->PushEventDealDamage(unit.first, unit_id_, damage_scale_ * 10.0f);
+      game_core_->PushEventDealDamage(unit.first, unit_id_,
+                                      damage_scale_ * 10.0f);
       auto src_unit = game_core_->GetUnit(unit_id_);
-      src_unit->SetHealth(src_unit->GetHealth() + 2.0f / src_unit->GetMaxHealth());
+      src_unit->SetHealth(src_unit->GetHealth() +
+                          2.0f / src_unit->GetMaxHealth());
       should_die = true;
     }
   }
