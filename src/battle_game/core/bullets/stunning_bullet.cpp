@@ -1,7 +1,7 @@
 #include "battle_game/core/bullets/stunning_bullet.h"
 
-#include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
+#include "battle_game/core/game_core.h"
 
 namespace battle_game::bullet {
 StunningBullet::StunningBullet(GameCore *core,
