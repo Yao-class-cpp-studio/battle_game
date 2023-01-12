@@ -79,14 +79,17 @@ glm::highp_vec2 NeutralTurret::findEnermy() {
   auto itEnd = units.end();
   auto diff = position_ - position_;
   while (glm::length(diff) < 1e-4 && it != itEnd) {
-    diff = (it)->second->GetPosition() - position_;
+    if (it->second->GetPlayerId() != player_id_)
+      diff = (it)->second->GetPosition() - position_;
     it++;
   }
   auto next_diff = diff;
   while (it != itEnd) {
-    next_diff = (it)->second->GetPosition() - position_;
-    if (glm::length(next_diff) >= 1e-4)
-      diff = glm::length(next_diff) < glm::length(diff) ? next_diff : diff;
+    if (it->second->GetPlayerId() != player_id_) {
+      next_diff = (it)->second->GetPosition() - position_;
+      if (glm::length(next_diff) >= 1e-4)
+        diff = glm::length(next_diff) < glm::length(diff) ? next_diff : diff;
+    }
     it++;
   }
   if (glm::length(diff) < range_)
