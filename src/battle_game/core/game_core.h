@@ -34,6 +34,9 @@ class GameCore {
   void GeneratePrimaryUnitList();
   uint32_t AllocatePrimaryUnit(uint32_t player_id);
   [[nodiscard]] std::vector<const char *> GetSelectableUnitList() const;
+  [[nodiscard]] const std::vector<bool> &GetSelectableUnitListSkill() const {
+    return selectable_unit_list_skill_;
+  }
 
   void Update();
   void Render();
@@ -123,6 +126,7 @@ class GameCore {
 
   [[nodiscard]] bool IsOutOfRange(glm::vec2 p) const;
   [[nodiscard]] bool IsBlockedByObstacles(glm::vec2 p) const;
+  [[nodiscard]] Obstacle *GetBlockedObstacle(glm::vec2 p) const;
 
   void PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position);
   void PushEventRotateUnit(uint32_t unit_id, float new_rotation);
@@ -187,6 +191,8 @@ class GameCore {
   glm::vec2 RandomInCircle();
 
  private:
+  std::queue<std::function<void()>> event_queue_;
+
   std::map<uint32_t, std::unique_ptr<Unit>> units_;
   uint32_t unit_index_{1};
   uint32_t treasure_index_{998244};
@@ -203,8 +209,6 @@ class GameCore {
       0};  // This is a player id, defines which player is currently watching
            // the scene. 0 denote neutral.
 
-  std::queue<std::function<void()>> event_queue_;
-
   glm::vec2 camera_position_{0.0f};
   float camera_rotation_{0.0f};
 
@@ -218,6 +222,7 @@ class GameCore {
   std::vector<std::function<uint32_t(uint32_t)>>
       primary_unit_allocation_functions_;
   std::vector<std::string> selectable_unit_list_;
+  std::vector<bool> selectable_unit_list_skill_;
 };
 
 template <class BulletType, class... Args>
