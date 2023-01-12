@@ -1,6 +1,5 @@
 #pragma once
 #include "battle_game/core/unit.h"
-
 #include "battle_game/core/units/tiny_tank.h"
 
 namespace battle_game::unit {
@@ -24,4 +23,4 @@ class Sparky : public Tank {
   uint32_t fire_count_down_{0};
   uint32_t mine_count_down_{0};
 };
-}
+}  // namespace battle_game::unit

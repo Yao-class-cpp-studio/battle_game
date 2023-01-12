@@ -82,11 +82,10 @@ void Sparky::Update() {
   Fire();
 }
 
-
 void Sparky::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
-    turret_rotation_=rotation_;
+    turret_rotation_ = rotation_;
   }
 }
 
@@ -102,7 +101,7 @@ void Sparky::Fire() {
         GenerateBullet<bullet::ElectricBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = 4* kTickPerSecond;  // Fire interval 4 seconds.
+        fire_count_down_ = 4 * kTickPerSecond;  // Fire interval 4 seconds.
       }
     }
   }
@@ -115,15 +114,15 @@ bool Sparky::IsHit(glm::vec2 position) const {
          position.y - position.x < 1.6f;
 }
 
-float Sparky::GetDamageScale() const{
+float Sparky::GetDamageScale() const {
   return 1.0f;
 }
 
-float Sparky::GetHealthScale() const{
+float Sparky::GetHealthScale() const {
   return 0.7f;
 }
 
-float Sparky::GetSpeedScale() const{
+float Sparky::GetSpeedScale() const {
   return 0.7f;
 }
 
