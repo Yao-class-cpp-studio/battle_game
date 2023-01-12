@@ -38,6 +38,7 @@ class GameCore {
 
   void Update();
   void Render();
+  void SceneUpdate();
 
   template <class UnitType, class... Args>
   uint32_t AddUnit(uint32_t player_id, Args... args) {
@@ -216,6 +217,7 @@ class GameCore {
       primary_unit_allocation_functions_;
   std::vector<std::string> selectable_unit_list_;
   std::vector<bool> selectable_unit_list_skill_;
+  uint32_t generating_time_count_down_{300};
 };
 
 template <class BulletType, class... Args>
