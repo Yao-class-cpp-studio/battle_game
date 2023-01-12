@@ -1,4 +1,5 @@
 #pragma once
+#include "battle_game/core/particles/bullet_hole.h"
 #include "battle_game/core/particles/bullet_storage_.h"
 #include "battle_game/core/particles/expansion_.h"
 #include "battle_game/core/particles/penetrating_.h"
