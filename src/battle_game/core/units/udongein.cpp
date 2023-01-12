@@ -9,6 +9,7 @@ namespace battle_game::unit {
 
 namespace {
 uint32_t model_index = 0xffffffffu;
+uint32_t hitbox_model_index = 0xffffffffu;
 }  // namespace
 
 Udongein::Udongein(GameCore *game_core, uint32_t id, uint32_t player_id)
@@ -17,13 +18,14 @@ Udongein::Udongein(GameCore *game_core, uint32_t id, uint32_t player_id)
   hitbox_radius_ = 0.5f;
   speed_ = 10.0f;
 }
-/*
+
 void Udongein::Render() {
-  battle_game::SetTransformation(position_, rotation_, glm::vec2{20.f});
+  battle_game::SetTransformation(position_, 0.0f,
+                                 glm::vec2{1.0f, 114.0f / 80.0f});
   battle_game::SetTexture("../../textures/udongein_model.png");
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(model_index);
-  }*/
+  battle_game::DrawModel(0);
+}
 
 void Udongein::Spell() {
   if (input_.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT])

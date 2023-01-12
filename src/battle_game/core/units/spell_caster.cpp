@@ -25,16 +25,10 @@ SpellCaster::SpellCaster(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void SpellCaster::Render() {
-  battle_game::SetTransformation(position_, 0.0f,
-                                 glm::vec2{1.0f, 114.0f / 80.0f});
-  battle_game::SetTexture("../../textures/udongein_model.png");
-  battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(0);
-  /*
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(model_index);*/
+  battle_game::DrawModel(model_index);
 }
 
 void SpellCaster::Update() {
