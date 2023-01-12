@@ -8,7 +8,7 @@ class Particle : public Object {
            uint32_t id,
            glm::vec2 position,
            float rotation = 0.0f);
-           
+ 
  private:
 };
 }  // namespace battle_game
