@@ -3,7 +3,7 @@ list(APPEND LIBRARY_LIST ${lib_name})
 
 add_library(${lib_name})
 file(GLOB_RECURSE source_files *.cpp *.h)
-target_sources(${lib_name} PRIVATE ${source_files} "units/wmj_tank.cpp" "units/wmj_tank.h" "bullets/gold_bullet.h" "bullets/DF11A_rocket.cpp"  "bullets/laser.h" "bullets/laser.cpp")
+target_sources(${lib_name} PRIVATE ${source_files})
 target_link_libraries(${lib_name} PRIVATE grassland)
 target_include_directories(${lib_name} PRIVATE ${BATTLE_GAME_EXTERNAL_INCLUDE_DIRS} ${BATTLE_GAME_INCLUDE_DIR})
 
