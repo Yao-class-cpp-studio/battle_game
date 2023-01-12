@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 
 namespace battle_game {
+  
 class Bullet;
 
 class Unit : public Object {
