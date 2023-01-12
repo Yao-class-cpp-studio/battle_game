@@ -92,6 +92,7 @@ class GameCore {
   [[nodiscard]] Bullet *GetBullet(uint32_t bullet_id) const;
   [[nodiscard]] Particle *GetParticle(uint32_t particle_id) const;
   [[nodiscard]] Obstacle *GetObstacle(uint32_t obstacle_id) const;
+  [[nodiscard]] uint32_t GetBlockedObstacleId(glm::vec2 p) const;
   [[nodiscard]] Player *GetPlayer(uint32_t player_id) const;
   [[nodiscard]] const std::map<uint32_t, std::unique_ptr<Unit>> &GetUnits()
       const {
@@ -127,7 +128,11 @@ class GameCore {
   void PushEventDealDamage(uint32_t dst_unit_id,
                            uint32_t src_unit_id,
                            float damage);
+  void PushEventDealDamageObstacle(uint32_t dst_obstacle_id,
+                                   uint32_t src_unit_id,
+                                   float damage);
   void PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id);
+  void PushEventKillObstacle(uint32_t dst_obstacle_id, uint32_t src_unit_id);
   void PushEventRemoveObstacle(uint32_t obstacle_id);
   void PushEventRemoveBullet(uint32_t bullet_id);
   void PushEventRemoveParticle(uint32_t particle_id);

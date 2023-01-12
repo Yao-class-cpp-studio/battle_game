@@ -47,7 +47,19 @@ void ReboundingBall::Update() {
         velocity_ = velocity_ -
                     vec2_dot(normal.second, velocity_) * normal.second * 2.0f;
         should_die = false;
+      } else {
+        uint32_t obstacle_id = game_core_->GetBlockedObstacleId(position_);
+        if (obstacle_id)
+          game_core_->PushEventDealDamageObstacle(obstacle_id, id_,
+                                                  damage_scale_ * 5.0f);
+        should_die = true;
       }
+    } else {
+      uint32_t obstacle_id = game_core_->GetBlockedObstacleId(position_);
+      if (obstacle_id)
+        game_core_->PushEventDealDamageObstacle(obstacle_id, id_,
+                                                damage_scale_ * 5.0f);
+      should_die = true;
     }
   }
 

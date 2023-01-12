@@ -27,6 +27,11 @@ void WaterDrop::Update() {
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
+    uint32_t obstacle_id = game_core_->GetBlockedObstacleId(position_);
+    if (obstacle_id) {
+      auto damage = game_core_->GetObstacle(obstacle_id)->GetMaxHealth();
+      game_core_->PushEventDealDamageObstacle(obstacle_id, id_, damage);
+    }
     should_die = true;
   }
 

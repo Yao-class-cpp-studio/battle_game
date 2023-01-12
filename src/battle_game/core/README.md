@@ -24,7 +24,7 @@ protected:
 
 - game_core_
   - 这是一个指向游戏核心类的指针，会在对象被创建时赋值。当对象在运行过程中需要与游戏内其他元素交互时，
-你可以通过这个指针调用游戏核心的相应功能函数。
+  你可以通过这个指针调用游戏核心的相应功能函数。
   - 约定：被用于游戏中的对象，game_core_ 一定指向合法的对象，且在过程中不更改其值。
   - 约定：game_core_ 为 nullptr 时，则当前对象是在进行一些游戏内容外的测试，此时该对象游戏逻辑部分代码不会也不应该被调用。
 - id_
@@ -163,16 +163,50 @@ struct Skill {
 
 障碍物类声明在 [obstacle.h](obstacle.h) 中，该类对象主要用于组成游戏场景。
 
-- GetSurfaceNormal
-  - 给定向量的始点与终点信息，返回向量与物体表面相交处对应的表面单位法向量信息。我们约定其返回值的第一项为给定线段与表面的交点，第二项为单位法向量的方向。
-  - 主要用于实现子弹的反弹。对于障碍物（对于某些子弹）不应该返回对应表面单位法向量的情况，我们约定返回值中单位法向量的方向设为 (0,0)。
+### 成员变量
+
+- health_
+  - 这个变量表示单位的生命值
+  - 取值范围为 [0, 1]，即剩余生命相对于最大生命值生命值的比例。
+  - 单位实际生命值为 `GetMaxHealth() * health_`
+  - 这样定义是为了方便动态地对最大声明值进行调整，以实现一些复杂机制。
+  - 该值归 0 时单位死亡。
+- lifebar_*
+  - 这些变量保存了生命条的设置，请通过set来修改
+- fadeout_health_
+  - 保存生命条渐变的起始位置。（一般不需要修改）
 
 ### 成员函数
+
+- BasicMaxHealth
+  - 这是一个虚函数
+  - 最大生命值基准，默认为 100.0
+  - 表示生命值基础数值
+  - 你可以在不同单位的实现中通过 `override` 修改单位的基础生命值
+- GetHealthScale
+  - 生命值倍率，默认为 1.0
+  - 你可以编写这部分的计算逻辑以实现增强或衰弱生命值的功能
+- GetMaxHealth
+  - 最大生命值
+  - 定义为基础生命值乘以生命值倍率
+- Set/GetLifeBar*
+  - 修改/获取各种生命条设置
+- RenderLifeBar
+  - 这是一个虚函数
+  - 渲染该对象对应的生命条
+- Hide/ShowLifeBar
+  - 隐藏/显示生命条
+- RenderHelper
+  - 这是一个虚函数
+  - 仅在该单位所有者玩家的视角中，渲染该对象用于辅助的一些视觉效果（例如子弹射出的预计轨迹）
 
 - IsBlocked
   - 这是一个虚函数
   - 该函数用于判断传入参数**世界空间**坐标 `position` 是否被该障碍物阻挡
   - 你可以在子类实现中通过 `override` 定义不同的障碍物作用模式
+- GetSurfaceNormal
+  - 给定向量的始点与终点信息，返回向量与物体表面相交处对应的表面单位法向量信息。我们约定其返回值的第一项为给定线段与表面的交点，第二项为单位法向量的方向。
+  - 主要用于实现子弹的反弹。对于障碍物（对于某些子弹）不应该返回对应表面单位法向量的情况，我们约定返回值中单位法向量的方向设为 (0,0)。
 
 ## Bullet
 
@@ -214,6 +248,9 @@ struct Skill {
   - 获取所有现存的障碍物
 - GetBlockedObstacle
   - 判断传入参数**世界空间**坐标 `position` 是否被某障碍物阻挡。如果是，返回对应障碍物对象的指针
+- GetBlockedObstacleId
+    - 判断传入参数**世界空间**坐标 `position` 是否被某障碍物阻挡。如果是，返回对应障碍物对象的编号，否则返回0。
+
 - GetBullet
     - 根据输入的**子弹编号**（Bullet ID），返回对应子弹对象的指针
     - 若**子弹编号**指向的子弹已经被删除或编号不合法，则返回 `nullptr`
@@ -243,7 +280,11 @@ void PushEventRotateUnit(uint32_t unit_id, float new_rotation);
 void PushEventDealDamage(uint32_t dst_unit_id,
                            uint32_t src_unit_id,
                            float damage);
+void PushEventDealDamageObstacle(uint32_t dst_obstacle_id,
+                           uint32_t src_unit_id,
+                           float damage);
 void PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id);
+void PushEventKillObstacle(uint32_t dst_obstacle_id, uint32_t src_unit_id);
 void PushEventRemoveObstacle(uint32_t obstacle_id);
 void PushEventRemoveBullet(uint32_t bullet_id);
 void PushEventRemoveParticle(uint32_t particle_id);
@@ -264,9 +305,17 @@ void PushEventGenerateBullet(uint32_t unit_id,
   - 压入一个单位旋转事件
 - PushEventDealDamage
   - 压入一个伤害事件
+- PushEventDealDamageObstacle
+  - 压入一个破坏障碍物事件
+  - 在本函数内判断障碍物是否可被破坏，如不可被破坏，则本事件无效
+
 - PushEventKillUnit
   - 压入一个击杀事件
   - 这种事件通常通过伤害事件产生
+- PushEventKillObstacle
+  - 压入一个击毁障碍物事件
+  - 这种事件通常通过破坏障碍物事件产生
+  - 如障碍物不可被破坏，则本事件无效
 - PushEventRemoveObstacle
   - 压入一个障碍物移除事件
 - PushEventRemoveBullet

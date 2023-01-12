@@ -1,5 +1,4 @@
 #include "battle_game/core/game_core.h"
-
 namespace battle_game {
 
 GameCore::GameCore() {
@@ -96,6 +95,9 @@ void GameCore::Render() {
   for (auto &units : units_) {
     units.second->RenderLifeBar();
   }
+  for (auto &obstacles : obstacles_) {
+    obstacles.second->RenderLifeBar();
+  }
   if (observer) {
     auto observing_unit = GetUnit(observer->GetPrimaryUnitId());
     if (observing_unit) {
@@ -155,6 +157,16 @@ Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
       }
   }
   return nullptr;
+}
+
+uint32_t GameCore::GetBlockedObstacleId(glm::vec2 p) const {
+  if (!IsOutOfRange(p)) {
+    for (auto &obstacle : obstacles_)
+      if (obstacle.second->IsBlocked(p)) {
+        return obstacle.first;
+      }
+  }
+  return 0;
 }
 
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
@@ -229,6 +241,21 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
   });
 }
 
+void GameCore::PushEventDealDamageObstacle(uint32_t dst_obstacle_id,
+                                           uint32_t src_unit_id,
+                                           float damage) {
+  event_queue_.emplace([=]() {
+    auto obstacle = GetObstacle(dst_obstacle_id);
+    if (obstacle && obstacle->IsDestructible()) {
+      obstacle->SetHealth(obstacle->GetHealth() -
+                          damage / obstacle->GetMaxHealth());
+      if (obstacle->GetHealth() <= 0.0f) {
+        PushEventKillObstacle(dst_obstacle_id, src_unit_id);
+      }
+    }
+  });
+}
+
 void GameCore::PushEventRemoveObstacle(uint32_t obstacle_id) {
   event_queue_.emplace([=]() {
     if (obstacles_.count(obstacle_id)) {
@@ -263,6 +290,15 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
 
 void GameCore::PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id) {
   event_queue_.emplace([=]() { PushEventRemoveUnit(dst_unit_id); });
+}
+
+void GameCore::PushEventKillObstacle(uint32_t dst_obstacle_id,
+                                     uint32_t src_unit_id) {
+  event_queue_.emplace([=]() {
+    auto obstacle = GetObstacle(dst_obstacle_id);
+    if (obstacle && obstacle->IsDestructible())
+      PushEventRemoveObstacle(dst_obstacle_id);
+  });
 }
 
 float GameCore::RandomFloat() {

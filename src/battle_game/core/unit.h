@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+
 #include "battle_game/core/object.h"
 #include "glm/glm.hpp"
 
