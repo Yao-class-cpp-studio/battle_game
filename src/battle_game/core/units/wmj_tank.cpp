@@ -123,7 +123,7 @@ void wmjTank::Fire() {
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] &&
           tank_number == 2) {
         auto velocity = Rotate(glm::vec2{0.0f, 10.0f}, turret_rotation_);
-        GenerateBullet<bullet::goldBullet>(
+        GenerateBullet<bullet::GoldBullet>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond; 
@@ -139,7 +139,7 @@ void wmjTank::Fire() {
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] &&
           tank_number == 3) {
         auto velocity = Rotate(glm::vec2{0.0f, 5.0f}, turret_rotation_);
-        GenerateBullet<bullet::dfRocket>(
+        GenerateBullet<bullet::DFRocket>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond ;
