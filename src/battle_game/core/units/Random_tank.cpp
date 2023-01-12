@@ -15,7 +15,7 @@ void RandomTank::Render() {
 }
 
 void RandomTank::Update() {
-  TankMove(3.0f , glm::radians(180.0f));
+  TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
@@ -30,11 +30,11 @@ void RandomTank::Fire() {
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         int tms = game_core_->RandomInt(1, 5);
-        for (int i=0;i<tms;i++)
+        for (int i = 0; i < tms; i++)
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = 2*kTickPerSecond;  // Fire interval 2 second.
+        fire_count_down_ = 2 * kTickPerSecond;  // Fire interval 2 second.
       }
     }
   }
