@@ -77,6 +77,10 @@ class Unit : public Object {
     return skills_;
   }
 
+  virtual bool Distant(Object *object_pointer) {
+    return false;
+  };
+
  protected:
   uint32_t player_id_{};
   float health_{1.0f};

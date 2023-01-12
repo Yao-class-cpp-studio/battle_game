@@ -99,14 +99,20 @@ void Unit::RenderLifeBar() {
     SetTexture(0);
     DrawModel(life_bar_model_index);
     glm::vec2 shift = {(float)lifebar_length_ * (1 - health) / 2, 0.0f};
-    SetTransformation(pos - shift, 0.0f, {lifebar_length_ * health, 1.0f});
+    SetTransformation(
+        (health<=1.0f) ?(pos - shift): pos, 0.0f,
+        {lifebar_length_ * std::min(health, 1.0f),
+         1.0f}  /* when health > max health, we do not extend the life bar*/);
     SetColor(front_lifebar_color_);
     DrawModel(life_bar_model_index);
-    if (std::fabs(health - fadeout_health_) >= 0.01f) {
+    if (std::fabs(health - fadeout_health_) >= 0.01f &&
+        fadeout_health_ < 1  /* when health > max health, we do not extend the life bar*/) {
       fadeout_health_ = health + (fadeout_health_ - health) * 0.93;
       shift = {lifebar_length_ * (health + fadeout_health_ - 1) / 2, 0.0f};
-      SetTransformation(pos + shift, 0.0f,
-                        {lifebar_length_ * (health - fadeout_health_), 1.0f});
+      SetTransformation(
+          (health <= 1.0f) ? (pos + shift) : pos, 0.0f,
+          {lifebar_length_ * (std::min(health, 1.0f) - fadeout_health_),
+           1.0f} /* when health > max health, we do not extend the life bar*/);
       SetColor(fadeout_lifebar_color_);
       DrawModel(life_bar_model_index);
     } else {

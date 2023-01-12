@@ -11,6 +11,8 @@ uint32_t tank_gx_body_model_index = 0xffffffffu;
 uint32_t tank_gx_turret_model_index = 0xffffffffu;
 glm::highp_vec2 good_luck;
 glm::highp_vec2 bad_luck;
+//bool all_night = false;
+//bool all_day = false;
 }  // namespace
 
 Tank_gx::Tank_gx(GameCore *game_core, uint32_t id, uint32_t player_id)
@@ -185,6 +187,12 @@ bool Tank_gx::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
+}
+
+bool Tank_gx::Distant(Object* object_pointer) {
+  auto position = object_pointer->GetPosition();
+  position = WorldToLocal(position);
+  return (position.x) * (position.x) + (position.y) * (position.y) >= 9.0f;
 }
 
 const char *Tank_gx::UnitName() const {

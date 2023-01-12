@@ -157,8 +157,8 @@ const char *Tank::Author() const {
   return "LazyJazz";
 }
 }  // namespace battle_game::unit
-=======
-#include "tiny_tank.h"
+
+/*#include "tiny_tank.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
@@ -177,22 +177,22 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     auto mgr = AssetsManager::GetInstance();
     {
       /* Tank Body */
-      tank_body_model_index = mgr->RegisterModel(
+      /*tank_body_model_index = mgr->RegisterModel(
           {
               {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
               {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
               {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},*/
               // distinguish front and back
-              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+        /* {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
               {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
           },
           {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
     }
 
-    {
+    {*/
       /* Tank Turret */
-      std::vector<ObjectVertex> turret_vertices;
+  /*std::vector<ObjectVertex> turret_vertices;
       std::vector<uint32_t> turret_indices;
       const int precision = 60;
       const float inv_precision = 1.0f / float(precision);
@@ -322,5 +322,6 @@ const char *Tank::UnitName() const {
 const char *Tank::Author() const {
   return "LazyJazz";
 }
-}  // namespace battle_game::unit
+}
+*/  // namespace battle_game::unit
 

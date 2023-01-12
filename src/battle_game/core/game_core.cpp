@@ -1,4 +1,5 @@
 #include "battle_game/core/game_core.h"
+#include <iostream>
 
 namespace battle_game {
 
@@ -19,7 +20,24 @@ GameCore::GameCore() {
  * Update for 1 game tick.
  * Order: obstacles, bullets, units, particles
  * */
+namespace time_in_the_day {
+  int time = 0;
+  bool night = false;
+  bool all_night = false;
+  bool all_day = false;
+ }
 void GameCore::Update() {
+  assert(!(time_in_the_day::all_day && time_in_the_day::all_night));
+  if (time_in_the_day::all_night) {
+    time_in_the_day::night = true;
+  }
+  if (time_in_the_day::time >= 12 * 6 && !time_in_the_day::all_night && !time_in_the_day::all_day) {
+    time_in_the_day::time = 0;
+    time_in_the_day::night = !time_in_the_day::night;
+    
+    //std::cout << std::string(time_in_the_day::night ? "Night comes" : "A new day!")<< std::endl;
+  }
+  time_in_the_day::time++;
   for (auto &player : players_) {
     player.second->Update();
   }
@@ -59,7 +77,7 @@ void GameCore::Render() {
       SetCamera(observing_unit->GetPosition(), 0.0f);
     }
   }
-
+  
   SetColor();
   SetTexture();
   SetTransformation(
@@ -81,20 +99,76 @@ void GameCore::Render() {
       {(boundary_high_.x - boundary_low_.x) * 0.5f, 0.1f});
   DrawModel(boundary_model_);
 
+  //if (time_in_the_day::night) {
+  // GLFWAPI glfwSetWindowSize(
+  // RegisterTexture("night")
+  //DrawTexture("night");
+  //DrawTexture("night");
+  /* grassland::vulkan::framework::Core::*/  //&app.core_.GetWindow(), 2.0f, 2.0f);
+  //}
+  bool not_show = false;
   for (auto &obstacle : obstacles_) {
-    obstacle.second->Render();
+    for (auto &unit: units_)
+      if (unit.second->UnitName() == "Tiny Tank zcszcs522") {
+        //std::cout << std::string(time_in_the_day::night ? "Night comes"
+                                                        //: "A new day!")
+                  //<< std::endl;
+        if (time_in_the_day::night &&
+            unit.second->Distant(&(*(obstacle.second)))) {
+          not_show = true;
+          break;
+        }
+      }
+    if (!not_show)
+      obstacle.second->Render();
+    not_show = false;
   }
   for (auto &bullet : bullets_) {
-    bullet.second->Render();
+    for (auto &unit : units_)
+      if (unit.second->UnitName() == "Tiny Tank zcszcs522") 
+      if (time_in_the_day::night && unit.second->Distant(&(*(bullet.second)))) {
+        not_show = true;
+        break;
+      }
+      if (!not_show)
+        bullet.second->Render();
+      not_show = false;
   }
-  for (auto &units : units_) {
-    units.second->Render();
+    for (auto &units : units_) {
+      for (auto &unit : units_)
+      if (unit.second->UnitName() == "Tiny Tank zcszcs522")
+        if (time_in_the_day::night &&
+            unit.second->Distant(&(*(units.second)))) {
+          not_show = true;
+          break;
+        }
+      if (!not_show)
+        units.second->Render();
+      not_show = false;
   }
-  for (auto &particle : particles_) {
-    particle.second->Render();
+    for (auto &particle : particles_) {
+      for (auto &unit : units_)
+      if (unit.second->UnitName() == "Tiny Tank zcszcs522")
+        if (time_in_the_day::night &&
+            unit.second->Distant(&(*(particle.second)))) {
+          not_show = true;
+          break;
+        }
+      if (!not_show)
+        particle.second->Render();
+      not_show = false;
   }
-  for (auto &units : units_) {
-    units.second->RenderLifeBar();
+    for (auto &units : units_) {
+      for (auto &unit : units_)
+        if (unit.second->UnitName() == "Tiny Tank zcszcs522")
+        if (time_in_the_day::night &&
+            unit.second->Distant(&(*(units.second)))) {
+          not_show = true;
+          break;
+        }
+      if (!not_show)
+        units.second->RenderLifeBar();
+      not_show = false;
   }
 }
 

@@ -8,6 +8,7 @@ class Tank_gx : public Unit {
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
+  bool Distant(Object* object_pointer) override;
 
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);
