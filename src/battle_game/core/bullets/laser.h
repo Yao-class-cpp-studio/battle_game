@@ -2,9 +2,9 @@
 #include "battle_game/core/bullet.h"
 
 namespace battle_game::bullet {
-class laser : public Bullet {
+class Laser : public Bullet {
  public:
-  laser(GameCore *core,
+  Laser(GameCore *core,
               uint32_t id,
               uint32_t unit_id,
               uint32_t player_id,
@@ -12,7 +12,7 @@ class laser : public Bullet {
               float rotation,
               float damage_scale,
               glm::vec2 velocity);
-  ~laser() override;
+  ~Laser() override;
   void Render() override;
   void Update() override;
 
