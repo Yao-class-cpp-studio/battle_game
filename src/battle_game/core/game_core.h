@@ -73,6 +73,7 @@ class GameCore {
                                      position, rotation, damage_scale, args...);
     return bullet_index;
   }
+
   template <class ParticleType, class... Args>
   uint32_t AddParticle(glm::vec2 position,
                        float rotation = 0.0f,
@@ -117,6 +118,7 @@ class GameCore {
   void SetRenderPerspective(uint32_t player_id);
   [[nodiscard]] uint32_t GetRenderPerspective() const;
   [[nodiscard]] glm::vec4 GetPlayerColor(uint32_t player_id) const;
+  [[nodiscard]] glm::vec4 GetPlayerColorbooboo(uint32_t player_id) const;
 
   [[nodiscard]] bool IsOutOfRange(glm::vec2 p) const;
   [[nodiscard]] bool IsBlockedByObstacles(glm::vec2 p) const;
@@ -225,4 +227,5 @@ void Unit::GenerateBullet(glm::vec2 position,
   game_core_->PushEventGenerateBullet<BulletType>(
       id_, player_id_, position, rotation, damage_scale, args...);
 }
+
 }  // namespace battle_game
