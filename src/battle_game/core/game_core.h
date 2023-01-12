@@ -39,6 +39,9 @@ class GameCore {
   void Update();
   void Render();
 
+  glm::vec2 get_boundary_high();
+  glm::vec2 get_boundary_low();
+
   template <class UnitType, class... Args>
   uint32_t AddUnit(uint32_t player_id, Args... args) {
     auto unit_index = unit_index_++;

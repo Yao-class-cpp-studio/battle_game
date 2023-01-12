@@ -264,6 +264,7 @@ void GameCore::SetScene() {
   AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
   respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
   respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
+
   boundary_low_ = {-10.0f, -10.0f};
   boundary_high_ = {10.0f, 10.0f};
 }
@@ -280,6 +281,7 @@ uint32_t GameCore::AllocatePrimaryUnit(uint32_t player_id) {
       respawn_points_[RandomInt(0, int(respawn_points_.size()) - 1)];
   unit->SetPosition(respawn_point.first);
   unit->SetRotation(respawn_point.second);
+
   return unit_id;
 }
 
@@ -305,5 +307,13 @@ std::vector<const char *> GameCore::GetSelectableUnitList() const {
     result.emplace_back(selectable_unit.data());
   }
   return result;
+}
+
+glm::vec2 GameCore::get_boundary_high() {
+  return boundary_high_;
+}
+
+glm::vec2 GameCore::get_boundary_low() {
+  return boundary_low_;
 }
 }  // namespace battle_game
