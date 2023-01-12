@@ -58,8 +58,6 @@ class Unit : public Object {
   void HideLifeBar();
   virtual void RenderLifeBar();
 
-  virtual void AddAttackBuff() {}
-
   /*
    * This virtual function is used to render some extra helpers, such as
    * predicted trajectory of the bullet the unit will shoot, and etc., only
