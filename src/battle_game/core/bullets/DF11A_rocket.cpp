@@ -3,7 +3,7 @@
 #include "battle_game/core/particles/particles.h"
 
 namespace battle_game::bullet {
-DF11A_rocket::DF11A_rocket(GameCore *core,
+dfRocket::dfRocket(GameCore *core,
                        uint32_t id,
                        uint32_t unit_id,
                        uint32_t player_id,
@@ -15,14 +15,14 @@ DF11A_rocket::DF11A_rocket(GameCore *core,
       velocity_(velocity) {
 }
 
-void DF11A_rocket::Render() {
+void dfRocket::Render() {
   SetTransformation(position_, rotation_, glm::vec2{2.0f});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/DF11A_rocket.png");
   DrawModel(0);
 }
 
-void DF11A_rocket::Update() {
+void dfRocket::Update() {
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
@@ -45,7 +45,7 @@ void DF11A_rocket::Update() {
   }
 }
 
-DF11A_rocket::~DF11A_rocket() {
+dfRocket::~dfRocket() {
   for (int i = 0; i < 5; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
         position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
