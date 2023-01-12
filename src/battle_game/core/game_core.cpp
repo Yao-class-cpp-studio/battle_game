@@ -173,12 +173,6 @@ Bullet *GameCore::GetBullet(uint32_t bullet_id) const {
   return bullets_.at(bullet_id).get();
 }
 
-int GameCore::get_score(){return score_;}
-
-void GameCore::increase_score(){score_+=5;}
-
-void GameCore::decrease_score(){score_-=5;if(score_<0)score_ = 0;}
-
 Particle *GameCore::GetParticle(uint32_t particle_id) const {
   if (!particles_.count(particle_id)) {
     return nullptr;
@@ -253,6 +247,8 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
 
 void GameCore::PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id) {
   event_queue_.emplace([=]() { PushEventRemoveUnit(dst_unit_id); });
+  auto unit = GetUnit(bullets_[src_unit_id]->get_unit_id_());
+  unit->update_score(15);
 }
 
 float GameCore::RandomFloat() {

@@ -24,11 +24,12 @@ void CannonBall::Render() {
 }
 
 void CannonBall::Update() {
+  int score_update = 0;
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;
-    game_core_->decrease_score();
+    score_update -= 5;
   }
 
   auto &units = game_core_->GetUnits();
@@ -39,9 +40,12 @@ void CannonBall::Update() {
     if (unit.second->IsHit(position_)) {
       game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
       should_die = true;
-      game_core_->increase_score();
+      score_update += 5;
     }
   }
+
+  auto unit = game_core_->GetUnit(unit_id_);
+  unit->update_score(score_update);
 
   if (should_die) {
     game_core_->PushEventRemoveBullet(id_);

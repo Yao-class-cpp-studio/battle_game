@@ -23,9 +23,6 @@ constexpr float kSecondPerTick = 1.0f / float(kTickPerSecond);
 class GameCore {
  public:
   GameCore();
-  int get_score();
-  void increase_score();
-  void decrease_score();
 
   void SetScene();
 

@@ -261,8 +261,17 @@ void App::UpdateImGui() {
                        ImGuiWindowFlags_AlwaysAutoResize)) {
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
-      //scoring system
-      ImGui::Text(u8"你的得分: %d", game_core_->get_score());
+      {  // scoring system
+        auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
+        int score = 0;
+
+        if (unit) {
+          score = unit->get_score();
+        }
+
+        ImGui::Text(u8"你的得分: %d", score);
+      }
+
       ImGui::Text(u8" ");
       auto selectable_list = game_core_->GetSelectableUnitList();
       auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
@@ -380,12 +389,6 @@ void App::UpdateImGui() {
     }
     ImGui::End();
   }
-
-
- 
-  
- 
-
 
   ImGui::Render();
 }

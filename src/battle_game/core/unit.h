@@ -58,6 +58,8 @@ class Unit : public Object {
   void HideLifeBar();
   virtual void RenderLifeBar();
 
+  void update_score(int n);
+  int get_score();
   /*
    * This virtual function is used to check whether a bullet at the position
    * have hit the unit. If the position is inside the unit area, then return
@@ -88,8 +90,7 @@ class Unit : public Object {
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
 
-
-
+  int score_{0};
 
  private:
   float fadeout_health_;
