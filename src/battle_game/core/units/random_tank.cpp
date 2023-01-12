@@ -49,6 +49,31 @@ void RandomTank::TankMove(float move_speed, float rotate_angular_speed) {
     }
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
+    } else if (!game_core_->IsOutOfRange(new_position)) {
+      auto x = game_core_->GetBlockedObstacle(new_position);
+      if (x->GetObstacleType() == mud) {
+        new_position =
+            position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
+                                              glm::vec3{0.0f, 0.0f, 1.0f}) *
+                                  glm::vec4{offset / 3.0f, 0.0f, 0.0f}};
+
+        if (fx) {
+          glm::vec2 offset2{0.0f};
+          offset2.y += (game_core_->RandomFloat() - 0.5);
+          offset2 *= kSecondPerTick * speed;
+          new_position =
+              new_position +
+              glm::vec2{glm::rotate(glm::mat4{1.0f},
+                                    (float)(rotation_ + acos(-1) / 2),
+                                    glm::vec3{0.0f, 0.0f, 1.0f}) *
+                        glm::vec4{offset2 / 3.0f, 0.0f, 0.0f}};
+        }
+        if (!game_core_->IsBlockedByObstacles(new_position) ||
+            game_core_->GetBlockedObstacle(new_position)->GetObstacleType() ==
+                mud) {
+          game_core_->PushEventMoveUnit(id_, new_position);
+        }
+      }
     }
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {

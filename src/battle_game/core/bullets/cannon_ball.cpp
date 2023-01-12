@@ -28,6 +28,11 @@ void CannonBall::Update() {
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;
+    if (!(game_core_->IsOutOfRange(position_)) &&
+        game_core_->GetBlockedObstacle(position_)->GetObstacleType() == mud)
+      should_die = false;
+    else
+      should_die = true;
   }
 
   auto &units = game_core_->GetUnits();
