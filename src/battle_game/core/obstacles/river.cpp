@@ -1,4 +1,5 @@
 #include "battle_game/core/obstacles/river.h"
+#include "battle_game/core/game_core.h"
 
 namespace battle_game::obstacle {
 
@@ -8,13 +9,18 @@ River::River(GameCore *game_core,
              float rotation,
              glm::vec2 scale)
     : Obstacle(game_core, id, position, rotation) {
-      obstacle_type_ = river;
 }
 
 bool River::IsBlocked(glm::vec2 p) const {
-  p = WorldToLocal(p);
-  return p.x <= scale_.x && p.x >= -scale_.x && p.y <= scale_.y &&
-         p.y >= -scale_.y;
+  auto pl = WorldToLocal(p);
+  if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
+         pl.y >= -scale_.y) {
+    for (auto &bullet : game_core_->GetBullets())
+      if (bullet.second->GetPosition() == p)
+        return false;
+    return true;
+  }
+  return false;
 }
 
 void River::Render() {
