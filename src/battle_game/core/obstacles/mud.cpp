@@ -1,7 +1,7 @@
 #include "battle_game/core/obstacles/mud.h"
 
 namespace battle_game::obstacle {
-
+// check
 Mud::Mud(GameCore *game_core,
          uint32_t id,
          glm::vec2 position,
