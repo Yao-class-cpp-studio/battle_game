@@ -15,9 +15,11 @@ bool River::IsBlocked(glm::vec2 p) const {
   auto pl = WorldToLocal(p);
   if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
          pl.y >= -scale_.y) {
-    for (auto &bullet : game_core_->GetBullets())
-      if (bullet.second->GetPosition() == p)
+    for (auto &bullet : game_core_->GetBullets()) {
+      if (bullet.second->GetPosition() == p) {
         return false;
+      }
+    }
     return true;
   }
   return false;
