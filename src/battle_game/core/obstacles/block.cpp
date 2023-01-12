@@ -8,7 +8,6 @@ Block::Block(GameCore *game_core,
              float rotation,
              glm::vec2 scale)
     : Obstacle(game_core, id, position, rotation) {
-  SetDestructible();
 }
 
 bool Block::IsBlocked(glm::vec2 p) const {
