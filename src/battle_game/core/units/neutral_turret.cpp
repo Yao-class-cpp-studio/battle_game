@@ -140,7 +140,7 @@ const char *NeutralTurret::UnitName() const {
 }
 
 const char *NeutralTurret::Author() const {
-  return "whm and kfh";
+  return "Whm and Kfh";
 }
 
 }  // namespace battle_game::unit
