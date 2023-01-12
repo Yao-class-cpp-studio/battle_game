@@ -49,7 +49,6 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::RandomTank);
   ADD_SELECTABLE_UNIT(unit::CritTank);
 
-
   unit.reset();
 }
 }  // namespace battle_game
