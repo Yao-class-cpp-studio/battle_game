@@ -35,6 +35,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::ThreeBodyMan);
   ADD_SELECTABLE_UNIT(unit::InfernoTank);
   ADD_SELECTABLE_UNIT(unit::MissileTank);
+  ADD_SELECTABLE_UNIT(unit::NeutralTurret);
   ADD_SELECTABLE_UNIT(unit::TripleShotTank);
   ADD_SELECTABLE_UNIT(unit::TankXxy);
   ADD_SELECTABLE_UNIT(unit::WhaoooooTank);
