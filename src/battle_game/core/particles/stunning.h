@@ -5,13 +5,13 @@ namespace battle_game::particle {
 class Stunning : public Particle {
  public:
   Stunning(GameCore *game_core,
-        uint32_t id,
-        glm::vec2 position,
-        float rotation,
-        glm::vec2 v,
-        float size = 0.2f,
-        glm::vec4 color = glm::vec4{1.0f},
-        float decay_scale = 1.0f);
+           uint32_t id,
+           glm::vec2 position,
+           float rotation,
+           glm::vec2 v,
+           float size = 0.2f,
+           glm::vec4 color = glm::vec4{1.0f},
+           float decay_scale = 1.0f);
   void Render() override;
   void Update() override;
 

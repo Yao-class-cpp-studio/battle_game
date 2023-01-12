@@ -3,13 +3,13 @@
 
 namespace battle_game::particle {
 Stunning::Stunning(GameCore *game_core,
-             uint32_t id,
-             glm::vec2 position,
-             float rotation,
-             glm::vec2 v,
-             float size,
-             glm::vec4 color,
-             float decay_scale)
+                   uint32_t id,
+                   glm::vec2 position,
+                   float rotation,
+                   glm::vec2 v,
+                   float size,
+                   glm::vec4 color,
+                   float decay_scale)
     : Particle(game_core, id, position, rotation),
       v_(v),
       size_(size),
