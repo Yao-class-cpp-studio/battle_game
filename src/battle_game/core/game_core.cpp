@@ -177,6 +177,15 @@ void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
     }
   });
 }
+void GameCore::PushEventMoveObstacle(uint32_t obstacle_id,
+                                     glm::vec2 new_position) {
+  event_queue_.emplace([this, obstacle_id, new_position]() {
+    auto obstacle = GetObstacle(obstacle_id);
+    if (obstacle && obstacle->IsMovable()) {
+      obstacle->SetPosition(new_position);
+    }
+  });
+}
 
 void GameCore::PushEventRotateUnit(uint32_t unit_id, float new_rotation) {
   event_queue_.emplace([this, unit_id, new_rotation]() {

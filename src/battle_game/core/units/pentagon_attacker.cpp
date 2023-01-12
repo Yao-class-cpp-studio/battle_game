@@ -73,6 +73,28 @@ Pentagon::Pentagon(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
+  Skill temp;
+  temp.name = "FFFire!";
+  temp.description = "More bullets";
+  temp.time_remain = 0;
+  temp.time_total = 300;
+  temp.type = E;
+  temp.function = SKILL_ADD_FUNCTION(Pentagon::FFFireClick);
+  skills_.push_back(temp);
+  temp.name = "WeakDefense";
+  temp.description = "Generate movable Block";
+  temp.time_remain = 0;
+  temp.time_total = 600;
+  temp.type = Q;
+  temp.function = SKILL_ADD_FUNCTION(Pentagon::WeakDefenseClick);
+  skills_.push_back(temp);
+  temp.name = "StrongDefense";
+  temp.description = "Generate destructible defensive Wall";
+  temp.time_remain = 0;
+  temp.time_total = 1200;
+  temp.type = R;
+  temp.function = SKILL_ADD_FUNCTION(Pentagon::StrongDefenseClick);
+  skills_.push_back(temp);
 }
 
 void Pentagon::Render() {
@@ -88,6 +110,9 @@ void Pentagon::Update() {
   PentaMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  FFFire();
+  WeakDefense();
+  StrongDefense();
 }
 
 void Pentagon::PentaMove(float move_speed, float rotate_angular_speed) {
@@ -135,6 +160,11 @@ void Pentagon::TurretRotate() {
 }
 
 void Pentagon::Fire() {
+  if (is_fffire_ > 0) {
+    if (fire_count_down_ > 10)
+      fire_count_down_ = 10;
+    is_fffire_--;
+  }
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -142,16 +172,94 @@ void Pentagon::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        for (int i = 0; i < 5; ++i) {
-          auto theta = float(i) * 0.2f;
-          theta *= glm::pi<float>() * 2.0f;
-          auto velocity =
-              Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + theta);
-          GenerateBullet<bullet::CannonBall>(
-              position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + theta),
-              turret_rotation_, GetDamageScale(), velocity);
+        if (is_fffire_ > 0) {
+          for (int i = 0; i < 20; ++i) {
+            auto theta = float(i) * 0.05f;
+            theta *= glm::pi<float>() * 2.0f;
+            auto velocity =
+                Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + theta);
+            GenerateBullet<bullet::RepellingBall>(
+                position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + theta),
+                turret_rotation_, GetDamageScale(), velocity);
+          }
+          fire_count_down_ = 10;  // FFFire interval 1/6 second .
+        } else {
+          for (int i = 0; i < 5; ++i) {
+            auto theta = float(i) * 0.2f;
+            theta *= glm::pi<float>() * 2.0f;
+            auto velocity =
+                Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + theta);
+            GenerateBullet<bullet::RepellingBall>(
+                position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + theta),
+                turret_rotation_, GetDamageScale(), velocity);
+          }
+          fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
         }
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+      }
+    }
+  }
+}
+
+void Pentagon::FFFireClick() {
+  is_fffire_ = 2 * kTickPerSecond;
+  fffire_count_down_ = 5 * kTickPerSecond;
+}
+
+void Pentagon::FFFire() {
+  skills_[0].time_remain = fffire_count_down_;
+  if (fffire_count_down_) {
+    fffire_count_down_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_E]) {
+        FFFireClick();
+      }
+    }
+  }
+}
+
+void Pentagon::WeakDefenseClick() {
+  auto theta = rotation_ + glm::pi<float>() * 0.5f;
+  game_core_->AddObstacle<battle_game::obstacle::MovableBlock>(
+      this->GetPosition() + glm::vec2{2 * cos(theta), 2 * sin(theta)});
+  weak_defense_count_down_ = 10 * kTickPerSecond;
+}
+
+void Pentagon::WeakDefense() {
+  skills_[1].time_remain = weak_defense_count_down_;
+  if (weak_defense_count_down_) {
+    weak_defense_count_down_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_Q]) {
+        WeakDefenseClick();
+      }
+    }
+  }
+}
+
+void Pentagon::StrongDefenseClick() {
+  auto theta = rotation_ + glm::pi<float>() * 0.5f;
+  game_core_->AddObstacle<battle_game::obstacle::StrongWall>(
+      this->GetPosition() + glm::vec2{2 * cos(theta), 2 * sin(theta)},
+      rotation_);
+  strong_defense_count_down_ = 20 * kTickPerSecond;
+}
+
+void Pentagon::StrongDefense() {
+  skills_[2].time_remain = strong_defense_count_down_;
+  if (strong_defense_count_down_) {
+    strong_defense_count_down_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_R]) {
+        StrongDefenseClick();
       }
     }
   }
@@ -167,7 +275,7 @@ bool Pentagon::IsHit(glm::vec2 position) const {
 }
 
 const char *Pentagon::UnitName() const {
-  return "Pentagon_attacker_ver_1.0";
+  return "Pentagon_attacker_ver_2.0";
 }
 
 const char *Pentagon::Author() const {

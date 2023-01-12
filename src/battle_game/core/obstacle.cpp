@@ -28,7 +28,6 @@ Obstacle::Obstacle(GameCore *game_core,
 float Obstacle::BasicMaxHealth() const {
   return 100.0f;
 }
-
 float Obstacle::GetHealthScale() const {
   return 1.0f;
 }
@@ -70,15 +69,6 @@ void Obstacle::ShowLifeBar() {
 void Obstacle::HideLifeBar() {
   lifebar_display_ = false;
 }
-void Obstacle::SetDestructible() {
-  is_destructible_ = true;
-}
-void Obstacle::SetUndestructible() {
-  is_destructible_ = false;
-}
-bool Obstacle::IsDestructible() {
-  return is_destructible_;
-}
 
 void Obstacle::RenderLifeBar() {
   if (lifebar_display_ && is_destructible_) {
@@ -104,6 +94,10 @@ void Obstacle::RenderLifeBar() {
       fadeout_health_ = health;
     }
   }
+}
+
+void Obstacle::SetPosition(glm::vec2 pos) {
+  position_ = pos;
 }
 void Obstacle::Update() {
 }

@@ -124,6 +124,7 @@ class GameCore {
   [[nodiscard]] Obstacle *GetBlockedObstacle(glm::vec2 p) const;
 
   void PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position);
+  void PushEventMoveObstacle(uint32_t obstacle_id, glm::vec2 new_position);
   void PushEventRotateUnit(uint32_t unit_id, float new_rotation);
   void PushEventDealDamage(uint32_t dst_unit_id,
                            uint32_t src_unit_id,

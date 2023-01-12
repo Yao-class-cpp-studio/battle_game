@@ -41,10 +41,26 @@ class Obstacle : public Object {
 
   void ShowLifeBar();
   void HideLifeBar();
-  void SetDestructible();
-  void SetUndestructible();
-  bool IsDestructible();
   virtual void RenderLifeBar();
+  void SetDestructible() {
+    is_destructible_ = true;
+  };
+  void SetUndestructible() {
+    is_destructible_ = false;
+  };
+  bool IsDestructible() const {
+    return is_destructible_;
+  };
+  void SetMovable() {
+    is_movable_ = true;
+  }
+  void SetUnmovable() {
+    is_movable_ = false;
+  };
+  bool IsMovable() const {
+    return is_movable_;
+  };
+  void SetPosition(glm::vec2);
 
  protected:
   float health_{1.0f};
@@ -55,6 +71,7 @@ class Obstacle : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
+  bool is_movable_{false};
 
  private:
   float fadeout_health_;

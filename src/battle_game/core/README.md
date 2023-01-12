@@ -166,11 +166,21 @@ struct Skill {
 ### 成员变量
 
 - health_
-  - 这个变量表示单位的生命值
+  - 这个变量表示障碍物的生命值
   - 取值范围为 [0, 1]，即剩余生命相对于最大生命值生命值的比例。
-  - 单位实际生命值为 `GetMaxHealth() * health_`
+  - 障碍物实际生命值为 `GetMaxHealth() * health_`
   - 这样定义是为了方便动态地对最大声明值进行调整，以实现一些复杂机制。
-  - 该值归 0 时单位死亡。
+  - 该值归 0 时障碍物死亡。
+- is_destructible_
+  - 这个变量表示该障碍物是否可被破坏
+
+- is_movable_
+  - 这个变量表示该障碍物是否可被击退
+
+- lifebar_display_
+  - 这个变量表示生命条是否显示
+  - 如该障碍物不可被破坏，生命条默认不显示
+
 - lifebar_*
   - 这些变量保存了生命条的设置，请通过set来修改
 - fadeout_health_
@@ -179,10 +189,9 @@ struct Skill {
 ### 成员函数
 
 - BasicMaxHealth
-  - 这是一个虚函数
   - 最大生命值基准，默认为 100.0
   - 表示生命值基础数值
-  - 你可以在不同单位的实现中通过 `override` 修改单位的基础生命值
+  - 你可以在不同障碍物的实现中通过 `override` 修改障碍物的基础生命值
 - GetHealthScale
   - 生命值倍率，默认为 1.0
   - 你可以编写这部分的计算逻辑以实现增强或衰弱生命值的功能
@@ -196,9 +205,17 @@ struct Skill {
   - 渲染该对象对应的生命条
 - Hide/ShowLifeBar
   - 隐藏/显示生命条
-- RenderHelper
-  - 这是一个虚函数
-  - 仅在该单位所有者玩家的视角中，渲染该对象用于辅助的一些视觉效果（例如子弹射出的预计轨迹）
+- SetDestructible/SetUndestructible
+  - 设置可被破坏/不可被破坏
+
+- IsDestructible
+  - 返回当前障碍物是否可被破坏
+
+- SetMovable/SetUnmovable
+  - 设置该障碍物可被击退/不可被击退
+
+- IsMovable
+  - 返回当前障碍物是否可被击退
 
 - IsBlocked
   - 这是一个虚函数
@@ -276,6 +293,7 @@ struct Skill {
 
 ```c++
 void PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position);
+void PushEventMoveObstacle(uint32_t obstacle_id, glm::vec2 new_position);
 void PushEventRotateUnit(uint32_t unit_id, float new_rotation);
 void PushEventDealDamage(uint32_t dst_unit_id,
                            uint32_t src_unit_id,
@@ -303,11 +321,16 @@ void PushEventGenerateBullet(uint32_t unit_id,
   - 压入一个单位移动事件
 - PushEventRotateUnit
   - 压入一个单位旋转事件
+- PushEventMoveObstacle
+  - 压入一个障碍物移动事件
+  - 用于可被击退的障碍物
+  - 如障碍物不可被击退，则本事件无效
+
 - PushEventDealDamage
   - 压入一个伤害事件
 - PushEventDealDamageObstacle
   - 压入一个破坏障碍物事件
-  - 在本函数内判断障碍物是否可被破坏，如不可被破坏，则本事件无效
+  - 如障碍物不可被破坏，则本事件无效
 
 - PushEventKillUnit
   - 压入一个击杀事件
