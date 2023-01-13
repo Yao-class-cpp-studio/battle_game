@@ -166,8 +166,7 @@ void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
   });
 }
 
-void GameCore::PushEventMoveRelativeUnit(uint32_t unit_id,
-                                         glm::vec2 relative_position) {
+void GameCore::PushEventMoveRelativeUnit(uint32_t unit_id, glm::vec2 relative_position) {
   event_queue_.emplace([this, unit_id, relative_position]() {
     auto unit = GetUnit(unit_id);
     auto new_position = unit->GetPosition() + relative_position;

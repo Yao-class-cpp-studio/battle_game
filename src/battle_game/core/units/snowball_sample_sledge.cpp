@@ -11,8 +11,8 @@ uint32_t sledge_turret_model_index = 0xffffffffu;
 }  // namespace
 
 snowball_sample_sledge::snowball_sample_sledge(GameCore *game_core,
-                             uint32_t id,
-                             uint32_t player_id)
+                                               uint32_t id,
+                                               uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~sledge_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
