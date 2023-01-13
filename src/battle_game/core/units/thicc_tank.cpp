@@ -152,7 +152,8 @@ void ThiccTank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 40.0f}, turret_rotation_);  // Faster bullet than normal
+        auto velocity = Rotate(glm::vec2{0.0f, 40.0f},
+                               turret_rotation_);  // Faster bullet than normal
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
@@ -172,7 +173,8 @@ void ThiccTank::DeathCall(uint32_t src_unit_id) {
     enemy_pos = WorldToLocal(enemy_pos);
     if ((abs(enemy_pos.x) + abs(enemy_pos.y)) < 10.0) {
       game_core_->PushEventDealDamage(
-          unit.first, id_, 100.0f - 10 * abs(enemy_pos.x) - 10 * abs(enemy_pos.y));
+          unit.first, id_,
+          100.0f - 10 * abs(enemy_pos.x) - 10 * abs(enemy_pos.y));
       game_core_->PushEventGenerateParticle<particle::Explosion>(
           position_, rotation_, kTickPerSecond);
     }
