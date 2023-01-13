@@ -61,8 +61,7 @@ bool Brick::IsHit(glm::vec2 position) const {
 
 bool Brick::IsBlocked(glm::vec2 p) const {
   p = WorldToLocal(p);
-  return p.x <= 1.0f && p.x >= -1.0f && p.y <= 1.0f &&
-         p.y >= -1.0f;
+  return p.x <= 1.0f && p.x >= -1.0f && p.y <= 1.0f && p.y >= -1.0f;
 }
 
 const char *Brick::UnitName() const {
