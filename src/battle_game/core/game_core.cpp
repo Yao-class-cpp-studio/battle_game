@@ -167,15 +167,15 @@ void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
 }
 
 void GameCore::PushEventMoveRelativeUnit(uint32_t unit_id,
-    glm::vec2 relative_position) {
-    event_queue_.emplace(
-        [this, unit_id, relative_position]() { auto unit = GetUnit(unit_id);
+                                         glm::vec2 relative_position) {
+  event_queue_.emplace([this, unit_id, relative_position]() {
+    auto unit = GetUnit(unit_id);
     auto new_position = unit->GetPosition() + relative_position;
     if (unit && !IsBlockedByObstacles(new_position)) {
-        unit->SetPosition(new_position);
+      unit->SetPosition(new_position);
     }
-        });
-}//this function is used for weight system.
+  });
+}  // this function is used for weight system.
 
 void GameCore::PushEventRotateUnit(uint32_t unit_id, float new_rotation) {
   event_queue_.emplace([this, unit_id, new_rotation]() {
