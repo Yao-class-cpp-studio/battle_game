@@ -262,7 +262,16 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
 }
 
 void GameCore::PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id) {
+  event_queue_.emplace([=]() { PushEventDeathCall(dst_unit_id, src_unit_id); });
   event_queue_.emplace([=]() { PushEventRemoveUnit(dst_unit_id); });
+}
+
+void GameCore::PushEventDeathCall(uint32_t dst_unit_id, uint32_t src_unit_id) {
+  event_queue_.emplace([=]() {
+    if (units_.count(dst_unit_id)) {
+      units_.find(dst_unit_id)->second->DeathCall(src_unit_id);
+    }
+  });
 }
 
 float GameCore::RandomFloat() {

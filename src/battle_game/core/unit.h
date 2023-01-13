@@ -26,6 +26,9 @@ class Unit : public Object {
   [[nodiscard]] virtual float GetMaxHealth() const {
     return std::max(GetHealthScale() * BasicMaxHealth(), 1.0f);
   }
+  virtual void DeathCall(uint32_t src_unit_id) {
+    return;
+  }
 
   /*
    * Health value is in range [0, 1], represents the remaining health in ratio
