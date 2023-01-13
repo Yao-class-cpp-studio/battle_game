@@ -49,6 +49,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::Sparky);
   ADD_SELECTABLE_UNIT(unit::CritTank);
   ADD_SELECTABLE_UNIT(unit::Railgun);
+  ADD_SELECTABLE_UNIT(unit::RushTank);
 
   unit.reset();
 }
