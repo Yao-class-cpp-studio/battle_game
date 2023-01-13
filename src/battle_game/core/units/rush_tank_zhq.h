@@ -18,3 +18,4 @@ class RushTank : public Tank {
   int rush_count_down;
 };
 }
+
