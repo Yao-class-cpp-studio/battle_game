@@ -11,3 +11,4 @@
 #include "battle_game/core/bullets/sweaty_soybean.h"
 #include "battle_game/core/bullets/warning_line.h"
 #include "battle_game/core/bullets/water_drop.h"
+#include "battle_game/core/bullets/laser.h"
