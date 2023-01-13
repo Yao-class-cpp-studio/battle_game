@@ -60,11 +60,11 @@ void Assassin::RenderHelper()
   }
   else
   {
-    battle_game::SetTransformation(position_+float(sqrt(2)*3/2)*glm::vec2{-sin(rotation_),cos(rotation_)},rotation_+glm::radians(135.0f),glm::vec2{0.5f});
+    battle_game::SetTransformation(position_+float(sqrtf(2)*3.0f/2.0f)*glm::vec2{-sin(rotation_),cos(rotation_)},rotation_+glm::radians(135.0f),glm::vec2{0.5f});
     battle_game::SetTexture("../../textures/assassin_dagger.png");
     battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
     battle_game::DrawModel(0);
-    battle_game::SetTransformation(position_+2.0f*glm::vec2{-sin(rotation_),cos(rotation_)},rotation_+glm::radians(-45.0f),glm::vec2{sqrt(2)});
+    battle_game::SetTransformation(position_+2.0f*glm::vec2{-sin(rotation_),cos(rotation_)},rotation_+glm::radians(-45.0f),glm::vec2{sqrtf(2)});
     battle_game::SetTexture("../../textures/assassin_range.png");
     battle_game::SetColor({1.0f,1.0f,1.0f,0.1f});
     battle_game::DrawModel(0);
@@ -193,7 +193,7 @@ void Assassin::Click() {
     for (auto &unit : units) {
       auto diff = unit.second->GetPosition() - position_;
       float length=glm::length(diff);
-      if (sqrt(2)<length&&length<2*sqrt(2)&&(-sin(rotation_)*diff.x+cos(rotation_)*diff.y)/length>sqrt(2)/2) {
+      if (sqrtf(2)<length&&length<2.0f*sqrtf(2)&&(-sin(rotation_)*diff.x+cos(rotation_)*diff.y)/length>sqrtf(2)/2.0f) {
         game_core_->PushEventDealDamage(unit.first, player_id_, 1);
       }
     }
