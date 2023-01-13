@@ -153,6 +153,8 @@ void Unit::RenderEffect() {
     DrawModel(0);
   }
 }
+void Unit::RenderHelper() {
+}
 
 const char *Unit::UnitName() const {
   return "Unknown Unit";

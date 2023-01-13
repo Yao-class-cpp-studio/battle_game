@@ -56,7 +56,7 @@ void GameCore::Update() {
 
 /*
  * Render the objects
- * Order: obstacles, bullets, units, particles
+ * Order: obstacles, bullets, units, particles, life bars, helper
  * */
 void GameCore::Render() {
   auto observer = GetPlayer(render_perspective_);
@@ -105,9 +105,14 @@ void GameCore::Render() {
   }
   for (auto &units : units_) {
     units.second->RenderEffect();
+    if (observer) {
+      auto observing_unit = GetUnit(observer->GetPrimaryUnitId());
+      if (observing_unit) {
+        observing_unit->RenderHelper();
+      }
+    }
   }
 }
-
 uint32_t GameCore::AddPlayer() {
   uint32_t player_id = player_index_++;
   players_[player_id] = std::make_unique<Player>(this, player_id);
@@ -149,6 +154,16 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
     }
   }
   return false;
+}
+
+Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
+  if (!IsOutOfRange(p)) {
+    for (auto &obstacle : obstacles_)
+      if (obstacle.second->IsBlocked(p)) {
+        return obstacle.second.get();
+      }
+  }
+  return nullptr;
 }
 
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
@@ -301,6 +316,14 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 
 void GameCore::SetScene() {
   AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
+  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
+                                         0.78539816339744830961566084581988f);
+  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
+                                         0.78539816339744830961566084581988f);
+  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, 10.0f},
+                                         0.78539816339744830961566084581988f);
+  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, 10.0f},
+                                         0.78539816339744830961566084581988f);
   respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
   respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
   boundary_low_ = {-10.0f, -10.0f};

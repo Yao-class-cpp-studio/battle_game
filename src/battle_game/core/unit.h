@@ -84,6 +84,13 @@ class Unit : public Object {
   virtual void RenderEffect();
 
   /*
+   * This virtual function is used to render some extra helpers, such as
+   * predicted trajectory of the bullet the unit will shoot, and etc., only
+   * in the first-person perspective.
+   * */
+  virtual void RenderHelper();
+
+  /*
    * This virtual function is used to check whether a bullet at the position
    * have hit the unit. If the position is inside the unit area, then return
    * true, otherwise return false.
@@ -126,3 +133,5 @@ class Unit : public Object {
 };
 
 }  // namespace battle_game
+
+// add something to pull
