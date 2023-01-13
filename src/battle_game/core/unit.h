@@ -65,7 +65,7 @@ class Unit : public Object {
 
   void ShowUnitName();
   void HideUnitName();
-  void RenderUnitName();
+  virtual void RenderUnitName();
 
   /*
    * This virtual function is used to render some extra helpers, such as
