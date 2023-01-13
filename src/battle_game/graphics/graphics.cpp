@@ -120,21 +120,19 @@ void DrawText(const std::wstring &text, bool centered) {
   }
   for (const auto &ch : text) {
     const auto &mesh = factory.GetChar(ch);
-    if (mesh.indices.empty()) {
-      current_position += transform * glm::vec2{mesh.advection, 0.0f};
-      continue;
-    }
-    if (!map_char_index.count(ch)) {
-      std::vector<ObjectVertex> vertices;
-      vertices.clear();
-      vertices.reserve(mesh.vertices.size());
-      for (auto &ver : mesh.vertices) {
-        vertices.push_back({ver, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}});
+    if (!mesh.indices.empty()) {
+      if (!map_char_index.count(ch)) {
+        std::vector<ObjectVertex> vertices;
+        vertices.clear();
+        vertices.reserve(mesh.vertices.size());
+        for (auto &ver : mesh.vertices) {
+          vertices.push_back({ver, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}});
+        }
+        map_char_index[ch] = mgr->RegisterModel(vertices, mesh.indices);
       }
-      map_char_index[ch] = mgr->RegisterModel(vertices, mesh.indices);
+      SetPosition(current_position);
+      DrawModel(map_char_index.at(ch));
     }
-    SetPosition(current_position);
-    DrawModel(map_char_index.at(ch));
     current_position += transform * glm::vec2{mesh.advection, 0.0f};
   }
   SetPosition(origin_position);
