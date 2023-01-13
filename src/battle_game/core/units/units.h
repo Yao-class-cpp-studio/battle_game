@@ -1,5 +1,4 @@
 #pragma once
-
 #include "battle_game/core/units/snowball_sample_sledge.h"
 #include "battle_game/core/units/Whaooooo_tank.h"
 #include "battle_game/core/units/crit_tank.h"

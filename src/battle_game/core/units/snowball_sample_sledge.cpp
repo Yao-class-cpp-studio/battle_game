@@ -87,7 +87,7 @@ void snowball_sample_sledge::Update() {
 }
 
 void snowball_sample_sledge::SledgeMove(float move_speed,
-                                      float rotate_angular_speed) {
+                                        float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();

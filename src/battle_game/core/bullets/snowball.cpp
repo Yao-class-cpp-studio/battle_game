@@ -37,8 +37,7 @@ void SnowBall::Update() {
     }
     if (unit.second->IsHit(position_)) {
       game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 5.0f);
-      game_core_->PushEventMoveRelativeUnit(unit.first,
-                                            velocity_ * (5.0f * kSecondPerTick));
+      game_core_->PushEventMoveRelativeUnit(unit.first, velocity_ * (5.0f * kSecondPerTick));
       should_die = true;
     }
   }
