@@ -12,6 +12,7 @@ class TankYfl : public Tank {
   void SpeedUpClick();
   void SpeedUp();
   void Update() override;
+  void Fire();
   [[nodiscard]] float GetSpeedScale() const override;
   uint32_t IsSpeed = 0;
   uint32_t speedup_count_down = 0;

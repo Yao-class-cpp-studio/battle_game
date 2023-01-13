@@ -40,7 +40,23 @@ void TankYfl::SpeedUp() {
     }
   }
 }
-
+void TankYfl::Fire() {
+  if (fire_count_down_) {
+    fire_count_down_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
+        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        GenerateBullet<bullet::SteerBullet>(
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+            turret_rotation_, GetDamageScale(), velocity);
+        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+      }
+    }
+  }
+}
 float TankYfl::GetSpeedScale() const {
   if (IsSpeed) {
     return 3.5f;
