@@ -1,5 +1,4 @@
 #pragma once
-#include "battle_game/core/units/snowball_sample_sledge.h"
 #include "battle_game/core/units/Whaooooo_tank.h"
 #include "battle_game/core/units/crit_tank.h"
 #include "battle_game/core/units/dark_fury.h"
@@ -12,6 +11,7 @@
 #include "battle_game/core/units/rebounding_sample_tank.h"
 #include "battle_game/core/units/round_UFO.h"
 #include "battle_game/core/units/smoke_bomb_tank.h"
+#include "battle_game/core/units/snowball_sample_sledge.h"
 #include "battle_game/core/units/sparky.h"
 #include "battle_game/core/units/square_tank.h"
 #include "battle_game/core/units/tankK.h"
