@@ -10,7 +10,7 @@ TankYfl::TankYfl(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill skill;
   skill.name = "SpeedUp";
-  skill.description = "2 times speed within 3 seconds";
+  skill.description = "2 times speed for 3 seconds";
   skill.time_remain = 0;
   skill.time_total = 480;
   skill.type = E;
