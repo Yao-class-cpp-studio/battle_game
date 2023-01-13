@@ -8,23 +8,44 @@ namespace {
 uint32_t life_bar_model_index = 0xffffffffu;
 }  // namespace
 
-Unit::Status::Status(float max_health,float health,float attack,float defence,float speed)
-  :max_health_{max_health},health_{health},base_attack_{attack},base_defence_{defence},base_speed_(speed){}
+Unit::Status::Status(float max_health,
+                     float health,
+                     float attack,
+                     float defence,
+                     float speed)
+    : max_health_{max_health},
+      health_{health},
+      base_attack_{attack},
+      base_defence_{defence},
+      base_speed_(speed) {
+}
 
-void Unit::Status::Damage(GameCore*game_core,uint32_t dst_unit_id,uint32_t src_unit_id,float damage) {
-  if((health_-=damage/(1.0f+defence_)/max_health_)<=0.0)
+void Unit::Status::Damage(GameCore *game_core,
+                          uint32_t dst_unit_id,
+                          uint32_t src_unit_id,
+                          float damage) {
+  if ((health_ -= damage / (1.0f + defence_) / max_health_) <= 0.0)
     game_core->PushEventKillUnit(dst_unit_id, src_unit_id);
-  if(health_>1.0f)health_=1.0f;
+  if (health_ > 1.0f)
+    health_ = 1.0f;
 }
 
-void Unit::Status::Initialization(){
-  attack_  = base_attack_;
+void Unit::Status::Initialization() {
+  attack_ = base_attack_;
   defence_ = base_defence_;
-  speed_   = base_speed_;
+  speed_ = base_speed_;
 }
 
-Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id,float max_health,float health,float attack,float defence,float speed)
-    : Object(game_core, id),status_(max_health,health,attack,defence,speed) {
+Unit::Unit(GameCore *game_core,
+           uint32_t id,
+           uint32_t player_id,
+           float max_health,
+           float health,
+           float attack,
+           float defence,
+           float speed)
+    : Object(game_core, id),
+      status_(max_health, health, attack, defence, speed) {
   player_id_ = player_id;
   lifebar_offset_ = {0.0f, 1.0f};
   background_lifebar_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
@@ -119,11 +140,12 @@ void Unit::RenderHelper() {
 
 void Unit::UpdateStatus() {
   status_.Initialization();
-  for(auto i:effect_)i.influence_(status_);
-  effect_.remove_if([](Effect&i){return!--i.time_remain_;});
-  status_.attack_=std::max(status_.attack_,.0f);
-  status_.defence_=std::max(status_.defence_,.0f);
-  status_.speed_=std::max(status_.speed_,.0f);
+  for (auto i : effect_)
+    i.influence_(status_);
+  effect_.remove_if([](Effect &i) { return !--i.time_remain_; });
+  status_.attack_ = std::max(status_.attack_, .0f);
+  status_.defence_ = std::max(status_.defence_, .0f);
+  status_.speed_ = std::max(status_.speed_, .0f);
 }
 
 const char *Unit::UnitName() const {

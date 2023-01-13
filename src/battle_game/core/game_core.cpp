@@ -225,7 +225,7 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
   event_queue_.emplace([=]() {
     auto unit = GetUnit(dst_unit_id);
     if (unit) {
-      unit->Damage(src_unit_id,damage);
+      unit->Damage(src_unit_id, damage);
       if (unit->GetHealth() <= 0.0f) {
         PushEventKillUnit(dst_unit_id, src_unit_id);
       }

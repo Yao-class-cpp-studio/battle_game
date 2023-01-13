@@ -77,19 +77,17 @@ void Assassin::RenderHelper() {
 }
 
 void Assassin::Character() {
-  PushEffect(Effect{player_id_,"速度控制","你的速度随着你距离光标所在位置距离增大而增大",1,
-    [=](Status&status)
-    {
-      auto player = game_core_->GetPlayer(player_id_);
-      if(player)
-      {
-        auto &input_data = player->GetInputData();
-        auto diff = input_data.mouse_cursor_position - position_;
-        status.speed_*=std::min(glm::length(diff) / 15, 1.0f);
-      }
-      else status.speed_*=game_core_->RandomFloat();
-    }}
-  );
+  PushEffect(Effect{
+      player_id_, "速度控制", "你的速度随着你距离光标所在位置距离增大而增大", 1,
+      [=](Status &status) {
+        auto player = game_core_->GetPlayer(player_id_);
+        if (player) {
+          auto &input_data = player->GetInputData();
+          auto diff = input_data.mouse_cursor_position - position_;
+          status.speed_ *= std::min(glm::length(diff) / 15, 1.0f);
+        } else
+          status.speed_ *= game_core_->RandomFloat();
+      }});
 }
 
 void Assassin::Update() {

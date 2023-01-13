@@ -1,25 +1,34 @@
 #pragma once
+#include <list>
+
 #include "battle_game/core/object.h"
 #include "glm/glm.hpp"
-#include <list>
 
 namespace battle_game {
 
 class Bullet;
 
 class Unit : public Object {
-
  public:
-  class Status{
+  class Status {
    public:
     float attack_;
     float defence_;
     float speed_;
-    float GetHealth()const{return health_;}
-    float GetMaxHealth()const{return max_health_;}
-    Status(float max_health,float health,float attack,float defence,float speed);
+    float GetHealth() const {
+      return health_;
+    }
+    float GetMaxHealth() const {
+      return max_health_;
+    }
+    Status(float max_health,
+           float health,
+           float attack,
+           float defence,
+           float speed);
     void Initialization();
-    void Damage(GameCore*,uint32_t,uint32_t,float);
+    void Damage(GameCore *, uint32_t, uint32_t, float);
+
    private:
     float max_health_;
     float health_;
@@ -28,15 +37,22 @@ class Unit : public Object {
     const float base_speed_;
   };
 
-  struct Effect{
+  struct Effect {
     uint32_t src_player_id_;
     std::string name_;
     std::string description_;
     uint32_t time_remain_;
-    std::function<void(Status&)>influence_;
+    std::function<void(Status &)> influence_;
   };
 
-  Unit(GameCore *game_core, uint32_t id, uint32_t player_id, float max_health = 100.0f, float health = 1.0f, float attack = 1.0f, float defence = .0f, float speed = 1.0f);
+  Unit(GameCore *game_core,
+       uint32_t id,
+       uint32_t player_id,
+       float max_health = 100.0f,
+       float health = 1.0f,
+       float attack = 1.0f,
+       float defence = .0f,
+       float speed = 1.0f);
 
   uint32_t &GetPlayerId() {
     return player_id_;
@@ -47,10 +63,16 @@ class Unit : public Object {
   void SetPosition(glm::vec2 position);
   void SetRotation(float rotation);
 
-  [[nodiscard]] virtual float GetDamageScale() const{return GetAttack();}
-  [[nodiscard]] virtual float GetSpeedScale() const{return GetSpeed();}
+  [[nodiscard]] virtual float GetDamageScale() const {
+    return GetAttack();
+  }
+  [[nodiscard]] virtual float GetSpeedScale() const {
+    return GetSpeed();
+  }
 
-  void Damage(uint32_t src_unit_id,float damage) {status_.Damage(game_core_,player_id_,src_unit_id,damage);}
+  void Damage(uint32_t src_unit_id, float damage) {
+    status_.Damage(game_core_, player_id_, src_unit_id, damage);
+  }
 
   void SetLifeBarLength(float new_length);
   void SetLifeBarOffset(glm::vec2 new_offset);
@@ -93,10 +115,14 @@ class Unit : public Object {
     return skills_;
   }
 
-  void PushEffect(Effect x){effect_.push_back(x);}
+  void PushEffect(Effect x) {
+    effect_.push_back(x);
+  }
 
   void UpdateStatus();
-  [[nodiscard]] float GetMaxHealth() const{return status_.GetMaxHealth();}
+  [[nodiscard]] float GetMaxHealth() const {
+    return status_.GetMaxHealth();
+  }
 
   /*
    * Health value is in range [0, 1], represents the remaining health in ratio
@@ -104,10 +130,18 @@ class Unit : public Object {
    * unit.
    * */
 
-  [[nodiscard]] float GetHealth() const {return status_.GetHealth();}
-  [[nodiscard]] float GetAttack()const{return status_.attack_;}
-  [[nodiscard]] float GEtDefence()const{return status_.attack_;}
-  [[nodiscard]] float GetSpeed()const{return status_.speed_;}
+  [[nodiscard]] float GetHealth() const {
+    return status_.GetHealth();
+  }
+  [[nodiscard]] float GetAttack() const {
+    return status_.attack_;
+  }
+  [[nodiscard]] float GEtDefence() const {
+    return status_.attack_;
+  }
+  [[nodiscard]] float GetSpeed() const {
+    return status_.speed_;
+  }
 
  protected:
   uint32_t player_id_{};
