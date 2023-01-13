@@ -32,9 +32,13 @@ void Unit::SetPosition(glm::vec2 position) {
 }
 
 int Unit::GetScore() {
+  if (!this)
+    return 0;
   return score_;
 }
 void Unit::UpdateScore(int n) {
+  if (!this)
+    return;
   score_ += n;
   if (score_ < 0)
     score_ = 0;
