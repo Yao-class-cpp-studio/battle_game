@@ -1,8 +1,12 @@
 #include "battle_game/core/game_core.h"
 
+#include <cmath>
+
 namespace battle_game {
 
 GameCore::GameCore() {
+  InitMapsList();
+  InitMapsInit();
   auto mgr = AssetsManager::GetInstance();
   boundary_model_ = mgr->RegisterModel(
       std::vector<ObjectVertex>{
@@ -13,6 +17,210 @@ GameCore::GameCore() {
       std::vector<uint32_t>{0, 1, 2, 1, 2, 3});
   SetScene();
   GeneratePrimaryUnitList();
+}
+
+/*
+ * Define your map here
+ */
+void GameCore::InitMapsList() {
+  std::vector<
+      std::pair<std::pair<glm::vec2, glm::vec2>, battle_game::MapLinePosition>>
+      map_temporary;
+  std::pair<std::pair<glm::vec2, glm::vec2>, battle_game::MapLinePosition> line;
+  std::pair<glm::vec2, glm::vec2> location;
+  Polygon outline;
+  std::vector<Polygon> child_outline;
+  // map Default start
+  location = {glm::vec2{-10.0f, -10.0f}, glm::vec2{-10.0f, 10.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-10.0f, 10.0f}, glm::vec2{10.0f, 10.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{10.0f, 10.0f}, glm::vec2{10.0f, -10.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-10.0f, -10.0f}, glm::vec2{10.0f, -10.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  map_shape_.push_back({"Default", map_temporary});
+  map_temporary.clear();
+  outline.Add(-10, -10);
+  outline.Add(-10, 10);
+  outline.Add(10, 10);
+  outline.Add(10, -10);
+  outline_.push_back({outline, child_outline});
+  outline.clear();
+
+  // map L-maze start
+  location = {glm::vec2{0.0f, 0.0f}, glm::vec2{0.0f, 20.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{0.0f, 20.0f}, glm::vec2{10.0f, 20.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{20.0f, 0.0f}, glm::vec2{20.0f, 10.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{10.0f, 10.0f}, glm::vec2{20.0f, 10.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{10.0f, 10.0f}, glm::vec2{10.0f, 20.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{0.0f, 0.0f}, glm::vec2{20.0f, 0.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  map_shape_.push_back({"L-maze", map_temporary});
+  map_temporary.clear();
+  outline.Add(10, 10);
+  outline.Add(20, 10);
+  outline.Add(20, 0);
+  outline.Add(0, 0);
+  outline.Add(0, 20);
+  outline.Add(10, 20);
+  outline_.push_back({outline, child_outline});
+  outline.clear();
+
+  // map H-maze start
+  location = {glm::vec2{-15.0f, -15.0f}, glm::vec2{-15.0f, 15.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{5.0f, 5.0f}, glm::vec2{5.0f, 15.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{5.0f, -5.0f}, glm::vec2{5.0f, -15.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-15.0f, 15.0f}, glm::vec2{-5.0f, 15.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-5.0f, 5.0f}, glm::vec2{5.0f, 5.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{5.0f, 15.0f}, glm::vec2{15.0f, 15.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-5.0f, 5.0f}, glm::vec2{-5.0f, 15.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-5.0f, -5.0f}, glm::vec2{-5.0f, -15.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{15.0f, -15.0f}, glm::vec2{15.0f, 15.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-15.0f, -15.0f}, glm::vec2{-5.0f, -15.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-5.0f, -5.0f}, glm::vec2{5.0f, -5.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  location = {glm::vec2{5.0f, -15.0f}, glm::vec2{15.0f, -15.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  map_shape_.push_back({"H-maze", map_temporary});
+  map_temporary.clear();
+  outline.Add(-15, -15);
+  outline.Add(-15, 15);
+  outline.Add(-5, 15);
+  outline.Add(-5, 5);
+  outline.Add(5, 5);
+  outline.Add(5, 15);
+  outline.Add(15, 15);
+  outline.Add(15, -15);
+  outline.Add(5, -15);
+  outline.Add(5, -5);
+  outline.Add(-5, -5);
+  outline.Add(-5, -15);
+  outline_.push_back({outline, child_outline});
+  outline.clear();
+  // map O-maze start
+  location = {glm::vec2{-15.0f, -15.0f}, glm::vec2{-15.0f, 15.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-15.0f, 15.0f}, glm::vec2{15.0f, 15.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  location = {glm::vec2{15.0f, 15.0f}, glm::vec2{15.0f, -15.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-15.0f, -15.0f}, glm::vec2{15.0f, -15.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  // child
+  location = {glm::vec2{-10.0f, -10.0f}, glm::vec2{-10.0f, 10.0f}};
+  line = {location, MapLinePosition::Right};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-10.0f, 10.0f}, glm::vec2{10.0f, 10.0f}};
+  line = {location, MapLinePosition::Down};
+  map_temporary.push_back(line);
+  location = {glm::vec2{10.0f, 10.0f}, glm::vec2{10.0f, -10.0f}};
+  line = {location, MapLinePosition::Left};
+  map_temporary.push_back(line);
+  location = {glm::vec2{-10.0f, -10.0f}, glm::vec2{10.0f, -10.0f}};
+  line = {location, MapLinePosition::Up};
+  map_temporary.push_back(line);
+  map_shape_.push_back({"O-maze", map_temporary});
+  map_temporary.clear();
+  outline.Add(-15, -15);
+  outline.Add(-15, 15);
+  outline.Add(15, 15);
+  outline.Add(15, -15);
+  Polygon temp;
+  temp.Add(-10, -10);
+  temp.Add(-10, 10);
+  temp.Add(10, 10);
+  temp.Add(10, -10);
+  child_outline.push_back(temp);
+  outline_.push_back({outline, child_outline});
+  outline.clear();
+  child_outline.clear();
+}
+
+/*
+ * Define your map initialization here
+ */
+void GameCore::InitMapsInit() {
+  // map default start
+  map_set_scene_.push_back([this]() -> void {
+    AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
+    AddObstacle<obstacle::River>(glm::vec2{3.0f, 0.0f});
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
+                                           0.78539816339744830961566084581988f);
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
+                                           0.78539816339744830961566084581988f);
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, 10.0f},
+                                           0.78539816339744830961566084581988f);
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, 10.0f},
+                                           0.78539816339744830961566084581988f);
+    respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
+  });
+
+  // map L-maze start
+  map_set_scene_.push_back([this]() -> void {
+    respawn_points_.emplace_back(glm::vec2{3.0f, 3.0f}, 0);
+    // AddObstacle<obstacle::Block>(glm::vec2{5.0f, 5.0f});
+  });
+
+  // map H-maze start
+  map_set_scene_.push_back([this]() -> void {
+    respawn_points_.emplace_back(glm::vec2{0.0f, 0.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{10.0f, 0.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{-10.0f, 0.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{10.0f, 10.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{10.0f, -10.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{-10.0f, 10.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{-10.0f, -10.0f}, 0.0f);
+  });
+  // map O-maze start
+  map_set_scene_.push_back([this]() -> void {
+    respawn_points_.emplace_back(glm::vec2{12.0f, 12.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{-12.0f, 12.0f}, 0.0f);
+    respawn_points_.emplace_back(glm::vec2{-12.0f, -12.0f}, 0.0f);
+    AddObstacle<obstacle::Block>(glm::vec2{12.0f, -12.0f}, 0.0f);
+  });
 }
 
 /*
@@ -47,6 +255,71 @@ void GameCore::Update() {
   ProcessEventQueue();
 }
 
+const std::vector<const char *> GameCore::GetMapsType() {
+  std::vector<const char *> keys;
+  for (auto it = map_shape_.begin(); it != map_shape_.end(); ++it) {
+    keys.push_back(it->first);
+  }
+  return keys;
+}
+
+void GameCore::SwitchMapTo(uint32_t type) {
+  map_type_ = type;
+}
+
+/*
+ * Draw user-defined maps
+ */
+void GameCore::DrawMap(uint32_t type) {
+  for (int i = 0; i < map_shape_[type].second.size(); i++) {
+    if (map_shape_[type].second[i].second == MapLinePosition::Left) {
+      SetTransformation(glm::vec2{map_shape_[type].second[i].first.first.x,
+                                  (map_shape_[type].second[i].first.first.y +
+                                   map_shape_[type].second[i].first.second.y) *
+                                      0.5f},
+                        glm::radians(-90.0f),
+                        {abs(map_shape_[type].second[i].first.first.y -
+                             map_shape_[type].second[i].first.second.y) *
+                             0.5f,
+                         0.1f});
+      DrawModel(boundary_model_);
+    } else if (map_shape_[type].second[i].second == MapLinePosition::Right) {
+      SetTransformation(glm::vec2{map_shape_[type].second[i].first.first.x,
+                                  (map_shape_[type].second[i].first.first.y +
+                                   map_shape_[type].second[i].first.second.y) *
+                                      0.5f},
+                        glm::radians(90.0f),
+                        {abs(map_shape_[type].second[i].first.first.y -
+                             map_shape_[type].second[i].first.second.y) *
+                             0.5f,
+                         0.1f});
+      DrawModel(boundary_model_);
+    } else if (map_shape_[type].second[i].second == MapLinePosition::Down) {
+      SetTransformation(glm::vec2{(map_shape_[type].second[i].first.first.x +
+                                   map_shape_[type].second[i].first.second.x) *
+                                      0.5f,
+                                  map_shape_[type].second[i].first.first.y},
+                        glm::radians(0.0f),
+                        {abs(map_shape_[type].second[i].first.first.x -
+                             map_shape_[type].second[i].first.second.x) *
+                             0.5f,
+                         0.1f});
+      DrawModel(boundary_model_);
+    } else if (map_shape_[type].second[i].second == MapLinePosition::Up) {
+      SetTransformation(glm::vec2{(map_shape_[type].second[i].first.first.x +
+                                   map_shape_[type].second[i].first.second.x) *
+                                      0.5f,
+                                  map_shape_[type].second[i].first.first.y},
+                        glm::radians(180.0f),
+                        {abs(map_shape_[type].second[i].first.first.x -
+                             map_shape_[type].second[i].first.second.x) *
+                             0.5f,
+                         0.1f});
+      DrawModel(boundary_model_);
+    }
+  }
+}
+
 /*
  * Render the objects
  * Order: obstacles, bullets, units, particles, life bars, helper
@@ -59,28 +332,9 @@ void GameCore::Render() {
       SetCamera(observing_unit->GetPosition(), 0.0f);
     }
   }
-
   SetColor();
   SetTexture();
-  SetTransformation(
-      glm::vec2{boundary_low_.x, (boundary_low_.y + boundary_high_.y) * 0.5f},
-      glm::radians(-90.0f),
-      {(boundary_high_.y - boundary_low_.y) * 0.5f, 0.1f});
-  DrawModel(boundary_model_);
-  SetTransformation(
-      glm::vec2{boundary_high_.x, (boundary_low_.y + boundary_high_.y) * 0.5f},
-      glm::radians(90.0f), {(boundary_high_.y - boundary_low_.y) * 0.5f, 0.1f});
-  DrawModel(boundary_model_);
-  SetTransformation(
-      glm::vec2{(boundary_low_.x + boundary_high_.x) * 0.5f, boundary_low_.y},
-      glm::radians(0.0f), {(boundary_high_.x - boundary_low_.x) * 0.5f, 0.1f});
-  DrawModel(boundary_model_);
-  SetTransformation(
-      glm::vec2{(boundary_low_.x + boundary_high_.x) * 0.5f, boundary_high_.y},
-      glm::radians(180.0f),
-      {(boundary_high_.x - boundary_low_.x) * 0.5f, 0.1f});
-  DrawModel(boundary_model_);
-
+  DrawMap(map_type_);
   for (auto &obstacle : obstacles_) {
     obstacle.second->Render();
   }
@@ -275,20 +529,8 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 }
 
 void GameCore::SetScene() {
-  AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
-  AddObstacle<obstacle::River>(glm::vec2{3.0f, 0.0f});
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, 10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, 10.0f},
-                                         0.78539816339744830961566084581988f);
-  respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
-  respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
-  boundary_low_ = {-10.0f, -10.0f};
-  boundary_high_ = {10.0f, 10.0f};
+  respawn_points_.clear();
+  map_set_scene_[map_type_]();
 }
 
 uint32_t GameCore::AllocatePrimaryUnit(uint32_t player_id) {
@@ -318,8 +560,17 @@ glm::vec2 GameCore::RandomInCircle() {
 }
 
 bool GameCore::IsOutOfRange(glm::vec2 p) const {
-  return p.x < boundary_low_.x || p.x > boundary_high_.x ||
-         p.y < boundary_low_.y || p.y > boundary_high_.y;
+  Polygon::Point temp;
+  temp.x = p.x;
+  temp.y = p.y;
+  bool not_in_child = true;
+  if (!outline_[map_type_].second.empty()) {
+    for (auto &p : outline_[map_type_].second) {
+      if (p.InPolygon(temp))
+        not_in_child = false;
+    }
+  }
+  return (!(outline_[map_type_].first.InPolygon(temp))) || (!not_in_child);
 }
 
 std::vector<const char *> GameCore::GetSelectableUnitList() const {

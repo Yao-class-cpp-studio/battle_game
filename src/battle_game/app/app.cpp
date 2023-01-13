@@ -273,6 +273,27 @@ void App::UpdateImGui() {
                        ImGuiWindowFlags_AlwaysAutoResize)) {
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
+      auto map_list = game_core_->GetMapsType();
+      if (ImGui::Combo(u8"选择地图", &game_core_->GetMapIndex(),
+                       map_list.data(), map_list.size())) {
+        auto &units = game_core_->GetUnits();
+        for (auto &p : units) {
+          game_core_->PushEventRemoveUnit(p.second->GetId());
+        }
+        auto &obstacles = game_core_->GetObstacles();
+        for (auto &p : obstacles) {
+          game_core_->PushEventRemoveObstacle(p.second->GetId());
+        }
+        auto &particles = game_core_->GetParticles();
+        for (auto &p : particles) {
+          game_core_->PushEventRemoveParticle(p.second->GetId());
+        }
+        auto &bullets = game_core_->GetBullets();
+        for (auto &p : bullets) {
+          game_core_->PushEventRemoveBullet(p.second->GetId());
+        }
+        game_core_->SetScene();
+      }
       auto selectable_list = game_core_->GetSelectableUnitList();
       auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
       ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),

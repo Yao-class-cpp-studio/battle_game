@@ -20,6 +20,7 @@
 namespace battle_game {
 constexpr int kTickPerSecond = 60;
 constexpr float kSecondPerTick = 1.0f / float(kTickPerSecond);
+enum class MapLinePosition { Up, Down, Left, Right };
 class GameCore {
  public:
   GameCore();
@@ -184,7 +185,77 @@ class GameCore {
   glm::vec2 RandomOnCircle();
   glm::vec2 RandomInCircle();
 
+  void DrawMap(uint32_t type);
+  void InitMapsList();
+  void InitMapsInit();
+  const std::vector<const char *> GetMapsType();
+  void SwitchMapTo(uint32_t type);
+  inline int &GetMapIndex() {
+    return map_type_;
+  }
+
+  class Polygon {
+   public:
+    struct Point {
+      double x, y;
+      Point(double x = 0, double y = 0) : x(x), y(y) {
+      }
+      Point operator+(const Point &b) const {
+        return Point(x + b.x, y + b.y);
+      }
+      Point operator-(const Point &b) const {
+        return Point(x - b.x, y - b.y);
+      }
+      double operator*(const Point &b) const {
+        return x * b.x + y * b.y;
+      }
+      double operator^(const Point &b) const {
+        return x * b.y - b.x * y;
+      }
+      void Add(double x_, double y_) {
+        x = x_, y = y_;
+      }
+    };
+    std::vector<Point> polygon;
+    int Dcmp(double x) const {
+      if (fabs(x) < 1e-6)
+        return 0;
+      else
+        return x < 0 ? -1 : 1;
+    }
+    bool OnSegment(Point P1, Point P2, Point Q) const {
+      return Dcmp((P1 - Q) ^ (P2 - Q)) == 0 && Dcmp((P1 - Q) * (P2 - Q)) <= 0;
+    }
+    bool InPolygon(Point P) const {
+      bool flag = false;
+      Point P1, P2;
+      for (int i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
+        P1 = polygon[i];
+        P2 = polygon[j];
+        if (OnSegment(P1, P2, P))
+          return true;
+        if ((Dcmp(P1.y - P.y) > 0 != Dcmp(P2.y - P.y) > 0) &&
+            Dcmp(P.x - (P.y - P1.y) * (P1.x - P2.x) / (P1.y - P2.y) - P1.x) < 0)
+          flag = !flag;
+      }
+      return flag;
+    }
+    void Add(Point to_add) {
+      polygon.push_back(to_add);
+    }
+    void Add(double x, double y) {
+      Point temp;
+      temp.x = x;
+      temp.y = y;
+      polygon.push_back(temp);
+    }
+    void clear() {
+      polygon.clear();
+    }
+  };
+
  private:
+  std::vector<std::pair<Polygon, std::vector<Polygon>>> outline_;
   std::queue<std::function<void()>> event_queue_;
 
   std::map<uint32_t, std::unique_ptr<Unit>> units_;
@@ -205,8 +276,12 @@ class GameCore {
   glm::vec2 camera_position_{0.0f};
   float camera_rotation_{0.0f};
 
-  glm::vec2 boundary_low_{-10.0f, -10.0f};
-  glm::vec2 boundary_high_{10.0f, 10.0f};
+  std::vector<std::pair<const char *,
+                        std::vector<std::pair<std::pair<glm::vec2, glm::vec2>,
+                                              battle_game::MapLinePosition>>>>
+      map_shape_;
+  std::vector<std::function<void(void)>> map_set_scene_;
+  int map_type_{};
   uint32_t boundary_model_{};
 
   std::mt19937 random_device_{0};
