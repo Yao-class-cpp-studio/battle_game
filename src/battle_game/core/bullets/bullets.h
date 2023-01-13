@@ -1,4 +1,5 @@
 #pragma once
+#include "battle_game/core/bullets/boomerang.h"
 #include "battle_game/core/bullets/cannon_ball.h"
 #include "battle_game/core/bullets/coin.h"
 #include "battle_game/core/bullets/crit_bullet.h"
