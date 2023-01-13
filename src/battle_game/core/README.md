@@ -121,6 +121,13 @@ public:
   - 渲染该对象对应的生命条
 - Hide/ShowLifeBar
   - 隐藏/显示生命条
+- Set/GetUnitName*
+  - 修改/获取各种名称显示的设置
+- Hide/ShowUnitName
+  - 隐藏/显示该单位的名称
+- RenderUnitName
+  - 这是一个虚函数
+  - 渲染该单位的名称
 - RenderHelper
   - 这是一个虚函数
   - 仅在该单位所有者玩家的视角中，渲染该对象用于辅助的一些视觉效果（例如子弹射出的预计轨迹）
