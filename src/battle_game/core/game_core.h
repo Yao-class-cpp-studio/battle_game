@@ -190,6 +190,8 @@ class GameCore {
   glm::vec2 RandomInCircle();
 
  private:
+  std::queue<std::function<void()>> event_queue_;
+
   std::map<uint32_t, std::unique_ptr<Unit>> units_;
   uint32_t unit_index_{1};
   std::map<uint32_t, std::unique_ptr<Bullet>> bullets_;
@@ -204,8 +206,6 @@ class GameCore {
   uint32_t render_perspective_{
       0};  // This is a player id, defines which player is currently watching
            // the scene. 0 denote neutral.
-
-  std::queue<std::function<void()>> event_queue_;
 
   glm::vec2 camera_position_{0.0f};
   float camera_rotation_{0.0f};
