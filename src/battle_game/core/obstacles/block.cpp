@@ -1,5 +1,7 @@
 #include "battle_game/core/obstacles/block.h"
 
+#include "battle_game/core/game_core.h"
+#include "battle_game/graphics/graphics.h"
 namespace battle_game::obstacle {
 
 Block::Block(GameCore *game_core,

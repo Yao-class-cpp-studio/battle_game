@@ -1,6 +1,7 @@
 #include "battle_game/core/obstacles/safety_declaration.h"
 
 #include "battle_game/core/game_core.h"
+#include "battle_game/graphics/graphics.h"
 
 namespace battle_game::obstacle {
 
