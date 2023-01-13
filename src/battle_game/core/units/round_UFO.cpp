@@ -63,6 +63,10 @@ void RoundUFO::Update() {
   Fire();
 }
 
+////////////////////////////////////////
+//////////////Small change//////////////
+////////////////////////////////////////
+
 void RoundUFO::UFOMove(float move_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
@@ -74,6 +78,12 @@ void RoundUFO::UFOMove(float move_speed) {
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
+    if (input_data.key_down[GLFW_KEY_A]) {
+      offset.x -= 1.0f;
+    }
+    if (input_data.key_down[GLFW_KEY_D]) {
+      offset.x += 1.0f;
+    }
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
     auto new_position =
@@ -83,15 +93,7 @@ void RoundUFO::UFOMove(float move_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-
-    auto diff = input_data.mouse_cursor_position - position_;
-    float new_rotation;
-    if (glm::length(diff) < 1e-4) {
-      new_rotation = rotation_;
-    } else {
-      new_rotation = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-    }
-    game_core_->PushEventRotateUnit(id_, new_rotation);
+    game_core_->PushEventRotateUnit(id_, rotation_);
   }
 }
 
