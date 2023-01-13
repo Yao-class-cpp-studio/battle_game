@@ -3,6 +3,7 @@ name: "[PR] Clang-format"
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
     paths:
       - 'src/**'
       - '.github/workflows/clang-format.yml'
