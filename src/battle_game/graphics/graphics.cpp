@@ -1,5 +1,7 @@
 #include "battle_game/graphics/graphics.h"
 
+#include <codecvt>
+
 namespace battle_game {
 namespace {
 std::vector<ObjectSettings> object_settings_;
@@ -12,6 +14,7 @@ glm::vec2 current_position_;
 glm::vec2 current_scale_;
 float current_rotation_;
 AssetsManager *mgr{};
+grassland::font::Factory factory{"../../fonts/NotoSansSC-Regular.otf"};
 
 void UpdateObjectSettingsTransformMatrix() {
   current_object_settings_.local_to_world =
@@ -99,6 +102,41 @@ void DrawTexture(const std::string &file_path) {
   auto bak_texture_id = GetTexture();
   SetTexture(file_path);
   DrawModel(0);
+  SetTexture(bak_texture_id);
+}
+
+std::wstring StringToWideString(const std::string &text) {
+  static std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+  return converter.from_bytes(text);
+}
+
+uint32_t RegisterText(const std::wstring &text, bool centered) {
+  static std::map<std::pair<std::wstring, bool>, uint32_t> map_text_index;
+  std::pair<std::wstring, bool> key(text, centered);
+  if (!map_text_index.count(key)) {
+    grassland::font::Mesh mesh(factory.GetString(text));
+    std::vector<ObjectVertex> vertices;
+    glm::vec2 shift{};
+    if (centered) {
+      float width = 0.0f;
+      for (auto &ver : mesh.vertices) {
+        width = std::max(width, ver.x);
+      }
+      shift.x = -width / 2;
+      shift.y = -0.5f;
+    }
+    vertices.reserve(mesh.vertices.size());
+    for (auto &ver : mesh.vertices) {
+      vertices.push_back({ver + shift, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}});
+    }
+    map_text_index[key] = mgr->RegisterModel(vertices, mesh.indices);
+  }
+  return map_text_index.at(key);
+}
+
+void DrawText(const std::wstring &text, bool centered) {
+  auto bak_texture_id = GetTexture();
+  DrawModel(RegisterText(text, centered));
   SetTexture(bak_texture_id);
 }
 

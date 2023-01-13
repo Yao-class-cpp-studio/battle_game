@@ -96,6 +96,9 @@ void GameCore::Render() {
   for (auto &units : units_) {
     units.second->RenderLifeBar();
   }
+  for (auto &units : units_) {
+    units.second->RenderUnitName();
+  }
   if (observer) {
     auto observing_unit = GetUnit(observer->GetPrimaryUnitId());
     if (observing_unit) {

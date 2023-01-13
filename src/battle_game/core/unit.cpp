@@ -9,13 +9,14 @@ uint32_t life_bar_model_index = 0xffffffffu;
 }  // namespace
 
 Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Object(game_core, id) {
-  player_id_ = player_id;
-  lifebar_offset_ = {0.0f, 1.0f};
-  background_lifebar_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
-  front_lifebar_color_ = {0.0f, 1.0f, 0.0f, 0.9f};
-  fadeout_lifebar_color_ = {1.0f, 1.0f, 1.0f, 0.5f};
-  fadeout_health_ = 1;
+    : Object(game_core, id),
+      player_id_(player_id),
+      lifebar_offset_{0.0f, 1.0f},
+      background_lifebar_color_{1.0f, 0.0f, 0.0f, 0.9f},
+      front_lifebar_color_{0.0f, 1.0f, 0.0f, 0.9f},
+      fadeout_lifebar_color_{1.0f, 1.0f, 1.0f, 0.5f},
+      unit_name_offset_{0.0f, 1.5f},
+      fadeout_health_{1.0f} {
   if (!~life_bar_model_index) {
     auto mgr = AssetsManager::GetInstance();
     life_bar_model_index = mgr->RegisterModel(
@@ -112,6 +113,36 @@ void Unit::RenderLifeBar() {
     } else {
       fadeout_health_ = health;
     }
+  }
+}
+
+void Unit::SetUnitNameOffset(const glm::vec2 &new_offset) {
+  unit_name_offset_ = new_offset;
+}
+void Unit::SetUnitNameSize(float new_size) {
+  unit_name_size_ = new_size;
+}
+glm::vec2 Unit::GetUnitNameOffset() {
+  return unit_name_offset_;
+}
+float Unit::GetUnitNameSize() {
+  return unit_name_size_;
+}
+
+void Unit::ShowUnitName() {
+  unit_name_display_ = true;
+}
+void Unit::HideUnitName() {
+  unit_name_display_ = false;
+}
+
+void Unit::RenderUnitName() {
+  if (unit_name_display_) {
+    auto parent_unit = game_core_->GetUnit(id_);
+    auto pos = parent_unit->GetPosition() + unit_name_offset_;
+    SetTransformation(pos, 0, glm::vec2{unit_name_size_});
+    SetColor(game_core_->GetPlayerColor(player_id_));
+    DrawText(UnitName());
   }
 }
 

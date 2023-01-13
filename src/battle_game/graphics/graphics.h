@@ -27,8 +27,18 @@ uint32_t SetTexture(const std::string &file_path);
 void SetTexture(uint32_t texture_id = 0);
 uint32_t GetTexture();
 
+std::wstring StringToWideString(const std::string &text);
+uint32_t RegisterText(const std::wstring &text, bool centered = true);
+inline uint32_t RegisterText(const std::string &text, bool centered = true) {
+  return RegisterText(StringToWideString(text), centered);
+}
+
 void DrawModel(uint32_t model_id = 0);
 void DrawTexture(const std::string &file_path);
+void DrawText(const std::wstring &text, bool centered = true);
+inline void DrawText(const std::string &text, bool centered = true) {
+  DrawText(StringToWideString(text), centered);
+}
 
 const std::vector<ObjectSettings> &GetObjectSettings();
 const std::vector<TextureInfo> &GetTextureInfos();

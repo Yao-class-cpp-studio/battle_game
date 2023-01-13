@@ -122,6 +122,16 @@ uint32_t GetTexture();
 - 获取当前绑定的纹理编号
 
 ```c++
+uint32_t RegisterText(const std::wstring &text, bool centered = true);
+uint32_t RegisterText(const std::string &text, bool centered = true);
+```
+
+- 根据文本注册一个新的模型，返回值为注册的模型编号
+- 采用 UTF-8 编码
+- `centered` 若为 `true` 则以原点为中心，否则以原点为左下角
+- 高度为 $1$，即当 `centered` 为 `true` 时，模型的顶点纵坐标范围为 $[-0.5, 0.5]$；当 `centered` 为 `false` 时，模型的顶点纵坐标范围为 $[0, 1]$
+
+```c++
 void DrawModel(uint32_t model_id = 0);
 ```
 
@@ -132,3 +142,12 @@ void DrawTexture(const std::string &file_path);
 ```
 
 - 根据当前绑定的全局设置，绘制 `file_path` 路径对应的图片到本地空间为 $[-1, 1]^2$ 的矩形区域内
+
+```c++
+void DrawText(const std::wstring &text, bool centered = true);
+void DrawText(const std::string &text, bool centered = true);
+```
+
+- 根据当前绑定的全局设置，绘制文本
+- 采用 UTF-8 编码
+- `centered` 若为 `true` 则以当前绘制位置为中心，绘制文本；否则以当前绘制位置为左下角，绘制文本
