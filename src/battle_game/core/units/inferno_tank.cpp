@@ -103,7 +103,7 @@ void InfernoTank::Inferno() {
       for (int i = -9; i < 9; ++i) {
         auto offset = glm::radians(20.0f * i);
         velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_ + offset);
-        GenerateBullet<bullet::SnowBall>(
+        GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_ + offset),
             turret_rotation_ + offset, GetDamageScale(), velocity);
       }
