@@ -116,8 +116,8 @@ void Unit::RenderLifeBar() {
 }
 
 void Unit::InvincibleTime() {
-  if (invincibleTime) {
-    invincibleTime--;
+  if (invincible_time_) {
+    invincible_time_--;
     SetLifeBarFrontColor(glm::vec4{0, 0, 1, 0.5});
     SetLifeBarFadeoutColor(glm::vec4{0, 0, 1, 0.5});
     SetLifeBarBackgroundColor(glm::vec4{0, 0, 1, 0.5});
