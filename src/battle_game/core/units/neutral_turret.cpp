@@ -12,8 +12,10 @@ uint32_t neutral_turret_model_index = 0xffffffffu;
 
 NeutralTurret::NeutralTurret(GameCore *game_core,
                              uint32_t id,
-                             uint32_t player_id)
+                             uint32_t player_id,
+                             bool setBlock)
     : Unit(game_core, id, player_id) {
+  setBlock_ = setBlock;
   auto mgr = AssetsManager::GetInstance();
   {
     /* Tank Turret */
@@ -55,9 +57,9 @@ NeutralTurret::NeutralTurret(GameCore *game_core,
 }
 
 void NeutralTurret::Render() {
-  if (!setBlock_) {
+  if (setBlock_) {
     game_core_->AddObstacle<obstacle::Block>(position_);
-    setBlock_ = true;
+    setBlock_ = false;
   }
   battle_game::SetColor(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
   battle_game::SetTexture(0);

@@ -5,7 +5,10 @@
 namespace battle_game::unit {
 class NeutralTurret : public Unit {
  public:
-  NeutralTurret(GameCore *game_core, uint32_t id, uint32_t player_id);
+  NeutralTurret(GameCore *game_core,
+                uint32_t id,
+                uint32_t player_id,
+                bool setBlock = true);
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
@@ -22,6 +25,6 @@ class NeutralTurret : public Unit {
   float range_{5.0f};
   glm::vec2 scale_{1.0f};
   glm::vec2 FindEnermy();
-  bool setBlock_ = false;
+  bool setBlock_ = true;
 };
 }  // namespace battle_game::unit
