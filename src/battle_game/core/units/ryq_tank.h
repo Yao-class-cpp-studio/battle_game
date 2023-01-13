@@ -17,12 +17,12 @@ class RYQ_Tank : public Unit {
   [[nodiscard]] const char *Author() const override;
 
   float turret_rotation_{0.0f};
-  uint32_t fire1_count_down_1{0};//一武射击频率.
-  uint32_t fire1_count_down_2{0};//一武冷却.
-  uint32_t fire1_count_num_{120};   // 一武弹药数.
-  uint32_t fire2_count_down_{0};   // 二武冷却.
-  uint32_t fire2_count_num_{2};//二武弹药数.
-  uint32_t skillE_count_down_{0};//E技能冷却.
-  uint32_t skillQ_count_down_{0};//Q技能冷却.
+  uint32_t fire1_count_down_1{0};
+  uint32_t fire1_count_down_2{0};
+  uint32_t fire1_count_num_{120};
+  uint32_t fire2_count_down_{0};
+  uint32_t fire2_count_num_{2};
+  uint32_t skillE_count_down_{0};
+  uint32_t skillQ_count_down_{0};
 };
 }  // namespace battle_game::unit
