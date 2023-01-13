@@ -201,7 +201,7 @@ void GameCore::InitMapsInit() {
   // map L-maze start
   map_set_scene_.push_back([this]() -> void {
     respawn_points_.emplace_back(glm::vec2{3.0f, 3.0f}, 0);
-    // AddObstacle<obstacle::Block>(glm::vec2{5.0f, 5.0f});
+    AddObstacle<obstacle::Block>(glm::vec2{7.0f, 3.0f});
   });
 
   // map H-maze start
