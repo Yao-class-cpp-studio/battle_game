@@ -1,4 +1,5 @@
 #pragma once
+#include "battle_game/core/units/Random_npc.h"
 #include "battle_game/core/units/Random_tank.h"
 #include "battle_game/core/units/Whaooooo_tank.h"
 #include "battle_game/core/units/crit_tank.h"
@@ -20,4 +21,3 @@
 #include "battle_game/core/units/tiny_tank.h"
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/zibeng_dog.h"
-#include "battle_game/core/units/Random_npc.h"
