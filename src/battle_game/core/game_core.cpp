@@ -114,16 +114,6 @@ glm::vec4 GameCore::GetPlayerColor(uint32_t player_id) const {
   }
 }
 
-glm::vec4 GameCore::GetPlayerColorbooboo(uint32_t player_id) const {
-  if (render_perspective_ == 0) {
-    return glm::vec4{0.5f, 1.0f, 0.5f, 1.0f};
-  } else if (render_perspective_ == player_id) {
-    return glm::vec4{0.72f, 0.22f, 0.52f, 1.0f};
-  } else {
-    return glm::vec4{1.0f, 0.5f, 0.5f, 1.0f};
-  }
-}
-
 void GameCore::SetRenderPerspective(uint32_t player_id) {
   render_perspective_ = player_id;
 }
