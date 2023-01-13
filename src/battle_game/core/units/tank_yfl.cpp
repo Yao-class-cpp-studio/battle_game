@@ -48,6 +48,10 @@ float TankYfl::GetSpeedScale() const {
     return 1.0f;
 }
 
+float TankYfl::GetDamageScale() const {
+  return 1.0 / health_;
+}
+
 void TankYfl::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
