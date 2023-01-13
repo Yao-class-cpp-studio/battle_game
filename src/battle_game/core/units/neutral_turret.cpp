@@ -73,7 +73,7 @@ void NeutralTurret::Update() {
   Fire();
 }
 
-glm::highp_vec2 NeutralTurret::findEnermy() {
+glm::highp_vec2 NeutralTurret::FindEnermy() {
   auto &units = game_core_->GetUnits();
   auto it = units.begin();
   auto itEnd = units.end();
@@ -101,11 +101,8 @@ glm::highp_vec2 NeutralTurret::findEnermy() {
 void NeutralTurret::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
-    // auto &input_data = player->GetInputData();
-    // auto diff = input_data.mouse_cursor_position - position_;
-    auto diff = findEnermy();
+    auto diff = FindEnermy();
     if (glm::length(diff) < 1e-4) {
-      // turret_rotation_ = rotation_;
       fire_count_down_ = 1;
     } else {
       turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
@@ -119,14 +116,11 @@ void NeutralTurret::Fire() {
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
-      // auto &input_data = player->GetInputData();
-      // if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
       auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
       GenerateBullet<bullet::CannonBall>(
           position_ + Rotate({0.0f, 1.2f}, turret_rotation_), turret_rotation_,
           GetDamageScale(), velocity);
       fire_count_down_ = kTickPerSecond * 2;  // Fire interval 2 second.
-      // }
     }
   }
 }

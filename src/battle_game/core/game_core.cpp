@@ -286,6 +286,8 @@ void GameCore::SetScene() {
                                          0.78539816339744830961566084581988f);
   respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
   respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
+  auto unit_id = AddUnit<unit::NeutralTurret>(2);
+  GetUnit(unit_id)->SetPosition(glm::vec2{0.0f, -8.0f});
   boundary_low_ = {-10.0f, -10.0f};
   boundary_high_ = {10.0f, 10.0f};
 }
