@@ -30,6 +30,7 @@ void GameCore::GeneratePrimaryUnitList() {
    * TODO: Add Your Unit Here!
    * */
   ADD_SELECTABLE_UNIT(unit::InfernoTank);
+  ADD_SELECTABLE_UNIT(unit::snowball_sample_sledge);
   ADD_SELECTABLE_UNIT(unit::RoundUFO);
   ADD_SELECTABLE_UNIT(unit::Tank);
   ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);
@@ -49,7 +50,6 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::Sparky);
   ADD_SELECTABLE_UNIT(unit::CritTank);
   ADD_SELECTABLE_UNIT(unit::Railgun);
-
   unit.reset();
 }
 }  // namespace battle_game
