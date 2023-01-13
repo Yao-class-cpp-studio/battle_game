@@ -9,11 +9,10 @@ class MagicTank : public Unit {
   void Update() override;
   uint32_t protectskill_countdown_ = {0};
   uint32_t protectcool_countdown{0};
-  bool protected = false;
+  bool protecteed = false;
   void Protect();
   void ProtectClick();
   void magic();
-  Void Speeded();
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:

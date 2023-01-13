@@ -157,18 +157,16 @@ void MagicTank::Fire() {
 }
 
 void MagicTank::ProtectClick() {
- protected
-  = true;
+  protecteed = true;
   protectskill_countdown_ = 20 * kTickPerSecond;
 }
 
 void MagicTank::magic() {
-  if (protected) {
+  if (protecteed) {
     if (protectskill_countdown_) {
       protectskill_countdown_--;
       if (protectskill_countdown_ == 0) {
-       protected
-        = false;
+        protecteed = false;
         protectcool_countdown = 60 * kTickPerSecond;
       }
     }
@@ -179,7 +177,7 @@ void MagicTank::Protect() {
   skills_[0].time_remain = protectcool_countdown;
   if (protectcool_countdown) {
     protectcool_countdown--;
-  } else if (protected == false) {
+  } else if (protecteed == false) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
@@ -191,7 +189,7 @@ void MagicTank::Protect() {
 }
 
 bool MagicTank::IsHit(glm::vec2 position) const {
-  if (protected == true)
+  if (protecteed == true)
     return false;  // Under Protected
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
