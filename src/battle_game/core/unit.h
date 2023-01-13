@@ -56,11 +56,15 @@ class Unit : public Object {
   void SetShield(float shield) {
     shield_scale_ = std::clamp(shield * shield_scale_, 1.0f, 2.0f);
   }
-  void SetEffect(const std::string effect, float scale) {
+  enum BuffType { Speed, Damage, Shield, OnFire };
+  std::vector<std::string> BuffName = {"speed", "damage", "shield"};
+  void SetEffect(BuffType effect, float scale, float time) {
     if (scale >= 0.0f) {
-      effects_[effect] = scale;
+      effects_[effect][0] = scale;
+      effects_[effect][1] = time;
     }
   }
+  void UpdateEffect();
 
   void SetLifeBarLength(float new_length);
   void SetLifeBarOffset(glm::vec2 new_offset);
@@ -104,8 +108,11 @@ class Unit : public Object {
   float speed_scale_{1.0f};
   float damage_scale_{1.0f};
   float shield_scale_{1.0f};
-  std::map<std::string, float> effects_{
-      {{"speed", 1.0f}, {"damage", 1.0f}, {"shield", 1.0f}}};
+  std::map<enum BuffType, std::vector<float>> effects_{
+      {{Speed, {1.0f, 0.0f}},
+       {Damage, {1.0f, 0.0f}},
+       {Shield, {1.0f, 0.0f}},
+       {OnFire, {1.0f, 0.0f}}}};
   std::vector<Skill> skills_;
   bool lifebar_display_{true};
   glm::vec2 lifebar_offset_{};

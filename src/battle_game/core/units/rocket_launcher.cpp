@@ -19,7 +19,7 @@ uint32_t cart_body_model_index = 0xffffffffu;
 uint32_t cart_turret_model_index = 0xffffffffu;
 }  // namespace
 Cart::Cart(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Tank(game_core, id, player_id) {
   if (!~cart_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -103,17 +103,7 @@ void Cart::CartMove(float move_speed, float rotate_angular_speed) {
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
-void Cart::TurretRotate() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
-    }
-    turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-  }
-}
+
 void Cart::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;

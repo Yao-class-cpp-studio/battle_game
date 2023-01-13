@@ -36,6 +36,7 @@ void GameCore::Update() {
   }
   for (auto &units : units_) {
     units.second->Update();
+    units.second->UpdateEffect();
   }
   for (auto &particle : particles_) {
     if (IsOutOfRange(particle.second->GetPosition())) {
@@ -45,13 +46,10 @@ void GameCore::Update() {
     particle.second->Update();
   }
   if (RandomInt(1, 1200) == 1) {
-    std::map<uint32_t, std::string> effect_list = {
-        {0, "heal"}, {1, "speed"}, {2, "damage"}, {3, "shield"}};
     float x = 20.0f * RandomFloat() - 10.0f;
     float y = 20.0f * RandomFloat() - 10.0f;
     PushEventGenerateBullet<bullet::DropBox>(0, 0, glm::vec2{x, y}, 0.0f, 0.0f,
-                                             effect_list.at(RandomInt(0, 3)),
-                                             1.5f);
+                                             RandomInt(0, 4), 1.5f);
   }
   ProcessEventQueue();
 }
@@ -241,12 +239,13 @@ void GameCore::PushEventHeal(uint32_t unit_id, float health) {
 }
 
 void GameCore::PushEventSetEffect(uint32_t unit_id,
-                                  const std::string effect,
-                                  float scale) {
+                                  Unit::BuffType effect,
+                                  float scale,
+                                  float time) {
   event_queue_.emplace([=]() {
     auto unit = GetUnit(unit_id);
     if (unit)
-      unit->SetEffect(effect, scale);
+      unit->SetEffect(effect, scale, time);
   });
 };
 
@@ -285,11 +284,8 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
 void GameCore::PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id) {
   if (RandomInt(1, 2) == 1) {
     auto dst_unit = GetUnit(dst_unit_id);
-    std::map<uint32_t, std::string> effect_list = {
-        {0, "heal"}, {1, "speed"}, {2, "damage"}, {3, "shield"}};
-    PushEventGenerateBullet<bullet::DropBox>(
-        0, 0, dst_unit->GetPosition(), 0.0f, 0.0f,
-        effect_list.at(RandomInt(0, 3)), 1.5f);
+    PushEventGenerateBullet<bullet::DropBox>(0, 0, dst_unit->GetPosition(),
+                                             0.0f, 0.0f, RandomInt(0, 4), 1.5f);
   }
   event_queue_.emplace([=]() { PushEventRemoveUnit(dst_unit_id); });
 }

@@ -36,15 +36,15 @@ void Unit::SetRotation(float rotation) {
 }
 
 float Unit::GetSpeedScale() const {
-  return speed_scale_ * effects_.at("speed");
+  return speed_scale_ * effects_.at(Speed)[0];
 }
 
 float Unit::GetDamageScale() const {
-  return damage_scale_ * effects_.at("damage");
+  return damage_scale_ * effects_.at(Damage)[0];
 }
 
 float Unit::GetShieldScale() const {
-  return std::clamp(shield_scale_ * effects_.at("shield"), 1.0f, 2.0f);
+  return std::clamp(shield_scale_ * effects_.at(Shield)[0], 1.0f, 2.0f);
 };
 
 float Unit::BasicMaxHealth() const {
@@ -118,11 +118,28 @@ void Unit::RenderLifeBar() {
     }
   }
 }
+void Unit::UpdateEffect() {
+  for (auto &it : effects_) {
+    if (it.second[1] > 0.001f) {
+      it.second[1] -= kSecondPerTick;
+      if (it.first == OnFire)
+        game_core_->PushEventDealDamage(id_, id_, 0.05 * (it.second[0]));
+    } else {
+      it.second[1] = 0.0f;
+      it.second[0] = 1.0f;
+    }
+  }
+}
 
 void Unit::RenderEffect() {
-  std::vector<std::string> effect_list;
+  std::vector<BuffType> effect_list;
+  if (effects_.at(OnFire)[0] != 1.0f) {
+    game_core_->PushEventGenerateParticle<particle::Smoke>(
+        position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
+        glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+  }
   for (auto it : effects_) {
-    if (it.second != 1.0)
+    if (it.first != OnFire && it.second[0] != 1.0f)
       effect_list.push_back(it.first);
   }
   for (int i = 0; i < effect_list.size(); i++) {
@@ -131,7 +148,7 @@ void Unit::RenderEffect() {
     auto offset = glm::vec2{-0.2f * (effect_list.size() - 1) + 0.4f * i, 0.0f};
     SetTransformation(pos + offset, 0.0f, glm::vec2{0.3f});
     SetColor(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
-    SetTexture(std::string("../../textures/") + effect_list[i] +
+    SetTexture(std::string("../../textures/") + BuffName[effect_list[i]] +
                std::string(".png"));
     DrawModel(0);
   }

@@ -10,16 +10,17 @@ class DropBox : public Bullet {
           glm::vec2 position,
           float rotation,
           float damage_scale,
-          const std::string effect,
+          uint32_t type,
           float scale);
   void Render() override;
   void Update() override;
 
  private:
-  const std::string effect_;
+  uint32_t type_;
+  std::vector<std::string> typenames_{"speed", "damage", "shield", "fire",
+                                      "heal"};
   float scale_;
   float lifetime_;
   float strength_{1.0f};
-  uint32_t is_got_{0};
 };
 }  // namespace battle_game::bullet
