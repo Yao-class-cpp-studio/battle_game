@@ -65,7 +65,7 @@ RYQ_Tank::RYQ_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void RYQ_Tank::Render() {//绘制.
+void RYQ_Tank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -83,8 +83,8 @@ void RYQ_Tank::Update() {
 void RYQ_Tank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
-    auto &input_data = player->GetInputData();//获取鼠标、键盘的输入.
-    //移动部分.
+    auto &input_data = player->GetInputData();
+
     glm::vec2 offset{0.0f};
     if (input_data.key_down[GLFW_KEY_W]) {
       if (input_data.key_down[GLFW_KEY_SPACE])
@@ -95,7 +95,7 @@ void RYQ_Tank::TankMove(float move_speed, float rotate_angular_speed) {
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
-    if (skillQ_count_down_) {  // Q技能.
+    if (skillQ_count_down_) { 
       skillQ_count_down_--;
     } else {
       if (input_data.key_down[GLFW_KEY_Q]) {
@@ -112,7 +112,7 @@ void RYQ_Tank::TankMove(float move_speed, float rotate_angular_speed) {
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-    //旋转部分.
+
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
       rotation_offset += 0.4f;
@@ -138,10 +138,10 @@ void RYQ_Tank::TurretRotate() {
 }
 
 void RYQ_Tank::Fire() {
-  if (fire1_count_down_2) {// 一武.
-    fire1_count_down_2--;//换弹时间.
+  if (fire1_count_down_2) {
+    fire1_count_down_2--;
   } else {
-    if (fire1_count_down_1) {  //射击时间间隔.
+    if (fire1_count_down_1) {  
       fire1_count_down_1--;
     } else {
         auto player = game_core_->GetPlayer(player_id_);
@@ -154,7 +154,7 @@ void RYQ_Tank::Fire() {
                 turret_rotation_,
                 GetDamageScale() / 10,
                 velocity);
-            fire1_count_down_1 = kTickPerSecond / 30;  // 射击频率.
+            fire1_count_down_1 = kTickPerSecond / 30; 
             if (fire1_count_num_ - 1 == 0) {
                 fire1_count_down_2 = kTickPerSecond * 6;
                 fire1_count_num_ = 120;
@@ -165,23 +165,23 @@ void RYQ_Tank::Fire() {
       }
     }
   
-  if (fire2_count_down_) {  // 二武.
+  if (fire2_count_down_) {  
     fire2_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_clicked
-              [GLFW_MOUSE_BUTTON_RIGHT]) {  // 单击右键发射散弹.
+              [GLFW_MOUSE_BUTTON_RIGHT]) { 
         for (int i = 0; i < 8; i++) {
           float radom = game_core_->RandomFloat();
           auto velocity =
               Rotate(glm::vec2{radom * 6.0f, 24.0f}, turret_rotation_);
           GenerateBullet<bullet::CannonBall>(
-              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),  // 发射位置.
-              turret_rotation_,                                    // 角度.
-              GetDamageScale() * 0.6,                              // 伤害.
-              velocity);  // 子弹速度.
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),  
+              turret_rotation_,                                    
+              GetDamageScale() * 0.6,                             
+              velocity);  
         }
         if (fire2_count_num_ - 1 == 0) {
           fire2_count_down_ = kTickPerSecond * 6;
@@ -191,7 +191,7 @@ void RYQ_Tank::Fire() {
       }
     }
   }
-  if (skillE_count_down_) {  // E技能.
+  if (skillE_count_down_) { 
     skillE_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
@@ -210,7 +210,7 @@ void RYQ_Tank::Fire() {
   }
 }
 
-bool RYQ_Tank::IsHit(glm::vec2 position) const {//被击中事件.
+bool RYQ_Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
