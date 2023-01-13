@@ -103,7 +103,6 @@ void Cart::CartMove(float move_speed, float rotate_angular_speed) {
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
-
 void Cart::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
