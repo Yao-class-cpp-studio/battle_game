@@ -14,6 +14,7 @@
 #include "battle_game/core/units/smoke_bomb_tank.h"
 #include "battle_game/core/units/sparky.h"
 #include "battle_game/core/units/square_tank.h"
+#include "battle_game/core/units/suz_tank.h"
 #include "battle_game/core/units/tankK.h"
 #include "battle_game/core/units/tank_xxy.h"
 #include "battle_game/core/units/three_body_man.h"
