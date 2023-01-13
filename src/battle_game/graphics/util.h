@@ -32,4 +32,6 @@ void SetGlobalCore(vulkan::framework::Core *core);
 vulkan::framework::Core *GetGlobalCore();
 
 glm::vec2 Rotate(glm::vec2 v, float angle);
+
+std::wstring StringToWideString(const std::string &text);
 }  // namespace battle_game
