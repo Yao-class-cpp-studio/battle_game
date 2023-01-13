@@ -117,6 +117,7 @@ class GameCore {
 
   [[nodiscard]] bool IsOutOfRange(glm::vec2 p) const;
   [[nodiscard]] bool IsBlockedByObstacles(glm::vec2 p) const;
+  [[nodiscard]] bool IsStuckBySwamp(glm::vec2 p) const;
 
   void PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position);
   void PushEventRotateUnit(uint32_t unit_id, float new_rotation);

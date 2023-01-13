@@ -17,7 +17,11 @@ void DoubleScatterTank::Render() {
 }
 
 void DoubleScatterTank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  if (!is_stuck_by_swamp) {
+    TankMove(3.0f, glm::radians(180.0f));
+  } else {
+    TankMove(1.5f, glm::radians(180.0f));
+  }
   TurretRotate();
   Fire();
 }
