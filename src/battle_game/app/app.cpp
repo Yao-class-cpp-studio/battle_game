@@ -266,7 +266,7 @@ void App::UpdateImGui() {
         int score = 0;
 
         if (unit) {
-          score = unit->get_score();
+          score = unit->GetScore();
         }
 
         ImGui::Text(u8"你的得分: %d", score);

@@ -45,7 +45,7 @@ void CannonBall::Update() {
   }
 
   auto unit = game_core_->GetUnit(unit_id_);
-  unit->update_score(score_update);
+  unit->UpdateScore(score_update);
 
   if (should_die) {
     game_core_->PushEventRemoveBullet(id_);

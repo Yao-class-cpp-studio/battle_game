@@ -40,7 +40,7 @@ bool SafetyDeclaration::IsBlocked(glm::vec2 p) const {
          p.y >= -scale_.y;
 }
 
-void SafetyDeclaration::handle_collision(glm::vec2 &p) const {
+void SafetyDeclaration::HandleCollision(glm::vec2 &p) const {
   auto local_p = WorldToLocal(p);
 
   auto del1 = scale_.x - local_p.x;

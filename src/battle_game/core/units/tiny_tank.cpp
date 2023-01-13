@@ -107,7 +107,7 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
     }
     // collision with the wall
     else {
-      game_core_->handle_collision(new_position);
+      game_core_->HandleCollision(new_position);
       game_core_->PushEventMoveUnit(id_, new_position);
     }
     float rotation_offset = 0.0f;

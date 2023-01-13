@@ -16,7 +16,7 @@ bool Block::IsBlocked(glm::vec2 p) const {
          p.y >= -scale_.y;
 }
 
-void Block::handle_collision(glm::vec2 &p) const {
+void Block::HandleCollision(glm::vec2 &p) const {
   auto local_p = WorldToLocal(p);
   auto del1 = scale_.x - local_p.x;
   auto del2 = local_p.x + scale_.x;

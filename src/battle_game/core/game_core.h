@@ -42,7 +42,7 @@ class GameCore {
   glm::vec2 get_boundary_high();
   glm::vec2 get_boundary_low();
 
-  void handle_collision(glm::vec2 &p);
+  void HandleCollision(glm::vec2 &p);
 
   template <class UnitType, class... Args>
   uint32_t AddUnit(uint32_t player_id, Args... args) {

@@ -58,8 +58,8 @@ class Unit : public Object {
   void HideLifeBar();
   virtual void RenderLifeBar();
 
-  void update_score(int n);
-  int get_score();
+  void UpdateScore(int n);
+  int GetScore();
   /*
    * This virtual function is used to check whether a bullet at the position
    * have hit the unit. If the position is inside the unit area, then return

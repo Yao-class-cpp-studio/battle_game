@@ -141,7 +141,7 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
-void GameCore::handle_collision(glm::vec2 &p) {
+void GameCore::HandleCollision(glm::vec2 &p) {
   if (IsOutOfRange(p)) {
     if (p.x < boundary_low_.x)
       p.x = boundary_low_.x;
@@ -155,7 +155,7 @@ void GameCore::handle_collision(glm::vec2 &p) {
   }
   for (auto &obstacle : obstacles_) {
     if (obstacle.second->IsBlocked(p)) {
-      obstacle.second->handle_collision(p);
+      obstacle.second->HandleCollision(p);
     }
     continue;
   }
@@ -268,7 +268,7 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
 void GameCore::PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id) {
   event_queue_.emplace([=]() { PushEventRemoveUnit(dst_unit_id); });
   auto unit = GetUnit(bullets_[src_unit_id]->get_unit_id_());
-  unit->update_score(15);
+  unit->UpdateScore(15);
 }
 
 float GameCore::RandomFloat() {
