@@ -47,7 +47,6 @@ RoundUFO::RoundUFO(GameCore *game_core, uint32_t id, uint32_t player_id)
       tank_body_model_index = mgr->RegisterModel(body_vertices, turret_indices);
     }
   }
-
   // Skill
   Skill Teleport;
   Teleport.name = "Teleport";
