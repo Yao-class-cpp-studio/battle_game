@@ -16,6 +16,9 @@ bool ReboundingBlock::IsBlocked(glm::vec2 p) const {
          p.y >= -scale_.y;
 }
 
+
+
+
 float ReboundingBlock::vec2_cross(glm::vec2 a, glm::vec2 b) {
   return a.x * b.y - a.y * b.x;
 }

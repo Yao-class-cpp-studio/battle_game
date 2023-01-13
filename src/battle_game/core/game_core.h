@@ -120,6 +120,8 @@ class GameCore {
 
   [[nodiscard]] bool IsOutOfRange(glm::vec2 p) const;
   [[nodiscard]] bool IsBlockedByObstacles(glm::vec2 p) const;
+
+
   [[nodiscard]] Obstacle *GetBlockedObstacle(glm::vec2 p) const;
 
   void PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position);

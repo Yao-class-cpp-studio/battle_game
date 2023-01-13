@@ -12,6 +12,10 @@ class ReboundingBlock : public Obstacle {
 
  private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
+
+
+
+
   void Render() override;
   float vec2_cross(glm::vec2 a, glm::vec2 b);
   bool IsIntersect(glm::vec2 a, glm::vec2 b, glm::vec2 c, glm::vec2 d);

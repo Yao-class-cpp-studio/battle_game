@@ -147,6 +147,8 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
+
+
 Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
   if (!IsOutOfRange(p)) {
     for (auto &obstacle : obstacles_)

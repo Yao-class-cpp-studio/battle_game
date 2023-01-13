@@ -16,6 +16,12 @@ bool Block::IsBlocked(glm::vec2 p) const {
          p.y >= -scale_.y;
 }
 
+
+
+
+
+
+
 void Block::Render() {
   battle_game::SetColor(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
   battle_game::SetTexture(0);
