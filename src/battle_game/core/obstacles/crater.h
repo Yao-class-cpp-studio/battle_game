@@ -9,10 +9,18 @@ class Crater : public Obstacle {
         glm::vec2 position,
         float rotation = 0.0f,
         glm::vec2 scale = glm::vec2{1.0f, 1.0f});
+  void Render() override;
+  void Update() override;
 
  private:
+  void Recover();
+  uint32_t crater_count_down_{180};
+  uint32_t recovery_count_down_{180};
+  bool isRecovered = false;
+  void OK();
+  void RecoverRender();
+  uint32_t unit_id_{};
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
-  void Render() override;
   glm::vec2 scale_{1.0f};
 };
 }  // namespace battle_game::obstacle

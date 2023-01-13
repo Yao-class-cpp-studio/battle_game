@@ -18,7 +18,8 @@ class DoomTank : public Tank {
   uint32_t unit_id_{};
   uint32_t id_{0};
   bool IsHit(glm::vec2 position) const;
-  uint32_t doomsday_count_down_{60};
+  uint32_t doomsday_count_down_{0};
+
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
