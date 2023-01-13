@@ -31,10 +31,10 @@ void Unit::SetPosition(glm::vec2 position) {
   position_ = position;
 }
 
-int Unit::get_score() {
+int Unit::GetScore() {
   return score_;
 }
-void Unit::update_score(int n) {
+void Unit::UpdateScore(int n) {
   score_ += n;
   if (score_ < 0)
     score_ = 0;

@@ -248,7 +248,7 @@ void GameCore::PushEventRemoveUnit(uint32_t unit_id) {
 void GameCore::PushEventKillUnit(uint32_t dst_unit_id, uint32_t src_unit_id) {
   event_queue_.emplace([=]() { PushEventRemoveUnit(dst_unit_id); });
   auto unit = GetUnit(bullets_[src_unit_id]->get_unit_id_());
-  unit->update_score(15);
+  unit->UpdateScore(15);
 }
 
 float GameCore::RandomFloat() {
