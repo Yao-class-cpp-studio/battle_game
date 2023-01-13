@@ -11,10 +11,13 @@ GameCore::GameCore() {
           {{-1.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}},
           {{1.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}}},
       std::vector<uint32_t>{0, 1, 2, 1, 2, 3});
+  SetDifficulty(5);
   SetScene();
   GeneratePrimaryUnitList();
 }
-
+void GameCore::SetDifficulty(int difficulty) {
+  npc_difficulty = difficulty;
+}
 /*
  * Update for 1 game tick.
  * Order: obstacles, bullets, units, particles
@@ -44,6 +47,7 @@ void GameCore::Update() {
     }
     particle.second->Update();
   }
+  SceneUpdate();
   ProcessEventQueue();
 }
 
@@ -290,6 +294,23 @@ void GameCore::SetScene() {
   boundary_high_ = {10.0f, 10.0f};
 }
 
+/*
+ * This function is used to update third-party-units. Some units are not
+ * operated by players nor future opponents, but are built-in moving units,
+ * which can also be considered as a part of the scene.
+ * Thus this function is written to implement the generation or other utilities.
+ * */
+void GameCore::SceneUpdate() {
+  int num[10] = {12, 10, 8, 6, 5, 4, 3, 3, 2, 2};
+  if (generating_time_count_down_) {
+    generating_time_count_down_--;
+  } else {
+    int npc_generate_time = 12 - 2 * npc_difficulty;
+    AddUnit<unit::RandomNPC>(2);
+    generating_time_count_down_ = num[npc_generate_time] * kTickPerSecond;
+    // generating gap between different NPC depends on the difficulty
+  }
+}
 uint32_t GameCore::AllocatePrimaryUnit(uint32_t player_id) {
   auto player = GetPlayer(player_id);
   if (!player) {

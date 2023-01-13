@@ -23,9 +23,11 @@ constexpr float kSecondPerTick = 1.0f / float(kTickPerSecond);
 class GameCore {
  public:
   GameCore();
-
+  uint32_t npc_difficulty;
+  void SetDifficulty(int difficulty);
   void SetScene();
-
+  void SceneUpdate();
+  uint32_t generating_time_count_down_ = 300;
   template <class UnitType, class... Args>
   void AddPrimaryUnitAllocationFunction(Args... args);
 
