@@ -20,16 +20,16 @@ TankYfl::TankYfl(GameCore *game_core, uint32_t id, uint32_t player_id)
 
 void TankYfl::SpeedUpClick() {
   IsSpeed = 3 * kTickPerSecond;
-  speedup_count_down = 8 * kTickPerSecond;
+  speedup_count_down_ = 8 * kTickPerSecond;
 }
 
 void TankYfl::SpeedUp() {
-  skills_[0].time_remain = speedup_count_down;
+  skills_[0].time_remain = speedup_count_down_;
   if (IsSpeed) {
     IsSpeed--;
   }
-  if (speedup_count_down) {
-    speedup_count_down--;
+  if (speedup_count_down_) {
+    speedup_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {

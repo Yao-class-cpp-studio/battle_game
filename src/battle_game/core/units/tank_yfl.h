@@ -15,6 +15,6 @@ class TankYfl : public Tank {
   [[nodiscard]] float GetSpeedScale() const override;
   [[nodiscard]] float GetDamageScale() const override;
   uint32_t IsSpeed = 0;
-  uint32_t speedup_count_down = 0;
+  uint32_t speedup_count_down_ = 0;
 };
 }  // namespace battle_game::unit
