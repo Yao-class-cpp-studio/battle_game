@@ -2,6 +2,7 @@
 #include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
+<<<<<<< HEAD
 class Plane : public Unit {
  public:
   Plane(GameCore *game_core, uint32_t id, uint32_t player_id);
@@ -20,3 +21,23 @@ class Plane : public Unit {
   uint32_t fire_count_down_{0};
 };
 }  // namespace battle_game::unit
+=======
+	class Plane: public Unit {
+	public:
+		Plane(GameCore *game_core,uint32_t id,uint32_t player_id);
+		void Render() override;
+		void Update() override;
+		[[nodiscard]] bool IsHit(glm::vec2 position) const override;
+
+	protected:
+		void PlaneMove(float move_speed,float rotate_angular_speed);
+		void TurretRotate();
+		void Fire();
+		[[nodiscard]] const char *UnitName() const override;
+		[[nodiscard]] const char *Author() const override;
+
+		float turret_rotation_{0.0f};
+		uint32_t fire_count_down_{0};
+	};
+}
+>>>>>>> 4d241007451e89854dd64e384ae3f9ea2824ea64
