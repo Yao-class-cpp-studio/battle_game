@@ -46,7 +46,8 @@ void GameCore::GeneratePrimaryUnitList() {
 
 
    ADD_SELECTABLE_UNIT(unit::soilder);
-  ADD_SELECTABLE_UNIT(unit::RLUD_Tank);
+   ADD_SELECTABLE_UNIT(unit::RLUD_Tank);
+   ADD_SELECTABLE_UNIT(unit::newturret_Tank);
   unit.reset();
 }
 }  // namespace battle_game
