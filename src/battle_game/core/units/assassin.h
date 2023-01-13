@@ -15,10 +15,10 @@ class Assassin : public Unit {
 
  protected:
   void AssassinMove(float move_speed);
-  uint32_t InvisibleCoolDown()const;
+  uint32_t InvisibleCoolDown() const;
   void InvisibleClick();
   void Invisible();
-  uint32_t TeleportingCoolDown()const;
+  uint32_t TeleportingCoolDown() const;
   void TeleportingClick();
   void Teleporting();
   void Click();
