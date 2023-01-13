@@ -8,12 +8,10 @@ class Assassin : public Unit {
   void Render() override;
   void RenderHelper() override;
   void Update() override;
-  float GetSpeedScale() const override;
-  float GetHealthScale() const override;
-  float GetDamageScale() const override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
+  void Character();
   void AssassinMove(float move_speed);
   uint32_t InvisibleCoolDown() const;
   void InvisibleClick();

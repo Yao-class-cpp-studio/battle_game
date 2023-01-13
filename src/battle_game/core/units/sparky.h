@@ -8,9 +8,6 @@ class Sparky : public Tank {
   Sparky(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render();
   void Update();
-  float GetDamageScale() const;
-  float GetHealthScale() const;
-  float GetSpeedScale() const override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:

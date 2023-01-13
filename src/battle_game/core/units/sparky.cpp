@@ -12,7 +12,7 @@ uint32_t sparky_turret_model_index = 0xffffffffu;
 }  // namespace
 
 Sparky::Sparky(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Tank(game_core, id, player_id) {
+    : Tank(game_core, id, player_id, 100.0f, 1.0f, 1.0f, 3.0f/7.0f, 0.7f) {
   if (!~sparky_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -112,18 +112,6 @@ bool Sparky::IsHit(glm::vec2 position) const {
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f && position.x + position.y < 1.6f &&
          position.y - position.x < 1.6f;
-}
-
-float Sparky::GetDamageScale() const {
-  return 1.0f;
-}
-
-float Sparky::GetHealthScale() const {
-  return 0.7f;
-}
-
-float Sparky::GetSpeedScale() const {
-  return 0.7f;
 }
 
 const char *Sparky::UnitName() const {

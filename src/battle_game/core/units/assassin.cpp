@@ -4,17 +4,13 @@
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
 
-inline float min(float x, float y) {
-  return x < y ? x : y;
-}
-
 namespace battle_game::unit {
 
 const uint32_t baseTime_invisible = 40;
 const uint32_t baseTime_teleporting = 120;
 
 Assassin::Assassin(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Unit(game_core, id, player_id, 50.0f, 1.0f, 1.0f, .0f, 15.0f) {
   Skill temp;
   temp.name = "隐身";
   temp.description = std::string("十秒内无法被命中（冷却时间：") +
@@ -77,28 +73,31 @@ void Assassin::RenderHelper() {
     battle_game::SetColor({1.0f, 1.0f, 1.0f, 0.1f});
     battle_game::DrawModel(0);
   }
+  Character();
+}
+
+void Assassin::Character() {
+  PushEffect(Effect{player_id_,"速度控制","你的速度随着你距离光标所在位置距离增大而增大",1,
+    [=](Status&status)
+    {
+      auto player = game_core_->GetPlayer(player_id_);
+      if(player)
+      {
+        auto &input_data = player->GetInputData();
+        auto diff = input_data.mouse_cursor_position - position_;
+        status.speed_*=std::min(glm::length(diff) / 15, 1.0f);
+      }
+      else status.speed_*=game_core_->RandomFloat();
+    }}
+  );
 }
 
 void Assassin::Update() {
   Click();
   Invisible();
   Teleporting();
-  AssassinMove(15.0f);
-}
-
-float Assassin::GetSpeedScale() const {
-  auto player = game_core_->GetPlayer(player_id_);
-  auto &input_data = player->GetInputData();
-  auto diff = input_data.mouse_cursor_position - position_;
-  return min(glm::length(diff) / 15, 1.0f);
-}
-
-float Assassin::GetHealthScale() const {
-  return 0.5f;
-}
-
-float Assassin::GetDamageScale() const {
-  return 0.8f;
+  AssassinMove(GetSpeed());
+  Character();
 }
 
 uint32_t Assassin::InvisibleCoolDown() const {
@@ -109,7 +108,7 @@ uint32_t Assassin::TeleportingCoolDown() const {
   return baseTime_teleporting;
 }
 
-void Assassin::AssassinMove(float move_speed) {
+void Assassin::AssassinMove(float speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -120,7 +119,6 @@ void Assassin::AssassinMove(float move_speed) {
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
-    float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
     auto new_position =
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,

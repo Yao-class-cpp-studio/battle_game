@@ -12,7 +12,7 @@ uint32_t dog_muzzle_model_index = 0xffffffffu;
 }  // namespace
 
 ZibengDog::ZibengDog(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Unit(game_core, id, player_id, 100.0f, 1.0f, 0.8f, 1.0f, 3.0f) {
   if (!~dog_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -79,18 +79,6 @@ void ZibengDog::Update() {
   DogMove(3.0f, glm::radians(180.0f));
   MuzzleRotate();
   Fire();
-}
-
-float ZibengDog::GetSpeedScale() const {
-  return 3.0f;
-}
-
-float ZibengDog::GetHealthScale() const {
-  return 0.5f;
-}
-
-float ZibengDog::GetDamageScale() const {
-  return 0.8f;
 }
 
 void ZibengDog::DogMove(float move_speed, float rotate_angular_speed) {

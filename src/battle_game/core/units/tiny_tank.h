@@ -4,7 +4,7 @@
 namespace battle_game::unit {
 class Tank : public Unit {
  public:
-  Tank(GameCore *game_core, uint32_t id, uint32_t player_id);
+  Tank(GameCore *game_core, uint32_t id, uint32_t player_id, float max_health=100.0f, float health=1.0f, float attack=1.0f, float defence=.0f, float speed=1.0f);
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
