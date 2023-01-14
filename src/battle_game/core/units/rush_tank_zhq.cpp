@@ -34,7 +34,7 @@ RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 
 void RushTank::RushClick() {
   time_stamp = clock();
-  rush_count_down = 8 * kTickPerSecond;
+  rush_count_down = 480;
 }
 
 void RushTank::Rush() {
