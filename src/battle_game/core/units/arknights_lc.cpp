@@ -117,12 +117,12 @@ void Arknights::ArknightsMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-float Arknights::GetSpeedScale() const{
-    return 0.9f;
+float Arknights::GetSpeedScale() const {
+  return 0.9f;
 }
 
-float Arknights::GetHealthScale() const{
-    return 2.5f;
+float Arknights::GetHealthScale() const {
+  return 2.5f;
 }
 
 void Arknights::TurretRotate() {
