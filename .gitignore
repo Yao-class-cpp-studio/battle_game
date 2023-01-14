@@ -6,3 +6,6 @@ build
 out
 CMakeSettings.json
 /CMakeSettings.json/
+compile_commands.json
+.cache/
+
