@@ -15,7 +15,7 @@ Bullet::Bullet(GameCore *core,
 }
 
 void Bullet::SetDamageScale(float f) {
-  damage_scale_ *= f;
+  damage_scale_ = f;
 }
 
 Bullet::~Bullet() = default;

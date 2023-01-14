@@ -35,12 +35,20 @@ void Unit::SetRotation(float rotation) {
   rotation_ = rotation;
 }
 
+void Unit::SetSpeedScale(float f) {
+  speed_scale_ = f;
+}
+
+void Unit::SetDamageScale(float f) {
+  damage_scale_ = f;
+}
+
 float Unit::GetSpeedScale() const {
-  return 1.0f;
+  return speed_scale_;
 }
 
 float Unit::GetDamageScale() const {
-  return 1.0f;
+  return damage_scale_;
 }
 
 float Unit::BasicMaxHealth() const {

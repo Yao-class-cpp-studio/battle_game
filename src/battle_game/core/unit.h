@@ -18,6 +18,8 @@ class Unit : public Object {
   }
   void SetPosition(glm::vec2 position);
   void SetRotation(float rotation);
+  void SetSpeedScale(float f);
+  void SetDamageScale(float f);
 
   [[nodiscard]] virtual float GetDamageScale() const;
   [[nodiscard]] virtual float GetSpeedScale() const;
@@ -94,6 +96,8 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
+  float speed_scale_{1.0f};
+  float damage_scale_{1.0f};
 
  private:
   float fadeout_health_;

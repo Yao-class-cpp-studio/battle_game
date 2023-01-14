@@ -16,29 +16,22 @@ bool Mount::IsBlocked(glm::vec2 p) const {
   auto pl = WorldToLocal(p);
   if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
       pl.y >= -scale_.y) {
-    for (auto &bullet : game_core_->GetBullets()) {
-      if (bullet.second->GetPosition() == p) {
-        return false;
+    for (auto &unit : game_core_->GetUnits()) {
+      if (unit.second->GetPosition() == p) {
+        unit.second->SetSpeedScale(0.5f);
+        unit.second->SetDamageScale(2.0f);
       }
     }
-    return true;
+  } else {
+    for (auto &unit : game_core_->GetUnits()) {
+      if (unit.second->GetPosition() == p) {
+        unit.second->SetSpeedScale(1.0f);
+        unit.second->SetDamageScale(1.0f);
+      }
+    }
   }
   return false;
 }
-
-/*
-bool Mount::IsBlocked(glm::vec2 p) const {
-  auto pl = WorldToLocal(p);
-  if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
-      pl.y >= -scale_.y) {
-    for (auto &unit : game_core_->GetUnits()) {
-      if (unit.second->GetPosition() == p) {
-        unit.second->SetDamageScale(1.2);
-      }
-    }
-  }
-  return false;
-}*/
 
 void Mount::Render() {
   battle_game::SetColor(glm::vec4{0.5f, 0.5f, 0.0f, 1.0f});

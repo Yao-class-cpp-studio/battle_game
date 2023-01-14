@@ -18,7 +18,7 @@ bool Grass::IsBlocked(glm::vec2 p) const {
       pl.y >= -scale_.y) {
     for (auto &bullet : game_core_->GetBullets()) {
       if (bullet.second->GetPosition() == p) {
-        bullet.second->SetDamageScale(0.5);
+        bullet.second->SetDamageScale(0.5f);
       }
     }
   }
