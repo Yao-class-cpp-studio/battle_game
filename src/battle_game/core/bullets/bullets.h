@@ -4,4 +4,5 @@
 #include "battle_game/core/bullets/crit_ball1.h"
 #include "battle_game/core/bullets/crit_ball2.h"
 #include "battle_game/core/bullets/crit_ball3.h"
+#include "battle_game/core/bullets/disball.h"
 //1
