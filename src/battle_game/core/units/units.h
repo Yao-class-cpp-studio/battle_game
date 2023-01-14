@@ -6,6 +6,7 @@
 #include "battle_game/core/units/double_scatter_tank.h"
 #include "battle_game/core/units/inferno_tank.h"
 #include "battle_game/core/units/lm_tank.h"
+#include "battle_game/core/units/magic_tank.h"
 #include "battle_game/core/units/mine_sample_tank.h"
 #include "battle_game/core/units/missile_tank.h"
 #include "battle_game/core/units/rage_tank_yangyr.h"
