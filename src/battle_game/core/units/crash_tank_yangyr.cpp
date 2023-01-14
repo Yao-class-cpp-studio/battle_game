@@ -68,7 +68,7 @@ void CrashTank::Move(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
-    glm::vec2 offset{0.0f,0.0f};
+    glm::vec2 offset{0.0f, 0.0f};
     if (input_data.key_down[GLFW_KEY_A]) {
       offset.y += 1.0f;
     }
