@@ -8,6 +8,7 @@ class Crit_Tank : public Unit {
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
+  int Crit_Tank::RandomInt(int x,int y);
   //1
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);

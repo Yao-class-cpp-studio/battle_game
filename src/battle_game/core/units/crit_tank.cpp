@@ -124,6 +124,16 @@ void Crit_Tank::TurretRotate() {
   }
 }
 
+int Crit_Tank::RandomInt(int x,int y) {
+    if(x==y) return x;
+    int a=114514;
+    if(x-y>=0)  a =x-y;
+    else  a =y-x;
+    srand(time(0));
+    return rand() % a;
+
+}
+
 void Crit_Tank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
@@ -133,20 +143,44 @@ void Crit_Tank::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        int p_1=RandomInt(1,10);
+        if(p_1 <= 3 ){
         GenerateBullet<bullet::RandomBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
+        }
+        else if (p_1 - 3 <= 3) {
+            GenerateBullet<bullet::CritBall1>(
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+            turret_rotation_, GetDamageScale(), velocity);
+        }
+        else if (p_1 - 3 <= 3) {
+            GenerateBullet<bullet::CritBall2>(
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+            turret_rotation_, GetDamageScale(), velocity);
+        }
+        else {
+            GenerateBullet<bullet::CritBall3>(
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+            turret_rotation_, GetDamageScale(), velocity);
+        }
+        
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
   }
 }
+
+
+
+
 //1
 bool Crit_Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
 }
+
 
 const char *Crit_Tank::UnitName() const {
   return "Crit_Tank";

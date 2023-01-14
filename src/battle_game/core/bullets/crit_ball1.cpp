@@ -1,4 +1,4 @@
-#include "battle_game/core/bullets/random_ball_qx.h"
+#include "battle_game/core/bullets/crit_ball1.h"
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
@@ -7,8 +7,9 @@
 #include<time.h>
 #include<windows.h>
 
+
 namespace battle_game::bullet {
-RandomBall::RandomBall(GameCore *core,
+CritBall1::CritBall1(GameCore *core,
                        uint32_t id,
                        uint32_t unit_id,
                        uint32_t player_id,
@@ -20,23 +21,24 @@ RandomBall::RandomBall(GameCore *core,
       velocity_(velocity) {
 }
 
-void RandomBall::Render() {
+void CritBall1::Render() {
   SetTransformation(position_, rotation_, glm::vec2{0.1f});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/particle3.png");
   DrawModel(0);
 }
 
-int RandomBall::RandomInt(int x,int y) {
+int CritBall1::RandomInt(int x,int y) {
     if(x==y) return x;
     int a=114514;
     if(x-y>=0)  a =x-y;
     else  a =y-x;
     srand(time(0));
     return rand() % a;
+
 }
 
-void RandomBall::Update() {
+void CritBall1::Update() {
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
@@ -50,7 +52,7 @@ void RandomBall::Update() {
     }
     if (unit.second->IsHit(position_)) {
      // game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
-      game_core_->PushEventDealDamage(unit.first, id_, damage_scale_*(RandomInt(1 , 2)) * 10.0f);
+      game_core_->PushEventDealDamage(unit.first, id_, damage_scale_*(RandomInt(1 , 15)) * 10.0f);
       should_die = true;
     }
   }
@@ -61,7 +63,7 @@ void RandomBall::Update() {
   }
 }
 
-RandomBall::~RandomBall() {
+CritBall1::~CritBall1() {
   for (int i = 0; i < 5; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
         position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
