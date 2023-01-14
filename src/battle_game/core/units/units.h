@@ -23,3 +23,4 @@
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/udongein.h"
 #include "battle_game/core/units/zibeng_dog.h"
+#include "battle_game/core/units/tangtang_tank.h"
