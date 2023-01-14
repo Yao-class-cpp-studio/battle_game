@@ -19,7 +19,7 @@ Laser::Laser(GameCore *core,
       color_(game_core_->GetPlayerColor(player_id)) {
 }
 
-void Laser::update_color(float &a) {
+void Laser::UpdateColor(float &a) {
   a += 0.4 * (game_core_->RandomFloat() - 0.5);
   a = a > 0 ? a : 0;
   a = a < 1 ? a : 1;
@@ -27,9 +27,9 @@ void Laser::update_color(float &a) {
 
 void Laser::Render() {
   auto tmp_position_ = position_;
-    update_color(color_.r);
-    update_color(color_.b);
-    update_color(color_.g);
+    UpdateColor(color_.r);
+    UpdateColor(color_.b);
+    UpdateColor(color_.g);
     SetColor(color_);
   SetTexture("../../textures/particle3.png");
   while (!game_core_->IsBlockedByObstacles(tmp_position_) 

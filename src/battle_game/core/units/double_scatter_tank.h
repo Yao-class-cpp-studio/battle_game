@@ -20,6 +20,6 @@ class DoubleScatterTank : public Tank {
   uint32_t fire_count_down_{0};
   uint32_t second_scatter_count_down_{0};
   bool is_second_scatter_{false};
-  bool is_stuck_by_swamp{false};
+  bool is_stuck_by_swamp_{false};
 };
 }  // namespace battle_game::unit

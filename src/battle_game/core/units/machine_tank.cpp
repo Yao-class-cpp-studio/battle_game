@@ -11,7 +11,7 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
 Machine_Tank::Machine_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Tank(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -74,7 +74,7 @@ void Machine_Tank::Render() {
 }
 
 void Machine_Tank::Update() {
-  if (!is_stuck_by_swamp) {
+  if (!is_stuck_by_swamp_) {
     TankMove(3.0f, glm::radians(180.0f));
   } else {
     TankMove(1.5f, glm::radians(180.0f));
@@ -83,42 +83,6 @@ void Machine_Tank::Update() {
   Fire();
   if (GetHealth() < 1.0f) {
     game_core_->PushEventDealDamage(id_, id_, -0.01f);
-  }
-}
-
-void Machine_Tank::TankMove(float move_speed, float rotate_angular_speed) {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    glm::vec2 offset{0.0f};
-    if (input_data.key_down[GLFW_KEY_W]) {
-      offset.y += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_S]) {
-      offset.y -= 1.0f;
-    }
-    float speed = move_speed * GetSpeedScale();
-    offset *= kSecondPerTick * speed;
-    auto new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
-    if (game_core_->IsStuckBySwamp(new_position) || !game_core_
-              ->IsBlockedByObstacles(new_position)) {
-      game_core_->PushEventMoveUnit(id_, new_position);
-    }
-    if (is_stuck_by_swamp = game_core_->IsStuckBySwamp(new_position)) {
-      game_core_->PushEventDealDamage(id_, id_, 0.02f);
-    }
-    float rotation_offset = 0.0f;
-    if (input_data.key_down[GLFW_KEY_A]) {
-      rotation_offset += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_D]) {
-      rotation_offset -= 1.0f;
-    }
-    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-    game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
 

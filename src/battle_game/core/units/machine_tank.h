@@ -2,7 +2,7 @@
 #include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
-class Machine_Tank : public Unit {
+class Machine_Tank : public Tank {
  public:
   Machine_Tank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
@@ -10,7 +10,6 @@ class Machine_Tank : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
@@ -20,6 +19,6 @@ class Machine_Tank : public Unit {
   uint32_t fire_count_down_{0};
   bool auto_fire{false};
   uint32_t auto_swithch_count_down_{0};
-  bool is_stuck_by_swamp{false};
+  bool is_stuck_by_swamp_{false};
 };
 }  // namespace battle_game::unit

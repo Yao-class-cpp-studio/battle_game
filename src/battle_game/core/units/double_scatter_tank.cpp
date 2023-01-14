@@ -17,7 +17,7 @@ void DoubleScatterTank::Render() {
 }
 
 void DoubleScatterTank::Update() {
-  if (!is_stuck_by_swamp) {
+  if (!is_stuck_by_swamp_) {
     TankMove(3.0f, glm::radians(180.0f));
   } else {
     TankMove(1.5f, glm::radians(180.0f));

@@ -21,6 +21,6 @@ class Laser : public Bullet {
   glm::vec2 end_position_{};
   uint32_t count_down_;
   glm::vec4 color_{};
-  void update_color(float &a);
+  void UpdateColor(float &a);
 };
 }  // namespace battle_game::bullet

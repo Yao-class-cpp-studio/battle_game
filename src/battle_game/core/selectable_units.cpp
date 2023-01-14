@@ -23,7 +23,6 @@ void GameCore::GeneratePrimaryUnitList() {
    * */
   ADD_SELECTABLE_UNIT(unit::Tank);
   ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);
-  ADD_SELECTABLE_UNIT(unit::kx_Tank);
   ADD_SELECTABLE_UNIT(unit::Laser_Tank);
   ADD_SELECTABLE_UNIT(unit::Machine_Tank);
 
