@@ -1,4 +1,4 @@
-#include "battle_game/core/bullets/Deathball.h"
+#include "battle_game/core/bullets/deathball.h"
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
