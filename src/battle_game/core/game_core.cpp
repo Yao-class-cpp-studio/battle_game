@@ -276,14 +276,12 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 
 void GameCore::SetScene() {
   AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, 10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, 10.0f},
-                                         0.78539816339744830961566084581988f);
+  for (int i = -10; i <= 10; i++) {
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10, i}, 0.0f);
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10, i}, 0.0f);
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{i, -10}, 0.0f);
+    AddObstacle<obstacle::ReboundingBlock>(glm::vec2{i, 10}, 0.0f);
+  }
   respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
   respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
   boundary_low_ = {-10.0f, -10.0f};
