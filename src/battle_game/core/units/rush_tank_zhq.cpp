@@ -1,4 +1,3 @@
-#include "rush_tank_zhq.h"
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
@@ -53,7 +52,7 @@ void RushTank::Rush() {
 }
 
 void RushTank::TankMove(float move_speed, float rotate_angular_speed) {
-  if(clock() - time_stamp <= 3000) {
+  if( clock() - time_stamp <= 3000 ) {
     move_speed *= 5;
   }
   auto player = game_core_->GetPlayer(player_id_);
