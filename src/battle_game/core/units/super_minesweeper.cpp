@@ -13,9 +13,7 @@ uint32_t fore = 0xffffffffu;
 uint32_t teleport = 0xffffffffu;
 }  // namespace
 
-SuperMinesweeper::SuperMinesweeper(GameCore *game_core,
-                                     uint32_t id,
-                                     uint32_t player_id)
+SuperMinesweeper::SuperMinesweeper(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -234,8 +232,8 @@ void SuperMinesweeper::ItemMove(float move_speed, float rotate_angular_speed) {
           auto velocity =
               Rotate(glm::vec2{0.0f, 10.0f}, glm::radians(float(6 * j)));
           GenerateBullet<bullet::AirborneBomb>(airborne_target_,
-                                                glm::radians(float(6 * j)),
-                                                GetDamageScale(), velocity);
+                                               glm::radians(float(6 * j)),
+                                               GetDamageScale(), velocity);
           j++;
         }
         game_core_->PushEventGenerateParticle<particle::Expansion>(
