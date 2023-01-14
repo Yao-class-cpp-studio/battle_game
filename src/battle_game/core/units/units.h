@@ -18,3 +18,6 @@
 #include "battle_game/core/units/tiny_tank.h"
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/zibeng_dog.h"
+#include "battle_game/core/units/double_shot_tank.h"
+#include "battle_game/core/units/bullet_storage_tank.h"
+#include "battle_game/core/units/displacement_tank.h"

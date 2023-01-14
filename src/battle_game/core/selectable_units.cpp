@@ -47,6 +47,9 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::RageTank);
   ADD_SELECTABLE_UNIT(unit::SmokeBombTank);
   ADD_SELECTABLE_UNIT(unit::CritTank);
+  ADD_SELECTABLE_UNIT(unit::DoubleShotTank);
+  ADD_SELECTABLE_UNIT(unit::BulletStorageTank);
+  ADD_SELECTABLE_UNIT(unit::DisplacementTank);
 
   unit.reset();
 }
