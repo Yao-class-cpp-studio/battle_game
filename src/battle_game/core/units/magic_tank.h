@@ -8,10 +8,13 @@ class MagicTank : public Tank {
   void Render() override;
   void Update() override;
   uint32_t protectskill_countdown_ = {0};
-  uint32_t protectcool_countdown{0};
+  uint32_t protectcool_countdown = 60;
+  uint32_t deathcool_countdown_ = 0;
   bool protecteed = false;
   void Protect();
+  void Death();
   void ProtectClick();
+  void DeathClick();
   void magic();
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 

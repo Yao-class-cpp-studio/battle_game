@@ -23,6 +23,14 @@ MagicTank::MagicTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     temp.type = E;
     temp.function = SKILL_ADD_FUNCTION(MagicTank::Protect);
     skills_.push_back(temp);
+    Skill temp2;
+    temp2.name = "Death";
+    temp2.description = "Shoot deathball to enemies";
+    temp2.time_remain = 0;
+    temp2.time_total = 240;
+    temp2.type = Q;
+    temp2.function = SKILL_ADD_FUNCTION(MagicTank::Protect);
+    skills_.push_back(temp2);
   }
 }
 
@@ -35,6 +43,7 @@ void MagicTank::Update() {
   TurretRotate();
   Fire();
   Protect();
+  Death();
   magic();
 }
 
@@ -106,6 +115,15 @@ void MagicTank::ProtectClick() {
   protectskill_countdown_ = 20 * kTickPerSecond;
 }
 
+void MagicTank::DeathClick() {
+  deathcool_countdown_ = 240;
+  health_ /= 2;  // Death should have some side effect
+  auto velocity = Rotate(glm::vec2{0.0f, 10.0f}, turret_rotation_);
+  GenerateBullet<bullet::Deathball>(
+      position_ + Rotate({0.0f, 1.2f}, turret_rotation_), turret_rotation_,
+      GetDamageScale(), velocity);
+}
+
 void MagicTank::magic() {
   if (protecteed) {
     if (protectskill_countdown_) {
@@ -128,6 +146,21 @@ void MagicTank::Protect() {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_E]) {
         ProtectClick();
+      }
+    }
+  }
+}
+
+void MagicTank::Death() {
+  skills_[1].time_remain = deathcool_countdown_;
+  if (deathcool_countdown_) {
+    deathcool_countdown_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_Q]) {
+        DeathClick();
       }
     }
   }
