@@ -289,6 +289,11 @@ void App::UpdateImGui() {
                     unit->GetHealth() * unit->GetMaxHealth(),
                     unit->GetMaxHealth());
         ImGui::ProgressBar(unit->GetHealth());
+        ImGui::Text(u8"攻击力: %.1f（伤害倍率 %.1lf%%）", unit->GetAttack(),
+                    unit->GetDamageScale() * 100);
+        ImGui::Text(u8"防御力: %.1f（伤害减免 %.1lf%%）", unit->GEtDefence(),
+                    100.0f - unit->GetDamageReduction() * 100);
+
         for (int i = 0; i < selectable_list.size(); i++) {
           if (selectable_list[i] ==
               unit->UnitName() + std::string(" - By ") + unit->Author()) {
@@ -436,6 +441,15 @@ void App::UpdateImGui() {
                     ImGui::SameLine();
                     ImGui::Text(u8" (被动技能) 技能可释放");
                   }
+                }
+              }
+              std::list<Effect *> effect = unit->GetEffect();
+              int k = 0;
+              for (auto i = effect.begin(); i != effect.end(); i++) {
+                ImGui::Text(u8"状态 %d：%s", ++k, (*i)->Name().c_str());
+                if ((*i)->Description().size()) {
+                  ImGui::SameLine();
+                  HelpMarker((*i)->Description().c_str());
                 }
               }
             }

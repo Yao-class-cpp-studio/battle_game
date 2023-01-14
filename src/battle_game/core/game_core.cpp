@@ -20,6 +20,9 @@ GameCore::GameCore() {
  * Order: obstacles, bullets, units, particles
  * */
 void GameCore::Update() {
+  for (auto &units : units_) {
+    units.second->UpdateStatus();
+  }
   for (auto &player : players_) {
     player.second->Update();
   }
@@ -43,6 +46,9 @@ void GameCore::Update() {
       continue;
     }
     particle.second->Update();
+  }
+  for (auto &units : units_) {
+    units.second->RemoveEffect();
   }
   ProcessEventQueue();
 }
@@ -218,15 +224,9 @@ void GameCore::SetCamera(glm::vec2 position, float rotation) {
 void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
                                    uint32_t src_unit_id,
                                    float damage) {
-  event_queue_.emplace([=]() {
-    auto unit = GetUnit(dst_unit_id);
-    if (unit) {
-      unit->SetHealth(unit->GetHealth() - damage / unit->GetMaxHealth());
-      if (unit->GetHealth() <= 0.0f) {
-        PushEventKillUnit(dst_unit_id, src_unit_id);
-      }
-    }
-  });
+  auto unit = GetUnit(dst_unit_id);
+  if (unit)
+    unit->Damage(src_unit_id, damage);
 }
 
 void GameCore::PushEventRemoveObstacle(uint32_t obstacle_id) {

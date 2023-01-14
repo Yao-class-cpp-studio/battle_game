@@ -8,8 +8,48 @@ namespace {
 uint32_t life_bar_model_index = 0xffffffffu;
 }  // namespace
 
-Unit::Unit(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Object(game_core, id) {
+Effect::Effect(uint32_t src_player_id) : src_player_id_{src_player_id} {
+}
+
+Unit::Status::Status(GameCore *game_core,
+                     Unit *player,
+                     float max_health,
+                     float health,
+                     float attack,
+                     float defence,
+                     float speed)
+    : game_core_{game_core},
+      player_{player},
+      max_health_{max_health},
+      health_{health},
+      base_attack_{attack},
+      base_defence_{defence},
+      base_speed_(speed) {
+}
+
+void Unit::Status::HealthChange(uint32_t src_unit_id, float change) {
+  if ((health_ += change / max_health_) <= 0.0f)
+    game_core_->PushEventKillUnit(player_->GetId(), src_unit_id);
+  if (health_ > 1.0f)
+    health_ = 1.0f;
+}
+
+void Unit::Status::Initialization() {
+  attack_ = base_attack_;
+  defence_ = base_defence_;
+  speed_ = base_speed_;
+}
+
+Unit::Unit(GameCore *game_core,
+           uint32_t id,
+           uint32_t player_id,
+           float max_health,
+           float health,
+           float attack,
+           float defence,
+           float speed)
+    : Object(game_core, id),
+      status_(game_core, this, max_health, health, attack, defence, speed) {
   player_id_ = player_id;
   lifebar_offset_ = {0.0f, 1.0f};
   background_lifebar_color_ = {1.0f, 0.0f, 0.0f, 0.9f};
@@ -33,22 +73,6 @@ void Unit::SetPosition(glm::vec2 position) {
 
 void Unit::SetRotation(float rotation) {
   rotation_ = rotation;
-}
-
-float Unit::GetSpeedScale() const {
-  return 1.0f;
-}
-
-float Unit::GetDamageScale() const {
-  return 1.0f;
-}
-
-float Unit::BasicMaxHealth() const {
-  return 100.0f;
-}
-
-float Unit::GetHealthScale() const {
-  return 1.0f;
 }
 
 void Unit::SetLifeBarLength(float new_length) {
@@ -116,6 +140,21 @@ void Unit::RenderLifeBar() {
 }
 
 void Unit::RenderHelper() {
+}
+
+void Unit::UpdateStatus() {
+  status_.Initialization();
+  for (auto i : effect_)
+    i->Influence(status_), i->TickPass();
+  status_.attack_ = std::max(status_.attack_, .0f);
+  status_.defence_ = std::max(status_.defence_, .0f);
+  status_.speed_ = std::max(status_.speed_, .0f);
+}
+
+void Unit::RemoveEffect() {
+  effect_.remove_if([](Effect *effect) {
+    return effect->ShouldRemove() ? delete effect, true : false;
+  });
 }
 
 const char *Unit::UnitName() const {

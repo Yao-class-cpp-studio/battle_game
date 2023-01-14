@@ -6,7 +6,7 @@
 
 namespace battle_game::unit {
 Railgun::Railgun(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Unit(game_core, id, player_id, 100.0f, 1.0f, 1.0f, 1.5f, 3.0f) {
   Skill temp;
   temp.name = "Thunderbolt";
   temp.description = "Damage on a random unit";
@@ -28,14 +28,6 @@ void Railgun::Update() {
   DirectionRotate();
   Fire();
   Thunderbolt();
-}
-
-float Railgun::GetSpeedScale() const {
-  return 3.0f;
-}
-
-float Railgun::GetHealthScale() const {
-  return 0.4f;
 }
 
 void Railgun::GunMove(float move_speed, float rotate_angular_speed) {

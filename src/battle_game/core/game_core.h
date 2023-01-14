@@ -1,6 +1,8 @@
 #pragma once
 #include "battle_game/core/bullet.h"
 #include "battle_game/core/bullets/bullets.h"
+#include "battle_game/core/effect.h"
+#include "battle_game/core/effects/effects.h"
 #include "battle_game/core/input_data.h"
 #include "battle_game/core/obstacle.h"
 #include "battle_game/core/obstacles/obstacles.h"
@@ -12,6 +14,7 @@
 #include "battle_game/graphics/graphics.h"
 #include "functional"
 #include "grassland/grassland.h"
+#include "list"
 #include "map"
 #include "queue"
 #include "random"
