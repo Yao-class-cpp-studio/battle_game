@@ -367,7 +367,8 @@ void App::UpdateImGui() {
                 if (skill_list[i].type == B)
                   continue;
                 if (skill_list[i].time_remain) {
-                  ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                  ImGui::Text(u8"技能 %d：%s ", ++k,
+                              skill_list[i].name.c_str());
                   if (!skill_list[i].description.empty()) {
                     ImGui::SameLine();
                     HelpMarker(skill_list[i].description.c_str());
@@ -394,7 +395,8 @@ void App::UpdateImGui() {
                                      skill_list[i].time_total);
                 } else {
                   if (skill_list[i].type == E) {
-                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    ImGui::Text(u8"技能 %d：%s ", ++k,
+                              skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
@@ -407,7 +409,8 @@ void App::UpdateImGui() {
                       }
                     }
                   } else if (skill_list[i].type == Q) {
-                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    ImGui::Text(u8"技能 %d：%s ", ++k,
+                              skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
@@ -420,7 +423,8 @@ void App::UpdateImGui() {
                       }
                     }
                   } else if (skill_list[i].type == battle_game::SkillType::R) {
-                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    ImGui::Text(u8"技能 %d：%s ", ++k,
+                              skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
@@ -433,7 +437,8 @@ void App::UpdateImGui() {
                       }
                     }
                   } else {
-                    ImGui::Text(u8"%s ", skill_list[i].name.c_str());
+                    ImGui::Text(u8"技能 %d：%s ", ++k,
+                              skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
