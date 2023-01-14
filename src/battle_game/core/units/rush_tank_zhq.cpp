@@ -20,7 +20,7 @@ void RushTank::Update(){
 }
 
 RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id) : Tank(game_core, id, player_id) {
-    time_stamp=-100000000;
+    time_stamp= -100000000 ;
     rush_count_down = 8 * kTickPerSecond;
     
      Skill temp;
@@ -54,7 +54,7 @@ void RushTank::Rush() {
 }
 
 void RushTank::TankMove(float move_speed, float rotate_angular_speed) {
-  if(clock()-time_stamp<=3000)move_speed*=5;
+  if(clock() - time_stamp <= 3000 ) move_speed *= 5;
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
