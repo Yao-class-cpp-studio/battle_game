@@ -11,6 +11,7 @@
 #include "battle_game/core/units/railgun.h"
 #include "battle_game/core/units/rebounding_sample_tank.h"
 #include "battle_game/core/units/round_UFO.h"
+#include "battle_game/core/units/rush_tank_zhq.h"
 #include "battle_game/core/units/smoke_bomb_tank.h"
 #include "battle_game/core/units/sparky.h"
 #include "battle_game/core/units/square_tank.h"
@@ -20,4 +21,3 @@
 #include "battle_game/core/units/tiny_tank.h"
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/zibeng_dog.h"
-#include "battle_game/core/units/rush_tank_zhq.h"
