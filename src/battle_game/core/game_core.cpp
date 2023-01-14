@@ -170,9 +170,11 @@ void GameCore::PushEventMoveRelativeUnit(uint32_t unit_id,
                                          glm::vec2 relative_position) {
   event_queue_.emplace([this, unit_id, relative_position]() {
     auto unit = GetUnit(unit_id);
-    auto new_position = unit->GetPosition() + relative_position;
-    if (unit && !IsBlockedByObstacles(new_position)) {
-      unit->SetPosition(new_position);
+    if (unit) {
+      auto new_position = unit->GetPosition() + relative_position;
+      if (!IsBlockedByObstacles(new_position)) {
+        unit->SetPosition(new_position);
+      }
     }
   });
 }  // this function is used for weight system.
