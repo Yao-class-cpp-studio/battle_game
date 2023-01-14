@@ -1,7 +1,8 @@
+#include "suz_tank.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "suz_tank.h"
 
 namespace battle_game::unit {
 
@@ -130,7 +131,7 @@ void SuzTank::TurretRotate() {
 }
 
 void SuzTank::Fire() {
-  if (!(fire_count_down_>=0 && fire_count_down_<=20)) {
+  if (!(fire_count_down_ >= 0 && fire_count_down_ <= 20)) {
     fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
