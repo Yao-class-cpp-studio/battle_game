@@ -2,9 +2,9 @@
 #include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
-class Railgun : public Unit {
+class Arknights : public Unit {
  public:
-  Railgun(GameCore *game_core, uint32_t id, uint32_t player_id);
+  Arknights(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
   float GetSpeedScale() const override;
@@ -12,17 +12,14 @@ class Railgun : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  void GunMove(float move_speed, float rotate_angular_speed);
-  void DirectionRotate();
+  void ArknightsMove(float move_speed, float rotate_angular_speed);
+  void TurretRotate();
   void Fire();
-  void Thunderbolt();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
-  float direction_rotation_{0.0f};
+  float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  uint32_t thunderbolt_count_down_{0};
-  uint32_t charging_time_{180};
-  bool should_shoot_{false};
+  uint32_t mine_count_down_{0};
 };
 }  // namespace battle_game::unit
