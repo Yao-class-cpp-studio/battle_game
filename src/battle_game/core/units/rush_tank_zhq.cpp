@@ -11,7 +11,7 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-void RushTank::Update(){
+void RushTank::Update() {
   TankMove(5.0f, glm::radians(180.0f));
   TurretRotate();
   Rush();
@@ -20,7 +20,7 @@ void RushTank::Update(){
 
 RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
-  time_stamp= -100000000;
+  time_stamp = -100000000;
   rush_count_down = 8 * kTickPerSecond; 
   Skill temp;
   temp.time_total = 500;
@@ -53,7 +53,7 @@ void RushTank::Rush() {
 }
 
 void RushTank::TankMove(float move_speed, float rotate_angular_speed) {
-  if(clock() - time_stamp <= 3000){
+  if(clock() - time_stamp <= 3000) {
     move_speed *= 5;
   }
   auto player = game_core_->GetPlayer(player_id_);
