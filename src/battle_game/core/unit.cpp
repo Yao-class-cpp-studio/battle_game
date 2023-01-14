@@ -1,5 +1,3 @@
-#include "battle_game/core/unit.h"
-
 #include "battle_game/core/game_core.h"
 
 namespace battle_game {
@@ -8,18 +6,15 @@ namespace {
 uint32_t life_bar_model_index = 0xffffffffu;
 }  // namespace
 
-Effect::Effect(uint32_t src_player_id) : src_player_id_{src_player_id} {
-}
-
 Unit::Status::Status(GameCore *game_core,
-                     Unit *player,
+                     Unit *unit,
                      float max_health,
                      float health,
                      float attack,
                      float defence,
                      float speed)
     : game_core_{game_core},
-      player_{player},
+      unit_{unit},
       max_health_{max_health},
       health_{health},
       base_attack_{attack},
@@ -29,7 +24,7 @@ Unit::Status::Status(GameCore *game_core,
 
 void Unit::Status::HealthChange(uint32_t src_unit_id, float change) {
   if ((health_ += change / max_health_) <= 0.0f)
-    game_core_->PushEventKillUnit(player_->GetId(), src_unit_id);
+    game_core_->PushEventKillUnit(unit_->GetId(), src_unit_id);
   if (health_ > 1.0f)
     health_ = 1.0f;
 }

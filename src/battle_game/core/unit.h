@@ -14,7 +14,7 @@ class Unit : public Object {
   class Status {
    public:
     GameCore *const game_core_;
-    Unit *const player_;
+    Unit *const unit_;
     float attack_;
     float defence_;
     float speed_;

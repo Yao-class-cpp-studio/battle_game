@@ -18,7 +18,7 @@ class Effect {
   Effect(uint32_t src_player_id);
 
  protected:
-  uint32_t src_player_id_;
+  uint32_t src_unit_id_;
 };
 
 }  // namespace battle_game
