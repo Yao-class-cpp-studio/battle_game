@@ -1,9 +1,10 @@
 #include "tiny_tank.h"
 
+#include <iostream>
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-
 namespace battle_game::unit {
 
 namespace {
@@ -13,6 +14,7 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 
 Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
+  std::cout << player_id_ << std::endl;
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
