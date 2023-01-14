@@ -13,6 +13,8 @@
 #include "battle_game/core/units/rebounding_sample_tank.h"
 #include "battle_game/core/units/round_UFO.h"
 #include "battle_game/core/units/rush_tank_zhq.h"
+#include "battle_game/core/units/shadow_tank_zhq.h"
+#include "battle_game/core/units/shadow_zhq.h"
 #include "battle_game/core/units/smoke_bomb_tank.h"
 #include "battle_game/core/units/sparky.h"
 #include "battle_game/core/units/spell_caster.h"

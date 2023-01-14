@@ -23,7 +23,7 @@ Rocket::Rocket(GameCore *core,
   auto where_cursor_is = input_data.mouse_cursor_position;
   float distance = 1e30;
   for (auto &unit : units) {
-    if (unit.first == unit_id_) {
+    if (unit.first == unit_id_ || unit.second->GetPlayerId() == 1) {
       continue;
     }
     auto diff = where_cursor_is - unit.second->GetPosition();

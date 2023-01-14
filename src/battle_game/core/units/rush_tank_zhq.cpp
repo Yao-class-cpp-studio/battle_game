@@ -1,4 +1,5 @@
 #include <ctime>
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
@@ -19,8 +20,8 @@ void RushTank::Update() {
 
 RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
+  rush_count_down = 480;
   time_stamp = -100000000;
-  rush_count_down = 480; 
   Skill temp;
   temp.time_total = 500;
   temp.time_remain = 0;
@@ -52,7 +53,7 @@ void RushTank::Rush() {
 }
 
 void RushTank::TankMove(float move_speed, float rotate_angular_speed) {
-  if(clock()-time_stamp <= 3000) {
+  if (clock() - time_stamp <= 3000) {
     move_speed *= 5;
   }
   auto player = game_core_->GetPlayer(player_id_);
