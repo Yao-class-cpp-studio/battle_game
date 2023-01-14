@@ -396,7 +396,7 @@ void App::UpdateImGui() {
                 } else {
                   if (skill_list[i].type == E) {
                     ImGui::Text(u8"技能 %d：%s ", ++k,
-                              skill_list[i].name.c_str());
+                                skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
@@ -410,7 +410,7 @@ void App::UpdateImGui() {
                     }
                   } else if (skill_list[i].type == Q) {
                     ImGui::Text(u8"技能 %d：%s ", ++k,
-                              skill_list[i].name.c_str());
+                                skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
@@ -424,7 +424,7 @@ void App::UpdateImGui() {
                     }
                   } else if (skill_list[i].type == battle_game::SkillType::R) {
                     ImGui::Text(u8"技能 %d：%s ", ++k,
-                              skill_list[i].name.c_str());
+                                skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
@@ -438,7 +438,7 @@ void App::UpdateImGui() {
                     }
                   } else {
                     ImGui::Text(u8"技能 %d：%s ", ++k,
-                              skill_list[i].name.c_str());
+                                skill_list[i].name.c_str());
                     if (!skill_list[i].description.empty()) {
                       ImGui::SameLine();
                       HelpMarker(skill_list[i].description.c_str());
