@@ -10,7 +10,7 @@ class Tank : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  virtual void TankMove(float move_speed, float rotate_angular_speed);
+  void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
