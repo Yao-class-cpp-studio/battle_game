@@ -99,7 +99,7 @@ void StarTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
-    //Press R to rotate turret
+    // Press R to rotate turret
     if (input_data.key_down[GLFW_KEY_R]) {
       auto diff = input_data.mouse_cursor_position - position_;
       if (glm::length(diff) < 1e-4) {
