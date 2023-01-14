@@ -134,6 +134,14 @@ void DrawTexture(const std::string &file_path);
 - 根据当前绑定的全局设置，绘制 `file_path` 路径对应的图片到本地空间为 $[-1, 1]^2$ 的矩形区域内
 
 ```c++
+float GetTextWidth(wchar_t c);
+float GetTextWidth(const std::wstring &text);
+float GetTextWidth(const std::string &text);
+```
+- 获取绘制相应文本时占用的宽度（占用的高度固定为 $1$）
+- 采用 UTF-8 编码
+
+```c++
 void DrawText(const std::wstring &text, bool centered = true);
 void DrawText(const std::string &text, bool centered = true);
 ```
@@ -141,4 +149,4 @@ void DrawText(const std::string &text, bool centered = true);
 - 根据当前绑定的全局设置，绘制文本
 - 采用 UTF-8 编码
 - `centered` 若为 `true` 则以当前绘制位置为中心，绘制文本；否则以当前绘制位置为左下角，绘制文本
-- （无缩放时）高度为 $1$
+- （无缩放时）占用的高度为 $1$

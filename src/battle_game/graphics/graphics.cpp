@@ -103,6 +103,18 @@ void DrawTexture(const std::string &file_path) {
   SetTexture(bak_texture_id);
 }
 
+float GetTextWidth(wchar_t c) {
+  return factory.GetChar(c).advection;
+}
+
+float GetTextWidth(const std::wstring &text) {
+  float width = 0.0f;
+  for (const auto &c : text) {
+    width += factory.GetChar(c).advection;
+  }
+  return width;
+}
+
 void DrawText(const std::wstring &text, bool centered) {
   static std::map<wchar_t, uint32_t> map_char_index;
   auto origin_position = current_position_;
@@ -113,25 +125,25 @@ void DrawText(const std::wstring &text, bool centered) {
       glm::scale(glm::mat4{1.0f}, glm::vec3{current_scale_, 1.0f}));
   if (centered) {
     float width = 0.0f;
-    for (const auto &ch : text) {
-      width += factory.GetChar(ch).advection;
+    for (const auto &c : text) {
+      width += factory.GetChar(c).advection;
     }
     current_position += transform * glm::vec2{-width / 2, -0.5f};
   }
-  for (const auto &ch : text) {
-    const auto &mesh = factory.GetChar(ch);
+  for (const auto &c : text) {
+    const auto &mesh = factory.GetChar(c);
     if (!mesh.indices.empty()) {
-      if (!map_char_index.count(ch)) {
+      if (!map_char_index.count(c)) {
         std::vector<ObjectVertex> vertices;
         vertices.clear();
         vertices.reserve(mesh.vertices.size());
         for (auto &ver : mesh.vertices) {
           vertices.push_back({ver, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}});
         }
-        map_char_index[ch] = mgr->RegisterModel(vertices, mesh.indices);
+        map_char_index[c] = mgr->RegisterModel(vertices, mesh.indices);
       }
       SetPosition(current_position);
-      DrawModel(map_char_index.at(ch));
+      DrawModel(map_char_index.at(c));
     }
     current_position += transform * glm::vec2{mesh.advection, 0.0f};
   }
