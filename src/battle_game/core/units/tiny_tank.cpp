@@ -80,9 +80,20 @@ void Tank::Render() {
 }
 
 void Tank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  int move_speed = 3.0f;
+  if (slowtime_) {
+    slowtime_--;
+    move_speed *= 0.5f;
+  }
+  if (speeduptime_) {
+    speeduptime_--;
+    move_speed *= 2.0f;
+  }
+  TankMove(move_speed, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  if (GetHealth() < 0.25f)
+    Sparkle<particle::Smoke>();
 }
 
 void Tank::TankMove(float move_speed, float rotate_angular_speed) {

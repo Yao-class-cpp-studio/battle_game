@@ -84,7 +84,28 @@ class Unit : public Object {
     return skills_;
   }
 
+  void Heal();
+
+  void Slow(float seconds_);
+
+  void SpeedUp(float seconds_);
+
+  template <class ParticleType>
+  void Sparkle(float size_) const {
+    game_core_->PushEventGenerateParticle<ParticleType>(
+        position_, rotation_, game_core_->RandomInCircle() * 4.0f, size_,
+        glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+  }
+
+  template <class ParticleType>
+  void Sparkle() const {
+    game_core_->PushEventGenerateParticle<ParticleType>(
+        position_, rotation_, game_core_->RandomInCircle() * 4.0f, 0.4f,
+        glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+  }
+
  protected:
+  float healrate_{0.3f};
   uint32_t player_id_{};
   float health_{1.0f};
   std::vector<Skill> skills_;
@@ -94,6 +115,8 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
+  uint32_t slowtime_{0};
+  uint32_t speeduptime_{0};
 
  private:
   float fadeout_health_;

@@ -124,4 +124,19 @@ const char *Unit::UnitName() const {
 const char *Unit::Author() const {
   return "Unknown Author";
 }
+
+void Unit::Heal() {
+  for (int i = 1; i <= 5; i++)
+    Sparkle<particle::Heal>();
+  SetHealth(health_ + healrate_);
+}
+
+void Unit::Slow(float seconds_) {
+  slowtime_ = seconds_ * kTickPerSecond;
+}
+
+void Unit::SpeedUp(float seconds_) {
+  speeduptime_ = seconds_ * kTickPerSecond;
+}
+
 }  // namespace battle_game

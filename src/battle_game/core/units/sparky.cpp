@@ -77,9 +77,20 @@ void Sparky::Render() {
 }
 
 void Sparky::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  int move_speed = 3.0f;
+  if (slowtime_) {
+    slowtime_--;
+    move_speed *= 0.5f;
+  }
+  if (speeduptime_) {
+    speeduptime_--;
+    move_speed *= 2.0f;
+  }
+  TankMove(move_speed, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  if (GetHealth() < 0.25f)
+    Sparkle<particle::Smoke>();
 }
 
 void Sparky::TurretRotate() {
@@ -93,6 +104,7 @@ void Sparky::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
+    Sparkle<particle::Charge>(0.12);
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
