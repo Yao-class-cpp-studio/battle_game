@@ -88,6 +88,7 @@ class Object {
   virtual void Update() = 0;
 
  protected:
+  bool trait = false;
   GameCore *game_core_{nullptr};
   glm::vec2 position_{0.0f};  // offset from the origin (0, 0)
   float rotation_{0.0f};      // angle in radians

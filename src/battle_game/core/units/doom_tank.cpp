@@ -19,6 +19,13 @@ DoomTank::DoomTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   skill.type = E;
   skill.function = SKILL_ADD_FUNCTION(DoomTank::DestroyAll);
   skills_.push_back(skill);
+  skill.name = "Leech";
+  skill.description = "Health Cure";
+  skill.time_remain = 0;
+  skill.time_total = 360;
+  skill.type = P;
+  skill.function = SKILL_ADD_FUNCTION(DoomTank::ToLeech);
+  skills_.push_back(skill);
 }
 
 void DoomTank::Render() {
@@ -30,6 +37,8 @@ void DoomTank::Update() {
   TurretRotate();
   RandomDo();
   Doomsday();
+  Leech_();
+  ToLeech();
 }
 
 bool DoomTank::IsHit(glm::vec2 position) const {
@@ -39,16 +48,15 @@ bool DoomTank::IsHit(glm::vec2 position) const {
          position.y - position.x < 1.6f;
 }
 
-
-//dice to determine possibility
+// dice to determine possibility
 int x() {
   int value = 0;
   srand(time(NULL));
   value = rand() % 2;
-  return value+1;
+  return value + 1;
 }
 
-//50%的概率正常子弹，50%的概率子弹伤害叠倍数
+// 50%的概率正常子弹，50%的概率子弹伤害叠倍数
 void DoomTank::RandomDo() {
   if (fire_count_down_) {
     fire_count_down_--;
@@ -58,28 +66,26 @@ void DoomTank::RandomDo() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         if (x() == 1) {
-            auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::CannonBall>(
-            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-            turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+          auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+          GenerateBullet<bullet::CannonBall>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+              turret_rotation_, GetDamageScale(), velocity);
+          fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
         }
         if (x() == 2) {
           auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
           GenerateBullet<bullet::CannonBall>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);
-          
-            for (int i = 0; i <= x(); i++) {
-              GenerateBullet<bullet::CannonBall>(
-                  position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-                  turret_rotation_, GetDamageScale(), velocity);
-            }
-          
-          fire_count_down_ =kTickPerSecond; 
-          
+
+          for (int i = 0; i <= x(); i++) {
+            GenerateBullet<bullet::CannonBall>(
+                position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+                turret_rotation_, GetDamageScale(), velocity);
+          }
+
+          fire_count_down_ = kTickPerSecond;
         }
-        
       }
     }
   }
@@ -93,24 +99,22 @@ void DoomTank::DoomTankUpdate() {
   }
 }
 
-//在场所有单位全部减少60格血
+//在场所有单位都会受到伤害
 void DoomTank::DestroyAll() {
   doomsday_count_down_ = 5 * kTickPerSecond;
   auto &units = game_core_->GetUnits();
   for (auto &unit : units) {
-    
-      if (unit.first == unit_id_) {
-        game_core_->PushEventDealDamage(unit.first, id_, 30.0f);
-      } else {
-        game_core_->PushEventDealDamage(unit.first, id_, 60.0f);
-      }
+    if (unit.first == unit_id_) {
+      game_core_->PushEventDealDamage(unit.first, id_, 30.0f);
+    } else {
+      game_core_->PushEventDealDamage(unit.first, id_, 60.0f);
     }
+  }
   auto theta = game_core_->RandomFloat() * glm::pi<float>() * 2.0f;
   game_core_->AddObstacle<battle_game::obstacle::Crater>(
       this->GetPosition() + glm::vec2{2 * cos(theta), 2 * sin(theta)});
   DoomTankUpdate();
 }
-
 
 void DoomTank::Doomsday() {
   skills_[0].time_remain = doomsday_count_down_;
@@ -126,6 +130,39 @@ void DoomTank::Doomsday() {
     }
   }
 }
+
+void DoomTank::Leech_() {
+  skills_[1].time_remain = leech_count_down_;
+  if (leech_count_down_) {
+    leech_count_down_--;
+  } else {
+    end = GetHealth();
+    if (begin - end >= 0.1) {
+      leech_time_ = 4 * kTickPerSecond;
+      leech_count_down_ = 6 * kTickPerSecond;
+      tmp_begin = begin;
+      tmp_end = end;
+    }
+  }
+  if (leech_time_) {
+    flag = true;
+  } else {
+    flag = false;   
+  }
+  begin = end;
+}
+
+void DoomTank::ToLeech() {
+  if (flag) {
+    SetHealth(GetHealth() + 0.0032*(tmp_begin-tmp_end));
+    leech_time_--;
+  }
+    
+}
+
+
+  
+
 
 const char *DoomTank::UnitName() const {
   return "Doom Tank";
