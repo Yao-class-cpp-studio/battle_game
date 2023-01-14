@@ -9,6 +9,7 @@
 #include "battle_game/core/bullets/missile.h"
 #include "battle_game/core/bullets/rebounding_ball.h"
 #include "battle_game/core/bullets/rocket.h"
+#include "battle_game/core/bullets/slowdown.h"
 #include "battle_game/core/bullets/smoke_bomb.h"
 #include "battle_game/core/bullets/stunning.h"
 #include "battle_game/core/bullets/sweaty_soybean.h"
