@@ -26,6 +26,20 @@ bool Mount::IsBlocked(glm::vec2 p) const {
   return false;
 }
 
+/*
+bool Mount::IsBlocked(glm::vec2 p) const {
+  auto pl = WorldToLocal(p);
+  if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
+      pl.y >= -scale_.y) {
+    for (auto &unit : game_core_->GetUnits()) {
+      if (unit.second->GetPosition() == p) {
+        unit.second->SetDamageScale(1.2);
+      }
+    }
+  }
+  return false;
+}*/
+
 void Mount::Render() {
   battle_game::SetColor(glm::vec4{0.5f, 0.5f, 0.0f, 1.0f});
   battle_game::SetTexture(0);
