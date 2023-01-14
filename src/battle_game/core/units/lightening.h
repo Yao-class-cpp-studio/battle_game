@@ -13,20 +13,19 @@ class Lightening : public Unit {
   void LighteningMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
   void Fire();
-  [[nodiscard]] const char *UnitName() const override;
-  [[nodiscard]] const char *Author() const override;
+  void RocketClick();
+  void Rocket();
   bool Flash();
   void FlashClick();
+  [[nodiscard]] const char *UnitName() const override;
+  [[nodiscard]] const char *Author() const override;
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  void RocketClick();
-  void Rocket();
+
   uint32_t rocket_count_down_{0};
   uint32_t flash_duration_{0};
 
   uint32_t flash_count_down_{0};
 };
 }  // namespace battle_game::unit
-
-// for test
