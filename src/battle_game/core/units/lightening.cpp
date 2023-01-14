@@ -179,7 +179,7 @@ void Lightening::Rocket() {
 
 void Lightening::FlashClick() {
   flash_count_down_ = 4 * kTickPerSecond;
-  flash_duration_ = 1*kTickPerSecond;
+  flash_duration_ = 1 * kTickPerSecond;
 }
 
 bool Lightening::Flash() {
@@ -195,7 +195,7 @@ bool Lightening::Flash() {
       }
     }
   }
-  if(flash_duration_){
+  if (flash_duration_) {
     --flash_duration_;
     return 1;
   }
@@ -213,17 +213,16 @@ void Lightening::Render() {
 
 void Lightening::Update() {
   bool idx = Flash();
-  if(idx){
-     LighteningMove(13.0f, glm::radians(180.0f));
+  if (idx) {
+    LighteningMove(13.0f, glm::radians(180.0f));
+  } else {
+    LighteningMove(4.5f, glm::radians(180.0f));
   }
-  else{ LighteningMove(4.5f, glm::radians(180.0f));}
-  
- 
+
   Flash();
   TurretRotate();
   Fire();
   Rocket();
-  
 }
 
 void Lightening::LighteningMove(float move_speed, float rotate_angular_speed) {

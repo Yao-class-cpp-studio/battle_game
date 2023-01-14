@@ -15,6 +15,8 @@ class Lightening : public Unit {
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
+  bool Flash();
+  void FlashClick();
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
@@ -24,11 +26,7 @@ class Lightening : public Unit {
   uint32_t flash_duration_{0};
 
   uint32_t flash_count_down_{0};
-  bool Flash();
-  void FlashClick();
-
-
 };
 }  // namespace battle_game::unit
 
-//for test
+// for test
