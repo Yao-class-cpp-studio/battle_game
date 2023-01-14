@@ -409,7 +409,9 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按E键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      std::string temp("Click to release ");
+                      temp += skill_list[i].name;
+                      if (ImGui::Button(temp.c_str())) {
                         skill_list[i].function();
                       }
                     }
@@ -426,7 +428,9 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按Q键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      std::string temp("Click to release ");
+                      temp += skill_list[i].name;
+                      if (ImGui::Button(temp.c_str())) {
                         skill_list[i].function();
                       }
                     }
@@ -443,7 +447,9 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按R键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      std::string temp("Click to release ");
+                      temp += skill_list[i].name;
+                      if (ImGui::Button(temp.c_str())) {
                         skill_list[i].function();
                       }
                     }
@@ -460,7 +466,9 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (点击释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      std::string temp("Click to release ");
+                      temp += skill_list[i].name;
+                      if (ImGui::Button(temp.c_str())) {
                         skill_list[i].function();
                       }
                     }
@@ -477,7 +485,9 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按T键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      std::string temp("Click to release ");
+                      temp += skill_list[i].name;
+                      if (ImGui::Button(temp.c_str())) {
                         skill_list[i].function();
                       }
                     }
