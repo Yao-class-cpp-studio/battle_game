@@ -110,7 +110,7 @@ float GetTextWidth(wchar_t c) {
 float GetTextWidth(const std::wstring &text) {
   float width = 0.0f;
   for (const auto &c : text) {
-    width += factory.GetChar(c).advection;
+    width += GetTextWidth(c);
   }
   return width;
 }
@@ -124,11 +124,7 @@ void DrawText(const std::wstring &text, bool centered) {
                   glm::vec3{0.0f, 0.0f, 1.0f}) *
       glm::scale(glm::mat4{1.0f}, glm::vec3{current_scale_, 1.0f}));
   if (centered) {
-    float width = 0.0f;
-    for (const auto &c : text) {
-      width += factory.GetChar(c).advection;
-    }
-    current_position += transform * glm::vec2{-width / 2, -0.5f};
+    current_position += transform * glm::vec2{-GetTextWidth(text) / 2, -0.5f};
   }
   for (const auto &c : text) {
     const auto &mesh = factory.GetChar(c);
