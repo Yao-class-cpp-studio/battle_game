@@ -1,11 +1,11 @@
-#include "battle_game/core/bullets/booboobullet.h"
+#include "battle_game/core/bullets/BoobooBullet2.h"
 
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
 #include "battle_game/graphics/util.h"
 
 namespace battle_game::bullet {
-booboobullet2::booboobullet2(GameCore *core,
+BoobooBullet2::BoobooBullet2(GameCore *core,
                        uint32_t id,
                        uint32_t unit_id,
                        uint32_t player_id,
@@ -17,14 +17,14 @@ booboobullet2::booboobullet2(GameCore *core,
       velocity_(velocity) {
 }
 
-void booboobullet2::Render() {
+void BoobooBullet2::Render() {
   SetTransformation(position_, rotation_, glm::vec2{1.0f});
   SetColor(game_core_->GetPlayerColor(player_id_));
-  SetTexture("../../textures/booboosword2.png");
+  SetTexture("../../textures/BoobooSword2.png");
   DrawModel(0);
 }
 
-void booboobullet2::Update() {
+void BoobooBullet2::Update() {
   velocity_ = Rotate(velocity_, -glm::radians(3.0f));
   rotation__ += 3.0f;
   rotation_ -= glm::radians(3.0f);
@@ -53,7 +53,7 @@ void booboobullet2::Update() {
   }
 }
 
-booboobullet2::~booboobullet2() {
+BoobooBullet2::~BoobooBullet2() {
   for (int i = 0; i < 5; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(
         position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,

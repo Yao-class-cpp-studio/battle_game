@@ -2,9 +2,9 @@
 #include "battle_game/core/bullet.h"
 
 namespace battle_game::bullet {
-class booboobullet : public Bullet {
+class BoobooBullet : public Bullet {
  public:
-  booboobullet(GameCore *core,
+  BoobooBullet(GameCore *core,
              uint32_t id,
              uint32_t unit_id,
              uint32_t player_id,
@@ -12,7 +12,7 @@ class booboobullet : public Bullet {
              float rotation,
              float damage_scale,
              glm::vec2 velocity);
-  ~booboobullet() override;
+  ~BoobooBullet() override;
   void Render() override;
   void Update() override;
 
