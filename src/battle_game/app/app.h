@@ -11,7 +11,6 @@ class App {
  public:
   explicit App(const AppSettings &app_settings, GameCore *game_core);
   void Run();
-  //current_ = this;
 
  private:
   void OnInit();

@@ -79,10 +79,11 @@ void Tank_gx::Render() {
 }
 
 void Tank_gx::Update() {
-  good_luck[0] = float(20.0f * rand() / RAND_MAX - 10.0f);
-  good_luck[1] = float(20.0f * rand() / RAND_MAX - 10.0f);
-  bad_luck[0] = float(20.0f * rand() / RAND_MAX - 10.0f);
-  bad_luck[1] = float(20.0f * rand() / RAND_MAX - 10.0f);
+  good_luck[0] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
+  good_luck[1] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
+  bad_luck[0] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
+  bad_luck[1] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
+
   printf("See your luck\r");
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
@@ -150,13 +151,13 @@ void Tank_gx::TurretRotate() {
   }
   
   if (IsHit(good_luck)) {
-    volatile float luckgood = (float)(10.0f * rand() / RAND_MAX);
+    volatile float luckgood = (float)(10.0f * game_core_->RandomFloat());
     luckgood /= BasicMaxHealth();
     health_ += luckgood;
     printf("\nGood Luck!\n\n");
   }
   if (IsHit(bad_luck)) {
-    volatile float luckbad = (float)(10.0f * rand() / RAND_MAX);
+    volatile float luckbad = (float)(10.0f * game_core_->RandomFloat());
     luckbad /= BasicMaxHealth();
     health_ -= luckbad;
     if (health_ < 0)
