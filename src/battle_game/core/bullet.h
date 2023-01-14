@@ -15,6 +15,7 @@ class Bullet : public Object {
          float rotation,
          float damage_scale);
   ~Bullet() override;
+  void Setdamagescale(float f);
 
  protected:
   uint32_t unit_id_{};
