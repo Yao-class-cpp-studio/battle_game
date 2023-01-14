@@ -13,11 +13,13 @@ class PacMan : public Unit {
   void Fire();
   void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
+  void Check();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
   uint32_t mine_count_down_{0};
+  uint32_t pacman_{1};
 };
 }  // namespace battle_game::unit

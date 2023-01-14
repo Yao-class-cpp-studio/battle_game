@@ -34,7 +34,18 @@ PacMan::PacMan(GameCore *game_core, uint32_t id, uint32_t player_id)
 void PacMan::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetRotation(turret_rotation_ + glm::radians(90.0f));
-  battle_game::SetTexture("../../textures/pacman.png");
+  if (pacman_ == 1 || pacman_ == 2 || pacman_ == 3)
+    battle_game::SetTexture("../../textures/pacman-1.png");
+  if (pacman_ == 4 || pacman_ == 5 || pacman_ == 6)
+    battle_game::SetTexture("../../textures/pacman-2.png");
+  if (pacman_ == 7 || pacman_ == 8 || pacman_ == 9)
+    battle_game::SetTexture("../../textures/pacman-3.png");
+  if (pacman_ == 10 || pacman_ == 11 || pacman_ == 12)
+    battle_game::SetTexture("../../textures/pacman-4.png");
+  if (pacman_ == 12)
+    pacman_ = 1;
+  else if (pacman_ != 1)
+    pacman_ = pacman_ + 1;
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
   battle_game::DrawModel(tank_body_model_index);
 }
@@ -43,6 +54,18 @@ void PacMan::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  Check();
+}
+
+void PacMan::Check() {
+  auto player = game_core_->GetPlayer(player_id_);
+  if (player && pacman_ == 6) {
+    auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+    GenerateBullet<bullet::CannonBall>(
+        position_ + Rotate({0.0f, 1.2f}, turret_rotation_), turret_rotation_,
+        GetDamageScale(), velocity);
+    fire_count_down_ = kTickPerSecond / 4;
+  }
 }
 
 void PacMan::TurretRotate() {
@@ -94,13 +117,8 @@ void PacMan::Fire() {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
-      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::CannonBall>(
-            position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-            turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;
-      }
+      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT])
+        pacman_ = 2;
     }
   }
 }
