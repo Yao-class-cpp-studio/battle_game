@@ -29,7 +29,7 @@ MagicTank::MagicTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     temp2.time_remain = 0;
     temp2.time_total = 240;
     temp2.type = Q;
-    temp2.function = SKILL_ADD_FUNCTION(MagicTank::Protect);
+    temp2.function = SKILL_ADD_FUNCTION(MagicTank::Death);
     skills_.push_back(temp2);
   }
 }
