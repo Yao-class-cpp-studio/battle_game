@@ -146,29 +146,79 @@ public:
   该函数可以帮助你通过只填写新生成的子弹对象的位置、朝向、伤害倍率等关键参数，自动根据单位信息进行补全并添加一个子弹生成事件。
   - 实现类似于“开火”一类的技能可以使用该函数
   - 函数的实现位于 `src/battle_game/core/game_core.h` 中
-- Skill
-  - units支持加入技能。
-  - 为了方便玩家操作，技能应当使用键盘快捷键完成。特别地，由于本游戏使用W/A/S/D控制转向，为方便起见，技能采用按键E/Q/R完成。我们规定E/Q/R表示的技能强度递增，并建议按照E/Q/R的顺序依次实现技能（可不足3个，但主动技能一般不会超过3个）。此外，P表示被动技能，这一技能不需要用户输入。
-  - 用户通常希望从UI界面获取技能的简略信息。因此，如果您不希望技能被展示在UI界面中，请使用ADD_SELECTABLE_UNIT_WITHOUT_SKILL()进行调用（如果您没有设置技能，则不会显示任何信息。因此技能界面向前兼容）。此外，您需要维护一个名称为skill_的信息存储库，它已经是您的units类型中的protected类型。它的格式为std::vector<battle_game::Skill> 。其中Skill是一个用于交互的结构体。
-  - units支持子弹切换界面显示。一个units可以拥有不止一种射击的子弹，并且子弹切换通常需要一定的冷却时间。如果您不希望展示子弹界面，您只需要留空即可。 如果您希望展示子弹界面，请在skill_里加入type=B的一个元素。如果有不止一个子弹，请不要多次添加，而是填写当前的bullet_type和一共的bullet_total_number。子弹界面对您的输入具有一定的适应性，例如，如果您只有一种子弹，将不会展示切换信息；如果您的冷却时间为0，将不会展示冷却进度。
-``` cpp
-enum SkillType { E, Q, R, P, B };
-struct Skill {
-  std::string name;
-  std::string description;
-  std::string src;
-  uint32_t time_remain;
-  uint32_t time_total;
-  uint32_t bullet_type;
-  uint32_t bullet_total_number;
-  SkillType type;
-  std::function<void(void)> function;
-};
-```
 
- -
-    - 你需要在name中填写技能名称，description为技能简述（若有），src为技能图示路径（若有），time_remain为技能冷却时间，time_total为技能冷却总时间，type为技能类型，function为技能调用的接口（可选择不提供）。若选择提供，使用格式为example.function=SKILL_ADD_FUNCTION(YourUnits::YourFunction)。
-    - 使用示例请参考inferno_tank类型。技能显示页面可能会持续更新，但可以承诺skill_这一交互容器会保持不变。也即技能显示页面的更新会自动兼容您的数据，您无须再次编写。如果您发现了显示页面的BUG或者希望增加更多内容（如您可能希望加入用户状态，如加速/灼烧等），欢迎联系XuGW-Kevin。
+### 相关类
+
+- Skill（技能类）
+  
+  - units支持加入技能。
+  
+  - 为了方便玩家操作，技能应当使用键盘快捷键完成。特别地，由于本游戏使用W/A/S/D控制转向，为方便起见，技能采用按键E/Q/R完成。我们规定E/Q/R表示的技能强度递增，并建议按照E/Q/R的顺序依次实现技能（可不足3个，但主动技能一般不会超过3个）。此外，P表示被动技能，这一技能不需要用户输入。
+  
+  - 用户通常希望从UI界面获取技能的简略信息。因此，如果您不希望技能被展示在UI界面中，请使用ADD_SELECTABLE_UNIT_WITHOUT_SKILL()进行调用（如果您没有设置技能，则不会显示任何信息。因此技能界面向前兼容）。此外，您需要维护一个名称为skill_的信息存储库，它已经是您的units类型中的protected类型。它的格式为std::vector<battle_game::Skill> 。其中Skill是一个用于交互的结构体。
+  
+  - units支持子弹切换界面显示。一个units可以拥有不止一种射击的子弹，并且子弹切换通常需要一定的冷却时间。如果您不希望展示子弹界面，您只需要留空即可。 如果您希望展示子弹界面，请在skill_里加入type=B的一个元素。如果有不止一个子弹，请不要多次添加，而是填写当前的bullet_type和一共的bullet_total_number。子弹界面对您的输入具有一定的适应性，例如，如果您只有一种子弹，将不会展示切换信息；如果您的冷却时间为0，将不会展示冷却进度。
+  
+  - ```cpp
+    enum SkillType { E, Q, R, P, B };
+    struct Skill {
+      std::string name;
+      std::string description;
+      std::string src;
+      uint32_t time_remain;
+      uint32_t time_total;
+      uint32_t bullet_type;
+      uint32_t bullet_total_number;
+      SkillType type;
+      std::function<void(void)> function;
+    };
+    ```
+  
+  - 你需要在name中填写技能名称，description为技能简述（若有），src为技能图示路径（若有），time_remain为技能冷却时间，time_total为技能冷却总时间，type为技能类型，function为技能调用的接口（可选择不提供）。若选择提供，使用格式为example.function=SKILL_ADD_FUNCTION(YourUnits::YourFunction)。
+  
+  - 使用示例请参考inferno_tank类型。技能显示页面可能会持续更新，但可以承诺skill_这一交互容器会保持不变。也即技能显示页面的更新会自动兼容您的数据，您无须再次编写。如果您发现了显示页面的BUG或者希望增加更多内容（如您可能希望加入用户状态，如加速/灼烧等），欢迎联系XuGW-Kevin。
+
+- Effect（效果类）
+
+  - 为了存储延时性伤害、参数类影响，我们将其统称为“状态效果”，主要处理对状态 statue\_ 内参数的持续影响
+
+  - 每个单位均存储 Effect 链表，存储所具有的所有状态
+
+  - 定义如下：
+
+  - ```cpp
+    class Effect{
+        virtual std::string Name() const;         // 效果名，用于 GUI 显示
+        virtual std::string Description() const;  // 描述，用于 GUI 显示
+        virtual void Influence(Unit::Status &);   // 具体实现，对状态的影响函数
+        virtual uint32_t TickRemain() const;      // 持续时间（单位：帧），可用于 GUI 显示
+        virtual void TickPass();                  // 每过一帧时，调用此函数，用于调整该效果的时间参数
+        virtual bool ShouldRemove() const;        // 判断该状态效果是否结束
+    
+        uint32_t src_unit_id_;                    // 效果来源，对伤害溯源有作用
+        Effect(uint32_t src_uint_id);             // 唯一的初始化定义，声明 Effect 必须标注来源的单位
+      }
+    };
+    ```
+
+  - 执行逻辑
+
+    - 回合开始时，对所有单位，遍历其所有状态，将 `status_` 带入 `Effect::Influence` 中运行
+      - 在 `Influence` 中，你可以对 `status_` 进行修改
+    - 回合开始时，对所有单位，遍历其所有状态，调用 `Effect::TickPass`，表示该效果的存在时间多了一帧
+    - 回合结束时，对所有单位，遍历其所有状态，调用 `Effect::ShouldRemove`。若返回真，该状态从该单位中删除
+    - 不难发现，回合过程中获得的状态将从下一帧开始生效
+
+  - 您需要定义 `Effect` 的子类，定义这 6 个函数，以完成**对一个状态效果的定义**。
+
+    - 当然，您可以在您的子类中定义其它变量或函数，用以辅助完成更复杂的内容。
+
+  - 你可以在 `Unit` 的成员函数内调用 `PUSH_EFFECT(效果类构造函数)`，以**让一个单位获得该状态**
+
+  - 存储位置：
+
+    - 所有 `Effect` 的子类存储在 `effects` 文件夹下，其中所有效果类的声明需要包含在 `effects/effects.h` 中。
+
 ## Obstacle
 
 障碍物类声明在 [obstacle.h](obstacle.h) 中，该类对象主要用于组成游戏场景。
