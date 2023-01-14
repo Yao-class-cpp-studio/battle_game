@@ -15,7 +15,7 @@ class SpeedRegulation : public Effect {
   uint32_t TickRemain() const;
   void TickPass();
   bool ShouldRemove() const;
-  SpeedRegulation(uint32_t src_player_id);
+  SpeedRegulation(uint32_t src_unit_id);
 };
 
 }  // namespace battle_game

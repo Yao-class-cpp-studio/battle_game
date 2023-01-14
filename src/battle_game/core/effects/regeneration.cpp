@@ -12,7 +12,7 @@ std::string Regeneration::Description() const {
 }
 
 void Regeneration::Influence(Unit::Status &status) {
-  status.HealthChange(src_player_id_, health_per_second_ / kTickPerSecond);
+  status.HealthChange(src_unit_id_, health_per_second_ / kTickPerSecond);
 }
 
 uint32_t Regeneration::TickRemain() const {
@@ -27,10 +27,10 @@ bool Regeneration::ShouldRemove() const {
   return !tick_remain_;
 }
 
-Regeneration::Regeneration(uint32_t src_player_id,
+Regeneration::Regeneration(uint32_t src_unit_id,
                            float health_per_second,
                            uint32_t tick_remain)
-    : Effect(src_player_id),
+    : Effect(src_unit_id),
       health_per_second_{health_per_second},
       tick_remain_{tick_remain} {
 }

@@ -2,6 +2,8 @@
 #include "battle_game/core/unit.h"
 #include "glm/glm.hpp"
 
+#define PUSH_EFFECT(effect) PushEffect((Effect *)(new effect));
+
 namespace battle_game {
 
 class Effect {
@@ -15,7 +17,7 @@ class Effect {
   virtual uint32_t TickRemain() const = 0;
   virtual void TickPass() = 0;
   virtual bool ShouldRemove() const = 0;
-  Effect(uint32_t src_player_id);
+  Effect(uint32_t src_unit_id);
 
  protected:
   uint32_t src_unit_id_;

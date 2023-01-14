@@ -17,7 +17,7 @@ class Regeneration : public Effect {
   uint32_t TickRemain() const;
   void TickPass();
   bool ShouldRemove() const;
-  Regeneration(uint32_t src_player_id,
+  Regeneration(uint32_t src_unit_id,
                float health_per_second,
                uint32_t tick_remain);
 };
