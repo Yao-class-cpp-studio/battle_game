@@ -22,7 +22,7 @@ void GameCore::GeneratePrimaryUnitList() {
    * Add Your Unit Here!
    * */
   ADD_SELECTABLE_UNIT(unit::Tank);
-
+  ADD_SELECTABLE_UNIT(unit::QIXUAN_Tank);
   unit.reset();
 }
 }  // namespace battle_game
