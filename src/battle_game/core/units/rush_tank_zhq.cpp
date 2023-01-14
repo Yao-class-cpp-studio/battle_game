@@ -23,8 +23,8 @@ RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id) : Tank(
   time_stamp= -100000000 ;
   rush_count_down = 8 * kTickPerSecond; 
   Skill temp;
-  temp.time_remain = 0;
   temp.time_total = 500;
+  temp.time_remain = 0;
   temp.name = "Rush";
   temp.description = "Move Faster!";
   temp.type = E;
