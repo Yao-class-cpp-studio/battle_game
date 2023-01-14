@@ -10,7 +10,7 @@ class BoomerangTank : public Tank {
   void Update() override;
 
  protected:
-  void TripleFire();
+  void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };

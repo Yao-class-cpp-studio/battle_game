@@ -1,7 +1,8 @@
+#include "boomerang_tank.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "boomerang_tank.h"
 
 namespace battle_game::unit {
 
@@ -18,11 +19,11 @@ void BoomerangTank::Render() {
 void BoomerangTank::Update() {
   TankMove(5.0f, glm::radians(180.0f));
   TurretRotate();
-  TripleFire();
+  Fire();
 }
 
-void BoomerangTank::TripleFire() {
-  if (fire_count_down_ != 0 && fire_count_down_ != 3 && fire_count_down_ != 6) {
+void BoomerangTank::Fire() {
+  if (fire_count_down_ != 0) {
     fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
@@ -33,11 +34,7 @@ void BoomerangTank::TripleFire() {
         GenerateBullet<bullet::Boomerang>(
             position_ + Rotate({0.0f, 1.5f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        if (fire_count_down_ == 0) {
-          fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-        } else {
-          fire_count_down_--;
-        }
+        fire_count_down_ = kTickPerSecond;
       }
     }
   }
