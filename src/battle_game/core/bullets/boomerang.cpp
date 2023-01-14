@@ -17,27 +17,55 @@ Boomerang::Boomerang(GameCore *core,
 }
 
 void Boomerang::Render() {
-  SetTransformation(position_, rotation_, glm::vec2{0.1f});
+  SetTransformation(position_, rotation_, glm::vec2{0.8f});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/boomerang.png");
   DrawModel(0);
 }
 
 void Boomerang::Update() {
-  position_ += velocity_ * kSecondPerTick;
+  time_ += 1;
   bool should_die = false;
+  if (time_ <= 25)
+    position_ += velocity_ * kSecondPerTick;
+  else {
+    if (time_ <= 50)
+      position_ -= velocity_ * kSecondPerTick;
+    else {
+      return_ = true;
+      should_die = true;
+    }
+  }
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;
   }
 
-  auto &units = game_core_->GetUnits();
-  for (auto &unit : units) {
-    if (unit.first == unit_id_) {
-      continue;
+  if (time_ <= 25 && hit_ == 0) {
+    auto &units = game_core_->GetUnits();
+    for (auto &unit : units) {
+      if (unit.first == unit_id_) {
+        continue;
+      }
+      if (unit.second->IsHit(position_)) {
+        game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
+        hit_ += 1;
+        game_core_->PushEventGenerateParticle<particle::Smoke>(
+            position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
+            glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+      }
     }
-    if (unit.second->IsHit(position_)) {
-      game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
-      should_die = true;
+  }
+
+  if (time_ >= 25) {
+    auto &units = game_core_->GetUnits();
+    for (auto &unit : units) {
+      if (unit.first == unit_id_) {
+        continue;
+      }
+      if (unit.second->IsHit(position_)) {
+        game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
+        should_die = true;
+      }
     }
   }
 
@@ -47,10 +75,12 @@ void Boomerang::Update() {
 }
 
 Boomerang::~Boomerang() {
-  for (int i = 0; i < 5; i++) {
-    game_core_->PushEventGenerateParticle<particle::Smoke>(
-        position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
-        glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+  if (!return_) {
+    for (int i = 0; i < 5; i++) {
+      game_core_->PushEventGenerateParticle<particle::Smoke>(
+          position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,
+          glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+    }
   }
 }
 }  // namespace battle_game::bullet

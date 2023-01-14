@@ -18,5 +18,8 @@ class Boomerang : public Bullet {
 
  private:
   glm::vec2 velocity_{};
+  int time_{0};
+  int hit_{0};
+  bool return_{false};
 };
 }  // namespace battle_game::bullet
