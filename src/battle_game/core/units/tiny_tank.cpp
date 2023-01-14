@@ -156,9 +156,11 @@ bool Tank::IsHit(glm::vec2 position) const {
          position.y - position.x < 1.6f;
 }
 
+
 const char *Tank::UnitName() const {
   return "Tiny Tank";
 }
+
 
 const char *Tank::Author() const {
   return "LazyJazz";
