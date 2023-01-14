@@ -363,7 +363,7 @@ void App::UpdateImGui() {
                   }
                 }
               }
-              for (int i = 0; i < skill_list.size(); i++) {
+              for (int i = 0, k = 0; i < skill_list.size(); i++) {
                 if (skill_list[i].type == B)
                   continue;
                 if (skill_list[i].time_remain) {
