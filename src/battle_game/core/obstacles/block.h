@@ -10,7 +10,7 @@ class Block : public Obstacle {
         float rotation = 0.0f,
         glm::vec2 scale = glm::vec2{1.0f, 1.0f});
 
- protected:
+ private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
   void Render() override;
   glm::vec2 scale_{1.0f};
