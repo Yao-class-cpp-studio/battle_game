@@ -275,8 +275,7 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 }
 
 void GameCore::SetScene() {
-  AddObstacle<obstacle::Brambles>(glm::vec2{-3.0f, 4.0f});
-  AddObstacle<obstacle::Block>(glm::vec2{0.0f,4.0f});
+  AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
   AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
                                          0.78539816339744830961566084581988f);
   AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
