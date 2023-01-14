@@ -409,7 +409,7 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按E键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      if (ImGui::Button(u8"点击释放E技能")) {
                         skill_list[i].function();
                       }
                     }
@@ -426,7 +426,7 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按Q键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      if (ImGui::Button(u8"点击释放Q技能")) {
                         skill_list[i].function();
                       }
                     }
@@ -477,7 +477,7 @@ void App::UpdateImGui() {
                       ImGui::Text(u8" (按T键释放) 技能可释放");
                     }
                     if (skill_list[i].function) {
-                      if (ImGui::Button(u8"点击释放")) {
+                      if (ImGui::Button(u8"点击释放R技能")) {
                         skill_list[i].function();
                       }
                     }
