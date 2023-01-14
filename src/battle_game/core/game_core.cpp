@@ -46,8 +46,8 @@ void GameCore::Update() {
     particle.second->Update();
   }
   if (RandomInt(1, 1200) == 1) {
-    float x = 20.0f * RandomFloat() - 10.0f;
-    float y = 20.0f * RandomFloat() - 10.0f;
+    float x = (2 * RandomFloat() - 1) * boundary_high_.x;
+    float y = (2 * RandomFloat() - 1) * boundary_high_.y;
     PushEventGenerateBullet<bullet::DropBox>(0, 0, glm::vec2{x, y}, 0.0f, 0.0f,
                                              RandomInt(0, 4), 1.5f);
   }
