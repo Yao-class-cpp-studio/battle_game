@@ -36,7 +36,7 @@ Assassin::Assassin(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.bullet_total_number = 1;
   temp.type = B;
   skills_.push_back(temp);
-  PushEffect((Effect*)(new SpeedRegulation(player_id_)));
+  PushEffect((Effect *)(new SpeedRegulation(player_id_)));
 }
 
 void Assassin::Render() {
