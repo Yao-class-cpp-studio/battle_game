@@ -247,10 +247,10 @@ void Lightening::LighteningMove(float move_speed, float rotate_angular_speed) {
     }
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
-      rotation_offset += 1.0f;
+      rotation_offset += 1.5f;
     }
     if (input_data.key_down[GLFW_KEY_D]) {
-      rotation_offset -= 1.0f;
+      rotation_offset -= 1.5f;
     }
     rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
