@@ -1,5 +1,6 @@
 #pragma once
 #include "battle_game/core/bullet.h"
+//1
 
 namespace battle_game::bullet {
 class RandomBall : public Bullet {

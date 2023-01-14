@@ -141,7 +141,7 @@ void Crit_Tank::Fire() {
     }
   }
 }
-
+//1
 bool Crit_Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&

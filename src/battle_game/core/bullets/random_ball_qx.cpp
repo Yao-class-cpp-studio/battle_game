@@ -56,6 +56,7 @@ void RandomBall::Update() {
       should_die = true;
     }
   }
+  //1
 
   if (should_die) {
     game_core_->PushEventRemoveBullet(id_);
