@@ -18,4 +18,4 @@ class SpeedRegulation : public Effect {
   SpeedRegulation(uint32_t src_player_id);
 };
 
-}
+}  // namespace battle_game
