@@ -26,7 +26,8 @@ Assassin::Assassin(GameCore *game_core, uint32_t id, uint32_t player_id)
   skills_.push_back(temp);
   temp.name = u8"瞬移";
   temp.description = u8"下一次鼠标左键时传送至光标位置（冷却时间：" +
-                     std::to_string(baseTime_teleporting) + std::string(u8"秒）");
+                     std::to_string(baseTime_teleporting) +
+                     std::string(u8"秒）");
   temp.time_remain = 0;
   temp.time_total = TeleportingCoolDown() * kTickPerSecond;
   temp.type = Q;
