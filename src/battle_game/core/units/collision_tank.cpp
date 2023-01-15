@@ -197,4 +197,3 @@ const char *CollisionTank::Author() const {
   return "Ljy and Zkx";
 }
 }  // namespace battle_game::unit
-
