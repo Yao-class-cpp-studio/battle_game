@@ -16,18 +16,15 @@ Arknights::Arknights(GameCore *game_core, uint32_t id, uint32_t player_id)
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
-      /* Tank Body */
+      /* Body */
       tank_body_model_index = mgr->RegisterModel(
           {
-              {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              // distinguish front and back
-              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.9f, 0.9f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.9f, -0.9f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.9f, 0.9f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.9f, -0.9f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
           },
-          {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
+          {0, 1, 2, 1, 2, 3});
     }
 
     {
@@ -80,40 +77,35 @@ void Arknights::Render() {
 }
 
 void Arknights::Update() {
-  ArknightsMove(3.0f, glm::radians(180.0f));
+  ArknightsMove(3.0f);
   TurretRotate();
   Fire();
 }
 
-void Arknights::ArknightsMove(float move_speed, float rotate_angular_speed) {
+void Arknights::ArknightsMove(float move_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
-    if (input_data.key_down[GLFW_KEY_W]) {
+    if (input_data.key_down[GLFW_KEY_W] || input_data.key_down[GLFW_KEY_UP]) {
       offset.y += 1.0f;
     }
-    if (input_data.key_down[GLFW_KEY_S]) {
+    if (input_data.key_down[GLFW_KEY_S] || input_data.key_down[GLFW_KEY_DOWN]) {
       offset.y -= 1.0f;
+    }
+    if (input_data.key_down[GLFW_KEY_A] || input_data.key_down[GLFW_KEY_LEFT]) {
+      offset.x -= 1.0f;
+    }
+    if (input_data.key_down[GLFW_KEY_D] ||
+        input_data.key_down[GLFW_KEY_RIGHT]) {
+      offset.x += 1.0f;
     }
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
-    auto new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
+    auto new_position = position_ + offset;
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
     }
-    float rotation_offset = 0.0f;
-    if (input_data.key_down[GLFW_KEY_A]) {
-      rotation_offset += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_D]) {
-      rotation_offset -= 1.0f;
-    }
-    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-    game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
 
@@ -159,9 +151,8 @@ void Arknights::Fire() {
 
 bool Arknights::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
+  return position.x > -0.9f && position.x < 0.9f && position.y > -0.9f &&
+         position.y < 0.9f;
 }
 
 const char *Arknights::UnitName() const {
