@@ -13,7 +13,7 @@ class DisplacementTank : public Tank {
  protected:
   void Tribleshot();
   void Displacement();
-  uint32_t displacement_count = {0};
+  uint32_t displacement_count_ = {0};
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
