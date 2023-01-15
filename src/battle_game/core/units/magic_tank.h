@@ -7,15 +7,11 @@ class MagicTank : public Tank {
   MagicTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-  uint32_t protectskill_countdown_ = {0};
-  uint32_t protectcool_countdown = 60;
-  uint32_t deathcool_countdown_ = 0;
-  bool protecteed = false;
   void Protect();
   void Death();
   void ProtectClick();
   void DeathClick();
-  void magic();
+  void Magic();
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
@@ -27,7 +23,11 @@ class MagicTank : public Tank {
   [[nodiscard]] const char *Author() const override;
 
   float turret_rotation_{0.0f};
-  uint32_t fire_count_down_{0};
-  uint32_t mine_count_down_{0};
+  bool protecteed = false;
+  uint32_t protectskill_countdown_ = {0};
+  uint32_t protectcool_countdown_ = 60;
+  uint32_t deathcool_countdown_ = 0;
+  uint32_t fire_count_down_ = 0;
+  uint32_t mine_count_down_ = 0;
 };
 }  // namespace battle_game::unit

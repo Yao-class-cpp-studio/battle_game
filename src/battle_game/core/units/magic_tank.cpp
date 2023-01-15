@@ -124,22 +124,22 @@ void MagicTank::DeathClick() {
       GetDamageScale(), velocity);
 }
 
-void MagicTank::magic() {
+void MagicTank::Magic() {
   if (protecteed) {
     if (protectskill_countdown_) {
       protectskill_countdown_--;
       if (protectskill_countdown_ == 0) {
         protecteed = false;
-        protectcool_countdown = 60 * kTickPerSecond;
+        protectcool_countdown_ = 60 * kTickPerSecond;
       }
     }
   }
 }
 
 void MagicTank::Protect() {
-  skills_[0].time_remain = protectcool_countdown;
-  if (protectcool_countdown) {
-    protectcool_countdown--;
+  skills_[0].time_remain = protectcool_countdown_;
+  if (protectcool_countdown_) {
+    protectcool_countdown_--;
   } else if (protecteed == false) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
