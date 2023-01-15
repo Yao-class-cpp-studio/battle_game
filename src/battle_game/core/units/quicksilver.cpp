@@ -23,10 +23,10 @@ void QuicksilverTank::Render() {
   if (is_accelerate_ == false)
     Tank::Render();
   else {
-    battle_game::SetTransformation(position_, rotation_, glm::vec2{1.0f});
-    battle_game::SetTexture("../../textures/railgun(2).png");
-    battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-    battle_game::DrawModel(0);
+    SetTransformation(position_, rotation_, glm::vec2{1.2f});
+    SetColor(game_core_->GetPlayerColor(player_id_));
+    SetTexture("../../textures/quicksilver.png");
+    DrawModel(0);
   }
 }
 
