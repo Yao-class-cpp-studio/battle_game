@@ -52,7 +52,6 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::Railgun);
   ADD_SELECTABLE_UNIT(unit::Udongein);
   ADD_SELECTABLE_UNIT(unit::OrdinaryTank);
-  //ADD_SELECTABLE_UNIT(unit::ChanganCar);
 
   unit.reset();
 }
