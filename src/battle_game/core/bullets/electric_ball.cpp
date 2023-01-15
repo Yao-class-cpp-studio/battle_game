@@ -19,7 +19,7 @@ ElectricBall::ElectricBall(GameCore *core,
 void ElectricBall::Render() {
   SetTransformation(position_, rotation_, glm::vec2{0.8f});
   SetColor(game_core_->GetPlayerColor(player_id_));
-  SetTexture("../../textures/electric_ball.png");
+  SetTexture("../../textures/fire_ball.png");
   DrawModel(0);
 }
 
