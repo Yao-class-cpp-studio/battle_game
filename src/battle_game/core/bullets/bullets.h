@@ -2,6 +2,7 @@
 #include "battle_game/core/bullets/cannon_ball.h"
 #include "battle_game/core/bullets/coin.h"
 #include "battle_game/core/bullets/crit_bullet.h"
+#include "battle_game/core/bullets/disball.h"
 #include "battle_game/core/bullets/electric_ball.h"
 #include "battle_game/core/bullets/energy_beam.h"
 #include "battle_game/core/bullets/mine.h"
@@ -14,4 +15,3 @@
 #include "battle_game/core/bullets/udongein_directional_bullet.h"
 #include "battle_game/core/bullets/warning_line.h"
 #include "battle_game/core/bullets/water_drop.h"
-// 1

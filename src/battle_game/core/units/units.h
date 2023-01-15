@@ -4,6 +4,7 @@
 #include "battle_game/core/units/crit_tank.h"
 #include "battle_game/core/units/crit_tank_qxhwj.h"
 #include "battle_game/core/units/dark_fury.h"
+#include "battle_game/core/units/distank.h"
 #include "battle_game/core/units/double_scatter_tank.h"
 #include "battle_game/core/units/inferno_tank.h"
 #include "battle_game/core/units/lm_tank.h"
