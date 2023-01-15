@@ -22,9 +22,5 @@ class CollisionTank : public Unit {
   uint32_t fire_count_down_{0};
   uint32_t mine_count_down_{0};
   std::map<uint32_t, bool> alreadyhit;
-  float speed_{0.0f};                  // 速度，有向的
-  const float acceleration_{4.0f};     // 加速度，速度较低时使用
-  const float power_{18.0f};           // 功率，速度较高时使用
-  float friction_acceleration_{2.5f};  // 摩擦，按Q制动大幅加大
 };
 }  // namespace battle_game::unit
