@@ -18,7 +18,7 @@ ShadowTank::ShadowTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 void ShadowTank::Update() {
   TankMove(5.0f, glm::radians(180.0f));
   TurretRotate();
-  CallfShadow();
+  CallShadow();
   Fire();
 }
 
