@@ -20,12 +20,12 @@ void RandomNPC::RandomMove() {
   if (player) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
-    if (current_steps == 0) {
-      current_steps = 30;
-      current_direction = game_core_->RandomInt(1, 2);
+    if (current_steps_ == 0) {
+      current_steps_ = 30;
+      current_direction_ = game_core_->RandomInt(1, 2);
     }
-    current_steps--;
-    if (current_direction == 1) {
+    current_steps_--;
+    if (current_direction_ == 1) {
       offset.y += 1.0f;
     } else {
       offset.y -= 1.0f;
@@ -52,7 +52,7 @@ void RandomNPC::RandomMove() {
 }
 
 void RandomNPC::RandomTurretRotate() {
-  if (current_steps % 10 != 0) {
+  if (current_steps_ % 10 != 0) {
     return;
   }
   auto player = game_core_->GetPlayer(player_id_);

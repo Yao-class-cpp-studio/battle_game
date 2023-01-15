@@ -18,8 +18,8 @@ class RandomNPC : public Tank {
   void RandomTurretRotate();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
-  int current_steps;
-  int current_direction;
+  int current_steps_;
+  int current_direction_;
   // In this implementation,the moving direction will change once a few steps,or
   // it will just wander around,which looks absurd.
 };
