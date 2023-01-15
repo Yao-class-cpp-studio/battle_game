@@ -24,7 +24,6 @@ BloodReturn::BloodReturn(GameCore *game_core, uint32_t id, uint32_t player_id)
               {{0.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
               {{0.0f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
               {{-0.6f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-
           },
           {0, 1, 2, 3, 2, 3, 4, 1, 5, 2, 2, 4});
     }
