@@ -1,6 +1,7 @@
 #pragma once
 
 #include "battle_game/core/units/Whaooooo_tank.h"
+#include "battle_game/core/units/all_round_tank.h"
 #include "battle_game/core/units/crit_tank.h"
 #include "battle_game/core/units/dark_fury.h"
 #include "battle_game/core/units/double_scatter_tank.h"
@@ -23,4 +24,3 @@
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/udongein.h"
 #include "battle_game/core/units/zibeng_dog.h"
-#include "battle_game/core/units/all_round_tank.h"
