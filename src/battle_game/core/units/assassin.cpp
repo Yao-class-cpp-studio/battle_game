@@ -12,24 +12,25 @@ const uint32_t baseTime_teleporting = 120;
 Assassin::Assassin(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id, 50.0f, 1.0f, 1.0f, .0f, 15.0f) {
   Skill temp;
-  temp.name = "隐身";
-  temp.description = std::string("十秒内无法被命中（冷却时间：") +
-                     std::to_string(baseTime_invisible) + std::string("秒）");
+  temp.name = u8"隐身";
+  temp.description = std::string(u8"十秒内无法被命中（冷却时间：") +
+                     std::to_string(baseTime_invisible) + std::string(u8"秒）");
   temp.time_remain = 0;
   temp.time_total = InvisibleCoolDown() * kTickPerSecond;
   temp.type = E;
   temp.function = SKILL_ADD_FUNCTION(Assassin::InvisibleClick);
   skills_.push_back(temp);
-  temp.name = "瞬移";
-  temp.description = "下一次鼠标左键时传送至光标位置（冷却时间：" +
-                     std::to_string(baseTime_teleporting) + std::string("秒）");
+  temp.name = u8"瞬移";
+  temp.description = u8"下一次鼠标左键时传送至光标位置（冷却时间：" +
+                     std::to_string(baseTime_teleporting) +
+                     std::string(u8"秒）");
   temp.time_remain = 0;
   temp.time_total = TeleportingCoolDown() * kTickPerSecond;
   temp.type = Q;
   temp.function = SKILL_ADD_FUNCTION(Assassin::TeleportingClick);
   skills_.push_back(temp);
-  temp.name = "匕首";
-  temp.description = "对紫色范围内的所有单位造成小额伤害（冷却时间：0.1秒）";
+  temp.name = u8"匕首";
+  temp.description = u8"对紫色范围内的所有单位造成小额伤害（冷却时间：0.1秒）";
   temp.time_remain = 0;
   temp.time_total = 0.1 * kTickPerSecond;
   temp.bullet_type = 1;
