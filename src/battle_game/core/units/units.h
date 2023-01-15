@@ -4,6 +4,7 @@
 #include "battle_game/core/units/crit_tank.h"
 #include "battle_game/core/units/dark_fury.h"
 #include "battle_game/core/units/double_scatter_tank.h"
+#include "battle_game/core/units/heal_tank.h"
 #include "battle_game/core/units/inferno_tank.h"
 #include "battle_game/core/units/lm_tank.h"
 #include "battle_game/core/units/mine_sample_tank.h"
