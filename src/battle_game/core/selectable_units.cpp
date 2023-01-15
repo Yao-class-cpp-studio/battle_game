@@ -57,16 +57,3 @@ void GameCore::GeneratePrimaryUnitList() {
   unit.reset();
 }
 }  // namespace battle_game
-
-
-
-
-
-
-
-
-
-
-
-  
- 
