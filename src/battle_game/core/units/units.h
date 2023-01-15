@@ -1,5 +1,4 @@
 #pragma once
-#include "battle_game/core/units/Collision_tank.h"
 #include "battle_game/core/units/Laser_Tank.h"
 #include "battle_game/core/units/Split_bullet_cannon.h"
 #include "battle_game/core/units/Whaooooo_tank.h"
