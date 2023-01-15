@@ -44,7 +44,7 @@ void MagicTank::Update() {
   Fire();
   Protect();
   Death();
-  magic();
+  Magic();
 }
 
 void MagicTank::TankMove(float move_speed, float rotate_angular_speed) {
