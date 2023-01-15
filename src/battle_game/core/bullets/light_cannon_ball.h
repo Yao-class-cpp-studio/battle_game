@@ -2,9 +2,9 @@
 #include "battle_game/core/bullet.h"
 
 namespace battle_game::bullet {
-class CannonBall : public Bullet {
+class LightCannonBall : public Bullet {
  public:
-  CannonBall(GameCore *core,
+  LightCannonBall(GameCore *core,
              uint32_t id,
              uint32_t unit_id,
              uint32_t player_id,
@@ -12,7 +12,7 @@ class CannonBall : public Bullet {
              float rotation,
              float damage_scale,
              glm::vec2 velocity);
-  ~CannonBall() override;
+  ~LightCannonBall() override;
   void Render() override;
   void Update() override;
 
