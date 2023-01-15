@@ -1,6 +1,7 @@
 #pragma once
 #include "battle_game/core/bullets/cannon_ball.h"
 #include "battle_game/core/bullets/coin.h"
+#include "battle_game/core/bullets/coolbullet.h"
 #include "battle_game/core/bullets/crit_bullet.h"
 #include "battle_game/core/bullets/electric_ball.h"
 #include "battle_game/core/bullets/energy_beam.h"
