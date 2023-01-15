@@ -22,18 +22,51 @@ void Laser_Tank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        if (!iscombo) {
-          iscombo = true;
-          for (int i = 1; i <= 6; i++) {
-            GenerateBullet<bullet::Laser>(glm::vec2{0.0f, 0.0f},
-                                          turret_rotation_, GetDamageScale(),
-                                          velocity, i);
+        if (isDestroy != 0) {
+          DestroyClick();
+        } else {
+          auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+          if (!iscombo) {
+            iscombo = true;
+            for (int i = 1; i <= 6; i++) {
+              GenerateBullet<bullet::Laser>(
+                  glm::vec2{0.0f, 0.0f}, turret_rotation_,
+                  GetDamageScale() * 0.25f, velocity, i, 1);
+            }
           }
         }
       } else {
         fire_count_down_ = kTickPerSecond / 3;
+        if ((iscombo == true) && (isDestroy != 0)) {
+          isDestroy = 0;
+        }
         iscombo = false;
+      }
+    }
+  }
+}
+
+void Laser_Tank::DestroyClick() {
+  auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+  if (!iscombo) {
+    iscombo = true;
+    GenerateBullet<bullet::Laser>(glm::vec2{0.0f, 0.0f}, turret_rotation_,
+                                  GetDamageScale() * 3.6f, velocity, 1, 2);
+  }
+}
+
+void Laser_Tank::Destroy() {
+  skills_[0].time_remain = destroy_count_down_;
+  if ((destroy_count_down_ != 0) && (isDestroy == 0)) {
+    destroy_count_down_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_E] &&
+          !input_data.key_down[GLFW_MOUSE_BUTTON_LEFT]) {
+        isDestroy = 1;
+        destroy_count_down_ = 20 * kTickPerSecond;
       }
     }
   }
@@ -41,6 +74,14 @@ void Laser_Tank::Fire() {
 
 Laser_Tank::Laser_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
+  Skill temp;
+  temp.name = "Destroy";
+  temp.description = "Huge Damage";
+  temp.time_remain = 0;
+  temp.time_total = 1200;
+  temp.type = E;
+  temp.function = SKILL_ADD_FUNCTION(Laser_Tank::Destroy);
+  skills_.push_back(temp);
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -103,6 +144,7 @@ void Laser_Tank::Render() {
 void Laser_Tank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
+  Destroy();
   Fire();
 }
 
