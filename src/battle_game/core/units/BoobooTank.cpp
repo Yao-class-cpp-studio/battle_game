@@ -79,12 +79,6 @@ void BoobooTank::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void BoobooTank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
-  TurretRotate();
-  Fire();
-}
-
 void BoobooTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
