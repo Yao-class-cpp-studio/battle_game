@@ -1,4 +1,5 @@
 ﻿#include "battle_game/app/app.h"
+
 #include "battle_game/core/object.h"
 #include "battle_game/graphics/util.h"
 
