@@ -1,4 +1,5 @@
 #include "battle_game/core/bullets/laser.h"
+
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
 
@@ -34,9 +35,9 @@ void Laser::Update() {
       velocity_ -= 2.0f * prod * unv;
       rotation_ = std::atan(velocity_.y / velocity_.x);
       reflected_ = true;
-    } 
+    }
   } else if (reflected_) {
-    reflected_ = false;  
+    reflected_ = false;
   }
   if (game_core_->IsOutOfRange(position_)) {
     position_ = old_position_;

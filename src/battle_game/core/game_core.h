@@ -121,9 +121,9 @@ class GameCore {
   [[nodiscard]] bool IsOutOfRange(glm::vec2 p) const;
   [[nodiscard]] bool IsBlockedByObstacles(glm::vec2 p) const;
   /* Author: pangker7
-  *  Return the unit normal vector of the surface of Obstacles near p (towards outside)
-  *  Input: a position near the surface (inside or outside)
-  */
+   *  Return the unit normal vector of the surface of Obstacles near p (towards
+   * outside) Input: a position near the surface (inside or outside)
+   */
   [[nodiscard]] glm::vec2 GetUnitNormalVec2OfSurface(glm::vec2 p) const;
   [[nodiscard]] Obstacle *GetBlockedObstacle(glm::vec2 p) const;
 
