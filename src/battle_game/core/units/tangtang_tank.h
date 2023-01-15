@@ -16,6 +16,5 @@ class tangtang_Tank : public Tank {
   void tangtang_Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
-
 };
 }  // namespace battle_game::unit
