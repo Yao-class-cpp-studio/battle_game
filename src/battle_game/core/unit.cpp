@@ -66,6 +66,9 @@ void Unit::SetLifeBarBackgroundColor(glm::vec4 new_color) {
 void Unit::SetLifeBarFadeoutColor(glm::vec4 new_color) {
   fadeout_lifebar_color_ = new_color;
 }
+void Unit::SetOperateMode(bool operate_mode) {
+  operate_mode_ = operate_mode;
+}
 float Unit::GetLifeBarLength() {
   return lifebar_length_;
 }
@@ -80,6 +83,9 @@ glm::vec4 Unit::GetLifeBarBackgroundColor() {
 }
 glm::vec4 Unit::GetLifeBarFadeoutColor() {
   return fadeout_lifebar_color_;
+}
+bool Unit::GetOperateMode() {
+  return operate_mode_;
 }
 
 void Unit::ShowLifeBar() {
