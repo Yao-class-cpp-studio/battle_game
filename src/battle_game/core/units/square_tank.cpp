@@ -99,20 +99,17 @@ void SquareTank::TankMove(float move_speed) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
     if (input_data.key_down[GLFW_KEY_A])
-      offset.y += 1.0f;
-    if (input_data.key_down[GLFW_KEY_D])
-      offset.y -= 1.0f;
-    if (input_data.key_down[GLFW_KEY_W])
-      offset.x += 1.0f;
-    if (input_data.key_down[GLFW_KEY_S])
       offset.x -= 1.0f;
+    if (input_data.key_down[GLFW_KEY_D])
+      offset.x += 1.0f;
+    if (input_data.key_down[GLFW_KEY_W])
+      offset.y += 1.0f;
+    if (input_data.key_down[GLFW_KEY_S])
+      offset.y -= 1.0f;
 
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
-    auto new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4(offset, 0.0f, 0.0f)};
+    auto new_position = position_ + offset;
     if (!game_core_->IsBlockedByObstacles(new_position))
       game_core_->PushEventMoveUnit(id_, new_position);
   }
