@@ -67,22 +67,25 @@ void RoundUFO::Teleport() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_E]) {
-        Teleport_();
-        teleport_count_down_ = 600;
+        if (Teleport_()) {
+          teleport_count_down_ = 600;
+        }
       }
     }
   }
 }
 
-void RoundUFO::Teleport_() {
+bool RoundUFO::Teleport_() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
     auto new_position = input_data.mouse_cursor_position;
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
+      return true;
     }
   }
+  return false;
 }
 
 void RoundUFO::Render() {

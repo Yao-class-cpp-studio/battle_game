@@ -11,7 +11,7 @@ class RoundUFO : public Unit {
 
  protected:
   void Teleport();
-  void Teleport_();
+  bool Teleport_();
   void UFOMove(float move_speed);
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
