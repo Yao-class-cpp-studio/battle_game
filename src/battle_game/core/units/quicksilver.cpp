@@ -23,7 +23,7 @@ void QuicksilverTank::Render() {
   if (is_accelerate_ == false)
     Tank::Render();
   else {
-    SetTransformation(position_, rotation_, glm::vec2{1.2f});
+    SetTransformation(position_, rotation_, glm::vec2{1.6f});
     SetColor(game_core_->GetPlayerColor(player_id_));
     SetTexture("../../textures/quicksilver.png");
     DrawModel(0);
@@ -52,6 +52,7 @@ void QuicksilverTank::Move(float move_speed, float rotate_angular_speed) {
     if (is_accelerate_ == true) {
       speed = speed * 5;
       accelerate_time_ += 1;
+      rotate_angular_speed *= 5;
     }
     offset *= kSecondPerTick * speed;
     auto new_position =
