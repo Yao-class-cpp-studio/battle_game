@@ -1,5 +1,4 @@
 # Project 2: Battle Game
-<!-- Interesting! -->
 
 [![Linux Build](https://github.com/Yao-class-cpp-studio/battle_game/actions/workflows/linux-build.yml/badge.svg)](https://github.com/Yao-class-cpp-studio/battle_game/actions/workflows/linux-build.yml)
 
