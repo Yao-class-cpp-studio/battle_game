@@ -37,11 +37,11 @@ Kugelpanzer::Kugelpanzer(GameCore *game_core, uint32_t id, uint32_t player_id)
       body_vertices.push_back(
           {{0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}});
       body_vertices.push_back(
-          {{-0.15f, 0.8f}, {0.0f, 0.0f}, {0.5f, 0.5f, 0.5f, 0.5f}});
+          {{-0.15f, 0.8f}, {0.0f, 0.0f}, {0.4f, 0.4f, 0.4f, 1.0f}});
       body_vertices.push_back(
-          {{0.15f, 0.8f}, {0.0f, 0.0f}, {0.5f, 0.5f, 0.5f, 0.5f}});
+          {{0.15f, 0.8f}, {0.0f, 0.0f}, {0.4f, 0.4f, 0.4f, 1.0f}});
       body_vertices.push_back(
-          {{0.0f, 0.9f}, {0.0f, 0.0f}, {0.5f, 0.5f, 0.5f, 0.5f}});
+          {{0.0f, 0.9f}, {0.0f, 0.0f}, {0.4f, 0.4f, 0.4f, 1.0f}});
       body_indices.push_back(precision + 1);
       body_indices.push_back(precision + 2);
       body_indices.push_back(precision + 3);
@@ -156,11 +156,19 @@ void Kugelpanzer::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        auto velocity = Rotate(glm::vec2{0.0f, 36.0f}, turret_rotation_);
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+        fire_count_down_ = kTickPerSecond/6;  // Fire interval 1 second.
+      }
+      if (input_data.key_down[GLFW_KEY_F]) {
+        for(int i=0;i<12;i++){
+          auto velocity = Rotate(glm::vec2{0.0f, 36.0f}, turret_rotation_ + glm::radians(30.0f)*i);
+          GenerateBullet<bullet::CannonBall>(
+            position_ + Rotate({0.0f, 0.0f}, turret_rotation_),
+            turret_rotation_, GetDamageScale(), velocity);
+        }
       }
     }
   }
