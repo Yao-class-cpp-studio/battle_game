@@ -17,13 +17,15 @@ Laser::Laser(GameCore *core,
              float rotation,
              float damage_scale,
              glm::vec2 velocity,
-             int LightIndex)
+             int LightIndex,
+             int Mode)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity),
       end_position_(position),
       color_(game_core_->GetPlayerColor(player_id)),
       LightIndex_(LightIndex),
-      ComboTime(0),
+      Mode_(Mode),
+      ComboTime((Mode == 2) ? 2000 : 0),
       Original_velocity_(velocity) {
   switch (LightIndex_) {
     case 0:
@@ -85,6 +87,9 @@ void Laser::Render() {
 }
 
 void Laser::Update() {
+  if (Mode_ == 2 && ComboTime == 2077) {
+    game_core_->PushEventRemoveBullet(id_);
+  }
   ComboTime++;
   auto player = game_core_->GetPlayer(player_id_);
   auto &units = game_core_->GetUnits();
