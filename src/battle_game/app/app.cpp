@@ -222,6 +222,10 @@ void App::CaptureInput() {
   }
   static bool mouse_button_state[kMouseButtonRange] = {};
   for (int i = 0; i < kMouseButtonRange; i++) {
+    if (i == GLFW_MOUSE_BUTTON_LEFT && ImGui::GetIO().WantCaptureMouse) {
+      input_data.mouse_button_down[i] = false;
+      continue;
+    }
     input_data.mouse_button_down[i] =
         (glfwGetMouseButton(window, i) == GLFW_PRESS);
     input_data.mouse_button_clicked[i] =
