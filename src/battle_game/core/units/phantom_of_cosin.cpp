@@ -27,7 +27,7 @@ void phantom_of_cosin::Fire() {
 }
 
 bool phantom_of_cosin::IsHit(glm::vec2 position) const {
-  return Tank::IsHit;
+  return Tank::IsHit(position);
 }
 
 const char *phantom_of_cosin::UnitName() const {
