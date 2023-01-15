@@ -147,6 +147,43 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
+glm::vec2 GameCore::GetUnitNormalVec2OfSurface(glm::vec2 p) const {
+  //return glm::vec2(1.0f, 0.0f);
+  bool b = IsBlockedByObstacles(p);
+  const float precision_f = 0.0001f;
+  const int precision = 80;
+  const float inv_precision = 1.0f / float(precision);
+  
+  auto getMinDist = [this, p, b, precision_f](float theta) {
+    glm::vec2 u(std::cos(theta), std::sin(theta));
+    float d = precision_f;
+    while (IsBlockedByObstacles(p+d*u) == b && d < 20.0f) {
+      d *= 2;
+    }
+    if (d >= 20.0f) {
+      return 20.0f;
+    }
+    float lb = d / 2, ub = d;
+    while (ub-lb > precision_f) {
+      d = (ub+lb)/2;
+      (IsBlockedByObstacles(p+d*u) == b) ? lb = d : ub = d;
+    }
+    return d;
+  };
+
+  float min_d = 20.0f;
+  int min_i = 0;
+  for (int i = 0; i < precision; i++) {
+    float d = getMinDist(i * inv_precision * glm::pi<float>() * 2.0f);
+    if (d < min_d) {
+      min_d = d;
+      min_i = i;
+    }
+  }
+  float theta = min_i * inv_precision * glm::pi<float>() * 2.0f;
+  return glm::vec2(std::cos(theta), std::sin(theta));
+}
+
 Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
   if (!IsOutOfRange(p)) {
     for (auto &obstacle : obstacles_)
