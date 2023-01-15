@@ -8,6 +8,7 @@
 #include "battle_game/core/units/lm_tank.h"
 #include "battle_game/core/units/mine_sample_tank.h"
 #include "battle_game/core/units/missile_tank.h"
+#include "battle_game/core/units/ordinary_tank.h"
 #include "battle_game/core/units/rage_tank_yangyr.h"
 #include "battle_game/core/units/railgun.h"
 #include "battle_game/core/units/rebounding_sample_tank.h"
@@ -23,4 +24,4 @@
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/udongein.h"
 #include "battle_game/core/units/zibeng_dog.h"
-#include "battle_game/core/units/ordinary_tank.h"
+//
