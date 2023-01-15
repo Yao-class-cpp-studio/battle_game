@@ -18,7 +18,7 @@ void RushTank::Update() {
 
 RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
-  rush_count_down = 480;
+  rush_count_down_ = 480;
   time_stamp = -100000000;
   Skill temp;
   temp.time_total = 500;
@@ -31,14 +31,14 @@ RushTank::RushTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void RushTank::RushClick() {
-  rush_count_down = 480;
+  rush_count_down_ = 480;
   time_stamp = clock();
 }
 
 void RushTank::Rush() {
-  skills_[0].time_remain = rush_count_down;
-  if (rush_count_down) {
-    rush_count_down--;
+  skills_[0].time_remain = rush_count_down_;
+  if (rush_count_down_) {
+    rush_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
