@@ -5,10 +5,10 @@
 namespace battle_game {
 
 std::string Regeneration::Description() const {
-  return (std::string) u8"持续回复生命值（每秒" +
-         std::to_string(health_per_second_) + (std::string) u8"，剩余" +
+  return (std::string)u8"持续回复生命值（每秒" +
+         std::to_string(health_per_second_) + (std::string)u8"，剩余" +
          std::to_string((float)tick_remain_ / kTickPerSecond) +
-         (std::string) u8"）";
+         (std::string)u8"）";
 }
 
 void Regeneration::Influence(Status &status) {

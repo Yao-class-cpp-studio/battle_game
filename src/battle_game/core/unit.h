@@ -94,20 +94,20 @@ class Unit : public Object {
   void UpdateStatus();
   void RemoveEffect();
 
-  [[nodiscard]] float GetMaxHealth() const {
-    return status_.GetMaxHealth();
-  }
-
   [[nodiscard]] virtual float GetDamageScale() const {
     return GetAttack();
   }
 
   [[nodiscard]] virtual float GetDamageReduction() const {
-    return 1.0f / (1.0f + GEtDefence());
+    return 1.0f / (1.0f + GetDefence());
   }
 
   [[nodiscard]] virtual float GetSpeedScale() const {
     return GetSpeed();
+  }
+
+  [[nodiscard]] float GetMaxHealth() const {
+    return status_.GetMaxHealth();
   }
 
   /*
@@ -122,7 +122,7 @@ class Unit : public Object {
   [[nodiscard]] float GetAttack() const {
     return status_.attack_;
   }
-  [[nodiscard]] float GEtDefence() const {
+  [[nodiscard]] float GetDefence() const {
     return status_.defence_;
   }
   [[nodiscard]] float GetSpeed() const {

@@ -291,7 +291,7 @@ void App::UpdateImGui() {
         ImGui::ProgressBar(unit->GetHealth());
         ImGui::Text(u8"攻击力: %.1f（伤害倍率 %.1lf%%）", unit->GetAttack(),
                     unit->GetDamageScale() * 100);
-        ImGui::Text(u8"防御力: %.1f（伤害减免 %.1lf%%）", unit->GEtDefence(),
+        ImGui::Text(u8"防御力: %.1f（伤害减免 %.1lf%%）", unit->GetDefence(),
                     100.0f - unit->GetDamageReduction() * 100);
 
         for (int i = 0; i < selectable_list.size(); i++) {
