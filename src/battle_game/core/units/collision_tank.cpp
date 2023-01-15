@@ -1,9 +1,10 @@
+#include "collision_tank.h"
+
+#include <map>
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "collision_tank.h"
-#include <map>
-#include <cmath>
 
 namespace battle_game::unit {
 
@@ -12,7 +13,9 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-CollisionTank::CollisionTank(GameCore *game_core, uint32_t id, uint32_t player_id)
+CollisionTank::CollisionTank(GameCore *game_core,
+                             uint32_t id,
+                             uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -92,7 +95,7 @@ void CollisionTank::InitAlreadyHit() {
 }
 
 void CollisionTank::Update() {
-  TankMove(speed_, glm::radians(180.0f));
+  TankMove(3.0f, glm::radians(180.0f));
   AlreadyHit();
   TurretRotate();
   Fire();
@@ -115,21 +118,13 @@ void CollisionTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
-    glm::vec2 offset{0.0f, 1.0f};
-
+    glm::vec2 offset{0.0f};
     if (input_data.key_down[GLFW_KEY_W]) {
-      if (speed_ < 4.0f)
-        speed_ += kSecondPerTick * acceleration_;  // 如果速度较小使用恒加速度
-      else
-        speed_ += kSecondPerTick * power_ / speed_;  // 速度较大使用恒功率
+      offset.y += 1.0f;
     }
     if (input_data.key_down[GLFW_KEY_S]) {
-      if (speed_ > -4.0f)
-        speed_ -= kSecondPerTick * acceleration_;
-      else
-        speed_ += kSecondPerTick * power_ / speed_;
+      offset.y -= 1.0f;
     }
-
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
     auto new_position =
@@ -138,8 +133,6 @@ void CollisionTank::TankMove(float move_speed, float rotate_angular_speed) {
                               glm::vec4{offset, 0.0f, 0.0f}};
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
-    } else {
-      speed_ /= 1.05;
     }
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
@@ -150,20 +143,6 @@ void CollisionTank::TankMove(float move_speed, float rotate_angular_speed) {
     }
     rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
-
-    if (input_data.key_down[GLFW_KEY_Q]) {
-      friction_acceleration_ = 10.0f;  // 制动时摩擦大幅增加
-    } else {
-      friction_acceleration_ = 2.5f;
-    }
-
-    if (speed_ < 0) {
-      speed_ += kSecondPerTick * friction_acceleration_;
-      speed_ = speed_ > 0 ? 0 : speed_;
-    } else {
-      speed_ -= kSecondPerTick * friction_acceleration_;
-      speed_ = speed_ < 0 ? 0 : speed_;
-    }  // 摩擦力
   }
 }
 
@@ -172,11 +151,11 @@ void CollisionTank::AlreadyHit() {
   auto &input_data = player->GetInputData();
   auto &units = game_core_->GetUnits();
   for (auto &unit : units) {
-    if(unit.first!=player_id_) {
-      alreadyhit[unit.first] =
-          ((alreadyhit[unit.first] == true) && (unit.second->IsHit(position_) == true))
-              ? true
-              : false;
+    if (unit.first != player_id_) {
+      alreadyhit[unit.first] = ((alreadyhit[unit.first] == true) &&
+                                (unit.second->IsHit(position_) == true))
+                                   ? true
+                                   : false;
     }
   }
 }
@@ -184,8 +163,7 @@ void CollisionTank::AlreadyHit() {
 void CollisionTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
-  } 
-  else {
+  } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
@@ -195,9 +173,9 @@ void CollisionTank::Fire() {
           continue;
         }
         if ((unit.first != id_) && (unit.second->IsHit(position_)) &&
-            (alreadyhit[unit.first]==false)) {
-          game_core_->PushEventDealDamage(unit.first, id_, 20.0f * std::abs(speed_));
-          game_core_->PushEventDealDamage(id_, unit.first, 5.0f * std::abs(speed_));
+            (alreadyhit[unit.first] == false)) {
+          game_core_->PushEventDealDamage(unit.first, id_, 20.0f);
+          game_core_->PushEventDealDamage(id_, unit.first, 5.0f);
           alreadyhit[unit.first] = true;
         }
       }
@@ -216,6 +194,7 @@ const char *CollisionTank::UnitName() const {
 }
 
 const char *CollisionTank::Author() const {
-  return "Ljy and ZKX";
+  return "Ljy and Zkx";
 }
 }  // namespace battle_game::unit
+
