@@ -10,6 +10,8 @@ class RoundUFO : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
+  void Teleport();
+  void Teleport_();
   void UFOMove(float move_speed);
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
@@ -17,5 +19,6 @@ class RoundUFO : public Unit {
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
+  uint32_t teleport_count_down_{600};
 };
 }  // namespace battle_game::unit
