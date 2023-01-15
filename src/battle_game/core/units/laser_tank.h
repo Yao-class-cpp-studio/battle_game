@@ -26,4 +26,3 @@ class Laser_Tank : public Unit {
   uint32_t isDestroy = 0;
 };
 }  // namespace battle_game::unit
-
