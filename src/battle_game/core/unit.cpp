@@ -115,6 +115,9 @@ void Unit::RenderLifeBar() {
   }
 }
 
+void Unit::Addhitnumber(){
+}
+
 void Unit::RenderHelper() {
 }
 

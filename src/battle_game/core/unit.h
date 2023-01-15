@@ -56,6 +56,11 @@ class Unit : public Object {
 
   void ShowLifeBar();
   void HideLifeBar();
+  virtual void Addhitnumber();
+
+  /*
+   * Help use cooltank and coolbullet
+   * */
   virtual void RenderLifeBar();
 
   /*
