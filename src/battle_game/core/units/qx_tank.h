@@ -8,7 +8,7 @@ class QXTank : public Unit {
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
-
+  // 1
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();

@@ -92,7 +92,7 @@ void QXTank::TankMove(float move_speed, float rotate_angular_speed) {
     glm::vec2 offset{0.0f};
     if (input_data.key_down[GLFW_KEY_W]) {
       offset.y += 1.0f;
-    }
+    }  // 1
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }

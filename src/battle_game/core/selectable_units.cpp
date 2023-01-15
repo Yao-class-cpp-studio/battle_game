@@ -8,7 +8,7 @@ void GameCore::AddPrimaryUnitAllocationFunction(Args... args) {
     return AddUnit<UnitType>(player_id, args...);
   });
 }
-
+// 1
 void GameCore::GeneratePrimaryUnitList() {
   std::unique_ptr<Unit> unit;
 

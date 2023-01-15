@@ -7,7 +7,7 @@ class QHCritTank : public Tank {
  public:
   QHCritTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Update() override;
-
+  // 1
  protected:
   void CritFire();
   [[nodiscard]] const char *UnitName() const override;
