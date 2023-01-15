@@ -38,9 +38,8 @@ class GameCore {
 
   void Update();
   void Render();
-
-  glm::vec2 get_boundary_high();
   glm::vec2 get_boundary_low();
+  glm::vec2 get_boundary_high();
 
   void HandleCollision(glm::vec2 &p);
 
