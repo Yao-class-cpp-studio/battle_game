@@ -15,7 +15,7 @@ void DisplacementTank::Render() {
 
 void DisplacementTank::Update() {
   TurretRotate();
-  if(displacement_count == 7)
+  if(displacement_count_ == 7)
     Displacement();
   else
     Tribleshot();
@@ -44,8 +44,8 @@ void DisplacementTank::Tribleshot() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT] || 
           fire_count_down_ == 1 || fire_count_down_ == 8) {
-        displacement_count++;
-        if(displacement_count != 7) {
+        displacement_count_++;
+        if(displacement_count_ != 7) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
@@ -77,7 +77,7 @@ void DisplacementTank::Displacement() {
       TankMove(20.0f, glm::radians(180.0f));
     else {
       fire_count_down_ = kTickPerSecond;
-      displacement_count = 0;
+      displacement_count_ = 0;
       TankMove(3.0f, glm::radians(180.0f));
     }
   }
