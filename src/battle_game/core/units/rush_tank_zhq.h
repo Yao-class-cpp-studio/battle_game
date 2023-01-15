@@ -15,6 +15,6 @@ class RushTank : public Tank {
   void Rush();
   void RushClick();
   int time_stamp;
-  int rush_count_down;
+  int rush_count_down_;
 };
 }  // namespace battle_game::unit
