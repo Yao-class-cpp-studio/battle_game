@@ -159,14 +159,14 @@ void DoomTank::Leech_() {
     }
   }
   if (leech_time_) {
-    flag = true;
+    IsLeeched = true;
   } else {
-    flag = false;
+    IsLeeched = false;
   }
 }
 
 void DoomTank::ToLeech() {
-  if (flag) {
+  if (IsLeeched) {
     SetHealth(GetHealth() + 0.003 * (tmp_begin_ - tmp_end_));
     leech_time_--;
   }
@@ -190,12 +190,12 @@ void DoomTank::Shield() {
       IsShield = false;
       double temp;
       if (InitialHealth +
-              flag * (240-leech_time_)*0.003 * (tmp_begin_ - tmp_end_) >
+              IsLeeched * (240-leech_time_)*0.003 * (tmp_begin_ - tmp_end_) >
           GetHealth()) {
         temp = GetHealth();
       } else {
         temp = InitialHealth +
-               flag * (240 - leech_time_) * 0.003 * (tmp_begin_ - tmp_end_);
+               IsLeeched * (240 - leech_time_) * 0.003 * (tmp_begin_ - tmp_end_);
       }
       SetHealth(temp);
     } else {
