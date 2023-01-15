@@ -214,8 +214,8 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
                                    uint32_t src_unit_id,
                                    float damage) {
   auto unit = GetUnit(dst_unit_id);
-  unit->health_change_-=damage / unit->GetMaxHealth();
-  unit->damage_record_[src_unit_id]+=damage;
+  unit->health_change_ -= damage / unit->GetMaxHealth();
+  unit->damage_record_[src_unit_id] += damage;
 }
 
 void GameCore::PushEventRemoveObstacle(uint32_t obstacle_id) {

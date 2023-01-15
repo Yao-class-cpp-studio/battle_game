@@ -142,9 +142,9 @@ void Unit::EndTick() {
 
   rotation_ += rotation_change_;
 
-  health_change_=.0f;
-  position_change_={.0f,.0f};
-  rotation_change_=.0f;
+  health_change_ = .0f;
+  position_change_ = {.0f, .0f};
+  rotation_change_ = .0f;
   damage_record_.clear();
 }
 

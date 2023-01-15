@@ -87,7 +87,7 @@ class Unit : public Object {
   uint32_t MaxDamage();
   void EndTick();
 
-  glm::vec2 position_change_{glm::vec2(.0f,.0f)};
+  glm::vec2 position_change_{glm::vec2(.0f, .0f)};
   float rotation_change_{.0f};
   float health_change_{.0f};
   std::map<uint32_t, float> damage_record_;
