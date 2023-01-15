@@ -12,6 +12,5 @@ class SuzTank : public Tank {
   void LaserFire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
-
 };
 }  // namespace battle_game::unit
