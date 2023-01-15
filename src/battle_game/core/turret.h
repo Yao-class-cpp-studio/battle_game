@@ -23,5 +23,6 @@ class NeutralTurret : public Unit {
   glm::vec2 scale_{1.0f};
   glm::vec2 findEnermy();
   bool setBlock_ = false;
+  int i = 0;
 };
 }  // namespace battle_game::unit
