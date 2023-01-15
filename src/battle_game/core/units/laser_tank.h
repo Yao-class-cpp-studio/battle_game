@@ -12,6 +12,8 @@ class Laser_Tank : public Unit {
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
+  void Destroy();
+  void DestroyClick();
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
@@ -20,5 +22,8 @@ class Laser_Tank : public Unit {
   uint32_t fire_count_down_{0};
   bool iscombo{false};
   bool is_stuck_by_swamp{false};
+  uint32_t destroy_count_down_{600};
+  uint32_t isDestroy = 0;
 };
 }  // namespace battle_game::unit
+
