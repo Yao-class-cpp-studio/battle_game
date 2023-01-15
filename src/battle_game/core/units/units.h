@@ -1,6 +1,8 @@
 #pragma once
 
 #include "battle_game/core/units/Whaooooo_tank.h"
+#include "battle_game/core/units/blood_return.h"
+#include "battle_game/core/units/buff_generator.h"
 #include "battle_game/core/units/dark_fury.h"
 #include "battle_game/core/units/defence_tank.h"
 #include "battle_game/core/units/double_scatter_tank.h"
