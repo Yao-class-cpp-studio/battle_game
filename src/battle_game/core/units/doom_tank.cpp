@@ -56,7 +56,7 @@ int x() {
   return value + 1;
 }
 
-// 50%µÄ¸ÅÂÊÕý³£×Óµ¯£¬50%µÄ¸ÅÂÊ×Óµ¯ÉËº¦µþ±¶Êý
+// 50% normal cannon ballï¼Œ50% with lottery damage scale
 void DoomTank::RandomDo() {
   if (fire_count_down_) {
     fire_count_down_--;
@@ -91,7 +91,7 @@ void DoomTank::RandomDo() {
   }
 }
 
-//¸üÐÂ×´Ì¬
+//update status
 void DoomTank::DoomTankUpdate() {
   auto &units = game_core_->GetUnits();
   for (auto &unit : units) {
@@ -99,7 +99,7 @@ void DoomTank::DoomTankUpdate() {
   }
 }
 
-//ÔÚ³¡ËùÓÐµ¥Î»¶¼»áÊÜµ½ÉËº¦
+//all alive units will get damaged to different extent
 void DoomTank::DestroyAll() {
   doomsday_count_down_ = 5 * kTickPerSecond;
   auto &units = game_core_->GetUnits();
