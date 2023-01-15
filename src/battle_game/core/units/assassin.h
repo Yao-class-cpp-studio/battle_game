@@ -8,13 +8,12 @@ class Assassin : public Unit {
   void Render() override;
   void RenderHelper() override;
   void Update() override;
-  [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
   void AssassinMove(float move_speed);
   uint32_t InvisibleCoolDown() const;
   void InvisibleClick();
-  void Invisible();
+  void InvisibleDeal();
   uint32_t TeleportingCoolDown() const;
   void TeleportingClick();
   void Teleporting();
@@ -25,7 +24,6 @@ class Assassin : public Unit {
   float knife_rotation_{0.0f};
   uint32_t attack_count_down_{0};
   uint32_t invisible_count_down_{0};
-  uint32_t invisible_{0};
   uint32_t teleporting_count_down_{0};
   bool teleporting_{false};
 };

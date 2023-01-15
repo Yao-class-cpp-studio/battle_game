@@ -12,7 +12,20 @@ uint32_t dog_muzzle_model_index = 0xffffffffu;
 }  // namespace
 
 ZibengDog::ZibengDog(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id, 100.0f, 1.0f, 0.8f, 1.0f, 3.0f) {
+    : Unit(
+          game_core,
+          id,
+          player_id,
+          [=](glm::vec2 position) {
+            position = WorldToLocal(position);
+            return position.x > -0.8f && position.x < 0.8f &&
+                   position.y > -1.0f && position.y < 1.0f;
+          },
+          100.0f,
+          1.0f,
+          0.8f,
+          1.0f,
+          3.0f) {
   if (!~dog_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
@@ -158,12 +171,6 @@ void ZibengDog::Fire() {
       }
     }
   }
-}
-
-bool ZibengDog::IsHit(glm::vec2 position) const {
-  position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f;
 }
 
 const char *ZibengDog::UnitName() const {

@@ -18,6 +18,8 @@ class Unit : public Object {
     float attack_;
     float defence_;
     float speed_;
+    std::function<bool(glm::vec2)> is_hit_;
+    glm::vec2 color_;
 
     float GetHealth() const {
       return health_;
@@ -26,8 +28,9 @@ class Unit : public Object {
       return max_health_;
     }
 
-    Status(GameCore *game_core_,
-           Unit *player_,
+    Status(GameCore *game_core,
+           Unit *unit,
+           std::function<bool(glm::vec2)> is_hit,
            float max_health,
            float health,
            float attack,
@@ -43,16 +46,20 @@ class Unit : public Object {
     const float base_attack_;
     const float base_defence_;
     const float base_speed_;
+    const std::function<bool(glm::vec2)> base_is_hit_;
   };
 
-  Unit(GameCore *game_core,
-       uint32_t id,
-       uint32_t player_id,
-       float max_health = 100.0f,
-       float health = 1.0f,
-       float attack = 1.0f,
-       float defence = .0f,
-       float speed = 1.0f);
+  Unit(
+      GameCore *game_core,
+      uint32_t id,
+      uint32_t player_id,
+      std::function<bool(glm::vec2)> is_hit =
+          [](glm::vec2 position) { return false; },
+      float max_health = 100.0f,
+      float health = 1.0f,
+      float attack = 1.0f,
+      float defence = .0f,
+      float speed = 1.0f);
 
   uint32_t &GetPlayerId() {
     return player_id_;
@@ -90,7 +97,9 @@ class Unit : public Object {
    * have hit the unit. If the position is inside the unit area, then return
    * true, otherwise return false.
    * */
-  [[nodiscard]] virtual bool IsHit(glm::vec2 position) const = 0;
+  [[nodiscard]] virtual bool IsHit(glm::vec2 position) const {
+    return status_.is_hit_(position);
+  }
 
   template <class BulletType, class... Args>
   void GenerateBullet(glm::vec2 position,

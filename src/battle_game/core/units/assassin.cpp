@@ -10,39 +10,50 @@ const uint32_t baseTime_invisible = 40;
 const uint32_t baseTime_teleporting = 120;
 
 Assassin::Assassin(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id, 50.0f, 1.0f, 1.0f, .0f, 15.0f) {
+    : Unit(
+          game_core,
+          id,
+          player_id,
+          [=](glm::vec2 position) {
+            return glm::length(WorldToLocal(position)) < 1.0f;
+          },
+          50.0f,
+          1.0f,
+          1.0f,
+          .0f,
+          15.0f) {
   Skill temp;
-  temp.name = "隐身";
-  temp.description = std::string("十秒内无法被命中（冷却时间：") +
-                     std::to_string(baseTime_invisible) + std::string("秒）");
+  temp.name = u8"隐身";
+  temp.description = std::string(u8"十秒内无法被命中（冷却时间：") +
+                     std::to_string(baseTime_invisible) + std::string(u8"秒）");
   temp.time_remain = 0;
   temp.time_total = InvisibleCoolDown() * kTickPerSecond;
   temp.type = E;
   temp.function = SKILL_ADD_FUNCTION(Assassin::InvisibleClick);
   skills_.push_back(temp);
-  temp.name = "瞬移";
-  temp.description = "下一次鼠标左键时传送至光标位置（冷却时间：" +
-                     std::to_string(baseTime_teleporting) + std::string("秒）");
+  temp.name = u8"瞬移";
+  temp.description = u8"下一次鼠标左键时传送至光标位置（冷却时间：" +
+                     std::to_string(baseTime_teleporting) +
+                     std::string(u8"秒）");
   temp.time_remain = 0;
   temp.time_total = TeleportingCoolDown() * kTickPerSecond;
   temp.type = Q;
   temp.function = SKILL_ADD_FUNCTION(Assassin::TeleportingClick);
   skills_.push_back(temp);
-  temp.name = "匕首";
-  temp.description = "对紫色范围内的所有单位造成小额伤害（冷却时间：0.1秒）";
+  temp.name = u8"匕首";
+  temp.description = u8"对紫色范围内的所有单位造成小额伤害（冷却时间：0.1秒）";
   temp.time_remain = 0;
   temp.time_total = 0.1 * kTickPerSecond;
   temp.bullet_type = 1;
   temp.bullet_total_number = 1;
   temp.type = B;
   skills_.push_back(temp);
-  PUSH_EFFECT(SpeedRegulation(GetId()));
+  PUSH_EFFECT(SpeedRegulation(GetId(), false, 0));
 }
 
 void Assassin::Render() {
   battle_game::SetTransformation(position_, rotation_);
-  battle_game::SetTexture(invisible_ ? "../../textures/assassin_invisible.png"
-                                     : "../../textures/assassin_visible.png");
+  battle_game::SetTexture("../../textures/assassin_visible.png");
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
   battle_game::DrawModel(0);
 }
@@ -78,7 +89,7 @@ void Assassin::RenderHelper() {
 
 void Assassin::Update() {
   Click();
-  Invisible();
+  InvisibleDeal();
   Teleporting();
   AssassinMove(GetSpeed());
 }
@@ -123,13 +134,11 @@ void Assassin::AssassinMove(float speed) {
 }
 
 void Assassin::InvisibleClick() {
-  invisible_ = 10 * kTickPerSecond;
+  PUSH_EFFECT(Invisible(GetId(), 10 * kTickPerSecond));
   invisible_count_down_ = InvisibleCoolDown() * kTickPerSecond;
 }
 
-void Assassin::Invisible() {
-  if (invisible_)
-    invisible_--;
+void Assassin::InvisibleDeal() {
   if (invisible_count_down_) {
     invisible_count_down_--;
   } else {
@@ -189,13 +198,6 @@ void Assassin::Click() {
       }
     }
   }
-}
-
-bool Assassin::IsHit(glm::vec2 position) const {
-  if (invisible_)
-    return false;
-  position = WorldToLocal(position);
-  return glm::length(position) < 1.0f;
 }
 
 const char *Assassin::UnitName() const {

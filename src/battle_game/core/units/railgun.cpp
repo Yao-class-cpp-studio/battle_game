@@ -6,7 +6,22 @@
 
 namespace battle_game::unit {
 Railgun::Railgun(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id, 100.0f, 1.0f, 1.0f, 1.5f, 3.0f) {
+    : Unit(
+          game_core,
+          id,
+          player_id,
+          [=](glm::vec2 position) {
+            position = WorldToLocal(position);
+            return position.x > -0.8f && position.x < 0.8f &&
+                   position.y > -1.0f && position.y < 1.0f &&
+                   position.x + position.y < 1.6f &&
+                   position.y - position.x < 1.6f;
+          },
+          100.0f,
+          1.0f,
+          1.0f,
+          1.5f,
+          3.0f) {
   Skill temp;
   temp.name = "Thunderbolt";
   temp.description = "Damage on a random unit";
@@ -146,13 +161,6 @@ void Railgun::Thunderbolt() {
       }
     }
   }
-}
-
-bool Railgun::IsHit(glm::vec2 position) const {
-  position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
 }
 
 const char *Railgun::UnitName() const {

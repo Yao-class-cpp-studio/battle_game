@@ -8,6 +8,7 @@ uint32_t life_bar_model_index = 0xffffffffu;
 
 Unit::Status::Status(GameCore *game_core,
                      Unit *unit,
+                     std::function<bool(glm::vec2)> is_hit,
                      float max_health,
                      float health,
                      float attack,
@@ -15,6 +16,7 @@ Unit::Status::Status(GameCore *game_core,
                      float speed)
     : game_core_{game_core},
       unit_{unit},
+      base_is_hit_{is_hit},
       max_health_{max_health},
       health_{health},
       base_attack_{attack},
@@ -33,18 +35,27 @@ void Unit::Status::Initialization() {
   attack_ = base_attack_;
   defence_ = base_defence_;
   speed_ = base_speed_;
+  is_hit_ = base_is_hit_;
 }
 
 Unit::Unit(GameCore *game_core,
            uint32_t id,
            uint32_t player_id,
+           std::function<bool(glm::vec2)> is_hit,
            float max_health,
            float health,
            float attack,
            float defence,
            float speed)
     : Object(game_core, id),
-      status_(game_core, this, max_health, health, attack, defence, speed) {
+      status_(game_core,
+              this,
+              is_hit,
+              max_health,
+              health,
+              attack,
+              defence,
+              speed) {
   player_id_ = player_id;
   lifebar_offset_ = {0.0f, 1.0f};
   background_lifebar_color_ = {1.0f, 0.0f, 0.0f, 0.9f};

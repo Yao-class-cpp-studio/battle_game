@@ -15,15 +15,20 @@ void SpeedRegulation::Influence(Unit::Status &status) {
 }
 
 uint32_t SpeedRegulation::TickRemain() const {
-  return 0;
+  return tick_remain_;
 }
 void SpeedRegulation::TickPass() {
+  if (finity_)
+    tick_remain_--;
 }
 bool SpeedRegulation::ShouldRemove() const {
-  return false;
+  return finity_ ? !TickRemain() : false;
 }
 
-SpeedRegulation::SpeedRegulation(uint32_t src_unit_id) : Effect(src_unit_id) {
+SpeedRegulation::SpeedRegulation(uint32_t src_unit_id,
+                                 bool finity,
+                                 uint32_t tick_remain)
+    : Effect(src_unit_id), finity_{finity}, tick_remain_{tick_remain} {
 }
 
 }  // namespace battle_game
