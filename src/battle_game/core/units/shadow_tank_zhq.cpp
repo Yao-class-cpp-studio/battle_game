@@ -6,19 +6,19 @@ ShadowTank::ShadowTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill temp;
   skills_.push_back(temp);
-  temp.name = "Call_Shadow";
+  temp.name = "CallShadow";
   temp.description = "Generate Shadow";
   temp.time_remain = 0;
   temp.time_total = 1800;
   temp.type = Q;
-  temp.function = SKILL_ADD_FUNCTION(ShadowTank::Call_Shadow_Click);
+  temp.function = SKILL_ADD_FUNCTION(ShadowTank::CallShadowClick);
   skills_.push_back(temp);
 }
 
 void ShadowTank::Update() {
   TankMove(5.0f, glm::radians(180.0f));
   TurretRotate();
-  Call_Shadow();
+  CallfShadow();
   Fire();
 }
 
@@ -37,7 +37,7 @@ void ShadowTank::CallShadow() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_Q]) {
-        Call_Shadow_Click();
+        CallShadowClick();
       }
     }
   }
