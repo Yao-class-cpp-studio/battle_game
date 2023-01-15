@@ -14,7 +14,7 @@ Laser::Laser(GameCore *core,
              glm::vec2 velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
-  rotation_ = std::atan(velocity_.y / velocity_.x);
+  rotation_ = std::atan(velocity_.y / velocity_.x) + glm::pi<float>() / 2;
 }
 
 void Laser::Render() {
@@ -33,7 +33,7 @@ void Laser::Update() {
       glm::vec2 unv = game_core_->GetUnitNormalVec2OfSurface(position_);
       float prod = unv.x * velocity_.x + unv.y * velocity_.y;
       velocity_ -= 2.0f * prod * unv;
-      rotation_ = std::atan(velocity_.y / velocity_.x);
+      rotation_ = std::atan(velocity_.y / velocity_.x) + glm::pi<float>() / 2;
       reflected_ = true;
     }
   } else if (reflected_) {

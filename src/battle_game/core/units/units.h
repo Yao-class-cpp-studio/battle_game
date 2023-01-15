@@ -5,6 +5,7 @@
 #include "battle_game/core/units/dark_fury.h"
 #include "battle_game/core/units/double_scatter_tank.h"
 #include "battle_game/core/units/inferno_tank.h"
+#include "battle_game/core/units/laser_tank.h"
 #include "battle_game/core/units/lm_tank.h"
 #include "battle_game/core/units/mine_sample_tank.h"
 #include "battle_game/core/units/missile_tank.h"
@@ -23,4 +24,3 @@
 #include "battle_game/core/units/triple_shot_tank.h"
 #include "battle_game/core/units/udongein.h"
 #include "battle_game/core/units/zibeng_dog.h"
-#include "battle_game/core/units/laser_tank.h"
