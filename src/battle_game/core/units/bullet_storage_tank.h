@@ -12,7 +12,7 @@ class BulletStorageTank : public Tank {
 
  protected:
   void BulletStorage();
-  uint32_t bullet_storage = {0};
+  uint32_t bullet_storage_ = {0};
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
