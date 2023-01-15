@@ -73,7 +73,6 @@ class GameCore {
                                      position, rotation, damage_scale, args...);
     return bullet_index;
   }
-
   template <class ParticleType, class... Args>
   uint32_t AddParticle(glm::vec2 position,
                        float rotation = 0.0f,
