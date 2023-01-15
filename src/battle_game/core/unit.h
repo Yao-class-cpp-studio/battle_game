@@ -95,7 +95,7 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
-  float invincible_time_{3 * 60};
+  float invincible_time_{180.0f};
   
  private:
   float fadeout_health_;
