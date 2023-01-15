@@ -10,8 +10,8 @@ class ShadowTank : public Tank {
 
  protected:
   ;
-  void Call_Shadow();
-  void Call_Shadow_Click();
+  void CallShadow();
+  void CallShadowClick();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 

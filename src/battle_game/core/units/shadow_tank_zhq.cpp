@@ -22,16 +22,16 @@ void ShadowTank::Update() {
   Fire();
 }
 
-void ShadowTank::Call_Shadow_Click() {
+void ShadowTank::CallShadowClick() {
   auto theta = game_core_->RandomFloat() * glm::pi<float>() * 2.0f;
   game_core_->AddUnit<battle_game::unit::Shadow>(1);
-  shadow_count_down = 1800;
+  shadow_count_down_ = 1800;
 }
 
-void ShadowTank::Call_Shadow() {
-  skills_[1].time_remain = shadow_count_down;
-  if (shadow_count_down) {
-    shadow_count_down--;
+void ShadowTank::CallShadow() {
+  skills_[1].time_remain = shadow_count_down_;
+  if (shadow_count_down_) {
+    shadow_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
