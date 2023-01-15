@@ -10,10 +10,10 @@ class Regeneration : public Effect {
 
  public:
   std::string Name() const {
-    return "生命回复";
+    return u8"生命回复";
   }
   std::string Description() const;
-  void Influence(Unit::Status &status);
+  void Influence(Status &status);
   uint32_t TickRemain() const;
   void TickPass();
   bool ShouldRemove() const;

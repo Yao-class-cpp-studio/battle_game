@@ -450,13 +450,14 @@ void App::UpdateImGui() {
               }
               std::list<Effect *> effect = unit->GetEffect();
               int k = 0;
-              for (auto i = effect.begin(); i != effect.end(); i++) {
-                ImGui::Text(u8"状态 %d：%s", ++k, (*i)->Name().c_str());
-                if ((*i)->Description().size()) {
-                  ImGui::SameLine();
-                  HelpMarker((*i)->Description().c_str());
+              for (auto i = effect.begin(); i != effect.end(); i++)
+                if ((*i)->Name().size()) {
+                  ImGui::Text(u8"状态 %d：%s", ++k, (*i)->Name().c_str());
+                  if ((*i)->Description().size()) {
+                    ImGui::SameLine();
+                    HelpMarker((*i)->Description().c_str());
+                  }
                 }
-              }
             }
           }
         }

@@ -10,10 +10,10 @@ class Invisible : public Effect {
 
  public:
   std::string Name() const {
-    return "隐身";
+    return u8"隐身";
   }
   std::string Description() const;
-  void Influence(Unit::Status &status);
+  void Influence(Status &status);
   uint32_t TickRemain() const;
   void TickPass();
   bool ShouldRemove() const;

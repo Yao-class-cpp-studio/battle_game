@@ -21,10 +21,10 @@ ZibengDog::ZibengDog(GameCore *game_core, uint32_t id, uint32_t player_id)
             return position.x > -0.8f && position.x < 0.8f &&
                    position.y > -1.0f && position.y < 1.0f;
           },
-          100.0f,
+          50.0f,
           1.0f,
           0.8f,
-          1.0f,
+          0.0f,
           3.0f) {
   if (!~dog_body_model_index) {
     auto mgr = AssetsManager::GetInstance();

@@ -9,6 +9,7 @@
 #include "battle_game/core/particle.h"
 #include "battle_game/core/particles/particles.h"
 #include "battle_game/core/player.h"
+#include "battle_game/core/status.h"
 #include "battle_game/core/unit.h"
 #include "battle_game/core/units/units.h"
 #include "battle_game/graphics/graphics.h"

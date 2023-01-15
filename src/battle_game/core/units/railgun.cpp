@@ -17,10 +17,10 @@ Railgun::Railgun(GameCore *game_core, uint32_t id, uint32_t player_id)
                    position.x + position.y < 1.6f &&
                    position.y - position.x < 1.6f;
           },
-          100.0f,
+          40.0f,
           1.0f,
           1.0f,
-          1.5f,
+          0.0f,
           3.0f) {
   Skill temp;
   temp.name = "Thunderbolt";

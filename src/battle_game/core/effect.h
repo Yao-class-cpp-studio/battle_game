@@ -12,7 +12,7 @@ class Effect {
   virtual std::string Description() const {
     return "";
   }
-  virtual void Influence(Unit::Status &) {
+  virtual void Influence(Status &) {
   }
   virtual uint32_t TickRemain() const = 0;
   virtual void TickPass() = 0;

@@ -5,12 +5,12 @@
 namespace battle_game {
 
 std::string Invisible::Description() const {
-  return (std::string) "无法被子弹识别（剩余" +
+  return (std::string)u8"无法被子弹识别（剩余" +
          std::to_string((float)TickRemain() / kTickPerSecond) +
-         (std::string) "）";
+         (std::string)u8"）";
 }
 
-void Invisible::Influence(Unit::Status &status) {
+void Invisible::Influence(Status &status) {
   status.is_hit_ = [](glm::vec2) { return false; };
 }
 

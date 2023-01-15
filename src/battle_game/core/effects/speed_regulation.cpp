@@ -4,7 +4,7 @@
 
 namespace battle_game {
 
-void SpeedRegulation::Influence(Unit::Status &status) {
+void SpeedRegulation::Influence(Status &status) {
   auto player = status.game_core_->GetPlayer(status.unit_->GetPlayerId());
   if (player) {
     auto &input_data = player->GetInputData();
