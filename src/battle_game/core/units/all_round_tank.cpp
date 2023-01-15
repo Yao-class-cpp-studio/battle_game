@@ -10,7 +10,8 @@ AllRoundTank::AllRoundTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill speed_mode;
   speed_mode.name = "Speed Mode";
-  speed_mode.description = "In this mode, the speed of your tank increases by 40%.";
+  speed_mode.description =
+      "In this mode, the speed of your tank increases by 40%.";
   speed_mode.time_remain = 0;
   speed_mode.time_total = 0;
   speed_mode.type = SkillType::E;
@@ -19,7 +20,8 @@ AllRoundTank::AllRoundTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 
   Skill damage_mode;
   damage_mode.name = "Damage Mode";
-  damage_mode.description = "In this mode, the damage your tank done increases by 30%.";
+  damage_mode.description =
+      "In this mode, the damage your tank done increases by 30%.";
   damage_mode.time_remain = 0;
   damage_mode.time_total = 0;
   damage_mode.type = SkillType::Q;
@@ -28,7 +30,8 @@ AllRoundTank::AllRoundTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 
   Skill recovery_mode;
   recovery_mode.name = "Recovery Mode";
-  recovery_mode.description = "In this mode, your tank recovers 3% of health per second.";
+  recovery_mode.description =
+      "In this mode, your tank recovers 3% of health per second.";
   recovery_mode.time_remain = 0;
   recovery_mode.time_total = 0;
   recovery_mode.type = SkillType::R;
@@ -102,4 +105,4 @@ const char *AllRoundTank::UnitName() const {
 const char *AllRoundTank::Author() const {
   return "InvUsr";
 }
-}
+}  // namespace battle_game::unit
