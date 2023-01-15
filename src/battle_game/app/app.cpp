@@ -381,13 +381,13 @@ void App::UpdateImGui() {
                                 skill_list[i].time_remain / 60,
                                 skill_list[i].time_total / 60);
 
-                  }else if(skill_list[i].type == battle_game::SkillType::SPACE){
-                    ImGui::Text(u8"%s (按空格键释放) 技能冷却时间: %d s / %d s",
+                  } else if (skill_list[i].type ==
+                             battle_game::SkillType::SPACE) {
+                    ImGui::Text(u8"%s (按空格释放) 技能冷却时间: %d s / %d s",
                                 skill_list[i].name.c_str(),
                                 skill_list[i].time_remain / 60,
                                 skill_list[i].time_total / 60);
-                  
-                    
+
                   } else {
                     ImGui::Text(u8" (被动技能) 技能冷却时间: %d s / %d s",
                                 skill_list[i].time_remain / 60,
@@ -410,15 +410,14 @@ void App::UpdateImGui() {
                       }
                     }
 
-                  }else if(skill_list[i].type == SPACE){
-                    ImGui::Text(u8"%s (按空格键释放) 技能可释放",
+                  } else if (skill_list[i].type == SPACE) {
+                    ImGui::Text(u8"%s (按空格释放) 技能可释放",
                                 skill_list[i].name.c_str());
                     if (skill_list[i].function) {
                       if (ImGui::Button(u8"点击释放")) {
                         skill_list[i].function();
                       }
                     }
-                  
 
                   } else if (skill_list[i].type == Q) {
                     ImGui::Text(u8"%s ", skill_list[i].name.c_str());
