@@ -21,6 +21,67 @@ void SuzTank::Update() {
   LaserFire();
 }
 
+void SuzTank::TankMove(float move_speed, float rotate_angular_speed) {
+  auto player = game_core_->GetPlayer(player_id_);
+  if (player) {
+    auto &input_data = player->GetInputData();
+    glm::vec2 offset{0.0f};
+    if (!GetOperateMode()) {
+      if (input_data.key_down[GLFW_KEY_W]) {
+        offset.y += 1.0f;
+      }
+      if (input_data.key_down[GLFW_KEY_S]) {
+        offset.y -= 1.0f;
+      }
+      float speed = move_speed * GetSpeedScale();
+      offset *= kSecondPerTick * speed;
+      auto new_position =
+          position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
+                                            glm::vec3{0.0f, 0.0f, 1.0f}) *
+                                glm::vec4{offset, 0.0f, 0.0f}};
+      if (!game_core_->IsBlockedByObstacles(new_position)) {
+        game_core_->PushEventMoveUnit(id_, new_position);
+      }
+      float rotation_offset = 0.0f;
+      if (input_data.key_down[GLFW_KEY_A]) {
+        rotation_offset += 1.0f;
+      }
+      if (input_data.key_down[GLFW_KEY_D]) {
+        rotation_offset -= 1.0f;
+      }
+      rotation_offset *=
+          kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+      game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
+    } else {
+      if (input_data.key_down[GLFW_KEY_UP]) {
+        offset.y += 1.0f;
+      }
+      if (input_data.key_down[GLFW_KEY_DOWN]) {
+        offset.y -= 1.0f;
+      }
+      float speed = move_speed * GetSpeedScale();
+      offset *= kSecondPerTick * speed;
+      auto new_position =
+          position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
+                                            glm::vec3{0.0f, 0.0f, 1.0f}) *
+                                glm::vec4{offset, 0.0f, 0.0f}};
+      if (!game_core_->IsBlockedByObstacles(new_position)) {
+        game_core_->PushEventMoveUnit(id_, new_position);
+      }
+      float rotation_offset = 0.0f;
+      if (input_data.key_down[GLFW_KEY_LEFT]) {
+        rotation_offset += 1.0f;
+      }
+      if (input_data.key_down[GLFW_KEY_RIGHT]) {
+        rotation_offset -= 1.0f;
+      }
+      rotation_offset *=
+          kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+      game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
+    }
+  }
+}
+
 void SuzTank::LaserFire() {
   if (!(fire_count_down_ >= 0 && fire_count_down_ <= 20)) {
     fire_count_down_--;

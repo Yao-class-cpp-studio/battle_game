@@ -8,6 +8,7 @@ class SuzTank : public Tank {
   void Update() override;
 
  protected:
+  void TankMove(float move_speed, float rotate_angular_speed);
   void LaserFire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;

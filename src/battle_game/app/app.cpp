@@ -283,6 +283,18 @@ void App::UpdateImGui() {
           game_core_->PushEventRemoveUnit(unit->GetId());
         }
       }
+      if (ImGui::Button(u8"WSAD")) {
+        auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
+        if (unit) {
+          unit->SetOperateMode(0);
+        }
+      }
+      if (ImGui::Button(u8"上下左右")) {
+        auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
+        if (unit) {
+          unit->SetOperateMode(1);
+        }
+      }
       auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
       if (unit) {
         ImGui::Text(u8"生命值: %.1f / %.1f",
