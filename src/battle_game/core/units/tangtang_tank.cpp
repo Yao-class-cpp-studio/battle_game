@@ -14,7 +14,6 @@ void tangtang_Tank::Render() {
   Tank::Render();
 }
 
-
 void tangtang_Tank::Update() {
   TankMove(3.8f, glm::radians(180.0f));
   TurretRotate();
@@ -34,10 +33,10 @@ void tangtang_Tank::tangtang_Fire() {
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_number_++;
-        if (fire_number_ %3!=0) {
+        if (fire_number_ % 3 != 0) {
           fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
         } else {
-          fire_count_down_ = kTickPerSecond/10;
+          fire_count_down_ = kTickPerSecond / 10;
         }
       }
     }
