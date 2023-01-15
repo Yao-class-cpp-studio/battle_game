@@ -1,4 +1,5 @@
 #include "battle_game/core/bullets/crossing_obstacle_cannonbal.h"
+
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
 namespace battle_game::bullet {
