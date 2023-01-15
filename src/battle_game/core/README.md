@@ -19,7 +19,6 @@ protected:
     glm::vec2 position_{0.0f};  // offset from the origin (0, 0)
     float rotation_{0.0f};      // angle in radians
     uint32_t id_{0};
-    ObjectType object_type_{untracked_object};
 };
 ```
 
@@ -37,8 +36,6 @@ protected:
   - position_ 表示对象相对于游戏内坐标原点的偏移量
   - glm::vec2 是 glm 数学运算库中表示单精度浮点二维向量的类型，这个数学库内包含了四维及以下向量、矩阵的类型定义和常用功能函数。
   - rotation_ 表示对象在场景内相比于默认朝向，逆时针旋转的角度
-- object_type_
-  - 表示对象的种类
 
 除成员变量外，所有对象都应包含两部分功能：
 
@@ -90,8 +87,6 @@ public:
   - 这些变量保存了生命条的设置，请通过set来修改
 - fadeout_health_
   - 保存生命条渐变的起始位置。（一般不需要修改）
-- unit_type_
-  - 表示单位的种类（bullet, obstacle, particle也有类似的变量）
 
 ### 成员函数
 
@@ -129,8 +124,6 @@ public:
 - RenderHelper
   - 这是一个虚函数
   - 仅在该单位所有者玩家的视角中，渲染该对象用于辅助的一些视觉效果（例如子弹射出的预计轨迹）
-- GetUnitType
-  - 获取该单位的种类（bullet, obstacle, particle也有类似的函数）
 - IsHit
   - 这是一个虚函数
   - 用于判断若一个事件发生于传入参数**世界空间**坐标 `position`，该事件是否会对当前单位产生影响
@@ -143,9 +136,6 @@ public:
   该函数可以帮助你通过只填写新生成的子弹对象的位置、朝向、伤害倍率等关键参数，自动根据单位信息进行补全并添加一个子弹生成事件。
   - 实现类似于“开火”一类的技能可以使用该函数
   - 函数的实现位于 `src/battle_game/core/game_core.h` 中
-- AddAttackBuff
-  - 这是一个虚函数，默认为空
-  - 当有子弹攻击到敌方时会调用该函数，表示此次攻击对己方产生的增益，可以实现回血、经验值等功能
 - Skill
   - units支持加入技能。
   - 为了方便玩家操作，技能应当使用键盘快捷键完成。特别地，由于本游戏使用W/A/S/D控制转向，为方便起见，技能采用按键E/Q/R完成。我们规定E/Q/R表示的技能强度递增，并建议按照E/Q/R的顺序依次实现技能（可不足3个，但主动技能一般不会超过3个）。此外，P表示被动技能，这一技能不需要用户输入。
