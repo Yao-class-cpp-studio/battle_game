@@ -15,6 +15,6 @@ class ShadowTank : public Tank {
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
-  uint32_t shadow_count_down{1800};
+  uint32_t shadow_count_down_{1800};
 };
 }  // namespace battle_game::unit
