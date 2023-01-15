@@ -4,7 +4,7 @@
 namespace battle_game::obstacle {
 class Brambles : public Obstacle {
  public:
-  Brambles(GameCore *game_core,uint32_t id,glm::vec2 position,float rotation = 0.0f,glm::vec2 scale = glm::vec2{1.0f, 1.0f});
+  Brambles(GameCore *game_core , uint32_t id , glm::vec2 position , float rotation = 0.0f , glm::vec2 scale = glm::vec2{1.0f, 1.0f});
   bool IsInBrambles(glm::vec2 p) const;
   void Update() override;
  private:
