@@ -6,21 +6,22 @@
 
 namespace battle_game::unit {
 
-tangtang_Tank::tangtang_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
+TangtangTank::TangtangTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
-void tangtang_Tank::Render() {
+void TangtangTank::Render() {
   Tank::Render();
 }
 
-void tangtang_Tank::Update() {
+
+void TangtangTank::Update() {
   TankMove(3.8f, glm::radians(180.0f));
   TurretRotate();
-  tangtang_Fire();
+  Fire();
 }
 
-void tangtang_Tank::tangtang_Fire() {
+void TangtangTank::TangTangFire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -36,22 +37,22 @@ void tangtang_Tank::tangtang_Fire() {
         if (fire_number_ % 3 != 0) {
           fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
         } else {
-          fire_count_down_ = kTickPerSecond / 10;
+          fire_count_down_ = kTickPerSecond/10;
         }
       }
     }
   }
 }
 
-bool tangtang_Tank::IsHit(glm::vec2 position) const {
+bool TangtangTank::IsHit(glm::vec2 position) const {
   return Tank::IsHit(position);
 }
 
-const char *tangtang_Tank::UnitName() const {
+const char *TangtangTank::UnitName() const {
   return "tangtang Tank";
 }
 
-const char *tangtang_Tank::Author() const {
+const char *TangtangTank::Author() const {
   return "tangtang";
 }
 }  // namespace battle_game::unit
