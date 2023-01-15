@@ -262,6 +262,6 @@ const char *Lightening::UnitName() const {
 }
 
 const char *Lightening::Author() const {
-  return "jason-huang";
+  return "Jason-Huang";
 }
 }  // namespace battle_game::unit
