@@ -329,11 +329,11 @@ std::vector<const char *> GameCore::GetSelectableUnitList() const {
   return result;
 }
 
-glm::vec2 GameCore::get_boundary_high() {
+glm::vec2 GameCore::GetBoundaryHigh() {
   return boundary_high_;
 }
 
-glm::vec2 GameCore::get_boundary_low() {
+glm::vec2 GameCore::GetBoundaryLow() {
   return boundary_low_;
 }
 }  // namespace battle_game
