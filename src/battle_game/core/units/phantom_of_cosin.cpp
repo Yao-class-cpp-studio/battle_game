@@ -17,7 +17,7 @@ void phantom_of_cosin::Render() {
 }
 
 void phantom_of_cosin::Update() {
-  TankMove(6.0f, glm::radians(180.0f));
+  TankMove(6.17f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
