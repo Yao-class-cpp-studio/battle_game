@@ -29,18 +29,10 @@ void GameCore::GeneratePrimaryUnitList() {
   /*
    * TODO: Add Your Unit Here!
    * */
+  ADD_SELECTABLE_UNIT(unit::InfernoTank);
   ADD_SELECTABLE_UNIT(unit::Tank);
   ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);
   ADD_SELECTABLE_UNIT(unit::ThreeBodyMan);
-  ADD_SELECTABLE_UNIT(unit::InfernoTank);
-  ADD_SELECTABLE_UNIT(unit::TripleShotTank);
-  ADD_SELECTABLE_UNIT(unit::TankXxy);
-  ADD_SELECTABLE_UNIT(unit::WhaoooooTank);
-  ADD_SELECTABLE_UNIT(unit::InfernoTank);
-  ADD_SELECTABLE_UNIT(unit::TripleShotTank);
-  ADD_SELECTABLE_UNIT(unit::TankXxy);
-  ADD_SELECTABLE_UNIT(unit::WhaoooooTank);
-=======
   ADD_SELECTABLE_UNIT(unit::LMTank);
   ADD_SELECTABLE_UNIT(unit::MissileTank);
   ADD_SELECTABLE_UNIT(unit::TripleShotTank);
@@ -59,17 +51,22 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::CritTank);
   ADD_SELECTABLE_UNIT(unit::Railgun);
   ADD_SELECTABLE_UNIT(unit::Udongein);
-
-
-
-
-
-
-
-
-   ADD_SELECTABLE_UNIT(unit::soilder);
-   ADD_SELECTABLE_UNIT(unit::RLUD_Tank);
-   ADD_SELECTABLE_UNIT(unit::newturret_Tank);
+  ADD_SELECTABLE_UNIT(unit::soilder);
+  ADD_SELECTABLE_UNIT(unit::RLUD_Tank);
+  ADD_SELECTABLE_UNIT(unit::newturret_Tank);
   unit.reset();
 }
 }  // namespace battle_game
+
+
+
+
+
+
+
+
+
+
+
+  
+ 
