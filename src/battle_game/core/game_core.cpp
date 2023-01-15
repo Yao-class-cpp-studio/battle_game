@@ -96,6 +96,9 @@ void GameCore::Render() {
   for (auto &units : units_) {
     units.second->RenderLifeBar();
   }
+  for (auto &units : units_) {
+    units.second->EndTick();
+  }
   if (observer) {
     auto observing_unit = GetUnit(observer->GetPrimaryUnitId());
     if (observing_unit) {
@@ -158,21 +161,13 @@ Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
 }
 
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
-  event_queue_.emplace([this, unit_id, new_position]() {
-    auto unit = GetUnit(unit_id);
-    if (unit) {
-      unit->SetPosition(new_position);
-    }
-  });
+  auto unit = GetUnit(unit_id);
+  unit->position_change_ += new_position - unit->GetPosition();
 }
 
 void GameCore::PushEventRotateUnit(uint32_t unit_id, float new_rotation) {
-  event_queue_.emplace([this, unit_id, new_rotation]() {
-    auto unit = GetUnit(unit_id);
-    if (unit) {
-      unit->SetRotation(new_rotation);
-    }
-  });
+  auto unit = GetUnit(unit_id);
+  unit->rotation_change_ += new_rotation - unit->GetRotation();
 }
 
 Unit *GameCore::GetUnit(uint32_t unit_id) const {
@@ -218,15 +213,9 @@ void GameCore::SetCamera(glm::vec2 position, float rotation) {
 void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
                                    uint32_t src_unit_id,
                                    float damage) {
-  event_queue_.emplace([=]() {
-    auto unit = GetUnit(dst_unit_id);
-    if (unit) {
-      unit->SetHealth(unit->GetHealth() - damage / unit->GetMaxHealth());
-      if (unit->GetHealth() <= 0.0f) {
-        PushEventKillUnit(dst_unit_id, src_unit_id);
-      }
-    }
-  });
+  auto unit = GetUnit(dst_unit_id);
+  unit->health_change_-=damage / unit->GetMaxHealth();
+  unit->damage_record_[src_unit_id]+=damage;
 }
 
 void GameCore::PushEventRemoveObstacle(uint32_t obstacle_id) {

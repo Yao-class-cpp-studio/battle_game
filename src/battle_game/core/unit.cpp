@@ -118,6 +118,36 @@ void Unit::RenderLifeBar() {
 void Unit::RenderHelper() {
 }
 
+uint32_t Unit::MaxDamage() {
+  float max_damage = .0f;
+  uint32_t unit_id;
+  for (auto i : damage_record_)
+    if (i.second > max_damage) {
+      unit_id = i.first;
+      max_damage = i.second;
+    }
+  return unit_id;
+}
+
+void Unit::EndTick() {
+  health_ += health_change_;
+  if (health_ < .0f)
+    game_core_->PushEventKillUnit(GetId(), MaxDamage());
+  else if (health_ > 1.0f)
+    health_ = 1.0f;
+
+  if (!game_core_->IsBlockedByObstacles(position_ + position_change_) &&
+      !game_core_->IsOutOfRange(position_ + position_change_))
+    position_ += position_change_;
+
+  rotation_ += rotation_change_;
+
+  health_change_=.0f;
+  position_change_={.0f,.0f};
+  rotation_change_=.0f;
+  damage_record_.clear();
+}
+
 const char *Unit::UnitName() const {
   return "Unknown Unit";
 }
