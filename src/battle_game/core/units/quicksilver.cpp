@@ -10,55 +10,90 @@ QuicksilverTank::QuicksilverTank(GameCore *game_core,
                                  uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill temp;
-  temp.name = "Blessings of the abyssal moon";
-  temp.description = "The crtical chance and critical damage increase";
+  temp.name = "Quicksilver";
+  temp.description = "Sacrificing attacking ability for 5 time speed";
   temp.time_remain = 0;
-  temp.time_total = 600;
+  temp.time_total = 420;
   temp.type = E;
+  temp.function = SKILL_ADD_FUNCTION(QuicksilverTank::Quicksilver);
   skills_.push_back(temp);
 }
 
 void QuicksilverTank::Render() {
-  Tank::Render();
+  if (is_accelerate_ == false)
+    Tank::Render();
+  else {
+    battle_game::SetTransformation(position_, rotation_, glm::vec2{1.0f});
+    battle_game::SetTexture("../../textures/railgun(2).png");
+    battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
+    battle_game::DrawModel(0);
+  }
 }
 
 void QuicksilverTank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  Move(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
-  BlessingsOfTheAbyssalMoon();
+  Quicksilver();
+}
+
+void QuicksilverTank::Move(float move_speed, float rotate_angular_speed) {
+  auto player = game_core_->GetPlayer(player_id_);
+  if (player) {
+    auto &input_data = player->GetInputData();
+    glm::vec2 offset{0.0f};
+    if (input_data.key_down[GLFW_KEY_W]) {
+      offset.y += 1.0f;
+    }
+    if (input_data.key_down[GLFW_KEY_S]) {
+      offset.y -= 1.0f;
+    }
+    float speed = move_speed * GetSpeedScale();
+    if (is_accelerate_ == true) {
+      speed = speed * 5;
+      accelerate_time_ += 1;
+    }
+    offset *= kSecondPerTick * speed;
+    auto new_position =
+        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
+                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
+                              glm::vec4{offset, 0.0f, 0.0f}};
+    if (!game_core_->IsBlockedByObstacles(new_position)) {
+      game_core_->PushEventMoveUnit(id_, new_position);
+    }
+    float rotation_offset = 0.0f;
+    if (input_data.key_down[GLFW_KEY_A]) {
+      rotation_offset += 1.0f;
+    }
+    if (input_data.key_down[GLFW_KEY_D]) {
+      rotation_offset -= 1.0f;
+    }
+    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+    game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
+    if (input_data.key_down[GLFW_KEY_E] && accelerate_count_down_ == 0) {
+      is_accelerate_ = true;
+      accelerate_time_ = 0;
+    }
+    if (accelerate_time_ == 240)
+      is_accelerate_ = false;
+  }
 }
 
 void QuicksilverTank::Fire() {
-  Tank::Fire();
+  if (is_accelerate_ == false)
+    Tank::Fire();
 }
 
-void QuicksilverTank::BlessingsOfTheAbyssalMoon() {
-  skills_[0].time_remain = blessings_count_down_;
-  if (blessings_count_down_) {
-    blessings_count_down_--;
-    if (blessings_duration_) {
-      blessings_duration_--;
-      for (int i = 0; i < 5; i++) {
-        game_core_->PushEventGenerateParticle<particle::Smoke>(
-            position_, rotation_, game_core_->RandomInCircle() * 6.0f, 0.5f,
-            glm::vec4{game_core_->RandomFloat(), game_core_->RandomFloat(),
-                      game_core_->RandomFloat(), game_core_->RandomFloat()},
-            3.0f);
-      }
-    } else {
-      crit_chance_ = 0.3f;
-      crit_damage_ = 0.8f;
-    }
+void QuicksilverTank::Quicksilver() {
+  skills_[0].time_remain = accelerate_count_down_;
+  if (accelerate_count_down_) {
+    accelerate_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_E]) {
-        crit_chance_ = 1.0f;
-        crit_damage_ = 1.5f;
-        blessings_count_down_ = 10 * kTickPerSecond;
-        blessings_duration_ = 3 * kTickPerSecond + 30;
+        accelerate_count_down_ = 420;
       }
     }
   }

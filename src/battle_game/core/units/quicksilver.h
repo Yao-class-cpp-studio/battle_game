@@ -11,14 +11,15 @@ class QuicksilverTank : public Tank {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
+  void Move(float move_speed, float rotate_angular_speed);
   void Fire();
+  void Quicksilver();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
   uint32_t fire_count_down_{0};
-  uint32_t blessings_count_down_{0};
-  uint32_t blessings_duration_{0};
-  float crit_chance_{0.3f};
-  float crit_damage_{0.8f};
+  bool is_accelerate_{false};
+  int accelerate_time_{0};
+  int accelerate_count_down_{0};
 };
 }  // namespace battle_game::unit
