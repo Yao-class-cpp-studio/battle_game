@@ -32,11 +32,11 @@ const char *BulletStorageTank::Author() const {
 }
 
 void BulletStorageTank::BulletStorage() {
-  if (bullet_storage <= 5 * kTickPerSecond)
-    bullet_storage++;
+  if (bullet_storage_ <= 5 * kTickPerSecond)
+    bullet_storage_++;
   if (fire_count_down_ != 0 && fire_count_down_ != 1 && fire_count_down_ != 12)
     fire_count_down_--;
-  else if (bullet_storage >= kTickPerSecond) {
+  else if (bullet_storage_ >= kTickPerSecond) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
@@ -46,8 +46,8 @@ void BulletStorageTank::BulletStorage() {
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = 11;
-        bullet_storage -= kTickPerSecond;
-        if(bullet_storage < kTickPerSecond)
+        bullet_storage_ -= kTickPerSecond;
+        if(bullet_storage_ < kTickPerSecond)
           fire_count_down_ = kTickPerSecond;
       }
     }
