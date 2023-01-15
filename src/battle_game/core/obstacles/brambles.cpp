@@ -2,7 +2,7 @@
 #include "battle_game/core/game_core.h"
 namespace battle_game::obstacle {
 
-Brambles::Brambles(GameCore *game_core, uint32_t id,glm::vec2 position,float rotation,glm::vec2 scale): Obstacle(game_core, id, position, rotation) {
+Brambles::Brambles(GameCore *game_core, uint32_t id, glm::vec2 position, float rotation, glm::vec2 scale): Obstacle(game_core, id, position, rotation) {
 }
 
 bool Brambles::IsBlocked(glm::vec2 p) const {
