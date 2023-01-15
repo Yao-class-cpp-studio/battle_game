@@ -7,7 +7,6 @@ class BoobooTank : public Tank {
  public:
   BoobooTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
-  void Update() override;
 
  protected:
   void Fire();
