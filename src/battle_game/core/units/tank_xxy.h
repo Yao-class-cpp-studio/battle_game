@@ -9,5 +9,6 @@ class TankXxy : public Tank {
  protected:
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
+  int i = 0;
 };
 }  // namespace battle_game::unit
