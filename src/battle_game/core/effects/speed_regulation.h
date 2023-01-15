@@ -7,6 +7,7 @@ class SpeedRegulation : public Effect {
  private:
   bool finity_;
   uint32_t tick_remain_;
+
  public:
   std::string Name() const {
     return "速度调节";
