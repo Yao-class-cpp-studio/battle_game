@@ -13,59 +13,59 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 
 OrdinaryTank::OrdinaryTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
-    if (!~tank_body_model_index) {
-        auto mgr = AssetsManager::GetInstance();
-        {
-        /* Tank Body */
-        tank_body_model_index = mgr->RegisterModel(
-            {
-                //{{0.8f, 0.2f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-                {{0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-                //{{-0.8f, 0.2f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-                {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-                {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-            },
-            {0, 1, 2});
-        }
+  if (!~tank_body_model_index) {
+    auto mgr = AssetsManager::GetInstance();
+    {
+      /* Tank Body */
+      tank_body_model_index = mgr->RegisterModel(
+          {
+              //{{0.8f, 0.2f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.0f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              //{{-0.8f, 0.2f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          },
+          {0, 1, 2});
+    }
 
-        {
-        /* Tank Turret */
-        std::vector<ObjectVertex> turret_vertices;
-        std::vector<uint32_t> turret_indices;
-        const int precision = 60;
-        const float inv_precision = 1.0f / float(precision);
-        for (int i = 0; i < precision; i++) {
-            auto theta = (float(i) + 0.5f) * inv_precision;
-            theta *= glm::pi<float>() * 2.0f;
-            auto sin_theta = std::sin(theta);
-            auto cos_theta = std::cos(theta);
-            turret_vertices.push_back({{sin_theta * 0.5f, cos_theta * 0.5f},
+    {
+      /* Tank Turret */
+      std::vector<ObjectVertex> turret_vertices;
+      std::vector<uint32_t> turret_indices;
+      const int precision = 60;
+      const float inv_precision = 1.0f / float(precision);
+      for (int i = 0; i < precision; i++) {
+        auto theta = (float(i) + 0.5f) * inv_precision;
+        theta *= glm::pi<float>() * 2.0f;
+        auto sin_theta = std::sin(theta);
+        auto cos_theta = std::cos(theta);
+        turret_vertices.push_back({{sin_theta * 0.5f, cos_theta * 0.5f},
                                    {0.0f, 0.0f},
                                    {0.7f, 0.7f, 0.7f, 1.0f}});
-            turret_indices.push_back(i);
-            turret_indices.push_back((i + 1) % precision);
-            turret_indices.push_back(precision);
-        }
-        turret_vertices.push_back(
-            {{0.0f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
-        turret_vertices.push_back(
-            {{-0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
-        turret_vertices.push_back(
-            {{0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
-        turret_vertices.push_back(
-            {{-0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
-        turret_vertices.push_back(
-            {{0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
-        turret_indices.push_back(precision + 1 + 0);
-        turret_indices.push_back(precision + 1 + 1);
-        turret_indices.push_back(precision + 1 + 2);
-        turret_indices.push_back(precision + 1 + 1);
-        turret_indices.push_back(precision + 1 + 2);
-        turret_indices.push_back(precision + 1 + 3);
-        tank_turret_model_index =
-            mgr->RegisterModel(turret_vertices, turret_indices);
-        }
+        turret_indices.push_back(i);
+        turret_indices.push_back((i + 1) % precision);
+        turret_indices.push_back(precision);
+      }
+      turret_vertices.push_back(
+          {{0.0f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+      turret_vertices.push_back(
+          {{-0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+      turret_vertices.push_back(
+          {{0.1f, 0.0f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+      turret_vertices.push_back(
+          {{-0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+      turret_vertices.push_back(
+          {{0.1f, 1.2f}, {0.0f, 0.0f}, {0.7f, 0.7f, 0.7f, 1.0f}});
+      turret_indices.push_back(precision + 1 + 0);
+      turret_indices.push_back(precision + 1 + 1);
+      turret_indices.push_back(precision + 1 + 2);
+      turret_indices.push_back(precision + 1 + 1);
+      turret_indices.push_back(precision + 1 + 2);
+      turret_indices.push_back(precision + 1 + 3);
+      tank_turret_model_index =
+          mgr->RegisterModel(turret_vertices, turret_indices);
     }
+  }
 }
 
 void OrdinaryTank::Render() {
@@ -84,8 +84,9 @@ void OrdinaryTank::Update() {
 }
 
 void OrdinaryTank::Fire() {
-//  Tank::Fire();
-// Fire every tick.
+  //  Tank::Fire();
+  // Fire every tick.
+  // 1.
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
