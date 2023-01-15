@@ -17,7 +17,7 @@ void phantom_of_cosin::Render() {
 }
 
 void phantom_of_cosin::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  TankMove(6.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
@@ -27,11 +27,7 @@ void phantom_of_cosin::Fire() {
 }
 
 bool phantom_of_cosin::IsHit(glm::vec2 position) const {
-  if (isbeenhit == 2) {
-    return Tank::IsHit(position);
-  }
-  isbeenhit = 2;
-    return false;
+  return Tank::IsHit;
 }
 
 const char *phantom_of_cosin::UnitName() const {
