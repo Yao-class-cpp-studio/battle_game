@@ -258,7 +258,7 @@ bool Lightening::IsHit(glm::vec2 position) const {
 }
 
 const char *Lightening::UnitName() const {
-  return "Lightening";
+  return "Lightening~";
 }
 
 const char *Lightening::Author() const {
