@@ -51,9 +51,9 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::CritTank);
   ADD_SELECTABLE_UNIT(unit::Railgun);
   ADD_SELECTABLE_UNIT(unit::Udongein);
+
   ADD_SELECTABLE_UNIT(unit::RYQ_Tank);
   ADD_SELECTABLE_UNIT(unit::RYQ_Tank2);
-
   unit.reset();
 }
 }  // namespace battle_game
