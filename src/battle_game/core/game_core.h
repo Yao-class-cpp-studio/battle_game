@@ -226,5 +226,4 @@ void Unit::GenerateBullet(glm::vec2 position,
   game_core_->PushEventGenerateBullet<BulletType>(
       id_, player_id_, position, rotation, damage_scale, args...);
 }
-
 }  // namespace battle_game
