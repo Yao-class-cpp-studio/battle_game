@@ -29,10 +29,7 @@ void GameCore::GeneratePrimaryUnitList() {
   /*
    * TODO: Add Your Unit Here!
    * */
-<<<<<<< HEAD
   ADD_SELECTABLE_UNIT(unit::InfernoTank);
-=======
->>>>>>> zzk/main
   ADD_SELECTABLE_UNIT(unit::Tank);
   ADD_SELECTABLE_UNIT(unit::RoundUFO);
   ADD_SELECTABLE_UNIT(unit::DoubleScatterTank);
@@ -42,11 +39,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::TripleShotTank);
   ADD_SELECTABLE_UNIT(unit::TankXxy);
   ADD_SELECTABLE_UNIT(unit::WhaoooooTank);
-<<<<<<< HEAD
   ADD_SELECTABLE_UNIT(unit::RoundUFO);
-=======
-  ADD_SELECTABLE_UNIT(unit::Pentagon);
->>>>>>> zzk/main
   ADD_SELECTABLE_UNIT(unit::DarkFury);
   ADD_SELECTABLE_UNIT(unit::MineSampleTank);
   ADD_SELECTABLE_UNIT(unit::SquareTank);
@@ -59,6 +52,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::CritTank);
   ADD_SELECTABLE_UNIT(unit::Railgun);
   ADD_SELECTABLE_UNIT(unit::Udongein);
+  ADD_SELECTABLE_UNIT(unit::Slime);
 
   unit.reset();
 }

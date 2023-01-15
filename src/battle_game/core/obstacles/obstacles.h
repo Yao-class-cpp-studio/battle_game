@@ -2,6 +2,7 @@
 
 #include "battle_game/core/obstacles/block.h"
 #include "battle_game/core/obstacles/destructible_block.h"
+#include "battle_game/core/obstacles/fragile_block.h"
 #include "battle_game/core/obstacles/movable_block.h"
 #include "battle_game/core/obstacles/rebounding_block.h"
 #include "battle_game/core/obstacles/river.h"

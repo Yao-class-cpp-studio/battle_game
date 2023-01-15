@@ -10,6 +10,7 @@
 #include "battle_game/core/bullets/repelling_ball.h"
 #include "battle_game/core/bullets/rocket.h"
 #include "battle_game/core/bullets/smoke_bomb.h"
+#include "battle_game/core/bullets/splitter.h"
 #include "battle_game/core/bullets/sweaty_soybean.h"
 #include "battle_game/core/bullets/udongein_directional_bullet.h"
 #include "battle_game/core/bullets/warning_line.h"
