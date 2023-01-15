@@ -90,6 +90,10 @@ void Rocket::Update() {
   rotation_ = angle;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
+    uint32_t obstacle_id = game_core_->GetBlockedObstacleId(position_);
+    if (obstacle_id)
+      game_core_->PushEventDealDamageObstacle(obstacle_id, id_,
+                                              damage_scale_ * 5.0f);
     should_die = true;
   }
 
