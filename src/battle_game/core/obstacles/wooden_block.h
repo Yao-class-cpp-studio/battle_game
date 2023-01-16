@@ -5,10 +5,10 @@ namespace battle_game::obstacle {
 class WoodenBlock : public Obstacle {
  public:
   WoodenBlock(GameCore *game_core,
-        uint32_t id,
-        glm::vec2 position,
-        float rotation = 0.0f,
-        glm::vec2 scale = glm::vec2{1.0f, 1.0f});
+              uint32_t id,
+              glm::vec2 position,
+              float rotation = 0.0f,
+              glm::vec2 scale = glm::vec2{1.0f, 1.0f});
   const bool iswooden() const override;
 
  private:
