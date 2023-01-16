@@ -8,7 +8,6 @@ class Snowball_Sample_Sledge : public Tank {
   Snowball_Sample_Sledge(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-   
  protected:
   void Fire();
   void AntigravityClick();
