@@ -18,7 +18,7 @@ class RandomBall : public Bullet {
 
  private:
   glm::vec2 velocity_{};
-  float crit_rate_{0.5f};
+  float crit_rate_{0.2f};
   float crit_radius_{3.0f};
   int crit_number_{10};
 };
