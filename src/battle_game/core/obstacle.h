@@ -12,10 +12,6 @@ class Obstacle : public Object {
   [[nodiscard]] virtual bool IsBlocked(glm::vec2 p) const = 0;
   void Update() override;
   void Render() override;
-  virtual std::pair<glm::vec2, glm::vec2> GetSurfaceNormal(glm::vec2 origin,
-                                                           glm::vec2 terminus) {
-    return std::make_pair(glm::vec2(0, 0), glm::vec2(0, 0));
-  }
 
  protected:
 };

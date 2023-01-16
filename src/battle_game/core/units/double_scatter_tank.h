@@ -8,6 +8,7 @@ class DoubleScatterTank : public Tank {
   DoubleScatterTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
+  [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
   void Fire();
@@ -19,6 +20,6 @@ class DoubleScatterTank : public Tank {
   uint32_t fire_count_down_{0};
   uint32_t second_scatter_count_down_{0};
   bool is_second_scatter_{false};
-  bool is_stuck_by_swamp_{false};
+  bool is_stuck_by_swamp{false};
 };
 }  // namespace battle_game::unit

@@ -23,7 +23,7 @@ ColorfulBall::ColorfulBall(GameCore *core,
   velocity_.y = total_velocity * std::sin(velocity_rotation);
 }
 
-void ColorfulBall::UpdateColor(float &a) {
+void ColorfulBall::update_color(float &a) {
   a += 0.3 * (game_core_->RandomFloat() - 0.5);
   a = a > 0 ? a : 0;
   a = a < 1 ? a : 1;
@@ -31,9 +31,9 @@ void ColorfulBall::UpdateColor(float &a) {
 
 void ColorfulBall::Render() {
   SetTransformation(position_, rotation_, glm::vec2{0.1f});
-  UpdateColor(color_.r);
-  UpdateColor(color_.g);
-  UpdateColor(color_.b);
+  update_color(color_.r);
+  update_color(color_.g);
+  update_color(color_.b);
   SetColor(color_);
   SetTexture("../../textures/particle3.png");
   DrawModel(0);

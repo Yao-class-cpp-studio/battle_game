@@ -20,6 +20,6 @@ class ColorfulBall : public Bullet {
   glm::vec2 velocity_{};
   uint32_t count_down_;
   glm::vec4 color_{};
-  void UpdateColor(float &a);
+  void update_color(float &a);
 };
 }  // namespace battle_game::bullet

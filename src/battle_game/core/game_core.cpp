@@ -49,7 +49,7 @@ void GameCore::Update() {
 
 /*
  * Render the objects
- * Order: obstacles, bullets, units, particles, life bars, helper
+ * Order: obstacles, bullets, units, particles
  * */
 void GameCore::Render() {
   auto observer = GetPlayer(render_perspective_);
@@ -92,15 +92,6 @@ void GameCore::Render() {
   }
   for (auto &particle : particles_) {
     particle.second->Render();
-  }
-  for (auto &units : units_) {
-    units.second->RenderLifeBar();
-  }
-  if (observer) {
-    auto observing_unit = GetUnit(observer->GetPrimaryUnitId());
-    if (observing_unit) {
-      observing_unit->RenderHelper();
-    }
   }
 }
 
@@ -147,14 +138,15 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
-Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
-  if (!IsOutOfRange(p)) {
-    for (auto &obstacle : obstacles_)
-      if (obstacle.second->IsBlocked(p)) {
-        return obstacle.second.get();
-      }
+bool GameCore::IsStuckBySwamp(glm::vec2 p) const {
+  glm::vec2 swamp_test_ = {114514, 0};
+  for (auto &obstacle : obstacles_) {
+    if (!obstacle.second->IsBlocked(swamp_test_))
+      continue;
+    if (obstacle.second->IsBlocked(p))
+      return true;
   }
-  return nullptr;
+  return false;
 }
 
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
@@ -276,20 +268,11 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 
 void GameCore::SetScene() {
   AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
-  AddObstacle<obstacle::River>(glm::vec2{3.0f, 0.0f});
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, 10.0f},
-                                         0.78539816339744830961566084581988f);
-  AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, 10.0f},
-                                         0.78539816339744830961566084581988f);
+  AddObstacle<obstacle::Swamp>(glm::vec2{3.0f, -4.0f});
   respawn_points_.emplace_back(glm::vec2{0.0f}, 0.0f);
   respawn_points_.emplace_back(glm::vec2{3.0f, 4.0f}, glm::radians(90.0f));
   boundary_low_ = {-10.0f, -10.0f};
   boundary_high_ = {10.0f, 10.0f};
-  AddObstacle<obstacle::Swamp>(glm::vec2{3.0f, -4.0f});
 }
 
 uint32_t GameCore::AllocatePrimaryUnit(uint32_t player_id) {
@@ -330,17 +313,4 @@ std::vector<const char *> GameCore::GetSelectableUnitList() const {
   }
   return result;
 }
-
-
-bool GameCore::IsStuckBySwamp(glm::vec2 p) const {
-  glm::vec2 swamp_test_ = {114514, 0};
-  for (auto &obstacle : obstacles_) {
-    if (!obstacle.second->IsBlocked(swamp_test_))
-      continue;
-    if (obstacle.second->IsBlocked(p))
-      return true;
-  }
-  return false;
-}
-
 }  // namespace battle_game

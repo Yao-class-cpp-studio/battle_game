@@ -18,16 +18,11 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     {
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
-          {
-              {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              // distinguish front and back
-              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-              {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-          },
-          {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
+          {{{-0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+           {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+           {{0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+           {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
+          {0, 1, 2, 1, 2, 3});
     }
 
     {
@@ -80,7 +75,11 @@ void Tank::Render() {
 }
 
 void Tank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  if (!is_stuck_by_swamp) {
+    TankMove(3.0f, glm::radians(180.0f));
+  } else {
+    TankMove(1.5f, glm::radians(180.0f));
+  }
   TurretRotate();
   Fire();
 }
@@ -102,8 +101,12 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
                                           glm::vec3{0.0f, 0.0f, 1.0f}) *
                               glm::vec4{offset, 0.0f, 0.0f}};
-    if (!game_core_->IsBlockedByObstacles(new_position)) {
+    if (game_core_->IsStuckBySwamp(new_position) ||
+        !game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
+    }
+    if (is_stuck_by_swamp = game_core_->IsStuckBySwamp(new_position)) {
+      game_core_->PushEventDealDamage(id_, id_, 0.02f);
     }
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
@@ -124,14 +127,15 @@ void Tank::TurretRotate() {
     auto diff = input_data.mouse_cursor_position - position_;
     if (glm::length(diff) < 1e-4) {
       turret_rotation_ = rotation_;
-    } else {
-      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
     }
+    turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
   }
 }
 
 void Tank::Fire() {
-  if (fire_count_down_ == 0) {
+  if (fire_count_down_) {
+    fire_count_down_--;
+  } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
@@ -144,16 +148,12 @@ void Tank::Fire() {
       }
     }
   }
-  if (fire_count_down_) {
-    fire_count_down_--;
-  }
 }
 
 bool Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
+         position.y < 1.0f;
 }
 
 const char *Tank::UnitName() const {
