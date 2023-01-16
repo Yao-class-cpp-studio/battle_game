@@ -11,7 +11,7 @@ class SlowTank : public Tank {
 
  protected:
   void Fire();
-  void TurrentRotate();
+  void TurretRotate();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
