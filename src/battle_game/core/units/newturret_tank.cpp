@@ -11,7 +11,7 @@ uint32_t newturret_tank_body_model_index = 0xffffffffu;
 uint32_t newturret_tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-newturret_Tank::newturret_Tank(GameCore *game_core,
+NewturretTank::NewturretTank(GameCore *game_core,
                                uint32_t id,
                                uint32_t player_id)
     : Unit(game_core, id, player_id) {
@@ -75,7 +75,7 @@ newturret_Tank::newturret_Tank(GameCore *game_core,
   }
 }
 
-void newturret_Tank::Render() {
+void NewturretTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -84,13 +84,13 @@ void newturret_Tank::Render() {
   battle_game::DrawModel(newturret_tank_turret_model_index);
 }
 
-void newturret_Tank::Update() {
+void NewturretTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 // use left,right,up,down to make tank move
-void newturret_Tank::TankMove(float move_speed, float rotate_angular_speed) {
+void NewturretTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -122,7 +122,7 @@ void newturret_Tank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void newturret_Tank::TurretRotate() {
+void NewturretTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -144,7 +144,7 @@ void newturret_Tank::TurretRotate() {
   }
 }
 
-void newturret_Tank::Fire() {
+void NewturretTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -162,18 +162,18 @@ void newturret_Tank::Fire() {
   }
 }
 
-bool newturret_Tank::IsHit(glm::vec2 position) const {
+bool NewturretTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f && position.x + position.y < 1.6f &&
          position.y - position.x < 1.6f;
 }
 
-const char *newturret_Tank::UnitName() const {
+const char *NewturretTank::UnitName() const {
   return "newturret_tank";
 }
 
-const char *newturret_Tank::Author() const {
+const char *NewturretTank::Author() const {
   return "Xiaoyu1125";
 }
 }  // namespace battle_game::unit

@@ -2,15 +2,15 @@
 #include "battle_game/core/unit.h"
 
 namespace battle_game::unit {
-class soilder : public Tank {
+class Soilder : public Tank {
  public:
-  soilder(GameCore *game_core, uint32_t id, uint32_t player_id);
+  Soilder(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  void soilderMove(float move_speed, float rotate_angular_speed);
+  void SoilderMove(float move_speed, float rotate_angular_speed);
   void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;

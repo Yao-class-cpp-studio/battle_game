@@ -11,7 +11,7 @@ uint32_t RLUD_tank_body_model_index = 0xffffffffu;
 uint32_t RLUD_tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-RLUD_Tank::RLUD_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
+RludTank::RludTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~RLUD_tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -73,7 +73,7 @@ RLUD_Tank::RLUD_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void RLUD_Tank::Render() {
+void RludTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -82,13 +82,13 @@ void RLUD_Tank::Render() {
   battle_game::DrawModel(RLUD_tank_turret_model_index);
 }
 
-void RLUD_Tank::Update() {
+void RludTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 // use left,right,up,down to make tank move
-void RLUD_Tank::TankMove(float move_speed, float rotate_angular_speed) {
+void RludTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -120,7 +120,7 @@ void RLUD_Tank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void RLUD_Tank::TurretRotate() {
+void RludTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -133,7 +133,7 @@ void RLUD_Tank::TurretRotate() {
   }
 }
 
-void RLUD_Tank::Fire() {
+void RludTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -151,18 +151,18 @@ void RLUD_Tank::Fire() {
   }
 }
 
-bool RLUD_Tank::IsHit(glm::vec2 position) const {
+bool RludTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f && position.x + position.y < 1.6f &&
          position.y - position.x < 1.6f;
 }
 
-const char *RLUD_Tank::UnitName() const {
+const char *RludTank::UnitName() const {
   return "RLUD_tank";
 }
 
-const char *RLUD_Tank::Author() const {
+const char *RludTank::Author() const {
   return "Xiaoyu1125";
 }
 }  // namespace battle_game::unit

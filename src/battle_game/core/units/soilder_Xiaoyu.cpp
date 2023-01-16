@@ -5,21 +5,21 @@
 
 namespace battle_game::unit {
 
-soilder::soilder(GameCore *game_core, uint32_t id, uint32_t player_id)
+Soilder::Soilder(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
-void soilder::Render() {
+void Soilder::Render() {
   Tank::Render();
 }
 
-void soilder::Update() {
+void Soilder::Update() {
   soilderMove(6.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 
-void soilder::soilderMove(float move_speed, float rotate_angular_speed) {
+void Soilder::SoilderMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -51,19 +51,19 @@ void soilder::soilderMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void soilder::Fire() {
+void Soilder::Fire() {
   Tank::Fire();
 }
 
-bool soilder::IsHit(glm::vec2 position) const {
+bool Soilder::IsHit(glm::vec2 position) const {
   return Tank::IsHit(position);
 }
 
-const char *soilder::UnitName() const {
+const char *Soilder::UnitName() const {
   return "Handsome Soilder";
 }
 
-const char *soilder::Author() const {
+const char *Soilder::Author() const {
   return "Xiaoyu";
 }
 }  // namespace battle_game::unit
