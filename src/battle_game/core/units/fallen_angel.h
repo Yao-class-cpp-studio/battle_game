@@ -25,7 +25,7 @@ class FallenAngel : public Tank {
   uint32_t fire_count_down_{0};
   uint32_t ThePowerFromAbyss_count_down_{300};
   uint32_t TheSalvationFromStars_count_down_{900};
-  uint32_t isBurning{0};
-  bool isBlessed{false};
+  uint32_t is_burning_{0};
+  bool is_blessed_{false};
 };
 }  // namespace battle_game::unit

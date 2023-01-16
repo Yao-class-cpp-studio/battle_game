@@ -49,7 +49,7 @@ void FallenAngel::Update() {
 }
 
 void FallenAngel::ThePowerFromAbyssClick() {
-  isBurning = 4 * kTickPerSecond;
+  is_burning_ = 4 * kTickPerSecond;
   ThePowerFromAbyss_count_down_ = 6 * kTickPerSecond;
   if (health_ > 0.4) {
     health_ -= 0.2;
@@ -66,9 +66,9 @@ void FallenAngel::TheSalvationFromStarsClick() {
 
 void FallenAngel::TheBlessOfGod() {
   if (health_ < 0.5) {
-    isBlessed = true;
+    is_blessed_ = true;
   } else {
-    isBlessed = false;
+    is_blessed_ = false;
   }
 }
 
@@ -85,11 +85,11 @@ void FallenAngel::ThePowerFromAbyss() {
       }
     }
   }
-  if (isBurning) {
+  if (is_burning_) {
     if (health_ > 0.2) {
       health_ -= 0.025 / 60;
     }
-    isBurning--;
+    is_burning_--;
   }
 }
 
@@ -110,10 +110,10 @@ void FallenAngel::TheSalvationFromStars() {
 
 float FallenAngel::GetDamageScale() const {
   float damage_scale = 1;
-  if (isBurning) {
+  if (is_burning_) {
     damage_scale = 1 + 2 * (0.80 - health_);
   }
-  if (isBlessed) {
+  if (is_blessed_) {
     damage_scale = damage_scale * 1.5;
   }
   return damage_scale;
@@ -128,7 +128,7 @@ void FallenAngel::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        if (isBurning) {
+        if (is_burning_) {
           GenerateBullet<bullet::FireBall>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);

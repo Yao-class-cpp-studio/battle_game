@@ -23,7 +23,7 @@ class AssassinSyl : public Tank {
   uint32_t fire_count_down_{0};
   uint32_t Invincible_count_down_{100};
   uint32_t ChibakuTensei_count_down_{1000};
-  uint32_t isInvincible{0};
-  bool isChibakuTensei{false};
+  uint32_t is_invincible_{0};
+  bool is_chibaku_tensei_{false};
 };
 }  // namespace battle_game::unit

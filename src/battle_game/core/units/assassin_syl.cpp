@@ -96,7 +96,7 @@ AssassinSyl::AssassinSyl(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void AssassinSyl::Render() {
-  if (isInvincible) {
+  if (is_invincible_) {
     battle_game::SetTransformation(position_, rotation_);
     battle_game::SetTexture(0);
     battle_game::SetColor(glm::vec4{1.0f} -
@@ -111,7 +111,7 @@ void AssassinSyl::Render() {
 
 void AssassinSyl::Update() {
   float move_speed = 6.0f;
-  if (isInvincible) {
+  if (is_invincible_) {
     move_speed *= (1.0f + (1.0f - health_) * 2.0f);
   }
   TankMove(move_speed, glm::radians(270.0f));
@@ -122,13 +122,13 @@ void AssassinSyl::Update() {
 }
 
 void AssassinSyl::InvincibleClick() {
-  isInvincible = 5 * kTickPerSecond;
+  is_invincible_ = 5 * kTickPerSecond;
   Invincible_count_down_ = 8 * kTickPerSecond;
 }
 
 void AssassinSyl::ChibakuTenseiClick() {
   ChibakuTensei_count_down_ = 20 * kTickPerSecond;
-  isChibakuTensei = true;
+  is_chibaku_tensei_ = true;
 }
 
 void AssassinSyl::Invincible() {
@@ -144,8 +144,8 @@ void AssassinSyl::Invincible() {
       }
     }
   }
-  if (isInvincible) {
-    isInvincible--;
+  if (is_invincible_) {
+    is_invincible_--;
   }
 }
 
@@ -166,9 +166,9 @@ void AssassinSyl::ChibakuTensei() {
 
 float AssassinSyl::GetDamageScale() {
   float damage_scale = 1;
-  if (isChibakuTensei && isInvincible) {
+  if (is_chibaku_tensei_ && is_invincible_) {
     damage_scale = 20;
-    isChibakuTensei = false;
+    is_chibaku_tensei_ = false;
   }
   return damage_scale;
 }
@@ -182,7 +182,7 @@ void AssassinSyl::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        if (isInvincible && isChibakuTensei) {
+        if (is_invincible_ && is_chibaku_tensei_) {
           GenerateBullet<bullet::HandSword>(
               position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
               turret_rotation_, GetDamageScale(), velocity);
@@ -199,7 +199,7 @@ void AssassinSyl::Fire() {
 
 bool AssassinSyl::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
-  if (isInvincible) {
+  if (is_invincible_) {
     return false;
   }
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
