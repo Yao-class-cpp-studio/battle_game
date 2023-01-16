@@ -156,4 +156,3 @@ const char *Tank::Author() const {
   return "LazyJazz";
 }
 }  // namespace battle_game::unit
-
