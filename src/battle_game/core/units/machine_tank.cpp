@@ -116,7 +116,7 @@ void Machine_Tank::Fire() {
         GenerateBullet<bullet::ColorfulBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond / 12;  // Fire interval 1/12 second.
+        fire_count_down_ = kTickPerSecond / 10;  // Fire interval 1/12 second.
       }
     }
   }
