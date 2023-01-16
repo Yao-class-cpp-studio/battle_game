@@ -23,7 +23,7 @@ class Syl_tank : public Tank {
 
   // float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  uint32_t ThePowerFromAbyss_count_down_{600};
+  uint32_t ThePowerFromAbyss_count_down_{300};
   uint32_t TheSalvationFromStars_count_down_{900};
   uint32_t isBurning{0};
   bool isBlessed{false};

@@ -128,6 +128,11 @@ void Syl_tank::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
+        if (isBurning) {
+          GenerateBullet<bullet::Fireball>(
+              position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
+              turret_rotation_, GetDamageScale(), velocity);
+        }
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
