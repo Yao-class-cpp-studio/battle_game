@@ -14,7 +14,7 @@ SpeedBullets::SpeedBullets(GameCore *core,
                            glm::vec2 velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity),
-      count(0) {
+      count_(0) {
 }
 
 void SpeedBullets::Render() {
@@ -25,9 +25,9 @@ void SpeedBullets::Render() {
 }
 
 void SpeedBullets::Update() {
-  this->count++;
+  this->count_++;
   position_ +=
-      velocity_ * (kSecondPerTick * float(1 + 0.1 * floor(this->count / 10)));
+      velocity_ * (kSecondPerTick * float(1 + 0.1 * floor(this->count_ / 10)));
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     should_die = true;

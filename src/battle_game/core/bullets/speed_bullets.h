@@ -18,6 +18,6 @@ class SpeedBullets : public Bullet {
 
  private:
   glm::vec2 velocity_{};
-  float count;
+  float count_;
 };
 }  // namespace battle_game::bullet
