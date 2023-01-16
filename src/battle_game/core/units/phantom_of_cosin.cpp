@@ -25,7 +25,7 @@ void phantom_of_cosin::Update() {
   
 }
 
- void phantom_of_cosin::Fire() {
+void phantom_of_cosin::Fire() {
   Tank::Fire();
 }
 
