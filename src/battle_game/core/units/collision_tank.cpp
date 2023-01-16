@@ -91,4 +91,4 @@ const char *CollisionTank::UnitName() const {
 const char *CollisionTank::Author() const {
   return "Ljy and Zkx";
 }
-}  // namespace battle_game::unit 
+}  // namespace battle_game::unit
