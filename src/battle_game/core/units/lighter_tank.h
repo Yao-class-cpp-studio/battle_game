@@ -12,8 +12,8 @@ class LighterTank : public Tank {
 
  protected:
   void Fire();
-  void Block();//learnt from inferno_tank
-  void BlockClick();//learnt from inferno_tank
+  void Block();       // learnt from inferno_tank
+  void BlockClick();  // learnt from inferno_tank
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
