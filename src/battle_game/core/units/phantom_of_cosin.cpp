@@ -22,7 +22,7 @@ void phantom_of_cosin::Update() {
     TurretRotate();
     Fire();
  
-  }
+  
 }
 
 void phantom_of_cosin::Fire() {
