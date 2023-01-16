@@ -9,11 +9,6 @@
 
 namespace battle_game::unit {
 
-namespace {
-uint32_t tank_body_model_index = 0xffffffffu;
-uint32_t tank_turret_model_index = 0xfffffffu;
-}  // namespace
-
 void Laser_Tank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
@@ -85,12 +80,7 @@ Laser_Tank::Laser_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void Laser_Tank::Render() {
-  battle_game::SetTransformation(position_, rotation_);
-  battle_game::SetTexture(0);
-  battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(tank_body_model_index);
-  battle_game::SetRotation(turret_rotation_);
-  battle_game::DrawModel(tank_turret_model_index);
+  Tank::Render();
 }
 
 void Laser_Tank::Update() {
