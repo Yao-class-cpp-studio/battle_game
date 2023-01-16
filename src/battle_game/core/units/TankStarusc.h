@@ -16,8 +16,8 @@ class TankStarusc : public Tank {
   // void TankMove(float move_speed, float rotate_angular_speed);
   // void TurretRotate();
   void Fire();
-  void Sheild();
-  void SheildClick();
+  void Shield();
+  void ShieldClick();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
@@ -26,7 +26,7 @@ class TankStarusc : public Tank {
   uint32_t mine_count_{0};
   uint32_t fire_count_{0};
   float fire_theta_{0};
-  uint32_t sheild_count_down_{0}, have_sheild_{0};
+  uint32_t shield_count_down_{0}, have_shield_{0};
   // uint32_t mine_count_down_{0};
 
  private:

@@ -13,12 +13,12 @@ const float pi = acos(-1.0);
 TankStarusc::TankStarusc(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill qwq;
-  qwq.name = "Sheild";
+  qwq.name = "Shield";
   qwq.description = "Can only attack from the front.";
   qwq.time_remain = 0;
   qwq.time_total = 12 * kTickPerSecond;
   qwq.type = E;
-  qwq.function = SKILL_ADD_FUNCTION(TankStarusc::SheildClick);
+  qwq.function = SKILL_ADD_FUNCTION(TankStarusc::ShieldClick);
   skills_.push_back(qwq);
 }
 
@@ -29,29 +29,29 @@ void TankStarusc::Render() {
 void TankStarusc::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
-  Sheild();
+  Shield();
   Fire();
 }
 
 // next step : 上下左右移动 WSAD
 
-void TankStarusc::SheildClick() {
-  have_sheild_ = 10 * kTickPerSecond;
-  sheild_count_down_ = 12 * kTickPerSecond;
+void TankStarusc::ShieldClick() {
+  have_shield_ = 10 * kTickPerSecond;
+  shield_count_down_ = 12 * kTickPerSecond;
 }
 
-void TankStarusc::Sheild() {
-  skills_[0].time_remain = sheild_count_down_;
-  if (have_sheild_)
-    --have_sheild_;
-  if (sheild_count_down_)
-    --sheild_count_down_;
+void TankStarusc::Shield() {
+  skills_[0].time_remain = shield_count_down_;
+  if (have_shield_)
+    --have_shield_;
+  if (shield_count_down_)
+    --shield_count_down_;
   else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.key_down[GLFW_KEY_E])
-        SheildClick();
+        ShieldClick();
     }
   }
 }
@@ -96,7 +96,7 @@ float TankStarusc::Vec2Cross(glm::vec2 x, glm::vec2 y) const {
 
 bool TankStarusc::CheckDamage(glm::vec2 position, glm::vec2 velocity) const {
   // 0 -> damage
-  if (!have_sheild_)
+  if (!have_shield_)
     return 0;
   /*
   tank_body_model_index 坦克底座大小
