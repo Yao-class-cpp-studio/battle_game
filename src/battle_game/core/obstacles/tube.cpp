@@ -1,6 +1,5 @@
 #include "battle_game/core/obstacles/tube.h"
-
-#include <cstdlib>
+#include "battle_game/core/game_core.h"
 
 namespace battle_game::obstacle {
 
@@ -10,7 +9,7 @@ Tube::Tube(GameCore *game_core,
            float rotation,
            glm::vec2 scale)
     : Obstacle(game_core, id, position, rotation) {
-  ver_ = RandomInt(0, 1);
+  ver_ = game_core_->GameCore::RandomInt(0, 1);
 }
 
 bool Tube::IsBlocked(glm::vec2 p) const {
