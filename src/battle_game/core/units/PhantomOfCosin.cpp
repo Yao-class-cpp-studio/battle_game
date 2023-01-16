@@ -15,14 +15,24 @@ PhantomOfCosin::PhantomOfCosin (GameCore *game_core,
 
  void PhantomOfCosin::Update() {
  
-    TankMove(6.17f, glm::radians(180.0f));
+  if (speedmode==1) {
+     TankMove(6.17f, glm::radians(180.0f));
+     TurretRotate();
+     Fire();
+  } else if (speedmode==2) {
+    TankMove(0.1f, glm::radians(180.0f));
     TurretRotate();
     Fire();
+  }
  
   
 }
 
-
+ void PhantomOfCosin::SetSpeed(int mode) {
+  if ((mode - 1) * (mode - 2) == 0) {
+     speedmode = mode;  
+  }
+ };
 
 
 
