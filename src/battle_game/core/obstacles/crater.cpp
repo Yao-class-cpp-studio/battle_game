@@ -38,14 +38,11 @@ void Crater::RecoverRender() {
     battle_game::SetTransformation(position_, rotation_, scale_);
     battle_game::DrawModel(0);
 }
-
-
-
   void Crater::Update() {
-  Recover();
+  Recover_();
   }
 
-void Crater::Recover() {
+void Crater::Recover_() {
   auto &units = game_core_->GetObstacles();
   if (crater_count_down_) {
     crater_count_down_--;
