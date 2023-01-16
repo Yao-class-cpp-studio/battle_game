@@ -111,3 +111,4 @@ const char *OrdinaryTank::Author() const {
 }
 }  // namespace battle_game::unit
 //
+//
