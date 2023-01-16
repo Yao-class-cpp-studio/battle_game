@@ -99,9 +99,6 @@ void Machine_Tank::TurretRotate() {
 }
 
 void Machine_Tank::Fire() {
-  if (is_stuck_by_swamp_ = game_core_->IsStuckBySwamp(new_position)) {
-    game_core_->PushEventDealDamage(id_, id_, 0.02f);
-  }
   if (auto_swithch_count_down_)
     auto_swithch_count_down_--;
   if (fire_count_down_) {
