@@ -22,7 +22,7 @@ class InfernoTank : public Tank {
 
   // float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
-  uint32_t shoot_count_down_{0};
+  uint32_t shoot_count_down_{240};
   uint32_t hidden_count_down_{600};
   uint32_t block_count_down_{600};
   uint32_t isHidden{0};
