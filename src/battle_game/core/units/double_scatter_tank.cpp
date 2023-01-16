@@ -71,12 +71,6 @@ void DoubleScatterTank::Fire() {
   }
 }
 
-bool DoubleScatterTank::IsHit(glm::vec2 position) const {
-  position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f;
-}
-
 const char *DoubleScatterTank::UnitName() const {
   return "Double Scatter Tank";
 }
