@@ -15,3 +15,4 @@
 #include "battle_game/core/bullets/water_drop.h"
 #include "battle_game/core/bullets/BoobooBullet.h"
 #include "battle_game/core/bullets/BoobooBullet2.h"
+#include "battle_game/core/bullets/charge_fire.h"
