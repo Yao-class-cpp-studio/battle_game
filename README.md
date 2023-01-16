@@ -83,7 +83,6 @@ git commit -am "Your Comments"
 ```
 此时 pre-commit 会帮助你自动修改代码风格。
 如果报错了，就将上放指令再敲一遍，直到提交成功。
-
 4. 推送到远端仓库
 
 ### 3、提出一个新功能的想法到 Issues 列表 【5 pts】
