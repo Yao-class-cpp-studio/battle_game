@@ -45,6 +45,10 @@ void GameCore::Update() {
     particle.second->Update();
   }
   ProcessEventQueue();
+  ProcessAwaitingQueue();
+  for (auto &units : units_) {
+    units.second->EndTick();
+  }
 }
 
 /*
@@ -135,6 +139,13 @@ void GameCore::ProcessEventQueue() {
   }
 }
 
+void GameCore::ProcessAwaitingQueue() {
+  while (!awaiting_queue_.empty()) {
+    awaiting_queue_.front()();
+    awaiting_queue_.pop();
+  }
+}
+
 bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   if (IsOutOfRange(p)) {
     return true;
@@ -161,7 +172,7 @@ void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
   event_queue_.emplace([this, unit_id, new_position]() {
     auto unit = GetUnit(unit_id);
     if (unit) {
-      unit->SetPosition(new_position);
+      unit->position_change_ += new_position - unit->GetPosition();
     }
   });
 }
@@ -171,22 +182,45 @@ void GameCore::PushEventMoveRelativeUnit(uint32_t unit_id,
   event_queue_.emplace([this, unit_id, relative_position]() {
     auto unit = GetUnit(unit_id);
     if (unit) {
-      auto new_position = unit->GetPosition() + relative_position;
-      if (!IsBlockedByObstacles(new_position)) {
-        unit->SetPosition(new_position);
-      }
+      unit->position_change_ += relative_position;
     }
   });
-}  // this function is used for weight system.
+}  // this function is inspired by XieRujian, completely abandon the queue
+
+void GameCore::PushEventMoveRUForTicks(uint32_t unit_id,
+                                       glm::vec2 r_p,
+                                       uint32_t remaining_ticks) {
+  if (remaining_ticks > 0) {
+    event_queue_.emplace([this, unit_id, r_p, remaining_ticks]() {
+      auto unit = GetUnit(unit_id);
+      if (unit) {
+        unit->position_change_ += r_p;
+        awaiting_queue_.emplace([=]() {
+          PushEventMoveRUForTicks(unit_id, r_p, remaining_ticks - 1);
+        });
+      }
+    });
+  }
+}  // this function is an easy simulation for "effects"
 
 void GameCore::PushEventRotateUnit(uint32_t unit_id, float new_rotation) {
   event_queue_.emplace([this, unit_id, new_rotation]() {
     auto unit = GetUnit(unit_id);
     if (unit) {
-      unit->SetRotation(new_rotation);
+      unit->rotation_change_ += new_rotation - unit->GetRotation();
     }
   });
 }
+
+void GameCore::PushEventRotateRelativeUnit(uint32_t unit_id,
+                                           float relative_rotation) {
+  event_queue_.emplace([this, unit_id, relative_rotation]() {
+    auto unit = GetUnit(unit_id);
+    if (unit) {
+      unit->rotation_change_ += relative_rotation;
+    }
+  });
+}  // change another btw, although I dont actually use
 
 Unit *GameCore::GetUnit(uint32_t unit_id) const {
   if (!units_.count(unit_id)) {

@@ -36,11 +36,22 @@ class Unit : public Object {
     return health_;
   }
 
+  [[nodiscard]] float GetWeight() const {
+    return weight_;
+  }
+
   /*
    * The value of new_health will be clamped to [0, 1]
    * */
   void SetHealth(float new_health) {
     health_ = std::clamp(new_health, 0.0f, 1.0f);
+  }
+
+  /*
+   * The value of new_weight will be a float from 0 to \infty
+   * */
+  void SetWeight(float new_weight) {
+    weight_ = new_weight;
   }
 
   void SetLifeBarLength(float new_length);
@@ -84,9 +95,15 @@ class Unit : public Object {
     return skills_;
   }
 
+  void EndTick();  // inspired by XieRujian
+
+  glm::vec2 position_change_{glm::vec2(.0f, .0f)};
+  float rotation_change_{.0f};
+
  protected:
   uint32_t player_id_{};
   float health_{1.0f};
+  float weight_{1.0f};
   std::vector<Skill> skills_;
   bool lifebar_display_{true};
   glm::vec2 lifebar_offset_{};
@@ -100,5 +117,3 @@ class Unit : public Object {
 };
 
 }  // namespace battle_game
-
-// add something to pull

@@ -118,6 +118,15 @@ void Unit::RenderLifeBar() {
 void Unit::RenderHelper() {
 }
 
+void Unit::EndTick() {
+  if (!game_core_->IsBlockedByObstacles(position_ + position_change_) &&
+      !game_core_->IsOutOfRange(position_ + position_change_))
+    position_ += position_change_;
+    rotation_ += rotation_change_;
+    position_change_ = {.0f, .0f};
+    rotation_change_ = {.0f};
+}
+
 const char *Unit::UnitName() const {
   return "Unknown Unit";
 }

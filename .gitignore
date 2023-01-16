@@ -7,3 +7,4 @@ out
 CMakeSettings.json
 compile_commands.json
 .cache/
+/src/battle_game/core/effect.cpp

@@ -124,7 +124,11 @@ class GameCore {
 
   void PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position);
   void PushEventMoveRelativeUnit(uint32_t unit_id, glm::vec2 relative_position);
+  void PushEventMoveRUForTicks(uint32_t unit_id,
+                               glm::vec2 r_p,
+                               uint32_t remaining_ticks);
   void PushEventRotateUnit(uint32_t unit_id, float new_rotation);
+  void PushEventRotateRelativeUnit(uint32_t unit_id, float new_rotation);
   void PushEventDealDamage(uint32_t dst_unit_id,
                            uint32_t src_unit_id,
                            float damage);
@@ -164,6 +168,7 @@ class GameCore {
   }
 
   void ProcessEventQueue();
+  void ProcessAwaitingQueue();
 
   void SetCamera(glm::vec2 position, float rotation = 0.0f);
   [[nodiscard]] glm::vec2 GetCameraPosition() const {
@@ -187,6 +192,7 @@ class GameCore {
 
  private:
   std::queue<std::function<void()>> event_queue_;
+  std::queue<std::function<void()>> awaiting_queue_;//this one is for "buff" type
 
   std::map<uint32_t, std::unique_ptr<Unit>> units_;
   uint32_t unit_index_{1};

@@ -78,10 +78,8 @@ void RoundUFO::Teleport_() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
-    auto new_position = input_data.mouse_cursor_position;
-    if (!game_core_->IsBlockedByObstacles(new_position)) {
-      game_core_->PushEventMoveUnit(id_, new_position);
-    }
+    game_core_->PushEventMoveRelativeUnit(id_,
+                                          input_data.mouse_cursor_position);
   }
 }
 
@@ -113,13 +111,10 @@ void RoundUFO::UFOMove(float move_speed) {
     }
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
-    auto new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
-    if (!game_core_->IsBlockedByObstacles(new_position)) {
-      game_core_->PushEventMoveUnit(id_, new_position);
-    }
+    auto relative_position = glm::vec2{
+        glm::rotate(glm::mat4{1.0f}, rotation_, glm::vec3{0.0f, 0.0f, 1.0f}) *
+        glm::vec4{offset, 0.0f, 0.0f}};
+    game_core_->PushEventMoveRelativeUnit(id_, relative_position);
 
     auto diff = input_data.mouse_cursor_position - position_;
     float new_rotation;
