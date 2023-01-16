@@ -31,7 +31,7 @@ void Arknights::Update() {
   ArknightsMove(3.0f);
   TurretRotate();
   Fire();
-  GenerateBlock();
+  Operators();
 }
 
 void Arknights::ArknightsMove(float move_speed) {
@@ -90,7 +90,7 @@ bool Arknights::IsHit(glm::vec2 position) const {
   return Tank::IsHit(position);
 }
 
-void Arknights::GenerateBlock() {
+void Arknights::Operators() {
   skills_[0].time_remain = operator_count_down_;
   if (operator_count_down_) {
     operator_count_down_--;
