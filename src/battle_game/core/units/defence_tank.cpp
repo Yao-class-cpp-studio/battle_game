@@ -96,7 +96,7 @@ const char *DefenceTank::UnitName() const {
 }
 
 const char *DefenceTank::Author() const {
-  return "CoffeePot";
+  return "CoffeePot1206";
 }
 
 }  // namespace battle_game::unit
