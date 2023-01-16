@@ -132,9 +132,7 @@ void Tank::TurretRotate() {
 }
 
 void Tank::Fire() {
-  if (fire_count_down_) {
-    fire_count_down_--;
-  } else {
+  if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
@@ -146,6 +144,9 @@ void Tank::Fire() {
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }
     }
+  }
+  if (fire_count_down_) {
+    fire_count_down_--;
   }
 }
 
