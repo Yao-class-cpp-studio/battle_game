@@ -1,8 +1,9 @@
 #pragma once
 #include "battle_game/core/unit.h"
+#include "battle_game/core/units/tiny_tank.h"
 
 namespace battle_game::unit {
-class Jinitaimei : public Unit {
+class Jinitaimei : public Tank {
  public:
   Jinitaimei(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
