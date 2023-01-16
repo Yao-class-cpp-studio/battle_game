@@ -453,5 +453,3 @@ void App::UpdateImGui() {
 }  // namespace battle_game
 
 
-
-       
