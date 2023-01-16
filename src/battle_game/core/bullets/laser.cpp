@@ -18,14 +18,14 @@ Laser::Laser(GameCore *core,
              float damage_scale,
              glm::vec2 velocity,
              int LightIndex,
-             int Mode)
+             int mode)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity),
       end_position_(position),
       color_(game_core_->GetPlayerColor(player_id)),
       light_index_(LightIndex),
-      mode_(Mode),
-      combo_time_((Mode == 2) ? 2000 : 0),
+      mode_(mode),
+      combo_time_((mode == 2) ? 2000 : 0),
       Original_velocity_(velocity) {
   switch (light_index_) {
     case 0:
