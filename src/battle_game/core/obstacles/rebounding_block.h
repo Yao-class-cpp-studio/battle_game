@@ -9,11 +9,13 @@ class ReboundingBlock : public Obstacle {
                   glm::vec2 position,
                   float rotation = 0.0f,
                   glm::vec2 scale = glm::vec2{1.0f});
+  void HandleCollision(glm::vec2 &p) const override;
 
  private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
   void Render() override;
   float vec2_cross(glm::vec2 a, glm::vec2 b);
+
   bool IsIntersect(glm::vec2 a, glm::vec2 b, glm::vec2 c, glm::vec2 d);
   std::pair<glm::vec2, glm::vec2> GetSurfaceNormal(glm::vec2 origin,
                                                    glm::vec2 terminus) override;

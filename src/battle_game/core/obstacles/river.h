@@ -10,6 +10,8 @@ class River : public Obstacle {
         float rotation = 0.0f,
         glm::vec2 scale = glm::vec2{1.0f, 1.0f});
 
+  void HandleCollision(glm::vec2 &p) const override;
+
  private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
   void Render() override;

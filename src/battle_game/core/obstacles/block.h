@@ -13,6 +13,7 @@ class Block : public Obstacle {
 
  private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
+
   void Render() override;
   glm::vec2 scale_{1.0f};
 };
