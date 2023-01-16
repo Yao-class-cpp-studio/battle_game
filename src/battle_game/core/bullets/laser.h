@@ -19,14 +19,14 @@ class Laser : public Bullet {
   void Update() override;
 
  private:
-  void update_color(float &a);
+  void UpdateColor(float &a);
   float angle();
-  float Angle_();        // ComboTime, LightIndex_
-  float Transparent_();  // ComboTime
-  float Width_();        // ComboTime
+  float Angle_();        // combo_time_, light_index_
+  float Transparent_();  // combo_time_
+  float GetWidth_();     // combo_time_ //The width of laser
   float White_(int Distance);
-  int ComboTime;
-  int LightIndex_;
+  int combo_time_;
+  int light_index_;
   int Mode_;
   glm::vec2 Original_velocity_{};
   glm::vec2 velocity_{};
