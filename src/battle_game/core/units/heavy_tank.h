@@ -10,7 +10,7 @@ class HeavyTank : public Tank {
   void Update() override;
 
  protected:
-  int press_time;
+  int press_time_;
   void Fire();
  // void Scatter();
   [[nodiscard]] const char *UnitName() const override;
