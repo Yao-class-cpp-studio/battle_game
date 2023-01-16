@@ -90,7 +90,7 @@ void Sparky::Update() {
   TurretRotate();
   Fire();
   if (GetHealth() < 0.25f)
-    Sparkle<particle::Smoke>();
+    Smoke();
 }
 
 void Sparky::TurretRotate() {
@@ -104,7 +104,7 @@ void Sparky::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
-    Sparkle<particle::Charge>(0.12);
+    Charged();
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();

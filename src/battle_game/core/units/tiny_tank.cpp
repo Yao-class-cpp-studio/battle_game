@@ -93,7 +93,7 @@ void Tank::Update() {
   TurretRotate();
   Fire();
   if (GetHealth() < 0.25f)
-    Sparkle<particle::Smoke>();
+    Smoke();
 }
 
 void Tank::TankMove(float move_speed, float rotate_angular_speed) {

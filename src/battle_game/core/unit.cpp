@@ -127,7 +127,9 @@ const char *Unit::Author() const {
 
 void Unit::Heal() {
   for (int i = 1; i <= 5; i++)
-    Sparkle<particle::Heal>();
+    game_core_->PushEventGenerateParticle<particle::Heal>(
+        position_, rotation_, game_core_->RandomInCircle() * 4.0f, 0.2f,
+        glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
   SetHealth(health_ + healrate_);
 }
 
@@ -139,4 +141,15 @@ void Unit::SpeedUp(float seconds_) {
   speeduptime_ = seconds_ * kTickPerSecond;
 }
 
+void Unit::Smoke() const {
+  game_core_->PushEventGenerateParticle<particle::Smoke>(
+      position_, rotation_, game_core_->RandomInCircle() * 4.0f, 0.4f,
+      glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+}
+
+void Unit::Charged() const {
+  game_core_->PushEventGenerateParticle<particle::Charge>(
+      position_, rotation_, game_core_->RandomInCircle() * 4.0f, 0.12f,
+      glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
+}
 }  // namespace battle_game

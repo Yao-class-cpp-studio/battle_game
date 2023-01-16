@@ -108,7 +108,7 @@ void RoundUFO::Update() {
   Teleport();
   Fire();
   if (GetHealth() < 0.25f)
-    Sparkle<particle::Smoke>();
+    Smoke();
 }
 
 void RoundUFO::UFOMove(float move_speed) {

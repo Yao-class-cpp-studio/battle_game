@@ -91,11 +91,9 @@ class Unit : public Object {
 
   void SpeedUp(float seconds_);
 
-  template <class ParticleType>
-  void Sparkle(float size_) const;
+  void Smoke() const;
 
-  template <class ParticleType>
-  void Sparkle() const;
+  void Charged() const;
 
  protected:
   float healrate_{0.3f};
@@ -114,20 +112,6 @@ class Unit : public Object {
  private:
   float fadeout_health_;
 };
-
-template <class ParticleType>
-void Unit::Sparkle(float size_) const {
-  game_core_->PushEventGenerateParticle<ParticleType>(
-      position_, rotation_, game_core_->RandomInCircle() * 4.0f, size_,
-      glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
-}
-
-template <class ParticleType>
-void Unit::Sparkle() const {
-  game_core_->PushEventGenerateParticle<ParticleType>(
-      position_, rotation_, game_core_->RandomInCircle() * 4.0f, 0.4f,
-      glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
-}
 
 }  // namespace battle_game
 
