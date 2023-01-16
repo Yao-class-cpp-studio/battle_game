@@ -147,6 +147,17 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
+bool GameCore::IsStuckBySwamp(glm::vec2 p) const {
+  glm::vec2 swamp_test_ = {114514, 0};
+  for (auto &obstacle : obstacles_) {
+    if (!obstacle.second->IsBlocked(swamp_test_))
+      continue;
+    if (obstacle.second->IsBlocked(p))
+      return true;
+  }
+  return false;
+}
+
 Obstacle *GameCore::GetBlockedObstacle(glm::vec2 p) const {
   if (!IsOutOfRange(p)) {
     for (auto &obstacle : obstacles_)
