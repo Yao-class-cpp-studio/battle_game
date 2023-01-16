@@ -12,7 +12,7 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
 OrdinaryTank::OrdinaryTank(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Tank(game_core, id, player_id) {
+    : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
