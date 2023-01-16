@@ -28,7 +28,7 @@ void phantom_of_cosin::Update() {
   }
 }
 void SetSpeedMode(int mode) {
-  if (mode == 1 || mode== 2) {
+  if ((mode-1)* (mode-2)== 0) {
     SpeedMode = mode;
   }
 }
