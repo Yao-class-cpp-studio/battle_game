@@ -2,30 +2,27 @@
 // Created by 13552 on 2023/1/8.
 //
 #pragma once
-#include "split_bullet.h"
-
-#include <iostream>
+#include "SplitBullet.h"
 
 #include "battle_game/core/bullet.h"
 #include "battle_game/core/bullets/cannon_ball.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/core/particles/particles.h"
 namespace battle_game::bullet {
-split_bullet::split_bullet(GameCore *core,
-                           uint32_t id,
-                           uint32_t unit_id,
-                           uint32_t player_id,
-                           glm::vec2 position,
-                           float rotation,
-                           float damage_scale,
-                           glm::vec2 velocity)
+SplitBullet::SplitBullet(GameCore *core,
+                         uint32_t id,
+                         uint32_t unit_id,
+                         uint32_t player_id,
+                         glm::vec2 position,
+                         float rotation,
+                         float damage_scale,
+                         glm::vec2 velocity)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
-  split_countdown = 20;
+  split_countdown_ = 20;
 }
-void split_bullet::Update() {
-  split_countdown--;
-  // std::cout << split_countdown << std::endl;
+void SplitBullet::Update() {
+  split_countdown_--;
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
@@ -40,7 +37,7 @@ void split_bullet::Update() {
       game_core_->PushEventDealDamage(unit.first, id_, damage_scale_ * 10.0f);
       should_die = true;
     }
-    if (split_countdown == 0) {
+    if (split_countdown_ == 0) {
       for (int i = -2; i <= 2; i++) {
         game_core_->PushEventGenerateBullet<bullet::CannonBall>(
             unit_id_, player_id_, position_, rotation_, damage_scale_,
@@ -54,16 +51,16 @@ void split_bullet::Update() {
     game_core_->PushEventRemoveBullet(id_);
   }
 }
-void split_bullet::Render() {
+void SplitBullet::Render() {
   SetTransformation(position_, rotation_, glm::vec2{0.1f});
-  SetColor(glm::vec4{1.0f, 0.0f, 0.0f, 1.0f * split_countdown / 20});
+  SetColor(glm::vec4{1.0f, 0.0f, 0.0f, 1.0f * split_countdown_ / 20});
   SetScale(glm::vec2{0.1f, 0.5f});
   SetTexture("../../textures/particle3.png");
   DrawModel(0);
 }
 
-split_bullet::~split_bullet() noexcept {
-  if (split_countdown) {
+SplitBullet::~SplitBullet() noexcept {
+  if (split_countdown_) {
     for (int i = 0; i < 5; i++) {
       game_core_->PushEventGenerateParticle<particle::Smoke>(
           position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.2f,

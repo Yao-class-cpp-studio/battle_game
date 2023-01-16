@@ -136,10 +136,6 @@ void Laser::Update() {
       }
     }
   }
-  if (LightIndex_ == 1)
-    std::cout << ComboTime << ' ' << Width_() << std::endl;
-  /*if (--count_down_ == 0)
-      game_core_->PushEventRemoveBullet(id_);*/
 }
 // TODO
 
