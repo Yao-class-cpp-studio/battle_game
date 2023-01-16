@@ -62,6 +62,14 @@ struct Skill {
         function(function){};
 };
 
+struct Buff {
+  // unfinished
+  std::string name;
+  std::string description;
+  uint32_t time_remain;
+  uint32_t time_total;
+};
+  
 class Object {
  public:
   Object(GameCore *game_core,
