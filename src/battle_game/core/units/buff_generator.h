@@ -18,6 +18,5 @@ class BuffGenerator : public Unit {
   void BuffGenerate();
   uint32_t buff_count_down_{1200};
   uint32_t buff_id_{0};
-  Unit *buff_{nullptr};
 };
 }  // namespace battle_game::unit
