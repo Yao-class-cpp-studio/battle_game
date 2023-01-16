@@ -21,5 +21,5 @@ class RandomBall : public Bullet {
   float crit_rate_{1.0f};
   float crit_radius_{3.0f};
   int crit_number_{10};
-};  // 1
+};
 }  // namespace battle_game::bullet
