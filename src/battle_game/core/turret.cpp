@@ -73,7 +73,7 @@ void NeutralTurret::Update() {
   Fire();
 }
 
-glm::highp_vec2 NeutralTurret::findEnermy() {
+glm::highp_vec2 NeutralTurret::findEnemy() {
   auto &units = game_core_->GetUnits();
   auto it = units.begin();
   auto itEnd = units.end();
@@ -103,7 +103,7 @@ void NeutralTurret::TurretRotate() {
   if (player) {
     // auto &input_data = player->GetInputData();
     // auto diff = input_data.mouse_cursor_position - position_;
-    auto diff = findEnermy();
+    auto diff = findEnemy();
     if (glm::length(diff) < 1e-4) {
       // turret_rotation_ = rotation_;
       fire_count_down_ = 1;

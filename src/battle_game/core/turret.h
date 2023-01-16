@@ -21,7 +21,7 @@ class NeutralTurret : public Unit {
   uint32_t fire_count_down_{0};
   float range_{5.0f};
   glm::vec2 scale_{1.0f};
-  glm::vec2 findEnermy();
+  glm::vec2 findEnemy();
   bool setBlock_ = false;
 };
 }  // namespace battle_game::unit
