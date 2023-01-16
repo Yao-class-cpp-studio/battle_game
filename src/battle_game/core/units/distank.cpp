@@ -11,7 +11,7 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-DISTank::DISTank(GameCore *game_core, uint32_t id, uint32_t player_id)
+DisTank::DisTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -70,7 +70,7 @@ DISTank::DISTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void DISTank::Render() {
+void DisTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -79,20 +79,20 @@ void DISTank::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void DISTank::Update() {
+void DisTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
 
-void DISTank::TankMove(float move_speed, float rotate_angular_speed) {
+void DisTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
     glm::vec2 offset{0.0f};
     if (input_data.key_down[GLFW_KEY_W]) {
       offset.y += 1.0f;
-    }  // 1
+    }
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
@@ -117,7 +117,7 @@ void DISTank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void DISTank::TurretRotate() {
+void DisTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -130,7 +130,7 @@ void DISTank::TurretRotate() {
   }
 }
 
-void DISTank::Fire() {
+void DisTank::Fire() {
   if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -150,18 +150,18 @@ void DISTank::Fire() {
   }
 }
 
-bool DISTank::IsHit(glm::vec2 position) const {
+bool DisTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f && position.x + position.y < 1.6f &&
          position.y - position.x < 1.6f;
 }
 
-const char *DISTank::UnitName() const {
+const char *DisTank::UnitName() const {
   return "DISTank";
 }
 
-const char *DISTank::Author() const {
+const char *DisTank::Author() const {
   return "QIXUAN";
 }
 }  // namespace battle_game::unit

@@ -10,7 +10,6 @@
 #include "battle_game/core/units/lm_tank.h"
 #include "battle_game/core/units/mine_sample_tank.h"
 #include "battle_game/core/units/missile_tank.h"
-#include "battle_game/core/units/qx_tank.h"
 #include "battle_game/core/units/qx_tank_1.h"
 #include "battle_game/core/units/rage_tank_yangyr.h"
 #include "battle_game/core/units/railgun.h"
