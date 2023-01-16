@@ -28,11 +28,11 @@ void Crater::Render() {
   if (recovery_count_down_)
     recovery_count_down_--;
   else {
-    RecoverRender();
+    RecoverRender_();
   }
 }
 
-void Crater::RecoverRender() {
+void Crater::RecoverRender_() {
     battle_game::SetColor(glm::vec4{1.0f, 1.0f, 1.0f, 0.9f});
     battle_game::SetTexture("../../textures/mushroom_cloud.png");
     battle_game::SetTransformation(position_, rotation_, scale_);
