@@ -14,7 +14,7 @@ void Soilder::Render() {
 }
 
 void Soilder::Update() {
-  soilderMove(6.0f, glm::radians(180.0f));
+  SoilderMove(6.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
