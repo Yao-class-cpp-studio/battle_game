@@ -1,13 +1,14 @@
 #include "battle_game/core/units/random_tank.h"
+
+#include <cstdlib>
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include<cstdlib>
-
 
 namespace battle_game::unit {
 
-RandomTank::RandomTank(GameCore *game_core,uint32_t id,uint32_t player_id)
+RandomTank::RandomTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
@@ -25,7 +26,8 @@ void RandomTank::RandomFire() {
   if (random_number_ > 10) {
     random_number_ = (rand()) % 9 + 1;
   }
-  if (fire_count_down_ < random_number_*random_number_ || fire_count_down_ %random_number_ !=0) {
+  if (fire_count_down_ < random_number_ * random_number_ ||
+      fire_count_down_ % random_number_ != 0) {
     fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);

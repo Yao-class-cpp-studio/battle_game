@@ -9,7 +9,6 @@ class RandomTank : public Tank {
   void Render() override;
   void Update() override;
 
- protected:
   void RandomFire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
