@@ -126,24 +126,21 @@ void newturret_Tank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
+    float rotation_offset = 0.0f;
+    float rotate_angular_speed = 0.0f;
      if (input_data.key_down[GLFW_KEY_LEFT]) {
-     float rotation_offset = 0.0f;
-     float rotate_angular_speed = 0.0f;
+    
      rotation_offset += 1.0f;
-      rotation_offset *=
-          kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-      turret_rotation_ = rotation_offset + rotation_;
      }
      if (input_data.key_down[GLFW_KEY_RIGHT]) {
-     float rotation_offset = 0.0f;
-     float rotate_angular_speed = 0.0f;
      rotation_offset -= 1.0f;
-     rotation_offset *=
-       kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-     turret_rotation_ = rotation_offset + rotation_;
-     } else {
+     }
+     else {
          turret_rotation_ = glm::radians(0.0f);
+
        }
+     rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+     turret_rotation_ = rotation_offset + rotation_;
   }
 }
 
