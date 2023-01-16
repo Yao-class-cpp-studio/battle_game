@@ -2,8 +2,8 @@
 
 #include "absl/strings/match.h"
 #include "grassland/util/util.h"
-#include "stb_image.h"
-#include "stb_image_write.h"
+#include <battle_game/graphics/stb_image.h>
+#include <battle_game/graphics/stb_image_write.h>
 
 namespace battle_game {
 
