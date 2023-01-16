@@ -19,10 +19,10 @@ class RangeBall : public Bullet {
   //
   // float distance_;
   // const int die_time_;
-  int die_time_;
-  int now_time_ = 3;
 
  private:
   glm::vec2 velocity_{};
+  int die_time_;
+  int now_time_ = 3;
 };
 }  // namespace battle_game::bullet
