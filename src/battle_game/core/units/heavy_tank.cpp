@@ -9,12 +9,12 @@ HeavyTank::HeavyTank(GameCore *game_core,
                                      uint32_t id,
                                      uint32_t player_id)
     : Tank(game_core, id, player_id) {
-  int clicktime;
+  press_time = 0;
 }
 
 void HeavyTank::Render() {
   Tank::Render();
-  int magnification = (std::min(3, clicktime / ((int)kTickPerSecond)) + 1);
+  int magnification = (std::min(3, press_time / ((int)kTickPerSecond)) + 1);
   SetTransformation(position_, rotation_,glm::vec2{0.1f * GetDamageScale() * magnification});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/particle3.png");
@@ -36,11 +36,10 @@ void HeavyTank::Fire() {
     if (player) {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
-        clicktime++;
-      } else if (clicktime) {
+        press_time++;
+      } else if (press_time) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        //std::cerr << "? " <<kTickPerSecond<< std::endl;
-        int magnification = (std::min(3, clicktime / ((int)kTickPerSecond)) + 1);
+        int magnification = (std::min(3, press_time / ((int)kTickPerSecond)) + 1);
         GenerateBullet<bullet::BigBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_,
@@ -60,7 +59,7 @@ void HeavyTank::Fire() {
         if (!game_core_->IsBlockedByObstacles(new_position)) {
           game_core_->PushEventMoveUnit(id_, new_position);
         }
-        clicktime = 0;
+        press_time = 0;
         fire_count_down_ = kTickPerSecond * 2;  // Fire interval 1 second.
       }
     }
