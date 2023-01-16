@@ -24,11 +24,6 @@ void Jinitaimei::Render() {
   battle_game::SetRotation(turret_rotation_);
 }//texture
 
-void Jinitaimei::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
-  TurretRotate();
-  Fire();
-}
 
 void Jinitaimei::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
@@ -70,9 +65,7 @@ void Jinitaimei::TurretRotate() {
     if (glm::length(diff) < 1e-4) {
       turret_rotation_ = rotation_;
     } 
-    //else {
       turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-    //}
   }
 }//mouse
 
@@ -106,14 +99,6 @@ void Jinitaimei::Fire() {
     }
   }
 }
-
-bool Jinitaimei::IsHit(glm::vec2 position) const {
-  position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
-}
-
 
 
 const char *Jinitaimei::UnitName() const {
