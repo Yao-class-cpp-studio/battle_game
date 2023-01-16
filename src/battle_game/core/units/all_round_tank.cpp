@@ -10,19 +10,19 @@ namespace battle_game::unit {
 AllRound::AllRound(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill mode1("speed mode", Q);
-  mode1.function = SKILL_ADD_FUNCTION(AllRound::SwitchMode1);
+  mode1.function = SKILL_ADD_FUNCTION(AllRound::SwitchMode);
   mode1.time_remain = 0;
   mode1.time_total = 120;
   skills_.push_back(mode1);
 
   Skill mode2("damage mode", E);
-  mode2.function = SKILL_ADD_FUNCTION(AllRound::SwitchMode2);
+  mode2.function = SKILL_ADD_FUNCTION(AllRound::SwitchMode);
   mode2.time_remain = 0;
   mode2.time_total = 120;
   skills_.push_back(mode2);
 
   Skill mode3("health mode", R);
-  mode3.function = SKILL_ADD_FUNCTION(AllRound::SwitchMode3);
+  mode3.function = SKILL_ADD_FUNCTION(AllRound::SwitchMode);
   mode3.time_remain = 0;
   mode3.time_total = 120;
   skills_.push_back(mode3);
@@ -33,9 +33,7 @@ void AllRound::Render() {
 }
 
 void AllRound::Update() {
-  SwitchMode1();
-  SwitchMode2();
-  SwitchMode3();
+  SwitchMode();
   if (mode_ == 1) {
     TankMove(6.0f, glm::radians(180.0f));
   } else {
@@ -50,30 +48,16 @@ void AllRound::Update() {
   Fire();
 }
 
-void AllRound::SwitchMode1() {
+void AllRound::SwitchMode() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
     if (input_data.key_down[GLFW_KEY_Q]) {
       mode_ = 1;
     }
-  }
-}
-
-void AllRound::SwitchMode2() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
     if (input_data.key_down[GLFW_KEY_E]) {
       mode_ = 2;
     }
-  }
-}
-
-void AllRound::SwitchMode3() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
     if (input_data.key_down[GLFW_KEY_R]) {
       mode_ = 3;
     }
