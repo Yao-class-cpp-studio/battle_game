@@ -16,7 +16,7 @@ class Arknights : public Tank {
   void ArknightsMove(float move_speed);
   void TurretRotate();
   void Fire();
-  void operators();
+  void GenerateBlock();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 

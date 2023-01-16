@@ -90,7 +90,7 @@ bool Arknights::IsHit(glm::vec2 position) const {
   return Tank::IsHit(position);
 }
 
-void Arknights::operators() {
+void Arknights::GenerateBlock() {
   skills_[0].time_remain = operator_count_down_;
   if (operator_count_down_) {
     operator_count_down_--;
