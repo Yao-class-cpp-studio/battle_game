@@ -56,16 +56,7 @@ void SlowTank::Fire() {
 }
 
 void SlowTank::TurrentRotate() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
-    } else {
-      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-    }
-  }
+  Tank::TurrentRotate();
 }
 
 const char *SlowTank::UnitName() const {
