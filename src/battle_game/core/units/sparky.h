@@ -6,10 +6,10 @@ namespace battle_game::unit {
 class Sparky : public Tank {
  public:
   Sparky(GameCore *game_core, uint32_t id, uint32_t player_id);
-  void Render();
-  void Update();
-  float GetDamageScale() const;
-  float GetHealthScale() const;
+  void Render() override;
+  void Update() override;
+  float GetDamageScale() const override;
+  float GetHealthScale() const override;
   float GetSpeedScale() const override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
