@@ -10,7 +10,7 @@ Tube::Tube(GameCore *game_core,
            float rotation,
            glm::vec2 scale)
     : Obstacle(game_core, id, position, rotation) {
-  ver_ = rand() % 2;
+  ver_ = RandomInt(0, 1);
 }
 
 bool Tube::IsBlocked(glm::vec2 p) const {
