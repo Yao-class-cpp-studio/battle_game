@@ -10,6 +10,7 @@ class Accumulator : public Tank {
 
  protected:
   void Fire();
+  
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
