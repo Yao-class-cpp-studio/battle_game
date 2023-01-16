@@ -14,11 +14,11 @@ class Crater : public Obstacle {
   void Update() override;
 
  private:
-  void Recover_();
+  void Recover();
   uint32_t crater_count_down_{180};
   uint32_t recovery_count_down_{180};
   bool isRecovered_ = false;
-  void RecoverRender_();
+  void RecoverRender();
   uint32_t unit_id_{};
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
   glm::vec2 scale_{1.0f};
