@@ -10,7 +10,7 @@ WoodenBlock::WoodenBlock(GameCore *game_core,
     : Obstacle(game_core, id, position, rotation) {
 }
 
-const bool WoodenBlock::iswooden() const {
+const bool WoodenBlock::IsWooden() const {
   return true;
 }
 
