@@ -14,6 +14,10 @@ SmallBasketball::SmallBasketball(GameCore *core,
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
       velocity_(velocity) {
 }
+void SmallBasketball::ChangeDamage() {
+  test--;
+  damage_scale_ /= 100;
+}
 
 void SmallBasketball::Render() {
   SetTransformation(position_, rotation_, glm::vec2{0.4f});
@@ -23,7 +27,10 @@ void SmallBasketball::Render() {
 }
 
 void SmallBasketball::Update() {
-  damage_scale_ /= 1.5;
+  //damage_scale_ /= 1.3;
+  if (test) {
+    ChangeDamage();
+  }
   auto last_position_ = position_;
   position_ += velocity_ * kSecondPerTick;
   bool should_die = false;
@@ -31,16 +38,28 @@ void SmallBasketball::Update() {
     if (!rebounding_times_left_) {
       should_die = true;
     } else {
-      glm::vec2 tmp1 = glm::vec2(-1.0f, 1.0f);
-      auto tmp_v = velocity_ * tmp1;
-      auto next_position = position_ + tmp_v * kSecondPerTick;
-      if (game_core_->IsBlockedByObstacles(next_position)) {
+      if (game_core_->OutUp(position_)) {
+        position_ -= velocity_ * kSecondPerTick;
         glm::vec2 tmp = glm::vec2(1.0f, -1.0f);
         velocity_ *= tmp;
+        rebounding_times_left_--;
+      } else if (game_core_->OutLeft(position_)) {
+        position_ -= velocity_ * kSecondPerTick;
+        glm::vec2 tmp = glm::vec2(-1.0f, 1.0f);
+        velocity_ *= tmp;
+        rebounding_times_left_--;
       } else {
-        velocity_ = tmp_v;
+        glm::vec2 tmp1 = glm::vec2(-1.0f, 1.0f);
+        auto tmp_v = velocity_ * tmp1;
+        auto next_position = position_ + tmp_v * kSecondPerTick;
+        if (game_core_->IsBlockedByObstacles(next_position)) {
+          glm::vec2 tmp = glm::vec2(1.0f, -1.0f);
+          velocity_ *= tmp;
+        } else {
+          velocity_ = tmp_v;
+        }
+        rebounding_times_left_--;
       }
-      rebounding_times_left_--;
     }
   }
 

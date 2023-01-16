@@ -323,6 +323,13 @@ bool GameCore::IsOutOfRange(glm::vec2 p) const {
          p.y < boundary_low_.y || p.y > boundary_high_.y;
 }
 
+bool GameCore::OutUp(glm::vec2 p) const {
+  return p.y < boundary_low_.y || p.y > boundary_high_.y;
+}
+bool GameCore::OutLeft(glm::vec2 p) const {
+  return p.x < boundary_low_.x || p.x > boundary_high_.x;
+}
+
 std::vector<const char *> GameCore::GetSelectableUnitList() const {
   std::vector<const char *> result;
   for (auto &selectable_unit : selectable_unit_list_) {

@@ -11,4 +11,5 @@
 #include "battle_game/core/bullets/water_drop.h"
 #include "battle_game/core/bullets/basketball.h"
 #include "battle_game/core/bullets/small_basketball.h"
+#include "battle_game/core/bullets/xray.h"
 
