@@ -8,8 +8,9 @@ class HeavyTank : public Tank {
   HeavyTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-  int clicktime;
+
  protected:
+  int press_time;
   void Fire();
  // void Scatter();
   [[nodiscard]] const char *UnitName() const override;
