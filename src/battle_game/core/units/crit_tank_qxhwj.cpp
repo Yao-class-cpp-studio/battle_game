@@ -43,3 +43,5 @@ const char *QHCritTank::Author() const {
   return "QIXUAN and hwj";
 }
 }  // namespace battle_game::unit
+
+// add something to make it run
