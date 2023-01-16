@@ -12,6 +12,8 @@ class phantom_of_cosin : public Tank {
 
  protected:
   void Fire();
+  int SpeedMode = 1;
+	  void SetSpeedMode(int mode);
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
