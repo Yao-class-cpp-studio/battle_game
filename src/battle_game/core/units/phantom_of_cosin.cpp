@@ -12,9 +12,6 @@ phantom_of_cosin::phantom_of_cosin(GameCore *game_core,
     : Tank(game_core, id, player_id) {
 }
 
-void phantom_of_cosin::Render() {
-  Tank::Render();
-}
 
 void phantom_of_cosin::Update() {
  
@@ -25,13 +22,9 @@ void phantom_of_cosin::Update() {
   
 }
 
-void phantom_of_cosin::Fire() {
-  Tank::Fire();
-}
 
-bool phantom_of_cosin::IsHit(glm::vec2 position) const {
-  return Tank::IsHit(position);
-}
+
+
 
 const char *phantom_of_cosin::UnitName() const {
   return "phantom_of_cosin";
