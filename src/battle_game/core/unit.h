@@ -48,7 +48,7 @@ class Unit : public Object {
   }
 
   /*
-   * The value of new_weight will be a float from 0 to \infty
+   * The value of new_weight will be a float from 0 to \infty 
    * */
   void SetWeight(float new_weight) {
     weight_ = new_weight;
