@@ -3,15 +3,15 @@
 #include "battle_game/core/units/tiny_tank.h"
 
 namespace battle_game::unit {
-class zb_tank : public Tank {
+class ZbTank : public Tank {
  public:
-  zb_tank(GameCore *game_core, uint32_t id, uint32_t player_id);
-  void Render() override;
+  ZbTank(GameCore *game_core, uint32_t id, uint32_t player_id);
+  /*void Render() override;
   void Update() override;
-  [[nodiscard]] bool IsHit(glm::vec2 position) const override;
+  [[nodiscard]] bool IsHit(glm::vec2 position) const override;*/
 
  protected:
-  void Fire();
+  /*void Fire();*/
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
