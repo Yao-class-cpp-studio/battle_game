@@ -15,4 +15,7 @@ Bullet::Bullet(GameCore *core,
 }
 
 Bullet::~Bullet() = default;
+uint32_t Bullet::get_unit_id_() {
+  return unit_id_;
+}
 }  // namespace battle_game
