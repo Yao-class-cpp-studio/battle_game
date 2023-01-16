@@ -10,6 +10,12 @@ BoobooTank::BoobooTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
+void BoobooTank::Update() {
+  TankMove(3.0f, glm::radians(180.0f));
+  TurretRotate();
+  Fire();
+}
+
 void BoobooTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
