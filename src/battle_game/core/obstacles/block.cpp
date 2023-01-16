@@ -22,4 +22,6 @@ void Block::Render() {
   battle_game::SetTransformation(position_, rotation_, scale_);
   battle_game::DrawModel(0);
 }
+
+
 }  // namespace battle_game::obstacle
