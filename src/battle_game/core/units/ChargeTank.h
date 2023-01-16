@@ -16,9 +16,9 @@ class ChargeTank : public Tank {
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
   uint32_t mine_count_down_{0};
-  float start;
-  float end; //qia biao ; count the time
-  int count{0};
-  float count_down;
+  float start_;
+  float end_; //qia biao ; count the time
+  int count_{0};
+  float count_down_;
 };
 }  // namespace battle_game::unit

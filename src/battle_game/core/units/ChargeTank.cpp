@@ -30,13 +30,13 @@ void ChargeTank::TankMove(float move_speed, float rotate_angular_speed) {
     glm::vec2 offset{0.0f};
     if (input_data.key_down[GLFW_KEY_W]) {
       offset.y += 1.0f;
-      if(count == 1){
-        end = clock();
+      if(count_ == 1){
+        end_ = clock();
         // Soar();
-        float t = (end - start) / CLOCKS_PER_SEC;
+        float t = (end_ - start_) / CLOCKS_PER_SEC;
         if ( t > 0.1f && t < 0.32f){
-          if ((clock() - count_down) / CLOCKS_PER_SEC >= 1.0f){
-            count = 0;
+          if ((clock() - count_down_) / CLOCKS_PER_SEC >= 1.0f){
+            count_ = 0;
             offset.y += 100.0f;
             glm::vec2 direc = glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
                                               glm::vec3{0.0f, 0.0f, 1.0f}) *
@@ -44,17 +44,17 @@ void ChargeTank::TankMove(float move_speed, float rotate_angular_speed) {
             GenerateBullet<bullet::ChargeFire>(
             position_ + Rotate({0.0f, 1.2f}, rotation_),
             rotation_ + glm::radians(180.0f), 0.6 * GetDamageScale(), 20.0f * glm::normalize(direc));
-            count_down = clock();
+            count_down_ = clock();
           }
         } else {
-          count = 1;
-          start = clock ();
+          count_ = 1;
+          start_ = clock ();
           offset.y += 1.0f;
         }
         //
-      } else if(count == 0){
-        count = 1;
-        start = clock();
+      } else if(count_ == 0){
+        count_ = 1;
+        start_ = clock();
         offset.y += 1.0f;
       }
     }
