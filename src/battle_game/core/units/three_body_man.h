@@ -31,6 +31,5 @@ class ThreeBodyMan : public Unit {
   float shoot_damage_scale_{0.0f};
   glm::vec2 shoot_args_{0.0f, 0.0f};
   bool shooted_{false};
-  int i = 0;
 };
 }  // namespace battle_game::unit

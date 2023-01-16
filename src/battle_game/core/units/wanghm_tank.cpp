@@ -12,7 +12,7 @@ uint32_t tank_turret_model_index = 0xffffffffu;
 
 }  // namespace
 
-Wanghm_Tank::Wanghm_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
+WanghmTank::WanghmTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -66,7 +66,7 @@ Wanghm_Tank::Wanghm_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void Wanghm_Tank::Render() {
+void WanghmTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -75,7 +75,7 @@ void Wanghm_Tank::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void Wanghm_Tank::Update() {
+void WanghmTank::Update() {
   if (health_ >= 0.4f) {
     TankMove(3.0f, glm::radians(180.0f));
   }
@@ -90,7 +90,7 @@ void Wanghm_Tank::Update() {
 }  // The tank will have higher speed when it is going to die,but when the
    // health is between 0.2~0.4,it will be slower.
 
-void Wanghm_Tank::TankMove(float move_speed, float rotate_angular_speed) {
+void WanghmTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -122,7 +122,7 @@ void Wanghm_Tank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void Wanghm_Tank::TurretRotate() {
+void WanghmTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -134,7 +134,7 @@ void Wanghm_Tank::TurretRotate() {
   }
 }
 
-void Wanghm_Tank::Fire() {
+void WanghmTank::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -152,17 +152,17 @@ void Wanghm_Tank::Fire() {
   }
 }
 
-bool Wanghm_Tank::IsHit(glm::vec2 position) const {
+bool WanghmTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
 }
 
-const char *Wanghm_Tank::UnitName() const {
+const char *WanghmTank::UnitName() const {
   return "Wanghm Tank";
 }
 
-const char *Wanghm_Tank::Author() const {
+const char *WanghmTank::Author() const {
   return "Bill";
 }
 }  // namespace battle_game::unit
