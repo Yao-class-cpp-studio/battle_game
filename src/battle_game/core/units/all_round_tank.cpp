@@ -15,7 +15,7 @@ AllRoundTank::AllRoundTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   speed_mode.time_remain = 0;
   speed_mode.time_total = 0;
   speed_mode.type = SkillType::E;
-  speed_mode.function = SKILL_ADD_FUNCTION(AllRoundTank::SpeedMode_);
+  speed_mode.function = SKILL_ADD_FUNCTION(AllRoundTank::SpeedMode);
   skills_.push_back(speed_mode);
 
   Skill damage_mode;
@@ -25,7 +25,7 @@ AllRoundTank::AllRoundTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   damage_mode.time_remain = 0;
   damage_mode.time_total = 0;
   damage_mode.type = SkillType::Q;
-  damage_mode.function = SKILL_ADD_FUNCTION(AllRoundTank::DamageMode_);
+  damage_mode.function = SKILL_ADD_FUNCTION(AllRoundTank::DamageMode);
   skills_.push_back(damage_mode);
 
   Skill recovery_mode;
@@ -35,7 +35,7 @@ AllRoundTank::AllRoundTank(GameCore *game_core, uint32_t id, uint32_t player_id)
   recovery_mode.time_remain = 0;
   recovery_mode.time_total = 0;
   recovery_mode.type = SkillType::R;
-  recovery_mode.function = SKILL_ADD_FUNCTION(AllRoundTank::RecoveryMode_);
+  recovery_mode.function = SKILL_ADD_FUNCTION(AllRoundTank::RecoveryMode);
   skills_.push_back(recovery_mode);
 }
 
@@ -47,7 +47,7 @@ float AllRoundTank::GetSpeedScale() const {
   return speed_scale_;
 }
 
-void AllRoundTank::SpeedMode_() {
+void AllRoundTank::SpeedMode() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     current_mode_ = 0;
@@ -56,7 +56,7 @@ void AllRoundTank::SpeedMode_() {
   }
 }
 
-void AllRoundTank::DamageMode_() {
+void AllRoundTank::DamageMode() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     current_mode_ = 1;
@@ -65,7 +65,7 @@ void AllRoundTank::DamageMode_() {
   }
 }
 
-void AllRoundTank::RecoveryMode_() {
+void AllRoundTank::RecoveryMode() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     current_mode_ = 2;
@@ -79,11 +79,11 @@ void AllRoundTank::SwitchMode() {
   if (player) {
     auto &input_data = player->GetInputData();
     if (input_data.key_down[GLFW_KEY_R]) {
-      RecoveryMode_();
+      RecoveryMode();
     } else if (input_data.key_down[GLFW_KEY_Q]) {
-      DamageMode_();
+      DamageMode();
     } else if (input_data.key_down[GLFW_KEY_E]) {
-      SpeedMode_();
+      SpeedMode();
     }
   }
   if (current_mode_ == 2) {

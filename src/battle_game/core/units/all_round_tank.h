@@ -15,9 +15,9 @@ class AllRoundTank : public Tank {
   [[nodiscard]] float GetDamageScale() const;
   [[nodiscard]] float GetSpeedScale() const;
 
-  void SpeedMode_();
-  void DamageMode_();
-  void RecoveryMode_();
+  void SpeedMode();
+  void DamageMode();
+  void RecoveryMode();
 
   void SwitchMode();
 
