@@ -51,19 +51,6 @@ void XyTank::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void XyTank::TurretRotate() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
-    } else {
-      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-    }
-  }
-}
-
 void XyTank::Fire() {
   if (fire_count_down_ != 0 && fire_count_down_ != 10) {
     fire_count_down_--;
@@ -84,13 +71,6 @@ void XyTank::Fire() {
       }
     }
   }
-}
-
-bool XyTank::IsHit(glm::vec2 position) const {
-  position = WorldToLocal(position);
-  return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f && position.x + position.y < 1.6f &&
-         position.y - position.x < 1.6f;
 }
 
 const char *XyTank::UnitName() const {
