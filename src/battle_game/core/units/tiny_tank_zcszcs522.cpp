@@ -200,7 +200,7 @@ const char *Tank_gx::UnitName() const {
   return "Tiny Tank zcszcs522";
 }
 
-const char *Tank_gx::Author() const {
+const char *TankGx::Author() const {
   return "2022010753";
 }
 }  // namespace battle_game::unit
