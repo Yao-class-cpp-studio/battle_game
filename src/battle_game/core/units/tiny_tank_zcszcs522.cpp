@@ -15,7 +15,7 @@ glm::highp_vec2 bad_luck;
 //bool all_day = false;
 }  // namespace
 
-Tank_gx::Tank_gx(GameCore *game_core, uint32_t id, uint32_t player_id)
+TankGx::TankGx(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_gx_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
@@ -69,7 +69,7 @@ Tank_gx::Tank_gx(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void Tank_gx::Render() {
+void TankGx::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -78,7 +78,7 @@ void Tank_gx::Render() {
   battle_game::DrawModel(tank_gx_turret_model_index);
 }
 
-void Tank_gx::Update() {
+void TankGx::Update() {
   good_luck[0] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
   good_luck[1] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
   bad_luck[0] = float(20.0f * game_core_->RandomFloat()  - 10.0f);
@@ -90,7 +90,7 @@ void Tank_gx::Update() {
   Fire();
 }
 
-void Tank_gx::TankMove(float move_speed, float rotate_angular_speed) {
+void TankGx::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -139,7 +139,7 @@ void Tank_gx::TankMove(float move_speed, float rotate_angular_speed) {
   }
 }
 
-void Tank_gx::TurretRotate() {
+void TankGx::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -166,7 +166,7 @@ void Tank_gx::TurretRotate() {
   }
 }
 
-void Tank_gx::Fire() {
+void TankGx::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -184,19 +184,19 @@ void Tank_gx::Fire() {
   }
 }
 
-bool Tank_gx::IsHit(glm::vec2 position) const {
+bool TankGx::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f;
 }
 
-bool Tank_gx::Distant(Object* object_pointer) {
+bool TankGx::Distant(Object* object_pointer) {
   auto position = object_pointer->GetPosition();
   position = WorldToLocal(position);
   return (position.x) * (position.x) + (position.y) * (position.y) >= 9.0f;
 }
 
-const char *Tank_gx::UnitName() const {
+const char *TankGx::UnitName() const {
   return "Tiny Tank zcszcs522";
 }
 
