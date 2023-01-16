@@ -50,7 +50,7 @@ void DoomTank::Update() {
   TurretRotate();
   RandomDo();
   Doomsday();
-  Leech_();
+  Leech();
   Shield();
   ToLeech();
 }
@@ -70,7 +70,7 @@ int x() {
   return value + 1;
 }
 
-// 50% normal cannon ball£¬50% with lottery damage scale
+// 50% normal cannon ballÂ£Â¬50% with lottery damage scale
 void DoomTank::RandomDo() {
   if (fire_count_down_) {
     fire_count_down_--;
