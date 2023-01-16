@@ -15,7 +15,6 @@ class Rocket : public Bullet {
   ~Rocket() override;
   void Render() override;
   void Update() override;
-  std::string type() override;
 
  private:
   glm::vec2 velocity_{};

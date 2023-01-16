@@ -13,9 +13,10 @@ class Bullet : public Object {
          uint32_t player_id,
          glm::vec2 position,
          float rotation,
-         float damage_scale);
+         float damage_scale,
+         std::string type = "");
   ~Bullet() override;
-  virtual std::string type();
+  std::string type_{};
 
  protected:
   uint32_t unit_id_{};

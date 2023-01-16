@@ -15,7 +15,14 @@ Rocket::Rocket(GameCore *core,
                float rotation,
                float damage_scale,
                glm::vec2 velocity)
-    : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
+    : Bullet(core,
+             id,
+             unit_id,
+             player_id,
+             position,
+             rotation,
+             damage_scale,
+             "Rocket"),
       velocity_(velocity) {
   auto &units = game_core_->GetUnits();
   auto player = game_core_->GetPlayer(player_id_);
@@ -107,10 +114,6 @@ void Rocket::Update() {
   if (should_die) {
     game_core_->PushEventRemoveBullet(id_);
   }
-}
-
-std::string CannonBall::type() {
-  return "Cannonball";
 }
 
 Rocket::~Rocket() {

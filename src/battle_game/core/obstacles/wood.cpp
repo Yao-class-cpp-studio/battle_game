@@ -26,12 +26,11 @@ bool Wood::IsBlocked(glm::vec2 p) const {
   if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
       pl.y >= -scale_.y) {
     for (auto &bullet : game_core_->GetBullets()) {
-      if (bullet.second->GetPosition() == p &&
-          bullet.second->type() == "Cannonball") {
+      std::string temp = bullet.second->type_;
+      if (bullet.second->GetPosition() == p && temp == "Cannonball") {
         game_core_->PushEventRemoveObstacle(id_);
       }
-      if (bullet.second->GetPosition() == p &&
-          bullet.second->type() == "Rocket") {
+      if (bullet.second->GetPosition() == p && temp == "Rocket") {
         game_core_->AddObstacle<obstacle::Block>(position_, rotation_);
         game_core_->PushEventRemoveObstacle(id_);
       }

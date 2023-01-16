@@ -7,17 +7,15 @@ Bullet::Bullet(GameCore *core,
                uint32_t player_id,
                glm::vec2 position,
                float rotation,
-               float damage_scale)
+               float damage_scale,
+               std::string type)
     : Object(core, id, position, rotation),
       unit_id_(unit_id),
       player_id_(player_id),
-      damage_scale_(damage_scale) {
+      damage_scale_(damage_scale),
+      type_(type) {
 }
 
 Bullet::~Bullet() = default;
-
-std::string Bullet::type() {
-  return "";
-}
 
 }  // namespace battle_game

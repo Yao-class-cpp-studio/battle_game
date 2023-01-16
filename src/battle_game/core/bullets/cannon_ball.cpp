@@ -12,7 +12,14 @@ CannonBall::CannonBall(GameCore *core,
                        float rotation,
                        float damage_scale,
                        glm::vec2 velocity)
-    : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
+    : Bullet(core,
+             id,
+             unit_id,
+             player_id,
+             position,
+             rotation,
+             damage_scale,
+             "Cannonball"),
       velocity_(velocity) {
 }
 
@@ -44,10 +51,6 @@ void CannonBall::Update() {
   if (should_die) {
     game_core_->PushEventRemoveBullet(id_);
   }
-}
-
-std::string CannonBall::type() {
-  return "Cannonball";
 }
 
 CannonBall::~CannonBall() {

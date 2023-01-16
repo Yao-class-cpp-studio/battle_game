@@ -15,7 +15,6 @@ class CannonBall : public Bullet {
   ~CannonBall() override;
   void Render() override;
   void Update() override;
-  std::string type() override;
 
  private:
   glm::vec2 velocity_{};
