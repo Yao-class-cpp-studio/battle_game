@@ -118,6 +118,10 @@ void Unit::RenderLifeBar() {
 void Unit::RenderHelper() {
 }
 
+bool Unit::CheckDamage(glm::vec2 position, glm::vec2 velocity) const {
+  return 0;
+}
+
 const char *Unit::UnitName() const {
   return "Unknown Unit";
 }

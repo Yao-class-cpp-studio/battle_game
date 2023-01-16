@@ -12,6 +12,14 @@ const float pi = acos(-1.0);
 
 TankStarusc::TankStarusc(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
+  Skill qwq;
+  qwq.name = "Sheild";
+  qwq.description = "Can only attack from the front.";
+  qwq.time_remain = 0;
+  qwq.time_total = 12 * kTickPerSecond;
+  qwq.type = E;
+  qwq.function = SKILL_ADD_FUNCTION(TankStarusc::SheildClick);
+  skills_.push_back(qwq);
 }
 
 void TankStarusc::Render() {
@@ -21,10 +29,32 @@ void TankStarusc::Render() {
 void TankStarusc::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
+  Sheild();
   Fire();
 }
 
 // next step : 上下左右移动 WSAD
+
+void TankStarusc::SheildClick() {
+  have_sheild_ = 10 * kTickPerSecond;
+  sheild_count_down_ = 12 * kTickPerSecond;
+}
+
+void TankStarusc::Sheild() {
+  skills_[0].time_remain = sheild_count_down_;
+  if (have_sheild_)
+    --have_sheild_;
+  if (sheild_count_down_)
+    --sheild_count_down_;
+  else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_E])
+        SheildClick();
+    }
+  }
+}
 
 void TankStarusc::Fire() {
   // 回旋子弹
@@ -58,6 +88,32 @@ void TankStarusc::Fire() {
         position_ + Rotate({0.0f, 1.2f}, fire_theta_), fire_theta_,
         GetDamageScale(), velocity);
   }
+}
+
+float TankStarusc::Vec2Cross(glm::vec2 x, glm::vec2 y) const {
+  return x.x * y.y - x.y * y.x;
+}
+
+bool TankStarusc::CheckDamage(glm::vec2 position, glm::vec2 velocity) const {
+  // 0 -> damage
+  if (!have_sheild_)
+    return 0;
+  /*
+  tank_body_model_index 坦克底座大小
+  判断子弹所在射线与坦克前面的直线(x,y)交点是否位于线段(x,y)上
+  */
+  if (glm::dot(velocity, Rotate(glm::vec2{0.0f, 1.0f}, rotation_)) >
+      eps_starusc_)
+    return 1;
+  position = WorldToLocal(position);
+  glm::vec2 x = Rotate(glm::vec2{0.8f, 1.0f}, rotation_),
+            y = Rotate(glm::vec2{-0.8f, 1.0f}, rotation_);
+  float a = TankStarusc::Vec2Cross(y - x, position - x),
+        b = TankStarusc::Vec2Cross(position + velocity - x, y - x);
+  glm::vec2 intersection = position + velocity * (a / (a + b));
+  if (glm::dot(x - intersection, y - intersection) < -eps_starusc_)
+    return 0;
+  return 1;
 }
 
 const char *TankStarusc::UnitName() const {

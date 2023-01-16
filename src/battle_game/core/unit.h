@@ -71,6 +71,13 @@ class Unit : public Object {
    * true, otherwise return false.
    * */
   [[nodiscard]] virtual bool IsHit(glm::vec2 position) const = 0;
+  /*
+   * This virtual function is used to check whether the damage should be
+   * received after the hit according to skills of the unit. Return 0 for
+   * damage, otherwise return 1.
+   * */
+  [[nodiscard]] virtual bool CheckDamage(glm::vec2 position,
+                                         glm::vec2 velocity) const;
 
   template <class BulletType, class... Args>
   void GenerateBullet(glm::vec2 position,
