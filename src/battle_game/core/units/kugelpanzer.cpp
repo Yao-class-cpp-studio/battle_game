@@ -101,6 +101,7 @@ void Kugelpanzer::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  Click();
 }
 
 void Kugelpanzer::TankMove(float move_speed, float rotate_angular_speed) {
@@ -169,6 +170,25 @@ void Kugelpanzer::Fire() {
             position_ + Rotate({0.0f, 0.0f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         }
+      }
+    }
+  }
+}
+
+void Kugelpanzer::Click() {
+  if (displacement_count_down_) {
+    displacement_count_down_--;
+  } 
+  else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_RIGHT]) {
+        auto new_position = input_data.mouse_cursor_position;
+        if (!game_core_->IsBlockedByObstacles(new_position)) {
+          game_core_->PushEventMoveUnit(id_, new_position);
+        }
+        displacement_count_down_ = kTickPerSecond / 8;  // displacement interval 1/8 second.
       }
     }
   }
