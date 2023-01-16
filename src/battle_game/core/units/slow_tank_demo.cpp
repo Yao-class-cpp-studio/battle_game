@@ -55,8 +55,8 @@ void SlowTank::Fire() {
   }
 }
 
-void SlowTank::TurrentRotate() {
-  Tank::TurrentRotate();
+void SlowTank::TurretRotate() {
+  Tank::TurretRotate();
 }
 
 const char *SlowTank::UnitName() const {
