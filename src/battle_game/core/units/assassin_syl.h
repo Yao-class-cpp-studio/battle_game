@@ -21,8 +21,8 @@ class AssassinSyl : public Tank {
   [[nodiscard]] const char *Author() const override;
 
   uint32_t fire_count_down_{0};
-  uint32_t Invincible_count_down_{100};
-  uint32_t ChibakuTensei_count_down_{1000};
+  uint32_t invincible_count_down_{100};
+  uint32_t chibaku_tensei_count_down_{1000};
   uint32_t is_invincible_{0};
   bool is_chibaku_tensei_{false};
 };

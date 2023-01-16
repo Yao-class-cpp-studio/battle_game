@@ -123,18 +123,18 @@ void AssassinSyl::Update() {
 
 void AssassinSyl::InvincibleClick() {
   is_invincible_ = 5 * kTickPerSecond;
-  Invincible_count_down_ = 8 * kTickPerSecond;
+  invincible_count_down_ = 8 * kTickPerSecond;
 }
 
 void AssassinSyl::ChibakuTenseiClick() {
-  ChibakuTensei_count_down_ = 20 * kTickPerSecond;
+  chibaku_tensei_count_down_ = 20 * kTickPerSecond;
   is_chibaku_tensei_ = true;
 }
 
 void AssassinSyl::Invincible() {
-  skills_[0].time_remain = Invincible_count_down_;
-  if (Invincible_count_down_) {
-    Invincible_count_down_--;
+  skills_[0].time_remain = invincible_count_down_;
+  if (invincible_count_down_) {
+    invincible_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -150,9 +150,9 @@ void AssassinSyl::Invincible() {
 }
 
 void AssassinSyl::ChibakuTensei() {
-  skills_[1].time_remain = ChibakuTensei_count_down_;
-  if (ChibakuTensei_count_down_) {
-    ChibakuTensei_count_down_--;
+  skills_[1].time_remain = chibaku_tensei_count_down_;
+  if (chibaku_tensei_count_down_) {
+    chibaku_tensei_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {

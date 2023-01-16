@@ -50,14 +50,14 @@ void FallenAngel::Update() {
 
 void FallenAngel::ThePowerFromAbyssClick() {
   is_burning_ = 4 * kTickPerSecond;
-  ThePowerFromAbyss_count_down_ = 6 * kTickPerSecond;
+  the_power_from_abyss_count_down_ = 6 * kTickPerSecond;
   if (health_ > 0.4) {
     health_ -= 0.2;
   }
 }
 
 void FallenAngel::TheSalvationFromStarsClick() {
-  TheSalvationFromStars_count_down_ = 15 * kTickPerSecond;
+  the_salvation_from_stars_count_down_ = 15 * kTickPerSecond;
   health_ += 0.4;
   if (health_ > 1) {
     health_ = 1;
@@ -73,9 +73,9 @@ void FallenAngel::TheBlessOfGod() {
 }
 
 void FallenAngel::ThePowerFromAbyss() {
-  skills_[0].time_remain = ThePowerFromAbyss_count_down_;
-  if (ThePowerFromAbyss_count_down_) {
-    ThePowerFromAbyss_count_down_--;
+  skills_[0].time_remain = the_power_from_abyss_count_down_;
+  if (the_power_from_abyss_count_down_) {
+    the_power_from_abyss_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -94,9 +94,9 @@ void FallenAngel::ThePowerFromAbyss() {
 }
 
 void FallenAngel::TheSalvationFromStars() {
-  skills_[1].time_remain = TheSalvationFromStars_count_down_;
-  if (TheSalvationFromStars_count_down_) {
-    TheSalvationFromStars_count_down_--;
+  skills_[1].time_remain = the_salvation_from_stars_count_down_;
+  if (the_salvation_from_stars_count_down_) {
+    the_salvation_from_stars_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
