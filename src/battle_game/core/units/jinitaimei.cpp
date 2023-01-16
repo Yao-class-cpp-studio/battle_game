@@ -24,7 +24,12 @@ void Jinitaimei::Render() {
   battle_game::SetRotation(turret_rotation_);
 }//texture
 
-
+void Jinitaimei::Update() {
+  TankMove(3.0f, glm::radians(180.0f));
+  TurretRotate();
+  Jinitaimei::Fire();
+}
+    
 void Jinitaimei::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
@@ -100,7 +105,10 @@ void Jinitaimei::Fire() {
   }
 }
 
-
+bool Jinitaimei::IsHit(glm::vec2 position) const {
+  return Tank::IsHit(position);
+}
+    
 const char *Jinitaimei::UnitName() const {
   return "JiNiTaiMei";
 }
