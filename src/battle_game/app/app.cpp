@@ -273,6 +273,13 @@ void App::UpdateImGui() {
                        ImGuiWindowFlags_AlwaysAutoResize)) {
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
+      if (time_ < 60) {
+        time_++;
+      } else {
+        time_ = 0;
+        second_++;
+      }
+      ImGui::Text(u8"游戏时间: %d 秒", second_);
       auto selectable_list = game_core_->GetSelectableUnitList();
       auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
       ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),
