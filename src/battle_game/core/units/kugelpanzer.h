@@ -1,5 +1,6 @@
 #pragma once
 #include "battle_game/core/unit.h"
+#include <queue>
 namespace battle_game::unit {
 class Kugelpanzer : public Unit {
  public:
@@ -19,5 +20,7 @@ class Kugelpanzer : public Unit {
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
   uint32_t displacement_count_down_{0};
+  double damping;
+  std::queue<glm::vec2> displacement;
 };
 }  // namespace battle_game::unit
