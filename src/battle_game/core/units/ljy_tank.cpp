@@ -62,4 +62,4 @@ const char *LjyTank::UnitName() const {
 const char *LjyTank::Author() const {
   return "Ljy";
 }
-}  // namespace battle_game::unit 
+}  // namespace battle_game::unit
