@@ -19,4 +19,5 @@ class DISBall : public Bullet {
  private:
   glm::vec2 velocity_{};
 };
+
 }  // namespace battle_game::bullet

@@ -3,9 +3,9 @@
 #include "battle_game/core/units/tiny_tank.h"
 
 namespace battle_game::unit {
-class QHCritTank : public Tank {
+class QXTank1 : public Tank {
  public:
-  QHCritTank(GameCore *game_core, uint32_t id, uint32_t player_id);
+  QXTank1(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Update() override;
   // 1
  protected:

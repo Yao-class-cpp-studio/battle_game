@@ -55,6 +55,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::QXTank);
   ADD_SELECTABLE_UNIT(unit::QHCritTank);
   ADD_SELECTABLE_UNIT(unit::DISTank);
+  ADD_SELECTABLE_UNIT(unit::QXTank1);
 
   unit.reset();
 }

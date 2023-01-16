@@ -11,6 +11,7 @@ class DISTank : public Unit {
   // 1
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);
+
   void TurretRotate();
   void Fire();
   [[nodiscard]] const char *UnitName() const override;

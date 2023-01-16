@@ -16,6 +16,7 @@ class RangeBall : public Bullet {
   void Render() override;
   void Update() override;
   // float range_;
+  //
   // float distance_;
   // const int die_time_;
   int die_time_;
