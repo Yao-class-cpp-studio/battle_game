@@ -9,7 +9,7 @@ class WoodenBlock : public Obstacle {
               glm::vec2 position,
               float rotation = 0.0f,
               glm::vec2 scale = glm::vec2{1.0f, 1.0f});
-  const bool iswooden() const override;
+  const bool IsWooden() const override;
 
  private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
