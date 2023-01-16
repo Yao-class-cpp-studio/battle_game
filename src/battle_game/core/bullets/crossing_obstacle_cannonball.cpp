@@ -52,4 +52,8 @@ CrossingObstaclesCannonball::~CrossingObstaclesCannonball() {
         glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}, 3.0f);
   }
 }
+<<<<<<< HEAD
 }  // namespace battle_game::bullet
+=======
+}  // namespace battle_game::bullet
+>>>>>>> efc4d4f1f3df6ae4324ba100220aeb44c9fb690b

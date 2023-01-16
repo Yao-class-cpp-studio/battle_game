@@ -19,4 +19,8 @@ class CrossingObstaclesCannonball : public Bullet {
  private:
   glm::vec2 velocity_{};
 };
+<<<<<<< HEAD
 }  // namespace battle_game::bullet
+=======
+}  // namespace battle_game::bullet
+>>>>>>> efc4d4f1f3df6ae4324ba100220aeb44c9fb690b
