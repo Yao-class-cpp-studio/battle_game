@@ -37,7 +37,7 @@ DoomTank::DoomTank(GameCore *game_core, uint32_t id, uint32_t player_id)
 
 void DoomTank::Render() {
   Tank::Render();
-  if (IsShield) {
+  if (IsShield_) {
     SetTransformation(position_, 0.0f, glm::vec2{1.3f});
     SetColor(game_core_->GetPlayerColor(player_id_));
     SetTexture("../../textures/shield.png");
@@ -159,14 +159,14 @@ void DoomTank::Leech() {
     }
   }
   if (leech_time_) {
-    IsLeeched = true;
+    IsLeeched_ = true;
   } else {
-    IsLeeched = false;
+    IsLeeched_ = false;
   }
 }
 
 void DoomTank::ToLeech() {
-  if (IsLeeched) {
+  if (IsLeeched_) {
     SetHealth(GetHealth() + 0.003 * (tmp_begin_ - tmp_end_));
     leech_time_--;
   }
@@ -177,25 +177,25 @@ void DoomTank::Shield() {
     shield_count_down_--;
   } else {
     if (begin_ - end_ >= 0.05) {
-      IsShield = true;
-      InitialHealth = GetHealth();
+      IsShield_ = true;
+      InitialHealth_ = GetHealth();
       shield_count_down_ = 5 * kTickPerSecond;
       shield_time_ = 3 * kTickPerSecond;
       ToShield();
     }
   }
 
-  if (IsShield) {
+  if (IsShield_) {
     if (!shield_time_) {
-      IsShield = false;
+      IsShield_ = false;
       double temp;
-      if (InitialHealth +
-              IsLeeched * (240-leech_time_)*0.003 * (tmp_begin_ - tmp_end_) >
+      if (InitialHealth_ +
+              IsLeeched_ * (240-leech_time_)*0.003 * (tmp_begin_ - tmp_end_) >
           GetHealth()) {
         temp = GetHealth();
       } else {
-        temp = InitialHealth +
-               IsLeeched * (240 - leech_time_) * 0.003 * (tmp_begin_ - tmp_end_);
+        temp = InitialHealth_ +
+               IsLeeched_ * (240 - leech_time_) * 0.003 * (tmp_begin_ - tmp_end_);
       }
       SetHealth(temp);
     } else {
