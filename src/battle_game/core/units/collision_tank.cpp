@@ -61,25 +61,20 @@ void CollisionTank::AlreadyHit() {
 }
 
 void CollisionTank::Fire() {
-  if (fire_count_down_) {
-    fire_count_down_--;
-  } else {
-    auto player = game_core_->GetPlayer(player_id_);
-    if (player) {
-      auto &input_data = player->GetInputData();
-      auto &units = game_core_->GetUnits();
-      for (auto &unit : units) {
-        if (unit.first == player_id_) {
-          continue;
-        }
-        if ((unit.first != id_) && (unit.second->IsHit(position_)) &&
-            (alreadyhit_[unit.first] == false)) {
-          game_core_->PushEventDealDamage(unit.first, id_, 20.0f);
-          game_core_->PushEventDealDamage(id_, unit.first, 5.0f);
-          alreadyhit_[unit.first] = true;
-        }
+  auto player = game_core_->GetPlayer(player_id_);
+  if (player) {
+    auto &input_data = player->GetInputData();
+    auto &units = game_core_->GetUnits();
+    for (auto &unit : units) {
+      if (unit.first == player_id_) {
+        continue;
       }
-      fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+      if ((unit.first != id_) && (unit.second->IsHit(position_)) &&
+          (alreadyhit_[unit.first] == false)) {
+        game_core_->PushEventDealDamage(unit.first, id_, 20.0f);
+        game_core_->PushEventDealDamage(id_, unit.first, 5.0f);
+        alreadyhit_[unit.first] = true;
+      }
     }
   }
 }
@@ -97,3 +92,4 @@ const char *CollisionTank::Author() const {
   return "Ljy and Zkx";
 }
 }  // namespace battle_game::unit
+
