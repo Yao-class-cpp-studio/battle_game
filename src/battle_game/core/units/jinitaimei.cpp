@@ -37,7 +37,7 @@ void Jinitaimei::Update() {
   Jinitaimei::Fire();
   Explosion();
 }
-
+    
 void Jinitaimei::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
@@ -78,9 +78,7 @@ void Jinitaimei::TurretRotate() {
     if (glm::length(diff) < 1e-4) {
       turret_rotation_ = rotation_;
     } 
-    //else {
       turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-    //}
   }
 }//mouse
 
