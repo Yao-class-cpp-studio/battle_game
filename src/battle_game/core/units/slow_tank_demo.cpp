@@ -93,7 +93,7 @@ void SlowTank::Update() {
   TurretRotate();
   Fire();
   if (GetHealth() < 0.25f)
-    Sparkle<particle::Smoke>();
+    Smoke();
 }
 
 void SlowTank::Fire() {
