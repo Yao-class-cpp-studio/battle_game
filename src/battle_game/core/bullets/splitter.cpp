@@ -1,7 +1,7 @@
 #include "splitter.h"
-#include "battle_game/core/game_core.h"
 
 #include "battle_game/core/bullets/splitter.h"
+#include "battle_game/core/game_core.h"
 
 namespace battle_game::bullet {
 Splitter::Splitter(GameCore *core,
@@ -14,7 +14,8 @@ Splitter::Splitter(GameCore *core,
                    glm::vec2 velocity,
                    uint32_t split_num)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
-      velocity_(velocity), split_num_(split_num) {
+      velocity_(velocity),
+      split_num_(split_num) {
 }
 
 void Splitter::Render() {

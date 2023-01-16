@@ -1,16 +1,17 @@
 #include "battle_game/core/obstacles/fragile_block.h"
+
 #include "battle_game/core/game_core.h"
 
 namespace battle_game::obstacle {
 
 FragileBlock::FragileBlock(GameCore *game_core,
-                                     uint32_t id,
-                                     glm::vec2 position,
-                                     float rotation,
-                                     glm::vec2 scale,
-                                     float damage_scale,
-                                     uint32_t split_num,
-                                     glm::vec2 velocity)
+                           uint32_t id,
+                           glm::vec2 position,
+                           float rotation,
+                           glm::vec2 scale,
+                           float damage_scale,
+                           uint32_t split_num,
+                           glm::vec2 velocity)
     : Obstacle(game_core, id, position, rotation),
       split_num_{split_num},
       damage_scale_{damage_scale},

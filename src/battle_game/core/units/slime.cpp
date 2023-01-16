@@ -24,8 +24,8 @@ Slime::Slime(GameCore *game_core, uint32_t id, uint32_t player_id)
         auto sin_theta = std::sin(theta);
         auto cos_theta = std::cos(theta);
         vertices.push_back({{sin_theta * 1.0f, cos_theta * 1.0f},
-                                   {0.0f, 0.0f},
-                                   {0.0f, 1.0f, 0.0f, 1.0f}});
+                            {0.0f, 0.0f},
+                            {0.0f, 1.0f, 0.0f, 1.0f}});
         indices.push_back(i);
         indices.push_back((i + 1) % precision);
         indices.push_back(precision);
@@ -41,8 +41,8 @@ Slime::~Slime() {
       auto turret_rotation = i * glm::radians(360.0f) / death_split_;
       auto velocity = Rotate(glm::vec2{0.0f, 2.0f}, turret_rotation);
       GenerateBullet<bullet::Splitter>(
-        position_ + Rotate({0.0f, 1.2f}, turret_rotation), turret_rotation,
-        5 * GetDamageScale(), velocity);
+          position_ + Rotate({0.0f, 1.2f}, turret_rotation), turret_rotation,
+          5 * GetDamageScale(), velocity);
     }
   }
 }
@@ -106,8 +106,8 @@ void Slime::Fire() {
         }
         auto velocity = Rotate(glm::vec2{0.0f, 2.0f}, turret_rotation);
         GenerateBullet<bullet::Splitter>(
-            position_ + Rotate({0.0f, 1.2f}, turret_rotation),
-            turret_rotation, 5 * GetDamageScale(), velocity);
+            position_ + Rotate({0.0f, 1.2f}, turret_rotation), turret_rotation,
+            5 * GetDamageScale(), velocity);
         game_core_->PushEventDealDamage(id_, id_, 60.0f);
         fire_count_down_ = 2 * kTickPerSecond;  // Fire interval 2 second.
       }
