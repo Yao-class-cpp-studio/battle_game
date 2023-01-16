@@ -81,7 +81,7 @@ void RandomBall::Update() {
           now_dir = glm::vec2{std::cos(now_theta), std::sin(now_theta)};
           now_pos = unit.second->GetPosition() + crit_radius_ * now_dir;
           now_rot = glm::pi<float>() + now_theta;
-          now_v = -std::powf(glm::dot(velocity_, velocity_), 0.5f) * now_dir;
+          now_v = -std::pow(glm::dot(velocity_, velocity_), 0.5f) * now_dir;
           crit_bullet_type_list[game_core_->RandomInt(
               0, crit_bullet_type_list.size() - 1)](
               my_unit, now_pos, now_rot, damage_scale_ / float(crit_number_),
