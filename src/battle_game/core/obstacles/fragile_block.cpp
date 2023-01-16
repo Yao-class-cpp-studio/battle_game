@@ -12,9 +12,9 @@ FragileBlock::FragileBlock(GameCore *game_core,
                            float damage_scale,
                            uint32_t split_num,
                            glm::vec2 velocity)
-    : Obstacle(game_core, id, position, rotation),
-      split_num_{split_num},
+    : DestructibleBlock(game_core, id, position, rotation, scale),
       damage_scale_{damage_scale},
+      split_num_{split_num},
       velocity_{velocity} {
   SetDestructible();
 }
@@ -31,16 +31,4 @@ FragileBlock::~FragileBlock() {
   }
 }
 
-bool FragileBlock::IsBlocked(glm::vec2 p) const {
-  p = WorldToLocal(p);
-  return p.x <= scale_.x && p.x >= -scale_.x && p.y <= scale_.y &&
-         p.y >= -scale_.y;
-}
-
-void FragileBlock::Render() {
-  battle_game::SetColor(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
-  battle_game::SetTexture(0);
-  battle_game::SetTransformation(position_, rotation_, scale_);
-  battle_game::DrawModel(0);
-}
 }  // namespace battle_game::obstacle

@@ -1,9 +1,10 @@
 #pragma once
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/obstacle.h"
+#include "battle_game/core/obstacles/destructible_block.h"
 
 namespace battle_game::obstacle {
-class FragileBlock : public Obstacle {
+class FragileBlock : public DestructibleBlock {
  public:
   FragileBlock(GameCore *game_core,
                uint32_t id,
@@ -16,9 +17,6 @@ class FragileBlock : public Obstacle {
   ~FragileBlock();
 
  private:
-  [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
-  void Render() override;
-  glm::vec2 scale_{1.0f};
   uint32_t split_num_{4};
   float damage_scale_{1.0f};
   glm::vec2 velocity_{0.0f, 20.0f};
