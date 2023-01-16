@@ -1,8 +1,8 @@
 #pragma once
 #include "battle_game/core/unit.h"
-
+#include "battle_game/core/units/tiny_tank.h"
 namespace battle_game::unit {
-class Laser_Tank : public Unit {
+class Laser_Tank : public Tank {
  public:
   Laser_Tank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
@@ -10,8 +10,6 @@ class Laser_Tank : public Unit {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  void TankMove(float move_speed, float rotate_angular_speed);
-  void TurretRotate();
   void Destroy();
   void DestroyClick();
   void Fire();

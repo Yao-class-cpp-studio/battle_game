@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "battle_game/core/bullets/bullets.h"
-#include "battle_game/core/bullets/laser.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
 
@@ -73,7 +72,7 @@ void Laser_Tank::Destroy() {
 }
 
 Laser_Tank::Laser_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
-    : Unit(game_core, id, player_id) {
+    : Tank(game_core, id, player_id) {
   Skill temp;
   temp.name = "Destroy";
   temp.description = "Huge Damage";
@@ -133,12 +132,7 @@ Laser_Tank::Laser_Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void Laser_Tank::Render() {
-  battle_game::SetTransformation(position_, rotation_);
-  battle_game::SetTexture(0);
-  battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(tank_body_model_index);
-  battle_game::SetRotation(turret_rotation_);
-  battle_game::DrawModel(tank_turret_model_index);
+  Tank::Render();
 }
 
 void Laser_Tank::Update() {
@@ -146,50 +140,6 @@ void Laser_Tank::Update() {
   TurretRotate();
   Destroy();
   Fire();
-}
-
-void Laser_Tank::TankMove(float move_speed, float rotate_angular_speed) {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    glm::vec2 offset{0.0f};
-    if (input_data.key_down[GLFW_KEY_W]) {
-      offset.y += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_S]) {
-      offset.y -= 1.0f;
-    }
-    float speed = move_speed * GetSpeedScale();
-    offset *= kSecondPerTick * speed;
-    auto new_position =
-        position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
-    if (!game_core_->IsBlockedByObstacles(new_position)) {
-      game_core_->PushEventMoveUnit(id_, new_position);
-    }
-    float rotation_offset = 0.0f;
-    if (input_data.key_down[GLFW_KEY_A]) {
-      rotation_offset += 1.0f;
-    }
-    if (input_data.key_down[GLFW_KEY_D]) {
-      rotation_offset -= 1.0f;
-    }
-    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
-    game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
-  }
-}
-
-void Laser_Tank::TurretRotate() {
-  auto player = game_core_->GetPlayer(player_id_);
-  if (player) {
-    auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
-    }
-    turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
-  }
 }
 
 bool Laser_Tank::IsHit(glm::vec2 position) const {
