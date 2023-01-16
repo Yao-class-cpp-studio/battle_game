@@ -28,21 +28,21 @@ void Crater::Render() {
   if (recovery_count_down_)
     recovery_count_down_--;
   else {
-    RecoverRender_();
+    RecoverRender();
   }
 }
 
-void Crater::RecoverRender_() {
+void Crater::RecoverRender() {
     battle_game::SetColor(glm::vec4{1.0f, 1.0f, 1.0f, 0.9f});
     battle_game::SetTexture("../../textures/mushroom_cloud.png");
     battle_game::SetTransformation(position_, rotation_, scale_);
     battle_game::DrawModel(0);
 }
   void Crater::Update() {
-  Recover_();
+  Recover();
   }
 
-void Crater::Recover_() {
+void Crater::Recover() {
   auto &units = game_core_->GetObstacles();
   if (crater_count_down_) {
     crater_count_down_--;
