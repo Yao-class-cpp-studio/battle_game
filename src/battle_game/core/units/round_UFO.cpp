@@ -47,6 +47,42 @@ RoundUFO::RoundUFO(GameCore *game_core, uint32_t id, uint32_t player_id)
       tank_body_model_index = mgr->RegisterModel(body_vertices, turret_indices);
     }
   }
+  // Skill
+  Skill Teleport;
+  Teleport.name = "Teleport";
+  Teleport.description = "Teleport to anywhere the mouse click.";
+  Teleport.time_remain = 0;
+  Teleport.time_total = kTickPerSecond * 10;
+  Teleport.type = SkillType::E;
+  Teleport.function = SKILL_ADD_FUNCTION(RoundUFO::Teleport_);
+  skills_.push_back(Teleport);
+}
+
+void RoundUFO::Teleport() {
+  skills_[0].time_remain = teleport_count_down_;
+  if (teleport_count_down_) {
+    teleport_count_down_--;
+  } else {
+    auto player = game_core_->GetPlayer(player_id_);
+    if (player) {
+      auto &input_data = player->GetInputData();
+      if (input_data.key_down[GLFW_KEY_E]) {
+        Teleport_();
+        teleport_count_down_ = 600;
+      }
+    }
+  }
+}
+
+void RoundUFO::Teleport_() {
+  auto player = game_core_->GetPlayer(player_id_);
+  if (player) {
+    auto &input_data = player->GetInputData();
+    auto new_position = input_data.mouse_cursor_position;
+    if (!game_core_->IsBlockedByObstacles(new_position)) {
+      game_core_->PushEventMoveUnit(id_, new_position);
+    }
+  }
 }
 
 void RoundUFO::Render() {
@@ -60,6 +96,7 @@ void RoundUFO::Render() {
 
 void RoundUFO::Update() {
   UFOMove(10.0f);
+  Teleport();
   Fire();
 }
 
