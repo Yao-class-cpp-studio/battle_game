@@ -29,7 +29,7 @@ void LightCannonBall::Update() {
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     Obstacle *obstacle = game_core_->GetBlockedObstacle(position_);
-    if ((!game_core_->IsOutOfRange(position_)) && obstacle->iswooden())
+    if ((!game_core_->IsOutOfRange(position_)) && obstacle->IsWooden())
       game_core_->PushEventRemoveObstacle(obstacle->GetId());
     should_die = true;
   }
