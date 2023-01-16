@@ -28,7 +28,7 @@ void CannonBall::Update() {
   bool should_die = false;
   if (game_core_->IsBlockedByObstacles(position_)) {
     Obstacle *obstacle = game_core_->GetBlockedObstacle(position_);
-    if ((!game_core_->IsOutOfRange(position_)) && obstacle->iswooden()) {
+    if ((!game_core_->IsOutOfRange(position_)) && obstacle->IsWooden()) {
       glm::vec2 position = obstacle->GetPosition();
       game_core_->PushEventRemoveObstacle(obstacle->GetId());
       game_core_->AddObstacle<battle_game::obstacle::Block>(position);
