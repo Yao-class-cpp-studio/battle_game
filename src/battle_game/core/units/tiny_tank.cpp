@@ -80,7 +80,11 @@ void Tank::Render() {
 }
 
 void Tank::Update() {
-  TankMove(3.0f, glm::radians(180.0f));
+  if(!is_stuck_by_swamp_) {
+    TankMove(3.0f, glm::radians(180.0f));
+  } else {
+    TankMove(1.5f, glm::radians(180.0f));
+  }
   TurretRotate();
   Fire();
 }
@@ -106,7 +110,7 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
         !game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);	      game_core_->PushEventMoveUnit(id_, new_position);
     }	    }
-    if (is_stuck_by_swamp = game_core_->IsStuckBySwamp(new_position)) {
+    if (is_stuck_by_swamp_ = game_core_->IsStuckBySwamp(new_position)) {
       game_core_->PushEventDealDamage(id_, id_, 0.02f);
     }
     float rotation_offset = 0.0f;
