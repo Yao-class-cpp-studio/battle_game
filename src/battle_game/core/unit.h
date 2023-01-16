@@ -1,5 +1,4 @@
 #pragma once
-#include "battle_game/core/game_core.h"
 #include "battle_game/core/object.h"
 #include "glm/glm.hpp"
 
