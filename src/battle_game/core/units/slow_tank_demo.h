@@ -16,3 +16,4 @@ class SlowTank : public Tank {
   [[nodiscard]] const char *Author() const override;
 };
 }  // namespace battle_game::unit
+
