@@ -1,0 +1,27 @@
+#pragma once
+#include "battle_game/core/bullet.h"
+
+namespace battle_game::bullet {
+class RangeBall : public Bullet {
+ public:
+  RangeBall(GameCore *core,
+            uint32_t id,
+            uint32_t unit_id,
+            uint32_t player_id,
+            glm::vec2 position,
+            float rotation,
+            float damage_scale,
+            glm::vec2 velocity);
+  ~RangeBall() override;
+  void Render() override;
+  void Update() override;
+  // float range_;
+  // float distance_;
+  // const int die_time_;
+  int die_time_;
+  int now_time_ = 3;
+
+ private:
+  glm::vec2 velocity_{};
+};
+}  // namespace battle_game::bullet
