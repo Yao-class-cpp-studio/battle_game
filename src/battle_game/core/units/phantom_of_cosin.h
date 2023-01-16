@@ -11,7 +11,7 @@ class phantom_of_cosin : public Tank {
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
-  void Fire();
+   void Fire();
 
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
