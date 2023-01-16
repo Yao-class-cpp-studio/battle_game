@@ -15,8 +15,5 @@ class Tankwzk : public Tank {
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
-<<<<<<< HEAD
+
 }  // namespace battle_game::unit
-=======
-}  // namespace battle_game::unit
->>>>>>> efc4d4f1f3df6ae4324ba100220aeb44c9fb690b
