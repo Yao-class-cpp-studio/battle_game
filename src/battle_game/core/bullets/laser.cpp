@@ -23,11 +23,11 @@ Laser::Laser(GameCore *core,
       velocity_(velocity),
       end_position_(position),
       color_(game_core_->GetPlayerColor(player_id)),
-      LightIndex_(LightIndex),
-      Mode_(Mode),
-      ComboTime((Mode == 2) ? 2000 : 0),
+      light_index_(LightIndex),
+      mode_(Mode),
+      combo_time_((Mode == 2) ? 2000 : 0),
       Original_velocity_(velocity) {
-  switch (LightIndex_) {
+  switch (light_index_) {
     case 0:
       color_ = glm::vec4{0.0f, 0.0f, 0.0f, 1.0f};
       break;
@@ -51,16 +51,16 @@ Laser::Laser(GameCore *core,
       break;
   }
 }
-void Laser::update_color(float &a) {
+void Laser::UpdateColor(float &a) {
   a += 0.4 * (game_core_->RandomFloat() - 0.5);
   a = a > 0 ? a : 0;
   a = a < 1 ? a : 1;
 }
 void Laser::Render() {
-  if (ComboTime * speed > 1500) {
-    update_color(color_.x);
-    update_color(color_.y);
-    update_color(color_.z);
+  if (combo_time_ * speed > 1500) {
+    UpdateColor(color_.x);
+    UpdateColor(color_.y);
+    UpdateColor(color_.z);
   }
   int Distance = 0;
   auto tmp_position_ = position_;
@@ -87,10 +87,10 @@ void Laser::Render() {
 }
 
 void Laser::Update() {
-  if (Mode_ == 2 && ComboTime == 2077) {
+  if (mode_ == 2 && combo_time_ == 2077) {
     game_core_->PushEventRemoveBullet(id_);
   }
-  ComboTime++;
+  combo_time_++;
   auto player = game_core_->GetPlayer(player_id_);
   auto &units = game_core_->GetUnits();
   if (!player)
@@ -140,30 +140,30 @@ void Laser::Update() {
 // TODO
 
 float Laser::angle() {
-  return 0.01 * (pow(ComboTime * speed, 1.15)) + 3 * LightIndex_ / pi;
+  return 0.01 * (pow(combo_time_ * speed, 1.15)) + 3 * light_index_ / pi;
 }
 
 float Laser::Angle_() {
-  return cos(angle()) * std::max(exp(-0.002 * ComboTime * speed) - 0.07, 0.0);
+  return cos(angle()) * std::max(exp(-0.002 * combo_time_ * speed) - 0.07, 0.0);
 }
 
 float Laser::Transparent_() {
-  if (ComboTime * speed > 1500) {
+  if (combo_time_ * speed > 1500) {
     return 0.7;
   }
   return std::min(
-      1.0, (0.01 * sin(angle()) + 0.012) * (1 + ComboTime * speed / 1000));
+      1.0, (0.01 * sin(angle()) + 0.012) * (1 + combo_time_ * speed / 1000));
 }
 
 float Laser::Width_() {
-  return std::min(0.3, 0.007 * pow(ComboTime * speed, 0.5) + 0.07);
+  return std::min(0.3, 0.007 * pow(combo_time_ * speed, 0.5) + 0.07);
 }
 
 float Laser::White_(int Distance) {
-  if (ComboTime * speed > 1500) {
+  if (combo_time_ * speed > 1500) {
     return 0.7;
   }
-  return std::min(0.5, 0.2 + ComboTime * speed / (700 * log(Distance)));
+  return std::min(0.5, 0.2 + combo_time_ * speed / (700 * log(Distance)));
 }
 Laser::~Laser() {
   game_core_->PushEventRemoveBullet(id_);
