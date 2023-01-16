@@ -9,7 +9,6 @@ class ShadowTank : public Tank {
   void Update() override;
 
  protected:
-  ;
   void CallShadow();
   void CallShadowClick();
   [[nodiscard]] const char *UnitName() const override;

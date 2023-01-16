@@ -14,7 +14,7 @@ class RushTank : public Tank {
   [[nodiscard]] const char *Author() const override;
   void Rush();
   void RushClick();
-  int time_stamp;
+  int time_stamp_;
   int rush_count_down_;
 };
 }  // namespace battle_game::unit
