@@ -16,5 +16,3 @@ class Phantom : public InfernoTank {
   [[nodiscard]] const char *Author() const override;
 };
 }  // namespace battle_game::unit
-   // add something to rerun
-   // add something to teach QHT to generate 2PRs
