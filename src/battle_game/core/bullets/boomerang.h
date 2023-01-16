@@ -12,7 +12,7 @@ class Boomerang : public Bullet {
             float rotation,
             float damage_scale,
             glm::vec2 velocity,
-            float angular_velocity=4.0f);
+            float angular_velocity = 4.0f);
   ~Boomerang() override;
   void Render() override;
   void Update() override;
