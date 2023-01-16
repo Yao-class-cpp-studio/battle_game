@@ -15,5 +15,7 @@ class Wood : public Obstacle {
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;
   void Render() override;
   glm::vec2 scale_{1.0f};
+  bool hit_by_cannonball_{false};
+  bool hit_by_rocket_{false};
 };
 }  // namespace battle_game::obstacle

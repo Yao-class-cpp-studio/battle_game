@@ -46,6 +46,10 @@ void CannonBall::Update() {
   }
 }
 
+std::string CannonBall::type() {
+  return "Cannonball";
+}
+
 CannonBall::~CannonBall() {
   for (int i = 0; i < 5; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(

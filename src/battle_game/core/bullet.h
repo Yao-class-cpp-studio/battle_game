@@ -15,6 +15,7 @@ class Bullet : public Object {
          float rotation,
          float damage_scale);
   ~Bullet() override;
+  virtual std::string type();
 
  protected:
   uint32_t unit_id_{};

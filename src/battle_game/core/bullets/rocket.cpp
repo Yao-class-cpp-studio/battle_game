@@ -109,6 +109,10 @@ void Rocket::Update() {
   }
 }
 
+std::string CannonBall::type() {
+  return "Cannonball";
+}
+
 Rocket::~Rocket() {
   for (int i = 0; i < 5; i++) {
     game_core_->PushEventGenerateParticle<particle::Smoke>(

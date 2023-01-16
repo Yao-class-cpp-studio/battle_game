@@ -15,4 +15,9 @@ Bullet::Bullet(GameCore *core,
 }
 
 Bullet::~Bullet() = default;
+
+std::string Bullet::type() {
+  return "";
+}
+
 }  // namespace battle_game

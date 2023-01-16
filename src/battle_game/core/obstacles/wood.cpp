@@ -1,5 +1,6 @@
 #include "battle_game/core/obstacles/wood.h"
 
+#include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 
 namespace battle_game::obstacle {
@@ -13,27 +14,35 @@ Wood::Wood(GameCore *game_core,
 }
 
 Wood::~Wood() {
+  for (int i = 0; i < 5; i++) {
+    game_core_->PushEventGenerateParticle<particle::Smoke>(
+        position_, rotation_, game_core_->RandomInCircle() * 2.0f, 0.5f,
+        glm::vec4{0.4f, 0.2f, 0.0f, 4.0f}, 3.0f);
+  }
 }
 
 bool Wood::IsBlocked(glm::vec2 p) const {
-  /*auto pl = WorldToLocal(p);
+  auto pl = WorldToLocal(p);
   if (pl.x <= scale_.x && pl.x >= -scale_.x && pl.y <= scale_.y &&
       pl.y >= -scale_.y) {
     for (auto &bullet : game_core_->GetBullets()) {
-      if (bullet.second->GetPosition() == p) {
-        return false;
+      if (bullet.second->GetPosition() == p &&
+          bullet.second->type() == "Cannonball") {
+        game_core_->PushEventRemoveObstacle(id_);
+      }
+      if (bullet.second->GetPosition() == p &&
+          bullet.second->type() == "Rocket") {
+        game_core_->AddObstacle<obstacle::Block>(position_, rotation_);
+        game_core_->PushEventRemoveObstacle(id_);
       }
     }
     return true;
   }
-  return false;*/
-  p = WorldToLocal(p);
-  return p.x <= scale_.x && p.x >= -scale_.x && p.y <= scale_.y &&
-         p.y >= -scale_.y;
+  return false;
 }
 
 void Wood::Render() {
-  battle_game::SetColor(glm::vec4{0.0f, 0.0f, 1.0f, 1.0f});
+  battle_game::SetColor(glm::vec4{0.8f, 0.4f, 0.0f, 1.0f});
   battle_game::SetTexture(0);
   battle_game::SetTransformation(position_, rotation_, scale_);
   battle_game::DrawModel(0);
