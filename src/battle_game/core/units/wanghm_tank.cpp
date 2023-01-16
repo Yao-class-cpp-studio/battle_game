@@ -83,7 +83,7 @@ void WanghmTank::Update() {
     TankMove(2.0f, glm::radians(180.0f));
   }
   if (health_ < 0.2f) {
-    TankMove(0.4f, glm::radians(180.0f));
+    TankMove(5.0f, glm::radians(180.0f));
   }
   TurretRotate();
   Fire();
