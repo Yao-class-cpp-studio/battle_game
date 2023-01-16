@@ -121,6 +121,9 @@ void Unit::RenderLifeBar() {
   }
 }
 
+void Unit::RenderHelper() {
+}
+
 const char *Unit::UnitName() const {
   return "Unknown Unit";
 }
