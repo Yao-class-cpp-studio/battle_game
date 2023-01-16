@@ -1,13 +1,12 @@
+#include "battle_game/core/units/swift_tank.h"
+
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
-#include "battle_game/core/units/swift_tank.h"
 #include "battle_game/graphics/graphics.h"
 
 namespace battle_game::unit {
 
-SwiftTank::SwiftTank(GameCore *game_core,
-                                     uint32_t id,
-                                     uint32_t player_id)
+SwiftTank::SwiftTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
@@ -32,7 +31,7 @@ void SwiftTank::TankMove(float move_speed, float rotate_angular_speed) {
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
-    if (input_data.key_down[GLFW_KEY_F]&&f_count_) {
+    if (input_data.key_down[GLFW_KEY_F] && f_count_) {
       offset.y += 1.0f * kTickPerSecond;
       f_count_ = 0;
     }
@@ -58,7 +57,7 @@ void SwiftTank::TankMove(float move_speed, float rotate_angular_speed) {
 }
 
 void SwiftTank::Fire() {
-  if (running_count_down_<360 ) {
+  if (running_count_down_ < 360) {
     running_count_down_++;
   }
   if (fire_count_down_) {
