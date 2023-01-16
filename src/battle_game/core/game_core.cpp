@@ -220,11 +220,17 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
                                    float damage) {
   event_queue_.emplace([=]() {
     auto unit = GetUnit(dst_unit_id);
-    if (unit) {
+    bool is_phantom = (unit && (std::strcmp(unit->UnitName(), "Phantom") == 0));
+    int remain_dodge_time =
+        (is_phantom ? ((unit::Phantom *)unit)->GetRemainDodgeTime() : 0);
+    if (unit && !remain_dodge_time) {
       unit->SetHealth(unit->GetHealth() - damage / unit->GetMaxHealth());
       if (unit->GetHealth() <= 0.0f) {
         PushEventKillUnit(dst_unit_id, src_unit_id);
       }
+    }
+    if (remain_dodge_time) {
+      ((unit::Phantom *)unit)->SetRemainDodgeTime(remain_dodge_time - 1);
     }
   });
 }
@@ -276,7 +282,6 @@ int GameCore::RandomInt(int low_bound, int high_bound) {
 
 void GameCore::SetScene() {
   AddObstacle<obstacle::Block>(glm::vec2{-3.0f, 4.0f});
-  AddObstacle<obstacle::River>(glm::vec2{3.0f, 0.0f});
   AddObstacle<obstacle::ReboundingBlock>(glm::vec2{-10.0f, -10.0f},
                                          0.78539816339744830961566084581988f);
   AddObstacle<obstacle::ReboundingBlock>(glm::vec2{10.0f, -10.0f},
