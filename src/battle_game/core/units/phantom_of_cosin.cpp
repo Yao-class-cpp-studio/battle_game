@@ -13,7 +13,7 @@ phantom_of_cosin::phantom_of_cosin(GameCore *game_core,
 }
 
 
-void phantom_of_cosin::Update() {
+ void phantom_of_cosin::Update() {
  
     TankMove(6.17f, glm::radians(180.0f));
     TurretRotate();
