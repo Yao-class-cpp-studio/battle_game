@@ -16,7 +16,7 @@ class BuffGenerator : public Unit {
 
  private:
   void BuffGenerate();
-  uint32_t buff_count_down_{1200};
+  uint32_t buff_count_down_{1200};  // generate every 20s
   uint32_t buff_id_{0};
 };
 }  // namespace battle_game::unit
