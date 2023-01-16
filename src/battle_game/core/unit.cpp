@@ -31,12 +31,35 @@ void Unit::SetPosition(glm::vec2 position) {
   position_ = position;
 }
 
+int Unit::GetScore() {
+  if (!this)
+    return 0;
+  return score_;
+}
+int Unit::GetRank() {
+  if (!this)
+    return 0;
+  return rank_;
+}
+void Unit::UpdateScore(int n) {
+  if (!this)
+    return;
+  score_ += n;
+  if (score_ < 0)
+    score_ = 0;
+}
+void Unit::UpdateRank(int n) {
+  if (!this)
+    return;
+  rank_ = 1 + (score_ / 100);
+}
+
 void Unit::SetRotation(float rotation) {
   rotation_ = rotation;
 }
 
 float Unit::GetSpeedScale() const {
-  return 1.0f;
+  return 1.0f * ((score_ / 100) * 0.1 + 1.00);
 }
 
 float Unit::GetDamageScale() const {

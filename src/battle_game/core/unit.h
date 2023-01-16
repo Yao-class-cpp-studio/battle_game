@@ -58,6 +58,11 @@ class Unit : public Object {
   void HideLifeBar();
   virtual void RenderLifeBar();
 
+  void UpdateScore(int n);
+  void UpdateRank(int n);
+
+  int GetScore();
+  int GetRank();
   /*
    * This virtual function is used to render some extra helpers, such as
    * predicted trajectory of the bullet the unit will shoot, and etc., only
@@ -94,6 +99,9 @@ class Unit : public Object {
   glm::vec4 front_lifebar_color_{};
   glm::vec4 background_lifebar_color_{};
   glm::vec4 fadeout_lifebar_color_{};
+
+  int score_{0};
+  int rank_{1};
 
  private:
   float fadeout_health_;

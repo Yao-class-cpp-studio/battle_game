@@ -39,6 +39,9 @@ class GameCore {
   void Update();
   void Render();
 
+  glm::vec2 GetBoundaryHigh();
+  glm::vec2 GetBoundaryLow();
+
   template <class UnitType, class... Args>
   uint32_t AddUnit(uint32_t player_id, Args... args) {
     auto unit_index = unit_index_++;
@@ -216,6 +219,9 @@ class GameCore {
       primary_unit_allocation_functions_;
   std::vector<std::string> selectable_unit_list_;
   std::vector<bool> selectable_unit_list_skill_;
+
+  int score_{0};
+  int rank_{1};
 };
 
 template <class BulletType, class... Args>
