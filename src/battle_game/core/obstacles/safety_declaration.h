@@ -9,6 +9,7 @@ class SafetyDeclaration : public Obstacle {
                     glm::vec2 position,
                     float rotation = 0.0f,
                     glm::vec2 scale = glm::vec2{3.0f, 3.0f});
+  void HandleCollision(glm::vec2 &p) const override;
 
  private:
   [[nodiscard]] bool IsBlocked(glm::vec2 p) const override;

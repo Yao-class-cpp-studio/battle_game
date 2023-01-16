@@ -17,6 +17,10 @@ class Obstacle : public Object {
     return std::make_pair(glm::vec2(0, 0), glm::vec2(0, 0));
   }
 
+  virtual void HandleCollision(glm::vec2 &p) const {
+    return;
+  };
+
  protected:
 };
 }  // namespace battle_game

@@ -54,4 +54,24 @@ void SafetyDeclaration::Update() {
     game_core_->PushEventRemoveObstacle(id_);
   }
 }
+
+void SafetyDeclaration::HandleCollision(glm::vec2 &p) const {
+  auto local_p = WorldToLocal(p);
+
+  auto del1 = scale_.x - local_p.x;
+  auto del2 = local_p.x + scale_.x;
+  auto del3 = scale_.y - local_p.y;
+  auto del4 = local_p.y + scale_.y;
+  if (del1 <= del2 && del1 <= del3 && del1 <= del4) {
+    local_p.x = scale_.x;
+  } else if (del2 <= del1 && del2 <= del3 && del2 <= del4) {
+    local_p.x = -scale_.x;
+  } else if (del3 <= del1 && del3 <= del2 && del3 <= del4) {
+    local_p.y = scale_.y;
+  } else {
+    local_p.y = -scale_.y;
+  }
+
+  p = LocalToWorld(local_p);
+}
 }  // namespace battle_game::obstacle

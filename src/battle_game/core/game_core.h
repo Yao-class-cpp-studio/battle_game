@@ -184,6 +184,11 @@ class GameCore {
   glm::vec2 RandomOnCircle();
   glm::vec2 RandomInCircle();
 
+  glm::vec2 GetBoundaryHigh();
+  glm::vec2 GetBoundaryLow();
+
+  void HandleCollision(glm::vec2 &p);
+
  private:
   std::queue<std::function<void()>> event_queue_;
 

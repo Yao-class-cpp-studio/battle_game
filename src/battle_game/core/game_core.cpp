@@ -329,4 +329,32 @@ std::vector<const char *> GameCore::GetSelectableUnitList() const {
   }
   return result;
 }
+
+glm::vec2 GameCore::GetBoundaryHigh() {
+  return boundary_high_;
+}
+
+glm::vec2 GameCore::GetBoundaryLow() {
+  return boundary_low_;
+}
+
+void GameCore::HandleCollision(glm::vec2 &p) {
+  if (IsOutOfRange(p)) {
+    if (p.x < boundary_low_.x)
+      p.x = boundary_low_.x;
+    if (p.y < boundary_low_.x)
+      p.y = boundary_low_.y;
+    if (p.x > boundary_high_.x)
+      p.x = boundary_high_.x;
+    if (p.y > boundary_high_.y)
+      p.y = boundary_high_.y;
+    return;
+  }
+  for (auto &obstacle : obstacles_) {
+    if (obstacle.second->IsBlocked(p)) {
+      obstacle.second->HandleCollision(p);
+      return;
+    }
+  }
+}
 }  // namespace battle_game

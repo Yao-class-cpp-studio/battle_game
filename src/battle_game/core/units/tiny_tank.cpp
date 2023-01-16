@@ -104,7 +104,11 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
                               glm::vec4{offset, 0.0f, 0.0f}};
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
+    } else {
+      game_core_->HandleCollision(new_position);
+      game_core_->PushEventMoveUnit(id_, new_position);
     }
+
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
       rotation_offset += 1.0f;
