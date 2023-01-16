@@ -319,4 +319,3 @@ std::vector<const char *> GameCore::GetSelectableUnitList() const {
   return result;
 }
 }  // namespace battle_game
-
