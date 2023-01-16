@@ -48,7 +48,7 @@ class Unit : public Object {
   void SetLifeBarFrontColor(glm::vec4 new_color);
   void SetLifeBarBackgroundColor(glm::vec4 new_color);
   void SetLifeBarFadeoutColor(glm::vec4 new_color);
-  void Unit::SetOperateMode(bool operate_mode);
+  void SetOperateMode(bool operate_mode);
   [[nodiscard]] float GetLifeBarLength();
   [[nodiscard]] glm::vec2 GetLifeBarOffset();
   [[nodiscard]] glm::vec4 GetLifeBarFrontColor();
