@@ -52,6 +52,7 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::Railgun);
   ADD_SELECTABLE_UNIT(unit::Udongein);
   ADD_SELECTABLE_UNIT(unit::TankStarusc);
+  ADD_SELECTABLE_UNIT(unit::TankA);
 
   unit.reset();
 }

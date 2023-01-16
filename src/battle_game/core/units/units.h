@@ -1,5 +1,7 @@
 #pragma once
 
+#include "battle_game/core/units/TankA.h"
+#include "battle_game/core/units/TankAngel.h"
 #include "battle_game/core/units/TankStarusc.h"
 #include "battle_game/core/units/Whaooooo_tank.h"
 #include "battle_game/core/units/crit_tank.h"
