@@ -98,10 +98,10 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
     }
     float speed = move_speed * GetSpeedScale();
     offset *= kSecondPerTick * speed;
- 
-    auto relative_position = glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
-                                          glm::vec3{0.0f, 0.0f, 1.0f}) *
-                              glm::vec4{offset, 0.0f, 0.0f}};
+
+    auto relative_position = glm::vec2{
+        glm::rotate(glm::mat4{1.0f}, rotation_, glm::vec3{0.0f, 0.0f, 1.0f}) *
+        glm::vec4{offset, 0.0f, 0.0f}};
     game_core_->PushEventMoveRelativeUnit(id_, relative_position);
 
     float rotation_offset = 0.0f;

@@ -192,7 +192,8 @@ class GameCore {
 
  private:
   std::queue<std::function<void()>> event_queue_;
-  std::queue<std::function<void()>> awaiting_queue_;//this one is for "buff" type
+  std::queue<std::function<void()>> awaiting_queue_;
+  // this one is for "buff" type
 
   std::map<uint32_t, std::unique_ptr<Unit>> units_;
   uint32_t unit_index_{1};
