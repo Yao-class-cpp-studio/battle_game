@@ -6,26 +6,16 @@
 
 namespace battle_game::unit {
 
-namespace {
-uint32_t tank_body_model_index = 0xffffffffu;
-uint32_t tank_turret_model_index = 0xffffffffu;
-}  // namespace
-
 LjyTank::LjyTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
 }
 
 void LjyTank::Render() {
-  battle_game::SetTransformation(position_, rotation_);
-  battle_game::SetTexture(0);
-  battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
-  battle_game::DrawModel(tank_body_model_index);
-  battle_game::SetRotation(turret_rotation_);
-  battle_game::DrawModel(tank_turret_model_index);
+  Tank::Render();
 }
 
 void LjyTank::Update() {
-  TankMove(5.0f, glm::radians(180.0f));
+  TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
 }
