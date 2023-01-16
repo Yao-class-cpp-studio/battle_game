@@ -18,6 +18,9 @@ class Tank : public Unit {
 
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
+  
+  
+  
   bool is_stuck_by_swamp_{false};
 };
 }  // namespace battle_game::unit
