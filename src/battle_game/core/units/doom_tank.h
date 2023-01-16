@@ -8,9 +8,9 @@ class DoomTank : public Tank {
   DoomTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-  bool IsHit(glm::vec2 position) const;
 
  protected:
+  bool IsHit(glm::vec2 position) const;
   void RandomDo();
   void Doomsday();
   void DestroyAll();
@@ -21,14 +21,14 @@ class DoomTank : public Tank {
   void ToShield();
   uint32_t unit_id_{};
   uint32_t id_{0};
-  bool IsLeeched_ = false;
-  bool IsShield_ = false;
+  bool is_leeched_ = false;
+  bool is_shield_ = false;
   uint32_t doomsday_count_down_{0};
   uint32_t leech_count_down_{0};
   uint32_t leech_time_{240};
   uint32_t shield_count_down_{0};
   uint32_t shield_time_{180};
-  double InitialHealth_;
+  double initial_health_;
   double begin_ = 1;
   double end_ = 0;
   double tmp_begin_;
