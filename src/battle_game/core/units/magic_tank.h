@@ -7,16 +7,17 @@ class MagicTank : public Tank {
   MagicTank(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
-  void Protect();
-  void Death();
-  void ProtectClick();
-  void DeathClick();
-  void Magic();
+
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
 
  protected:
   void TankMove(float move_speed, float rotate_angular_speed);
   void TurretRotate();
+  void Protect();
+  void Death();
+  void ProtectClick();
+  void DeathClick();
+  void Magic();
   void Fire();
 
   [[nodiscard]] const char *UnitName() const override;
