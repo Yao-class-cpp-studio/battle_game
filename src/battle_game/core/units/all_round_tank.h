@@ -11,9 +11,7 @@ class AllRound : public Tank {
 
  protected:
   void Fire();
-  void SwitchMode1();
-  void SwitchMode2();
-  void SwitchMode3();
+  void SwitchMode();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 
