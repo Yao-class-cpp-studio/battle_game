@@ -9,7 +9,7 @@ Obstacle::Obstacle(GameCore *game_core,
     : Object(game_core, id, position, rotation) {
 }
 
-const bool Obstacle::iswooden() const {
+const bool Obstacle::IsWooden() const {
   return false;
 }
 
