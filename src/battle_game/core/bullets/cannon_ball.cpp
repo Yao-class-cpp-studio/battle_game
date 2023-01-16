@@ -32,7 +32,7 @@ void CannonBall::Update() {
 
   auto &units = game_core_->GetUnits();
   for (auto &unit : units) {
-    if (unit.first == player_id_) {
+    if (unit.first == unit_id_) {
       continue;
     }
     if (unit.second->IsHit(position_)) {

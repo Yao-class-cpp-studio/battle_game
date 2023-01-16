@@ -18,11 +18,16 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
     {
       /* Tank Body */
       tank_body_model_index = mgr->RegisterModel(
-          {{{-0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
-           {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}}},
-          {0, 1, 2, 1, 2, 3});
+          {
+              {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{0.8f, -1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              // distinguish front and back
+              {{0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+              {{-0.6f, 1.0f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
+          },
+          {0, 1, 2, 1, 2, 3, 0, 2, 5, 2, 4, 5});
     }
 
     {
@@ -119,15 +124,14 @@ void Tank::TurretRotate() {
     auto diff = input_data.mouse_cursor_position - position_;
     if (glm::length(diff) < 1e-4) {
       turret_rotation_ = rotation_;
+    } else {
+      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
     }
-    turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
   }
 }
 
 void Tank::Fire() {
-  if (fire_count_down_) {
-    fire_count_down_--;
-  } else {
+  if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
@@ -140,12 +144,16 @@ void Tank::Fire() {
       }
     }
   }
+  if (fire_count_down_) {
+    fire_count_down_--;
+  }
 }
 
 bool Tank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
-         position.y < 1.0f;
+         position.y < 1.0f && position.x + position.y < 1.6f &&
+         position.y - position.x < 1.6f;
 }
 
 const char *Tank::UnitName() const {
