@@ -90,6 +90,9 @@ void Tank::Update() {
 }
 
 void Tank::TankMove(float move_speed, float rotate_angular_speed) {
+  if (is_stuck_by_swamp_ = game_core_->IsStuckBySwamp(new_position)) {
+    game_core_->PushEventDealDamage(id_, id_, 0.02f);
+  }
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -136,9 +139,6 @@ void Tank::TurretRotate() {
 }
 
 void Tank::Fire() {
-  if (is_stuck_by_swamp_ = game_core_->IsStuckBySwamp(new_position)) {
-    game_core_->PushEventDealDamage(id_, id_, 0.02f);
-  }
   if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
