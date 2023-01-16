@@ -19,14 +19,14 @@ TankYfl::TankYfl(GameCore *game_core, uint32_t id, uint32_t player_id)
 }
 
 void TankYfl::SpeedUpClick() {
-  IsSpeed = 3 * kTickPerSecond;
+  is_speed_ = 3 * kTickPerSecond;
   speedup_count_down_ = 8 * kTickPerSecond;
 }
 
 void TankYfl::SpeedUp() {
   skills_[0].time_remain = speedup_count_down_;
-  if (IsSpeed) {
-    IsSpeed--;
+  if (is_speed_) {
+    is_speed_--;
   }
   if (speedup_count_down_) {
     speedup_count_down_--;
@@ -42,7 +42,7 @@ void TankYfl::SpeedUp() {
 }
 
 float TankYfl::GetSpeedScale() const {
-  if (IsSpeed) {
+  if (is_speed_) {
     return 3.5f;
   } else
     return 1.0f;
