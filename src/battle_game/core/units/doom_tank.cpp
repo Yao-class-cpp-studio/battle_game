@@ -145,7 +145,7 @@ void DoomTank::Doomsday() {
   }
 }
 
-void DoomTank::Leech_() {
+void DoomTank::Leech() {
   skills_[1].time_remain = leech_count_down_;
   end_ = GetHealth();
   if (leech_count_down_) {
