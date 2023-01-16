@@ -17,21 +17,14 @@ void phantom_of_cosin::Render() {
 }
 
 void phantom_of_cosin::Update() {
-  if (SpeedMode == 1) {
+ 
     TankMove(6.17f, glm::radians(180.0f));
     TurretRotate();
     Fire();
-  } else if (SpeedMode == 2) {
-    TankMove(0.1f, glm::radians(180.0f));
-    TurretRotate();
-    Fire();
+ 
   }
 }
-void SetSpeedMode(int mode) {
-  if ((mode-1)* (mode-2)== 0) {
-    SpeedMode = mode;
-  }
-}
+
 void phantom_of_cosin::Fire() {
   Tank::Fire();
 }
