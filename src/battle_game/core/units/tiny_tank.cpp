@@ -121,11 +121,21 @@ void Tank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
+    auto diff_1 = input_data.mouse_cursor_position - cursor_current_position_;
+    if (glm::length(diff_1) > 1) {
+      auto diff = input_data.mouse_cursor_position - position_;
+      if (glm::length(diff) < 1e-4) {
+        turret_rotation_ = rotation_;
+      } else {
+        turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
+      }
+      cursor_current_position_ = input_data.mouse_cursor_position;
     } else {
-      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
+      if (input_data.key_down[GLFW_KEY_LEFT]) {
+        turret_rotation_ += glm::radians(1.0f);
+      } else if (input_data.key_down[GLFW_KEY_RIGHT]) {
+        turret_rotation_ -= glm::radians(1.0f);
+      }
     }
   }
 }
