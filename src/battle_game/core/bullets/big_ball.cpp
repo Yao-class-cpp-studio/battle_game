@@ -16,7 +16,7 @@ BigBall::BigBall(GameCore *core,
 }
 
 void BigBall::Render() {
-  SetTransformation(position_, rotation_, glm::vec2{0.3f});
+  SetTransformation(position_, rotation_, glm::vec2{0.1f * damage_scale_});
   SetColor(game_core_->GetPlayerColor(player_id_));
   SetTexture("../../textures/particle3.png");
   DrawModel(0);
