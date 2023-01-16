@@ -108,10 +108,7 @@ void Tank::TankMove(float move_speed, float rotate_angular_speed) {
                               glm::vec4{offset, 0.0f, 0.0f}};
     if (game_core_->IsStuckBySwamp(new_position) ||
         !game_core_->IsBlockedByObstacles(new_position)) {
-      game_core_->PushEventMoveUnit(id_, new_position);	      game_core_->PushEventMoveUnit(id_, new_position);
-    }	    }
-    if (is_stuck_by_swamp_ = game_core_->IsStuckBySwamp(new_position)) {
-      game_core_->PushEventDealDamage(id_, id_, 0.02f);
+      game_core_->PushEventMoveUnit(id_, new_position);
     }
     float rotation_offset = 0.0f;
     if (input_data.key_down[GLFW_KEY_A]) {
@@ -139,6 +136,9 @@ void Tank::TurretRotate() {
 }
 
 void Tank::Fire() {
+  if (is_stuck_by_swamp_ = game_core_->IsStuckBySwamp(new_position)) {
+    game_core_->PushEventDealDamage(id_, id_, 0.02f);
+  }
   if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
