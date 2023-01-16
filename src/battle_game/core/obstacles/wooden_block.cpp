@@ -3,10 +3,10 @@
 namespace battle_game::obstacle {
 
 WoodenBlock::WoodenBlock(GameCore *game_core,
-             uint32_t id,
-             glm::vec2 position,
-             float rotation,
-             glm::vec2 scale)
+                         uint32_t id,
+                         glm::vec2 position,
+                         float rotation,
+                         glm::vec2 scale)
     : Obstacle(game_core, id, position, rotation) {
 }
 
