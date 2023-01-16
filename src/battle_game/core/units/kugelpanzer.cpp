@@ -121,9 +121,9 @@ void Kugelpanzer::TankMove(float move_speed, float rotate_angular_speed) {
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
                                           glm::vec3{0.0f, 0.0f, 1.0f}) *
                               glm::vec4{offset, 0.0f, 0.0f}};
-    if (!displacement.empty()) {
-      new_position += displacement.front();
-      displacement.pop();
+    if (!displacement_.empty()) {
+      new_position += displacement_.front();
+      displacement_.pop();
     }
     if (!game_core_->IsBlockedByObstacles(new_position)) {
       game_core_->PushEventMoveUnit(id_, new_position);
@@ -167,12 +167,12 @@ void Kugelpanzer::Fire() {
             turret_rotation_, GetDamageScale(), velocity);
         glm::vec2 offset{0.0f};
         offset.y += 0.1f;
-        damping = 0.93f;
+        damping_ = 0.93f;
         while (offset.y > 1e-2) {
-          offset.y *= damping;
+          offset.y *= damping_;
           auto new_displacement = - glm::vec2{glm::rotate(glm::mat4{1.0f}, turret_rotation_,
                                               glm::vec3{0.0f, 0.0f, 1.0f}) * glm::vec4{offset, 0.0f, 0.0f}};
-          displacement.push(new_displacement); 
+          displacement_.push(new_displacement); 
         }
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
       }

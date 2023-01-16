@@ -20,7 +20,7 @@ class Kugelpanzer : public Unit {
   float turret_rotation_{0.0f};
   uint32_t fire_count_down_{0};
   uint32_t displacement_count_down_{0};
-  double damping;
-  std::queue<glm::vec2> displacement;
+  double damping_;
+  std::queue<glm::vec2> displacement_;
 };
 }  // namespace battle_game::unit
