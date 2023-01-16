@@ -11,7 +11,7 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-Assassin_syl::Assassin_syl(GameCore *game_core, uint32_t id, uint32_t player_id)
+AssassinSyl::AssassinSyl(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Tank(game_core, id, player_id) {
   Skill temp;
   temp.name = "Invincible";
@@ -19,7 +19,7 @@ Assassin_syl::Assassin_syl(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.time_remain = 0;
   temp.time_total = 480;
   temp.type = E;
-  temp.function = SKILL_ADD_FUNCTION(Assassin_syl::InvincibleClick);
+  temp.function = SKILL_ADD_FUNCTION(AssassinSyl::InvincibleClick);
   skills_.push_back(temp);
   temp.name = "Chibaku Tensei";
   temp.description =
@@ -28,7 +28,7 @@ Assassin_syl::Assassin_syl(GameCore *game_core, uint32_t id, uint32_t player_id)
   temp.time_remain = 0;
   temp.time_total = 1200;
   temp.type = Q;
-  temp.function = SKILL_ADD_FUNCTION(Assassin_syl::ChibakuTenseiClick);
+  temp.function = SKILL_ADD_FUNCTION(AssassinSyl::ChibakuTenseiClick);
   skills_.push_back(temp);
   temp.name = "Sneak";
   temp.description =
@@ -95,7 +95,7 @@ Assassin_syl::Assassin_syl(GameCore *game_core, uint32_t id, uint32_t player_id)
   }
 }
 
-void Assassin_syl::Render() {
+void AssassinSyl::Render() {
   if (isInvincible) {
     battle_game::SetTransformation(position_, rotation_);
     battle_game::SetTexture(0);
@@ -109,7 +109,7 @@ void Assassin_syl::Render() {
   };
 }
 
-void Assassin_syl::Update() {
+void AssassinSyl::Update() {
   float move_speed = 6.0f;
   if (isInvincible) {
     move_speed *= (1.0f + (1.0f - health_) * 2.0f);
@@ -121,17 +121,17 @@ void Assassin_syl::Update() {
   Fire();
 }
 
-void Assassin_syl::InvincibleClick() {
+void AssassinSyl::InvincibleClick() {
   isInvincible = 5 * kTickPerSecond;
   Invincible_count_down_ = 8 * kTickPerSecond;
 }
 
-void Assassin_syl::ChibakuTenseiClick() {
+void AssassinSyl::ChibakuTenseiClick() {
   ChibakuTensei_count_down_ = 20 * kTickPerSecond;
   isChibakuTensei = true;
 }
 
-void Assassin_syl::Invincible() {
+void AssassinSyl::Invincible() {
   skills_[0].time_remain = Invincible_count_down_;
   if (Invincible_count_down_) {
     Invincible_count_down_--;
@@ -149,7 +149,7 @@ void Assassin_syl::Invincible() {
   }
 }
 
-void Assassin_syl::ChibakuTensei() {
+void AssassinSyl::ChibakuTensei() {
   skills_[1].time_remain = ChibakuTensei_count_down_;
   if (ChibakuTensei_count_down_) {
     ChibakuTensei_count_down_--;
@@ -164,7 +164,7 @@ void Assassin_syl::ChibakuTensei() {
   }
 }
 
-float Assassin_syl::GetDamageScale() {
+float AssassinSyl::GetDamageScale() {
   float damage_scale = 1;
   if (isChibakuTensei && isInvincible) {
     damage_scale = 20;
@@ -173,7 +173,7 @@ float Assassin_syl::GetDamageScale() {
   return damage_scale;
 }
 
-void Assassin_syl::Fire() {
+void AssassinSyl::Fire() {
   if (fire_count_down_) {
     fire_count_down_--;
   } else {
@@ -197,7 +197,7 @@ void Assassin_syl::Fire() {
   }
 }
 
-bool Assassin_syl::IsHit(glm::vec2 position) const {
+bool AssassinSyl::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   if (isInvincible) {
     return false;
@@ -206,11 +206,11 @@ bool Assassin_syl::IsHit(glm::vec2 position) const {
          position.y < 1.0f;
 }
 
-const char *Assassin_syl::UnitName() const {
+const char *AssassinSyl::UnitName() const {
   return "Assassin";
 }
 
-const char *Assassin_syl::Author() const {
+const char *AssassinSyl::Author() const {
   return "syl";
 }
 

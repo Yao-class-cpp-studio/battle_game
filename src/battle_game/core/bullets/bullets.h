@@ -4,7 +4,7 @@
 #include "battle_game/core/bullets/crit_bullet.h"
 #include "battle_game/core/bullets/electric_ball.h"
 #include "battle_game/core/bullets/energy_beam.h"
-#include "battle_game/core/bullets/fireball.h"
+#include "battle_game/core/bullets/fire_ball.h"
 #include "battle_game/core/bullets/hand_sword.h"
 #include "battle_game/core/bullets/mine.h"
 #include "battle_game/core/bullets/missile.h"

@@ -3,9 +3,9 @@
 #include "battle_game/core/units/tiny_tank.h"
 
 namespace battle_game::unit {
-class Assassin_syl : public Tank {
+class AssassinSyl : public Tank {
  public:
-  Assassin_syl(GameCore *game_core, uint32_t id, uint32_t player_id);
+  AssassinSyl(GameCore *game_core, uint32_t id, uint32_t player_id);
   void Render() override;
   void Update() override;
   [[nodiscard]] bool IsHit(glm::vec2 position) const override;
