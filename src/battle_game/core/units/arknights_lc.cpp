@@ -31,7 +31,7 @@ void Arknights::Update() {
   ArknightsMove(3.0f);
   TurretRotate();
   Fire();
-  operators();
+  GenerateBlock();
 }
 
 void Arknights::ArknightsMove(float move_speed) {
