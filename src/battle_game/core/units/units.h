@@ -1,5 +1,4 @@
 #pragma once
-
 #include "battle_game/core/units/Whaooooo_tank.h"
 #include "battle_game/core/units/crit_tank.h"
 #include "battle_game/core/units/dark_fury.h"
