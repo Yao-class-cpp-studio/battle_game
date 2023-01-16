@@ -7,7 +7,7 @@ class PeaTank : public Tank {
   PeaTank(GameCore *game_core, uint32_t id, uint32_t player_id);
 
  protected:
-  void fire();
+  void Fire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
