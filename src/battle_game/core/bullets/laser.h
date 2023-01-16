@@ -13,7 +13,7 @@ class Laser : public Bullet {
         float damage_scale,
         glm::vec2 velocity,
         int LightIndex,
-        int mode);
+        int Mode);
   ~Laser() override;
   void Render() override;
   void Update() override;
@@ -27,7 +27,7 @@ class Laser : public Bullet {
   float White_(int Distance);
   int combo_time_;
   int light_index_;
-  int Mode_;
+  int mode_;
   glm::vec2 Original_velocity_{};
   glm::vec2 velocity_{};
   glm::vec2 end_position_{};
