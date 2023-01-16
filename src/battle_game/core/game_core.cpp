@@ -138,17 +138,6 @@ bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   return false;
 }
 
-bool GameCore::IsStuckBySwamp(glm::vec2 p) const {
-  glm::vec2 swamp_test_ = {114514, 0};
-  for (auto &obstacle : obstacles_) {
-    if (!obstacle.second->IsBlocked(swamp_test_))
-      continue;
-    if (obstacle.second->IsBlocked(p))
-      return true;
-  }
-  return false;
-}
-
 void GameCore::PushEventMoveUnit(uint32_t unit_id, glm::vec2 new_position) {
   event_queue_.emplace([this, unit_id, new_position]() {
     auto unit = GetUnit(unit_id);
@@ -313,4 +302,17 @@ std::vector<const char *> GameCore::GetSelectableUnitList() const {
   }
   return result;
 }
+
+
+bool GameCore::IsStuckBySwamp(glm::vec2 p) const {
+  glm::vec2 swamp_test_ = {114514, 0};
+  for (auto &obstacle : obstacles_) {
+    if (!obstacle.second->IsBlocked(swamp_test_))
+      continue;
+    if (obstacle.second->IsBlocked(p))
+      return true;
+  }
+  return false;
+}
+
 }  // namespace battle_game
