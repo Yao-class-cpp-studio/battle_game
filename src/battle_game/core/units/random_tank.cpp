@@ -1,9 +1,8 @@
-#include "random_tank.h"
+#include "battle_game/core/units/random_tank.h"
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "tiny_tank.h"
-#include<random>
+#include<cstdlib>
 
 
 namespace battle_game::unit {
@@ -23,9 +22,10 @@ void RandomTank::Update() {
 }
 
 void RandomTank::RandomFire() {
-  default_random_engine e;
-  uniform_int_distribution<unsigned> u(1, 9);
-  if (fire_count_down_ < ran*ran || fire_count_down_ %ran!=0) {
+  if (random_number_ > 10) {
+    random_number_ = (rand()) % 9 + 1;
+  }
+  if (fire_count_down_ < random_number_*random_number_ || fire_count_down_ %random_number_ !=0) {
     fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
@@ -38,7 +38,7 @@ void RandomTank::RandomFire() {
             turret_rotation_, GetDamageScale(), velocity);
         if (fire_count_down_ == 0) {
           fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-          ran = u(e);
+          random_number_ = (rand()) % 9 + 1;
         } else {
           fire_count_down_--;
         }

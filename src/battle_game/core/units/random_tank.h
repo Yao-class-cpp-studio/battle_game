@@ -13,6 +13,6 @@ class RandomTank : public Tank {
   void RandomFire();
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
-  uint32_t ran;
+  uint32_t random_number_;
 };
 }  // namespace battle_game::unit
