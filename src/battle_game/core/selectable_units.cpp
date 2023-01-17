@@ -45,7 +45,12 @@ void GameCore::GeneratePrimaryUnitList() {
   ADD_SELECTABLE_UNIT(unit::ZibengDog);
   ADD_SELECTABLE_UNIT(unit::RageTank);
   ADD_SELECTABLE_UNIT(unit::SmokeBombTank);
-  ADD_SELECTABLE_UNIT(unit::MultiTank);
+  ADD_SELECTABLE_UNIT(unit::MultiTank); 
+  ADD_SELECTABLE_UNIT(unit::Sparky);
+  ADD_SELECTABLE_UNIT(unit::CritTank);
+  ADD_SELECTABLE_UNIT(unit::Railgun);
+  ADD_SELECTABLE_UNIT(unit::Udongein);
+
   unit.reset();
 }
 }  // namespace battle_game
