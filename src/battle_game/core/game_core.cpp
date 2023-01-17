@@ -138,7 +138,7 @@ void GameCore::ProcessEventQueue() {
 bool GameCore::IsBlockedByObstacles(glm::vec2 p) const {
   if (IsOutOfRange(p)) {
     return true;
-  }
+  } 
   for (auto &obstacle : obstacles_) {
     if (obstacle.second->IsBlocked(p)) {
       return true;

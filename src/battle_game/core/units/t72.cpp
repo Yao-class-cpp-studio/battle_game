@@ -88,19 +88,10 @@ void T72::Fire() {
     fire_count_down_--;
     if (charging_time_) {
       charging_time_--;
-      for (int i = 0; i < 20; i++) {
-        game_core_->PushEventGenerateParticle<particle::Smoke>(
-            LocalToWorld(game_core_->RandomOnCircle() * 2.0f), rotation_,
-            glm::vec2{0.0f}, 0.1f, glm::vec4{0.541f, 0.784f, 0.8745f, 1.0f},
-            3.0f);
-        game_core_->PushEventGenerateParticle<particle::Smoke>(
-            LocalToWorld(game_core_->RandomOnCircle() * 2.0f), rotation_,
-            glm::vec2{0.0f}, 0.1f, glm::vec4{1.0f, 1.0f, 1.0f, 1.0f}, 3.0f);
-      }
     } else {
       if (should_shoot_) {
         auto velocity = Rotate(glm::vec2{0.0f, 40.0f}, direction_rotation_);
-        GenerateBullet<bullet::Coin>(
+        GenerateBullet<bullet::T72Missile>(
             position_ + Rotate({0.0f, 1.2f}, direction_rotation_),
             direction_rotation_, GetDamageScale(), velocity, 20);
         should_shoot_ = false;

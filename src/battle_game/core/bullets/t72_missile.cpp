@@ -14,9 +14,27 @@ T72Missile::T72Missile(GameCore *core,
            glm::vec2 velocity,
            uint32_t life_time)
     : Bullet(core, id, unit_id, player_id, position, rotation, damage_scale),
+      startingpoint_(position),
       velocity_(velocity),
       life_time_(life_time),
       total_time_(life_time) {
+}
+
+const float dis_above_obstacle_low = 4.0; 
+const float dis_above_obstable_up = 8.0; // missle above obstacle during 4.0 <= dis <= 8.0
+const float dis_above_ground_down = 0.0;
+const float dis_above_ground_up = 12.0; // missle above ground during 0.0 <= dis <= 12.0
+
+bool T72Missile::MissileBlockedByObstacles(glm::vec2 p) {
+  if (game_core_->IsOutOfRange(p)) {
+    return true;
+  } 
+  if (CalculateDistance_() > dis_above_ground_up) return true;
+  if (CalculateDistance_() >= dis_above_obstacle_low && 
+      CalculateDistance_() <= dis_above_obstable_up) return false;
+  if (game_core_->IsBlockedByObstacles(position_)) return true;
+  return false;
+  return false;
 }
 
 void T72Missile::Render() {
@@ -32,7 +50,7 @@ void T72Missile::Update() {
     life_time_--;
     position_ += velocity_ * kSecondPerTick;
 
-    if (game_core_->IsBlockedByObstacles(position_)) {
+    if (MissileBlockedByObstacles(position_)) {
       should_die = true;
     }
 
@@ -66,3 +84,5 @@ T72Missile::~T72Missile() {
   }
 }
 }  // namespace battle_game::bullet
+
+

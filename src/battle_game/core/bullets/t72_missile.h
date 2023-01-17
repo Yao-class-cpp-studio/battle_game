@@ -16,10 +16,18 @@ class T72Missile : public Bullet {
   ~T72Missile() override;
   void Render() override;
   void Update() override;
+  bool MissileBlockedByObstacles(glm::vec2 p);
+  float CalculateDistance_() {
+      float x = (position_ - startingpoint_).x;
+      float y = (position_ - startingpoint_).y;
+      return sqrt(x * x + y * y);
+  }
 
  private:
+  glm::vec2 startingpoint_{};
   glm::vec2 velocity_{};
   uint32_t life_time_{};
   uint32_t total_time_{};
+  
 };
 }  // namespace battle_game::bullet
