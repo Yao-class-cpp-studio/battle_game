@@ -32,7 +32,7 @@ void RandomTank::RandomFire() {
       auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
       GenerateBullet<bullet::CannonBall>(GetDamageScale(), velocity);
       fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-      random_number_ = game_core->RandomInt(1, 9);
+      random_number_ = game_core_->RandomInt(1, 9);
     } else {
       fire_count_down_--;
     }
