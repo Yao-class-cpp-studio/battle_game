@@ -121,12 +121,15 @@ void Tank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
-    auto diff = input_data.mouse_cursor_position - position_;
-    if (glm::length(diff) < 1e-4) {
-      turret_rotation_ = rotation_;
-    } else {
-      turret_rotation_ = std::atan2(diff.y, diff.x) - glm::radians(90.0f);
+    float rotation_offset = 0.0f;
+    if (input_data.key_down[GLFW_KEY_LEFT]) {
+      rotation_offset += 1.0f;
     }
+    if (input_data.key_down[GLFW_KEY_RIGHT]) {
+      rotation_offset -= 1.0f;
+    }
+    rotation_offset *= kSecondPerTick * glm::radians(180.0f) * GetSpeedScale()*0.5f;
+    turret_rotation_ += rotation_offset;
   }
 }
 
@@ -135,7 +138,7 @@ void Tank::Fire() {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
       auto &input_data = player->GetInputData();
-      if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
+      if (input_data.key_down[GLFW_KEY_UP])  {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
