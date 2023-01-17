@@ -106,3 +106,5 @@ RandomBall::~RandomBall() {
   }
 }
 }  // namespace battle_game::bullet
+
+// This sentence is run-caller
