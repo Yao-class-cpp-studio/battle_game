@@ -23,12 +23,8 @@ void RandomTank::Update() {
 }
 
 void RandomTank::RandomFire() {
-  if (random_number_ > 10) {
-    random_number_ = (rand()) % 9 + 1;
-  }
   if (fire_count_down_ < random_number_ * random_number_ ||
       fire_count_down_ % random_number_ != 0) {
-    fire_count_down_--;
   } else {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -40,7 +36,7 @@ void RandomTank::RandomFire() {
             turret_rotation_, GetDamageScale(), velocity);
         if (fire_count_down_ == 0) {
           fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-          random_number_ = (rand()) % 9 + 1;
+          random_number_ = RandomInt(1, 9);
         } else {
           fire_count_down_--;
         }
