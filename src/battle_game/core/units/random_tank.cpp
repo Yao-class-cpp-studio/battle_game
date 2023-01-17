@@ -33,14 +33,13 @@ void RandomTank::RandomFire() {
       GenerateBullet<bullet::CannonBall>(
           position_ + Rotate({0.0f, 1.5f}, turret_rotation_), turret_rotation_,
           GetDamageScale(), velocity);
-      if (fire_count_down_ == 0) {
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
-        random_number_ = game_core_->RandomInt(1, 9);
-      } else {
-        fire_count_down_--;
-      }
+      fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+      random_number_ = game_core_->RandomInt(1, 9);
+    } else {
+      fire_count_down_--;
     }
   }
+}
 }
 }
 
