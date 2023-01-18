@@ -15,7 +15,7 @@ class MultiTank : public Tank {
   void MultiFire();
   void Shield();
   bool be_protected = false;
-  uint32_t protect_time_ = 60;
+  uint32_t protect_time_ = 20;
   [[nodiscard]] const char *UnitName() const override;
   [[nodiscard]] const char *Author() const override;
 };
