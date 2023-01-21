@@ -11,4 +11,6 @@ add_subdirectory(external/abseil-cpp)
 list(APPEND BATTLE_GAME_EXTERNAL_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/external/abseil-cpp)
 list(APPEND BATTLE_GAME_EXTERNAL_INCLUDE_DIRS ${GRASSLAND_INCLUDE_DIRS})
 
+include_directories(external/asio/asio/include)
+
 add_subdirectory(src)
