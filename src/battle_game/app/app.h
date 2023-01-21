@@ -1,4 +1,5 @@
 #pragma once
+#include "asio.hpp"
 #include "battle_game/app/app_settings.h"
 #include "battle_game/app/device_model.h"
 #include "battle_game/core/game_core.h"
@@ -9,11 +10,16 @@ namespace battle_game {
 using namespace grassland;
 class App {
  public:
-  explicit App(const AppSettings &app_settings, GameCore *game_core);
-  void Run();
+  enum Mode { kOffline, kClient, kServer, kServerNoRender };
+
+  explicit App(const AppSettings &app_settings,
+               GameCore *game_core,
+               asio::io_context &io_context);
+  void Run(const Mode &mode = kOffline);
 
  private:
   void OnInit();
+  void OnReset(const Mode &mode);
   void OnLoop();
   void OnClose();
 
@@ -52,5 +58,11 @@ class App {
 
   uint32_t my_player_id_{0};
   float fov_y_{10.0f};
+  bool should_reset_;
+  Mode mode_{kOffline}, chosen_mode_{kOffline};
+  bool input_data_synced_;
+  std::chrono::time_point<std::chrono::steady_clock> begin_time_;
+  uint64_t updated_step_{0};
+  asio::io_context &io_context_;
 };
 }  // namespace battle_game

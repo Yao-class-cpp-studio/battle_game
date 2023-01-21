@@ -16,8 +16,10 @@ static void HelpMarker(const char *desc) {
   }
 }
 
-App::App(const AppSettings &app_settings, GameCore *game_core) {
-  game_core_ = game_core;
+App::App(const AppSettings &app_settings,
+         GameCore *game_core,
+         asio::io_context &io_context)
+    : game_core_(game_core), io_context_(io_context) {
   vulkan::framework::CoreSettings core_settings;
   core_settings.window_title = "Battle Game";
   core_settings.window_width = app_settings.width;
@@ -26,10 +28,14 @@ App::App(const AppSettings &app_settings, GameCore *game_core) {
   SetGlobalCore(core_.get());
 }
 
-void App::Run() {
+void App::Run(const Mode &mode) {
   OnInit();
+  OnReset(mode);
 
   while (!glfwWindowShouldClose(core_->GetWindow())) {
+    if (should_reset_) {
+      OnReset(chosen_mode_);
+    }
     OnLoop();
     glfwPollEvents();
   }
@@ -67,9 +73,18 @@ void App::OnInit() {
   SyncDeviceAssets();
   BuildRenderNodes();
 
-  SetScene();
   core_->ImGuiInit(frame_image_.get(), "../../fonts/NotoSansSC-Regular.otf",
                    20.0f);
+}
+
+void App::OnReset(const Mode &mode) {
+  mode_ = mode;
+  chosen_mode_ = mode;
+  begin_time_ = std::chrono::steady_clock::now();
+  updated_step_ = 0;
+  SetScene();
+  should_reset_ = false;
+  input_data_synced_ = false;
 }
 
 void App::OnLoop() {
@@ -191,15 +206,13 @@ void App::SyncDeviceAssets() {
 }
 
 void App::UpdateDrawCommands() {
-  static auto begin_time = std::chrono::steady_clock::now();
   auto current_time = std::chrono::steady_clock::now();
   auto time_passed =
-      double((current_time - begin_time) / std::chrono::nanoseconds(1)) * 1e-9;
-  static uint64_t updated_step = 0;
+      double((current_time - begin_time_) / std::chrono::nanoseconds(1)) * 1e-9;
   uint64_t target_update_step = std::lround(time_passed / kSecondPerTick);
-  while (updated_step < target_update_step) {
+  while (updated_step_ < target_update_step && input_data_synced_) {
     game_core_->Update();
-    updated_step++;
+    updated_step_++;
   }
   game_core_->Render();
 }
@@ -215,6 +228,9 @@ void App::UpdateDynamicBuffer() {
 }
 
 void App::CaptureInput() {
+  if (mode_ != kOffline && mode_ != kClient) {
+    return;
+  }
   InputData input_data;
   auto window = core_->GetWindow();
   for (int i = 0; i < kKeyRange; i++) {
@@ -243,10 +259,15 @@ void App::CaptureInput() {
       glm::vec4{
           (glm::vec2{xpos, ypos} / glm::vec2{width, height}) * 2.0f - 1.0f,
           0.0f, 1.0f};
-  game_core_->GetPlayer(my_player_id_)->SetInputData(input_data);
+  if (mode_ == kOffline) {
+    game_core_->GetPlayer(my_player_id_)->SetInputData(input_data);
+    input_data_synced_ = true;
+  } else if (mode_ == kClient) {
+  }
 }
 
 void App::SetScene() {
+  game_core_->Reset();
   my_player_id_ = game_core_->AddPlayer();
   auto enemy_player_id = game_core_->AddPlayer();
   game_core_->SetRenderPerspective(my_player_id_);
@@ -277,6 +298,16 @@ void App::UpdateImGui() {
                        ImGuiWindowFlags_AlwaysAutoResize)) {
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
+      static const char *const mode_list[] = {u8"单机", u8"联机（客户端）",
+                                              u8"联机（服务器）",
+                                              u8"联机（服务器，无画面）"};
+      int mode_id = chosen_mode_;
+      ImGui::Combo(u8"选择模式", &mode_id, mode_list, 4u);
+      chosen_mode_ = Mode(mode_id);
+      ImGui::SameLine();
+      if (ImGui::Button(u8"确定并重启")) {
+        should_reset_ = true;
+      }
       auto selectable_list = game_core_->GetSelectableUnitList();
       auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
       ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),

@@ -5,6 +5,7 @@
 int main() {
   battle_game::GameCore game_core;
   battle_game::AppSettings app_settings;
-  battle_game::App app(app_settings, &game_core);
+  asio::io_context io_context;
+  battle_game::App app(app_settings, &game_core, io_context);
   app.Run();
 }
