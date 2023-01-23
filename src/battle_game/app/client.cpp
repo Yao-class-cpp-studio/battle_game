@@ -1,0 +1,154 @@
+#include "battle_game/app/app.h"
+
+namespace battle_game {
+using asio::ip::tcp;
+App::Client::Client(App *app)
+    : app_(app), io_context_(app->io_context_), socket_(app->io_context_) {
+}
+
+void App::Client::Connect(const tcp::resolver::results_type &endpoint) {
+  auto self(shared_from_this());
+  asio::async_connect(socket_, endpoint,
+                      [this, self](asio::error_code ec, tcp::endpoint) {
+                        if (!ec) {
+                          app_->message_ = u8"连接成功";
+                          RegisterTimer();
+                          DoReadHeader();
+                        } else {
+                          app_->message_ = u8"错误：" + ec.message();
+                        }
+                      });
+}
+
+void App::Client::Close() {
+  socket_.close();
+}
+
+uint32_t App::Client::GetPlayerCount() const {
+  return init_message_.player_cnt;
+}
+uint32_t App::Client::GetPlayerId() const {
+  return init_message_.player_id;
+}
+
+void App::Client::Quit() {
+  app_->message_ = u8"连接中断";
+  app_->Stop();
+  if (timer_) {
+    timer_->cancel();
+    timer_.reset();
+  }
+  socket_.close();
+}
+
+void App::Client::DoReadHeader() {
+  auto self(shared_from_this());
+  asio::async_read(socket_, asio::buffer(buffer_, 1u),
+                   [this, self](asio::error_code ec, std::size_t /*length*/) {
+                     if (!ec) {
+                       if (buffer_[0] == (uint8_t)'{') {
+                         DoStart();
+                       } else if (buffer_[0] == (uint8_t)':') {
+                         input_data_.reserve(GetPlayerCount() + 1);
+                         input_data_.resize(1);
+                         DoReadBody();
+                       } else if (buffer_[0] == (uint8_t)'}') {
+                         DoStop();
+                       } else {
+                         Quit();
+                       }
+                     } else {
+                       Quit();
+                     }
+                   });
+}
+
+void App::Client::DoReadBody() {
+  auto self(shared_from_this());
+  if (input_data_.size() > GetPlayerCount()) {
+    app_->input_data_queue_.push(input_data_);
+    DoReadHeader();
+    return;
+  }
+  asio::async_read(socket_, asio::buffer(buffer_, MessageInputData::length),
+                   [this, self](asio::error_code ec, std::size_t /*length*/) {
+                     if (!ec) {
+                       input_data_.emplace_back(buffer_);
+                       DoReadBody();
+                     } else {
+                       Quit();
+                     }
+                   });
+}
+
+void App::Client::DoWrite() {
+  auto self(shared_from_this());
+  assert(!write_messages_.empty());
+  asio::async_write(socket_,
+                    asio::buffer(write_messages_.front().data(),
+                                 write_messages_.front().length()),
+                    [this, self](std::error_code ec, std::size_t /*length*/) {
+                      if (!ec) {
+                        write_messages_.pop();
+                        if (!write_messages_.empty()) {
+                          DoWrite();
+                        }
+                      } else {
+                        Quit();
+                      }
+                    });
+}
+
+void App::Client::DoStart() {
+  auto self(shared_from_this());
+  asio::async_read(socket_, asio::buffer(buffer_, MessageInitial::length),
+                   [this, self](asio::error_code ec, std::size_t /*length*/) {
+                     if (!ec) {
+                       init_message_ = buffer_;
+                       app_->Start();
+                       DoReadHeader();
+                     } else {
+                       Quit();
+                     }
+                   });
+}
+
+void App::Client::DoStop() {
+  init_message_ = MessageInitial();
+  app_->Stop();
+  DoReadHeader();
+}
+
+void App::Client::RegisterTimer() {
+  auto self(shared_from_this());
+  if (timer_) {
+    timer_->cancel();
+    timer_.reset();
+  }
+  timer_ = std::make_unique<asio::steady_timer>(
+      io_context_,
+      asio::chrono::nanoseconds((long long)std::roundl(1e9 * kSecondPerTick)));
+  timer_->async_wait([this, self](asio::error_code ec) {
+    if (!ec) {
+      if (timer_) {
+        timer_->cancel();
+        timer_.reset();
+      }
+      RegisterTimer();
+      Write();
+    }
+  });
+}
+
+void App::Client::Write() {
+  auto self(shared_from_this());
+  asio::post(io_context_, [this, self]() {
+    bool write_in_progress = !write_messages_.empty();
+    MessageInputData message(app_->selected_unit_, app_->input_data_);
+    write_messages_.push(message);
+    if (!write_in_progress) {
+      DoWrite();
+    }
+  });
+}
+}  // namespace battle_game
