@@ -37,6 +37,7 @@ class App {
     void DoStart();
     void DoStop();
     void RegisterTimer();
+    void CloseTimer();
     void Write();
     void Quit();
 

@@ -47,7 +47,8 @@ class Server : public std::enable_shared_from_this<Server> {
   typedef std::shared_ptr<Participant> ParticipantPtr;
 
   void DoAccept();
-  void RegisterBroadcast();
+  void RegisterTimer();
+  void CloseTimer();
   void Broadcast();
   void Join(ParticipantPtr participant);
   void Leave(ParticipantPtr participant);

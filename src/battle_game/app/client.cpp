@@ -14,14 +14,24 @@ void App::Client::Connect(const tcp::resolver::results_type &endpoint) {
                           app_->message_ = u8"连接成功";
                           RegisterTimer();
                           DoReadHeader();
-                        } else {
+                        } else if (ec != asio::error::operation_aborted) {
                           app_->message_ = u8"错误：" + ec.message();
+                          Close();
                         }
                       });
 }
 
 void App::Client::Close() {
+  socket_.cancel();
   socket_.close();
+  CloseTimer();
+}
+
+void App::Client::CloseTimer() {
+  if (timer_) {
+    timer_->cancel();
+    timer_.reset();
+  }
 }
 
 uint32_t App::Client::GetPlayerCount() const {
@@ -34,11 +44,7 @@ uint32_t App::Client::GetPlayerId() const {
 void App::Client::Quit() {
   app_->message_ = u8"连接中断";
   app_->Stop();
-  if (timer_) {
-    timer_->cancel();
-    timer_.reset();
-  }
-  socket_.close();
+  Close();
 }
 
 void App::Client::DoReadHeader() {
@@ -57,7 +63,7 @@ void App::Client::DoReadHeader() {
                        } else {
                          Quit();
                        }
-                     } else {
+                     } else if (ec != asio::error::operation_aborted) {
                        Quit();
                      }
                    });
@@ -75,7 +81,7 @@ void App::Client::DoReadBody() {
                      if (!ec) {
                        input_data_.emplace_back(buffer_);
                        DoReadBody();
-                     } else {
+                     } else if (ec != asio::error::operation_aborted) {
                        Quit();
                      }
                    });
@@ -93,7 +99,7 @@ void App::Client::DoWrite() {
                         if (!write_messages_.empty()) {
                           DoWrite();
                         }
-                      } else {
+                      } else if (ec != asio::error::operation_aborted) {
                         Quit();
                       }
                     });
@@ -107,7 +113,7 @@ void App::Client::DoStart() {
                        init_message_ = buffer_;
                        app_->Start();
                        DoReadHeader();
-                     } else {
+                     } else if (ec != asio::error::operation_aborted) {
                        Quit();
                      }
                    });
@@ -121,19 +127,12 @@ void App::Client::DoStop() {
 
 void App::Client::RegisterTimer() {
   auto self(shared_from_this());
-  if (timer_) {
-    timer_->cancel();
-    timer_.reset();
-  }
+  CloseTimer();
   timer_ = std::make_unique<asio::steady_timer>(
       io_context_,
       asio::chrono::nanoseconds((long long)std::roundl(1e9 * kSecondPerTick)));
   timer_->async_wait([this, self](asio::error_code ec) {
     if (!ec) {
-      if (timer_) {
-        timer_->cancel();
-        timer_.reset();
-      }
       RegisterTimer();
       Write();
     }

@@ -12,6 +12,7 @@ void Server::Participant::Start() {
 }
 
 void Server::Participant::Close() {
+  socket_.cancel();
   socket_.close();
 }
 
@@ -43,7 +44,7 @@ void Server::Participant::DoRead() {
                          server_.input_data_[player_id_] = input_data_;
                        }
                        DoRead();
-                     } else {
+                     } else if (ec != asio::error::operation_aborted) {
                        server_.Leave(shared_from_this());
                      }
                    });
@@ -60,7 +61,7 @@ void Server::Participant::DoWrite() {
                         if (!write_messages_.empty()) {
                           DoWrite();
                         }
-                      } else {
+                      } else if (ec != asio::error::operation_aborted) {
                         server_.Leave(shared_from_this());
                       }
                     });
@@ -80,12 +81,9 @@ void Server::Build() {
 }
 
 void Server::Close() {
+  CloseTimer();
   acceptor_.cancel();
   acceptor_.close();
-  if (timer_) {
-    timer_->cancel();
-    timer_.reset();
-  }
 }
 
 void Server::Join(ParticipantPtr participant) {
@@ -134,7 +132,7 @@ void Server::Start() {
     timer_ = std::make_unique<asio::steady_timer>(
         io_context_, asio::chrono::nanoseconds(
                          (long long)std::roundl(1e9 * kSecondPerTick * 0.9f)));
-    RegisterBroadcast();
+    RegisterTimer();
   });
 }
 
@@ -155,7 +153,7 @@ void Server::Stop() {
   });
 }
 
-void Server::RegisterBroadcast() {
+void Server::RegisterTimer() {
   auto self(shared_from_this());
   timer_->async_wait([this, self](asio::error_code ec) {
     if (!ec) {
@@ -167,9 +165,16 @@ void Server::RegisterBroadcast() {
           io_context_, asio::chrono::nanoseconds(
                            (long long)std::roundl(1e9 * kSecondPerTick)));
       Broadcast();
-      RegisterBroadcast();
+      RegisterTimer();
     }
   });
+}
+
+void Server::CloseTimer() {
+  if (timer_) {
+    timer_->cancel();
+    timer_.reset();
+  }
 }
 
 void Server::Broadcast() {
