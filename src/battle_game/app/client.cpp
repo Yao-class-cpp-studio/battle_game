@@ -22,8 +22,10 @@ void App::Client::Connect(const tcp::resolver::results_type &endpoint) {
 }
 
 void App::Client::Close() {
-  socket_.cancel();
-  socket_.close();
+  if (socket_.is_open()) {
+    socket_.cancel();
+    socket_.close();
+  }
   CloseTimer();
 }
 

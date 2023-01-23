@@ -12,8 +12,10 @@ void Server::Participant::Start() {
 }
 
 void Server::Participant::Close() {
-  socket_.cancel();
-  socket_.close();
+  if (socket_.is_open()) {
+    socket_.cancel();
+    socket_.close();
+  }
 }
 
 void Server::Participant::Deliver(const ByteString &message) {
