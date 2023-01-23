@@ -1,6 +1,6 @@
 #include "battle_game/app/message.h"
 
-#include <string>
+#include <cstring>
 
 namespace battle_game {
 MessageInitial::MessageInitial() : player_cnt(0u), player_id(0u) {
@@ -44,13 +44,13 @@ MessageInputData::MessageInputData(const uint8_t *message)
     input_data.mouse_button_clicked[i] =
         (message[totbit >> 3] >> (totbit & 7)) & 1;
   }
-  memcpy(&input_data.mouse_cursor_position, message + ((totbit - 1) >> 3) + 1,
-         sizeof(glm::vec2));
+  std::memcpy(&input_data.mouse_cursor_position,
+              message + ((totbit - 1) >> 3) + 1, sizeof(glm::vec2));
 }
 MessageInputData::operator ByteString() const {
   uint8_t result[length]{};
   size_t totbit = 8u;
-  memset(result, 0, sizeof(result));
+  std::memset(result, 0, sizeof(result));
   result[0] = selected_unit;
   for (size_t i = 0; i < kKeyRange; ++i, ++totbit) {
     result[totbit >> 3] |= (input_data.key_down[i] ? 1u : 0u) << (totbit & 7);
@@ -63,8 +63,8 @@ MessageInputData::operator ByteString() const {
     result[totbit >> 3] |= (input_data.mouse_button_clicked[i] ? 1u : 0u)
                            << (totbit & 7);
   }
-  memcpy(result + ((totbit - 1) >> 3) + 1, &input_data.mouse_cursor_position,
-         sizeof(glm::vec2));
+  std::memcpy(result + ((totbit - 1) >> 3) + 1,
+              &input_data.mouse_cursor_position, sizeof(glm::vec2));
   return ByteString(result, length);
 }
 }  // namespace battle_game
