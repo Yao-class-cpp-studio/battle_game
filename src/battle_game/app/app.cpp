@@ -137,7 +137,6 @@ void App::Start() {
   while (!input_data_queue_.empty()) {
     input_data_queue_.pop();
   }
-  input_data_synced_ = false;
   running_ = true;
   should_start_ = false;
 }
@@ -274,19 +273,17 @@ void App::UpdateDrawCommands() {
         1e-9;
     uint64_t target_update_step = std::lround(time_passed / kSecondPerTick);
     while (updated_step_ < target_update_step &&
-           (input_data_synced_ || !input_data_queue_.empty())) {
-      if (!input_data_synced_) {
+           (mode_ == kOffline || !input_data_queue_.empty())) {
+      if (!input_data_queue_.empty()) {
         const auto &data = input_data_queue_.front();
         for (uint32_t i = 1; i < data.size(); ++i) {
           game_core_->GetPlayer(i)->SetInputData(data[i].input_data);
           game_core_->GetPlayer(i)->SelectedUnit() = data[i].selected_unit;
         }
         input_data_queue_.pop();
-        input_data_synced_ = true;
       }
       game_core_->Update();
       updated_step_++;
-      input_data_synced_ = false;
     }
   }
   if (render_) {
@@ -337,7 +334,6 @@ void App::CaptureInput() {
   if (mode_ == kOffline) {
     game_core_->GetPlayer(my_player_id_)->SetInputData(input_data_);
     game_core_->GetPlayer(my_player_id_)->SelectedUnit() = selected_unit_;
-    input_data_synced_ = true;
   }
 }
 

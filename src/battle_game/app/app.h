@@ -99,7 +99,6 @@ class App {
   bool should_start_{false};
   Mode mode_{kOffline}, chosen_mode_{kOffline};
   bool render_{true};
-  bool input_data_synced_;
   std::queue<std::vector<MessageInputData>> input_data_queue_;
   InputData input_data_;
   int selected_unit_{0};
