@@ -342,7 +342,6 @@ void App::SetScene() {
   if (mode_ == kOffline) {
     my_player_id_ = game_core_->AddPlayer();
     auto enemy_player_id = game_core_->AddPlayer();
-    game_core_->SetRenderPerspective(my_player_id_);
   } else if (mode_ == kClient) {
     if (client_) {
       uint32_t player_cnt = client_->GetPlayerCount();
@@ -356,6 +355,7 @@ void App::SetScene() {
   } else if (mode_ == kServer) {
     my_player_id_ = 0;
   }
+  game_core_->SetRenderPerspective(my_player_id_);
 }
 
 glm::mat4 App::GetCameraTransform(float fov_y) const {
