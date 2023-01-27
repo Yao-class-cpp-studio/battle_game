@@ -11,11 +11,11 @@ void App::Client::Connect(const tcp::resolver::results_type &endpoint) {
   asio::async_connect(socket_, endpoint,
                       [this, self](asio::error_code ec, tcp::endpoint) {
                         if (!ec) {
-                          app_->message_ = u8"连接成功";
+                          app_->SetMessage(u8"连接成功");
                           RegisterTimer();
                           DoReadHeader();
                         } else if (ec != asio::error::operation_aborted) {
-                          app_->message_ = u8"错误：" + ec.message();
+                          app_->SetMessage(u8"错误：" + ec.message());
                           Close();
                         }
                       });
@@ -44,7 +44,7 @@ uint32_t App::Client::GetPlayerId() const {
 }
 
 void App::Client::Quit() {
-  app_->message_ = u8"连接中断";
+  app_->SetMessage(u8"连接中断");
   app_->Stop();
   Close();
 }
@@ -74,7 +74,7 @@ void App::Client::DoReadHeader() {
 void App::Client::DoReadBody() {
   auto self(shared_from_this());
   if (input_data_.size() > GetPlayerCount()) {
-    app_->input_data_queue_.push(input_data_);
+    app_->AppendInputData(input_data_);
     DoReadHeader();
     return;
   }

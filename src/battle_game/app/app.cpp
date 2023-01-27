@@ -42,7 +42,7 @@ void App::Run(const Mode &mode) {
       Reset(chosen_mode_);
     }
     if (should_start_) {
-      Start();
+      OnStart();
     }
     OnLoop();
     glfwPollEvents();
@@ -91,7 +91,7 @@ void App::Reset(const Mode &mode) {
   should_reset_ = false;
   should_start_ = false;
   running_ = false;
-  message_ = "";
+  SetMessage("");
   if (server_) {
     server_->Close();
     server_.reset();
@@ -102,12 +102,12 @@ void App::Reset(const Mode &mode) {
   }
   game_core_->Reset();
   if (mode == kOffline) {
-    should_start_ = true;
+    Start();
   } else {
     Stop();
     try {
       if (mode == kClient) {
-        message_ = u8"连接中...";
+        SetMessage(u8"连接中...");
         static char buffer[10];
         buffer[0] = '\0';
         sprintf(buffer, "%hu", port_);
@@ -115,34 +115,48 @@ void App::Reset(const Mode &mode) {
         client_->Connect(resolver_.resolve(ip_, buffer));
       } else if (mode == kServer) {
         server_ = std::make_shared<Server>(
-            io_context_, tcp::endpoint(tcp::v4(), port_), &input_data_queue_);
+            io_context_, tcp::endpoint(tcp::v4(), port_),
+            std::bind(&App::AppendInputData, this, std::placeholders::_1));
         server_->Build();
-        message_ = u8"成功创建服务器";
+        SetMessage(u8"成功创建服务器");
       }
     } catch (std::exception &e) {
-      message_ = std::string(u8"错误：") + std::string(e.what());
+      SetMessage(std::string(u8"错误：") + std::string(e.what()));
       client_.reset();
       server_.reset();
     }
   }
 }
 
-void App::Start() {
+void App::ClearInputData() {
+  std::lock_guard<std::mutex> lock(input_data_queue_mutex_);
+  if (input_data_queue_should_clear_) {
+    while (!input_data_queue_.empty()) {
+      input_data_queue_.pop();
+    }
+    input_data_queue_should_clear_ = false;
+  }
+}
+
+void App::OnStart() {
   if (running_) {
     return;
   }
-  begin_time_ = std::chrono::steady_clock::now();
   updated_step_ = 0;
   SetScene();
-  while (!input_data_queue_.empty()) {
-    input_data_queue_.pop();
-  }
+  input_data_queue_should_clear_ = true;
   running_ = true;
   should_start_ = false;
 }
 
+void App::Start() {
+  begin_time_ = std::chrono::steady_clock::now();
+  should_start_ = true;
+}
+
 void App::Stop() {
   running_ = false;
+  should_start_ = false;
 }
 
 void App::OnLoop() {
@@ -268,13 +282,15 @@ void App::SyncDeviceAssets() {
 void App::UpdateDrawCommands() {
   if (running_) {
     auto current_time = std::chrono::steady_clock::now();
-    auto time_passed =
-        double((current_time - begin_time_) / std::chrono::nanoseconds(1)) *
-        1e-9;
+    auto time_passed = double((current_time - begin_time_.load()) /
+                              std::chrono::nanoseconds(1)) *
+                       1e-9;
     uint64_t target_update_step = std::lround(time_passed / kSecondPerTick);
-    while (updated_step_ < target_update_step &&
+    ClearInputData();
+    std::lock_guard<std::mutex> lock(input_data_queue_mutex_);
+    while (running_ && updated_step_ < target_update_step &&
            (mode_ == kOffline || !input_data_queue_.empty())) {
-      if (!input_data_queue_.empty()) {
+      if (running_ && !input_data_queue_.empty()) {
         const auto &data = input_data_queue_.front();
         for (uint32_t i = 1; i < data.size(); ++i) {
           game_core_->GetPlayer(i)->SetInputData(data[i].input_data);
@@ -282,8 +298,10 @@ void App::UpdateDrawCommands() {
         }
         input_data_queue_.pop();
       }
-      game_core_->Update();
-      updated_step_++;
+      if (running_) {
+        game_core_->Update();
+        updated_step_++;
+      }
     }
   }
   if (render_) {
@@ -304,20 +322,21 @@ void App::UpdateDynamicBuffer() {
 void App::CaptureInput() {
   if (mode_ == kOffline || mode_ == kClient) {
     auto window = core_->GetWindow();
+    InputData input_data;
     for (int i = 0; i < kKeyRange; i++) {
-      input_data_.key_down[i] = (glfwGetKey(window, i) == GLFW_PRESS);
+      input_data.key_down[i] = (glfwGetKey(window, i) == GLFW_PRESS);
     }
     static bool mouse_button_state[kMouseButtonRange] = {};
     for (int i = 0; i < kMouseButtonRange; i++) {
       if (i == GLFW_MOUSE_BUTTON_LEFT && ImGui::GetIO().WantCaptureMouse) {
-        input_data_.mouse_button_down[i] = false;
+        input_data.mouse_button_down[i] = false;
         continue;
       }
-      input_data_.mouse_button_down[i] =
+      input_data.mouse_button_down[i] =
           (glfwGetMouseButton(window, i) == GLFW_PRESS);
-      input_data_.mouse_button_clicked[i] =
-          (input_data_.mouse_button_down[i] && !mouse_button_state[i]);
-      mouse_button_state[i] = input_data_.mouse_button_down[i];
+      input_data.mouse_button_clicked[i] =
+          (input_data.mouse_button_down[i] && !mouse_button_state[i]);
+      mouse_button_state[i] = input_data.mouse_button_down[i];
     }
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
@@ -325,16 +344,23 @@ void App::CaptureInput() {
     glfwGetWindowSize(window, &width, &height);
     xpos += 0.5f;
     ypos += 0.5f;
-    input_data_.mouse_cursor_position =
+    input_data.mouse_cursor_position =
         glm::inverse(GetCameraTransform(fov_y_)) *
         glm::vec4{
             (glm::vec2{xpos, ypos} / glm::vec2{width, height}) * 2.0f - 1.0f,
             0.0f, 1.0f};
+    input_data_ = input_data;
   }
   if (mode_ == kOffline) {
     game_core_->GetPlayer(my_player_id_)->SetInputData(input_data_);
     game_core_->GetPlayer(my_player_id_)->SelectedUnit() = selected_unit_;
   }
+}
+
+void App::AppendInputData(const CompleteInputData &input_data) {
+  ClearInputData();
+  std::lock_guard<std::mutex> lock(input_data_queue_mutex_);
+  input_data_queue_.push(input_data);
 }
 
 void App::SetScene() {
@@ -372,6 +398,11 @@ glm::mat4 App::GetCameraTransform(float fov_y) const {
                          glm::vec3{0.0f, 0.0f, 1.0f}));
 }
 
+void App::SetMessage(const std::string &message) {
+  std::lock_guard<std::mutex> lock(message_mutex_);
+  message_ = message;
+}
+
 void App::UpdateImGui() {
   ImGui_ImplVulkan_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -402,18 +433,21 @@ void App::UpdateImGui() {
       should_reset_ = true;
     }
 
-    if (!message_.empty()) {
-      ImGui::Text("%s", message_.c_str());
+    {
+      std::lock_guard<std::mutex> lock(message_mutex_);
+      if (!message_.empty()) {
+        ImGui::Text("%s", message_.c_str());
+      }
     }
 
     if (mode_ == kServer) {
       ImGui::Checkbox(u8"渲染", &render_);
       if (server_) {
         ImGui::SameLine();
-        if (server_->IsRunning()) {
+        if (!server_->IsRunning()) {
           if (ImGui::Button(u8"开始")) {
             server_->Start();
-            should_start_ = true;
+            Start();
           }
         } else {
           if (ImGui::Button(u8"停止")) {
@@ -428,8 +462,10 @@ void App::UpdateImGui() {
 
     if (mode_ == kOffline || mode_ == kClient) {
       const auto &selectable_list = game_core_->GetSelectableUnitList();
-      ImGui::Combo(u8"选择你的单位（重生后生效）", &selected_unit_,
+      int selected_unit = selected_unit_;
+      ImGui::Combo(u8"选择你的单位（重生后生效）", &selected_unit,
                    selectable_list.data(), selectable_list.size());
+      selected_unit_ = selected_unit;
     }
 
     auto player = game_core_->GetPlayer(my_player_id_);

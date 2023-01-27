@@ -69,13 +69,14 @@ void Server::Participant::DoWrite() {
                     });
 }
 
-Server::Server(asio::io_context &io_context,
-               const tcp::endpoint &endpoint,
-               std::queue<std::vector<MessageInputData>> *input_data_queue)
+Server::Server(
+    asio::io_context &io_context,
+    const tcp::endpoint &endpoint,
+    std::function<void(const CompleteInputData &)> deliver_input_data)
     : io_context_(io_context),
       acceptor_(io_context, endpoint),
       player_cnt_(0),
-      input_data_queue_(input_data_queue) {
+      deliver_input_data_(deliver_input_data) {
 }
 
 void Server::Build() {
@@ -84,8 +85,10 @@ void Server::Build() {
 
 void Server::Close() {
   CloseTimer();
-  acceptor_.cancel();
-  acceptor_.close();
+  if (acceptor_.is_open()) {
+    acceptor_.cancel();
+    acceptor_.close();
+  }
 }
 
 void Server::Join(ParticipantPtr participant) {
@@ -183,8 +186,8 @@ void Server::Broadcast() {
   if (!running_) {
     return;
   }
-  if (input_data_queue_) {
-    input_data_queue_->push(input_data_);
+  if (deliver_input_data_) {
+    deliver_input_data_(input_data_);
   }
   ByteString message{};
   message.reserve(1 + MessageInputData::length * player_cnt_);

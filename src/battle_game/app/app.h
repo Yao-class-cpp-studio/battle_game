@@ -19,6 +19,11 @@ class App {
                GameCore *game_core,
                asio::io_context &io_context);
   void Run(const Mode &mode = kOffline);
+  void Reset(const Mode &mode);
+  void Start();
+  void Stop();
+  void AppendInputData(const CompleteInputData &input_data);
+  void SetMessage(const std::string &message);
 
  private:
   class Client : public std::enable_shared_from_this<Client> {
@@ -48,23 +53,21 @@ class App {
     std::queue<ByteString> write_messages_;
     MessageInitial init_message_;
     uint8_t buffer_[MessageInputData::length];
-    std::vector<MessageInputData> input_data_;
+    CompleteInputData input_data_;
   };
 
   void OnInit();
   void OnLoop();
   void OnClose();
 
-  void Reset(const Mode &mode);
-  void Start();
-  void Stop();
-
+  void OnStart();
   void OnUpdate();
   void OnRender();
 
   void BuildRenderNodes();
   void SyncDeviceAssets();
 
+  void ClearInputData();
   void CaptureInput();
   void UpdateDrawCommands();
   void UpdateDynamicBuffer();
@@ -94,18 +97,21 @@ class App {
 
   uint32_t my_player_id_{0};
   float fov_y_{10.0f};
-  bool running_{false};
+  std::atomic<bool> running_{false};
   bool should_reset_{false};
-  bool should_start_{false};
+  std::atomic<bool> should_start_{false};
   Mode mode_{kOffline}, chosen_mode_{kOffline};
   bool render_{true};
-  std::queue<std::vector<MessageInputData>> input_data_queue_;
-  InputData input_data_;
-  int selected_unit_{0};
-  std::chrono::time_point<std::chrono::steady_clock> begin_time_;
+  std::queue<CompleteInputData> input_data_queue_;
+  std::mutex input_data_queue_mutex_;
+  std::atomic<bool> input_data_queue_should_clear_{false};
+  std::atomic<InputData> input_data_{};
+  std::atomic<int> selected_unit_{0};
+  std::atomic<std::chrono::time_point<std::chrono::steady_clock>> begin_time_;
   uint64_t updated_step_{0};
   uint16_t port_{default_port};
   std::string message_{};
+  std::mutex message_mutex_;
   char ip_[max_ip_length]{"localhost"};
 
   asio::io_context &io_context_;

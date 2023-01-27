@@ -13,7 +13,8 @@ class Server : public std::enable_shared_from_this<Server> {
  public:
   Server(asio::io_context &io_context,
          const asio::ip::tcp::endpoint &endpoint,
-         std::queue<std::vector<MessageInputData>> *input_data_queue = nullptr);
+         std::function<void(const CompleteInputData &)> deliver_input_data =
+             nullptr);
 
   void Build();
   void Close();
@@ -58,9 +59,9 @@ class Server : public std::enable_shared_from_this<Server> {
   asio::ip::tcp::acceptor acceptor_;
   std::unique_ptr<asio::steady_timer> timer_;
   std::set<ParticipantPtr> participants_;
-  std::vector<MessageInputData> input_data_;
-  std::queue<std::vector<MessageInputData>> *input_data_queue_;
-  bool running_{false};
+  CompleteInputData input_data_;
+  std::function<void(const CompleteInputData &)> deliver_input_data_;
+  std::atomic<bool> running_{false};
   uint32_t player_cnt_;
 };
 }  // namespace battle_game

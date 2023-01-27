@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "battle_game/core/input_data.h"
 
@@ -25,4 +26,6 @@ struct MessageInputData {
   uint32_t selected_unit;
   InputData input_data;
 };
+
+typedef std::vector<MessageInputData> CompleteInputData;
 }  // namespace battle_game
