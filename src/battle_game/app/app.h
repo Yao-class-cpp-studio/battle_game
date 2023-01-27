@@ -1,4 +1,8 @@
 #pragma once
+#include <atomic>
+#include <mutex>
+#include <queue>
+
 #include "asio.hpp"
 #include "battle_game/app/app_settings.h"
 #include "battle_game/app/device_model.h"
@@ -105,7 +109,8 @@ class App {
   std::queue<CompleteInputData> input_data_queue_;
   std::mutex input_data_queue_mutex_;
   std::atomic<bool> input_data_queue_should_clear_{false};
-  std::atomic<InputData> input_data_{};
+  InputData input_data_{};
+  std::mutex input_data_mutex_;
   std::atomic<int> selected_unit_{0};
   std::atomic<std::chrono::time_point<std::chrono::steady_clock>> begin_time_;
   uint64_t updated_step_{0};

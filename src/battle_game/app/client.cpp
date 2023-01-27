@@ -140,7 +140,11 @@ void App::Client::Write() {
   auto self(shared_from_this());
   asio::post(io_context_, [this, self]() {
     bool write_in_progress = !write_message_.empty();
-    write_message_ = MessageInputData(app_->selected_unit_, app_->input_data_);
+    {
+      std::lock_guard<std::mutex> lock(app_->input_data_mutex_);
+      write_message_ =
+          MessageInputData(app_->selected_unit_, app_->input_data_);
+    }
     if (!write_in_progress) {
       DoWrite();
     }

@@ -1,7 +1,6 @@
 #pragma once
-#include <queue>
+#include <atomic>
 #include <set>
-#include <vector>
 
 #include "asio.hpp"
 #include "battle_game/app/message.h"

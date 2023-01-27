@@ -349,10 +349,16 @@ void App::CaptureInput() {
         glm::vec4{
             (glm::vec2{xpos, ypos} / glm::vec2{width, height}) * 2.0f - 1.0f,
             0.0f, 1.0f};
-    input_data_ = input_data;
+    {
+      std::lock_guard<std::mutex> lock(input_data_mutex_);
+      input_data_ = input_data;
+    }
   }
   if (mode_ == kOffline) {
-    game_core_->GetPlayer(my_player_id_)->SetInputData(input_data_);
+    {
+      std::lock_guard<std::mutex> lock(input_data_mutex_);
+      game_core_->GetPlayer(my_player_id_)->SetInputData(input_data_);
+    }
     game_core_->GetPlayer(my_player_id_)->SelectedUnit() = selected_unit_;
   }
 }
