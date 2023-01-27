@@ -20,7 +20,7 @@ void Server::Participant::Close() {
 
 void Server::Participant::Deliver(const ByteString &message) {
   bool write_in_progress = !write_messages_.empty();
-  write_messages_.push(message);
+  write_messages_ += message;
   if (!write_in_progress) {
     DoWrite();
   }
@@ -54,19 +54,15 @@ void Server::Participant::DoRead() {
 
 void Server::Participant::DoWrite() {
   auto self(shared_from_this());
-  asio::async_write(socket_,
-                    asio::buffer(write_messages_.front().data(),
-                                 write_messages_.front().length()),
-                    [this, self](asio::error_code ec, std::size_t /*length*/) {
-                      if (!ec) {
-                        write_messages_.pop();
-                        if (!write_messages_.empty()) {
-                          DoWrite();
-                        }
-                      } else if (ec != asio::error::operation_aborted) {
-                        server_.Leave(shared_from_this());
-                      }
-                    });
+  asio::async_write(
+      socket_, asio::buffer(write_messages_.data(), write_messages_.length()),
+      [this, self](asio::error_code ec, std::size_t /*length*/) {
+        if (!ec) {
+          write_messages_.clear();
+        } else if (ec != asio::error::operation_aborted) {
+          server_.Leave(shared_from_this());
+        }
+      });
 }
 
 Server::Server(

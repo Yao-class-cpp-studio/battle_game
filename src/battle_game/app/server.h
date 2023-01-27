@@ -38,7 +38,7 @@ class Server : public std::enable_shared_from_this<Server> {
     void DoWrite();
 
     asio::ip::tcp::socket socket_;
-    std::queue<ByteString> write_messages_;
+    ByteString write_messages_;
     MessageInputData input_data_{};
     Server &server_;
     uint32_t player_id_{0};

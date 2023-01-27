@@ -50,7 +50,7 @@ class App {
     asio::io_context &io_context_;
     asio::ip::tcp::socket socket_;
     std::unique_ptr<asio::steady_timer> timer_;
-    std::queue<ByteString> write_messages_;
+    ByteString write_message_;
     MessageInitial init_message_;
     uint8_t buffer_[MessageInputData::length];
     CompleteInputData input_data_;

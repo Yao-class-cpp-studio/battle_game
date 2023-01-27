@@ -91,20 +91,15 @@ void App::Client::DoReadBody() {
 
 void App::Client::DoWrite() {
   auto self(shared_from_this());
-  assert(!write_messages_.empty());
-  asio::async_write(socket_,
-                    asio::buffer(write_messages_.front().data(),
-                                 write_messages_.front().length()),
-                    [this, self](std::error_code ec, std::size_t /*length*/) {
-                      if (!ec) {
-                        write_messages_.pop();
-                        if (!write_messages_.empty()) {
-                          DoWrite();
-                        }
-                      } else if (ec != asio::error::operation_aborted) {
-                        Quit();
-                      }
-                    });
+  asio::async_write(
+      socket_, asio::buffer(write_message_.data(), write_message_.length()),
+      [this, self](std::error_code ec, std::size_t /*length*/) {
+        if (!ec) {
+          write_message_.clear();
+        } else if (ec != asio::error::operation_aborted) {
+          Quit();
+        }
+      });
 }
 
 void App::Client::DoStart() {
@@ -144,9 +139,8 @@ void App::Client::RegisterTimer() {
 void App::Client::Write() {
   auto self(shared_from_this());
   asio::post(io_context_, [this, self]() {
-    bool write_in_progress = !write_messages_.empty();
-    MessageInputData message(app_->selected_unit_, app_->input_data_);
-    write_messages_.push(message);
+    bool write_in_progress = !write_message_.empty();
+    write_message_ = MessageInputData(app_->selected_unit_, app_->input_data_);
     if (!write_in_progress) {
       DoWrite();
     }
