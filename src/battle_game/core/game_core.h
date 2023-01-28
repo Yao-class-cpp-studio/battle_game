@@ -24,6 +24,8 @@ class GameCore {
  public:
   GameCore();
 
+  void Reset();
+
   void SetScene();
 
   template <class UnitType, class... Args>

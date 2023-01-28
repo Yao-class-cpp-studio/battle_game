@@ -5,6 +5,7 @@
 #include "battle_game/core/object.h"
 #include "battle_game/graphics/util.h"
 namespace battle_game {
+using asio::ip::tcp;
 static void HelpMarker(const char *desc) {
   ImGui::TextColored(ImVec4(1, 1, 0, 1), "(?)");
   if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort)) {
@@ -16,8 +17,14 @@ static void HelpMarker(const char *desc) {
   }
 }
 
-App::App(const AppSettings &app_settings, GameCore *game_core) {
-  game_core_ = game_core;
+App::App(const AppSettings &app_settings,
+         GameCore *game_core,
+         asio::io_context &io_context)
+    : game_core_(game_core),
+      io_context_(io_context),
+      resolver_(io_context_),
+      worker_(asio::make_work_guard(io_context_)),
+      thread_([this]() { io_context_.run(); }) {
   vulkan::framework::CoreSettings core_settings;
   core_settings.window_title = "Battle Game";
   core_settings.window_width = app_settings.width;
@@ -26,10 +33,17 @@ App::App(const AppSettings &app_settings, GameCore *game_core) {
   SetGlobalCore(core_.get());
 }
 
-void App::Run() {
+void App::Run(const Mode &mode) {
   OnInit();
+  Reset(mode);
 
   while (!glfwWindowShouldClose(core_->GetWindow())) {
+    if (should_reset_) {
+      Reset(chosen_mode_);
+    }
+    if (should_start_) {
+      OnStart();
+    }
     OnLoop();
     glfwPollEvents();
   }
@@ -67,9 +81,82 @@ void App::OnInit() {
   SyncDeviceAssets();
   BuildRenderNodes();
 
-  SetScene();
   core_->ImGuiInit(frame_image_.get(), "../../fonts/NotoSansSC-Regular.otf",
                    20.0f);
+}
+
+void App::Reset(const Mode &mode) {
+  mode_ = mode;
+  chosen_mode_ = mode;
+  should_reset_ = false;
+  should_start_ = false;
+  running_ = false;
+  SetMessage("");
+  if (server_) {
+    server_->Close();
+    server_.reset();
+  }
+  if (client_) {
+    client_->Close();
+    client_.reset();
+  }
+  game_core_->Reset();
+  if (mode == kOffline) {
+    Start();
+  } else {
+    Stop();
+    try {
+      if (mode == kClient) {
+        SetMessage(u8"连接中...");
+        static char buffer[10];
+        buffer[0] = '\0';
+        sprintf(buffer, "%hu", port_);
+        client_ = std::make_shared<Client>(this);
+        client_->Connect(resolver_.resolve(ip_, buffer));
+      } else if (mode == kServer) {
+        server_ = std::make_shared<Server>(
+            io_context_, tcp::endpoint(tcp::v4(), port_),
+            std::bind(&App::AppendInputData, this, std::placeholders::_1));
+        server_->Build();
+        SetMessage(u8"成功创建服务器");
+      }
+    } catch (std::exception &e) {
+      SetMessage(std::string(u8"错误：") + std::string(e.what()));
+      client_.reset();
+      server_.reset();
+    }
+  }
+}
+
+void App::ClearInputData() {
+  std::lock_guard<std::mutex> lock(input_data_queue_mutex_);
+  if (input_data_queue_should_clear_) {
+    while (!input_data_queue_.empty()) {
+      input_data_queue_.pop();
+    }
+    input_data_queue_should_clear_ = false;
+  }
+}
+
+void App::OnStart() {
+  if (running_) {
+    return;
+  }
+  updated_step_ = 0;
+  SetScene();
+  input_data_queue_should_clear_ = true;
+  running_ = true;
+  should_start_ = false;
+}
+
+void App::Start() {
+  begin_time_ = std::chrono::steady_clock::now();
+  should_start_ = true;
+}
+
+void App::Stop() {
+  running_ = false;
+  should_start_ = false;
 }
 
 void App::OnLoop() {
@@ -78,6 +165,8 @@ void App::OnLoop() {
 }
 
 void App::OnClose() {
+  io_context_.stop();
+  thread_.join();
 }
 
 void App::OnUpdate() {
@@ -191,17 +280,33 @@ void App::SyncDeviceAssets() {
 }
 
 void App::UpdateDrawCommands() {
-  static auto begin_time = std::chrono::steady_clock::now();
-  auto current_time = std::chrono::steady_clock::now();
-  auto time_passed =
-      double((current_time - begin_time) / std::chrono::nanoseconds(1)) * 1e-9;
-  static uint64_t updated_step = 0;
-  uint64_t target_update_step = std::lround(time_passed / kSecondPerTick);
-  while (updated_step < target_update_step) {
-    game_core_->Update();
-    updated_step++;
+  if (running_) {
+    auto current_time = std::chrono::steady_clock::now();
+    auto time_passed = double((current_time - begin_time_.load()) /
+                              std::chrono::nanoseconds(1)) *
+                       1e-9;
+    uint64_t target_update_step = std::lround(time_passed / kSecondPerTick);
+    ClearInputData();
+    std::lock_guard<std::mutex> lock(input_data_queue_mutex_);
+    while (running_ && updated_step_ < target_update_step &&
+           (mode_ == kOffline || !input_data_queue_.empty())) {
+      if (running_ && !input_data_queue_.empty()) {
+        const auto &data = input_data_queue_.front();
+        for (uint32_t i = 1; i < data.size(); ++i) {
+          game_core_->GetPlayer(i)->SetInputData(data[i].input_data);
+          game_core_->GetPlayer(i)->SelectedUnit() = data[i].selected_unit;
+        }
+        input_data_queue_.pop();
+      }
+      if (running_) {
+        game_core_->Update();
+        updated_step_++;
+      }
+    }
   }
-  game_core_->Render();
+  if (render_) {
+    game_core_->Render();
+  }
 }
 
 void App::UpdateDynamicBuffer() {
@@ -215,40 +320,73 @@ void App::UpdateDynamicBuffer() {
 }
 
 void App::CaptureInput() {
-  InputData input_data;
-  auto window = core_->GetWindow();
-  for (int i = 0; i < kKeyRange; i++) {
-    input_data.key_down[i] = (glfwGetKey(window, i) == GLFW_PRESS);
-  }
-  static bool mouse_button_state[kMouseButtonRange] = {};
-  for (int i = 0; i < kMouseButtonRange; i++) {
-    if (i == GLFW_MOUSE_BUTTON_LEFT && ImGui::GetIO().WantCaptureMouse) {
-      input_data.mouse_button_down[i] = false;
-      continue;
+  if (mode_ == kOffline || mode_ == kClient) {
+    auto window = core_->GetWindow();
+    InputData input_data;
+    for (int i = 0; i < kKeyRange; i++) {
+      input_data.key_down[i] = (glfwGetKey(window, i) == GLFW_PRESS);
     }
-    input_data.mouse_button_down[i] =
-        (glfwGetMouseButton(window, i) == GLFW_PRESS);
-    input_data.mouse_button_clicked[i] =
-        (input_data.mouse_button_down[i] && !mouse_button_state[i]);
-    mouse_button_state[i] = input_data.mouse_button_down[i];
+    static bool mouse_button_state[kMouseButtonRange] = {};
+    for (int i = 0; i < kMouseButtonRange; i++) {
+      if (i == GLFW_MOUSE_BUTTON_LEFT && ImGui::GetIO().WantCaptureMouse) {
+        input_data.mouse_button_down[i] = false;
+        continue;
+      }
+      input_data.mouse_button_down[i] =
+          (glfwGetMouseButton(window, i) == GLFW_PRESS);
+      input_data.mouse_button_clicked[i] =
+          (input_data.mouse_button_down[i] && !mouse_button_state[i]);
+      mouse_button_state[i] = input_data.mouse_button_down[i];
+    }
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    xpos += 0.5f;
+    ypos += 0.5f;
+    input_data.mouse_cursor_position =
+        glm::inverse(GetCameraTransform(fov_y_)) *
+        glm::vec4{
+            (glm::vec2{xpos, ypos} / glm::vec2{width, height}) * 2.0f - 1.0f,
+            0.0f, 1.0f};
+    {
+      std::lock_guard<std::mutex> lock(input_data_mutex_);
+      input_data_ = input_data;
+    }
   }
-  double xpos, ypos;
-  glfwGetCursorPos(window, &xpos, &ypos);
-  int width, height;
-  glfwGetWindowSize(window, &width, &height);
-  xpos += 0.5f;
-  ypos += 0.5f;
-  input_data.mouse_cursor_position =
-      glm::inverse(GetCameraTransform(fov_y_)) *
-      glm::vec4{
-          (glm::vec2{xpos, ypos} / glm::vec2{width, height}) * 2.0f - 1.0f,
-          0.0f, 1.0f};
-  game_core_->GetPlayer(my_player_id_)->SetInputData(input_data);
+  if (mode_ == kOffline) {
+    {
+      std::lock_guard<std::mutex> lock(input_data_mutex_);
+      game_core_->GetPlayer(my_player_id_)->SetInputData(input_data_);
+    }
+    game_core_->GetPlayer(my_player_id_)->SelectedUnit() = selected_unit_;
+  }
+}
+
+void App::AppendInputData(const CompleteInputData &input_data) {
+  ClearInputData();
+  std::lock_guard<std::mutex> lock(input_data_queue_mutex_);
+  input_data_queue_.push(input_data);
 }
 
 void App::SetScene() {
-  my_player_id_ = game_core_->AddPlayer();
-  auto enemy_player_id = game_core_->AddPlayer();
+  game_core_->Reset();
+  if (mode_ == kOffline) {
+    my_player_id_ = game_core_->AddPlayer();
+    auto enemy_player_id = game_core_->AddPlayer();
+  } else if (mode_ == kClient) {
+    if (client_) {
+      uint32_t player_cnt = client_->GetPlayerCount();
+      for (uint32_t i = 0; i < player_cnt; ++i) {
+        game_core_->AddPlayer();
+      }
+      my_player_id_ = client_->GetPlayerId();
+    } else {
+      my_player_id_ = 0;
+    }
+  } else if (mode_ == kServer) {
+    my_player_id_ = 0;
+  }
   game_core_->SetRenderPerspective(my_player_id_);
 }
 
@@ -266,6 +404,11 @@ glm::mat4 App::GetCameraTransform(float fov_y) const {
                          glm::vec3{0.0f, 0.0f, 1.0f}));
 }
 
+void App::SetMessage(const std::string &message) {
+  std::lock_guard<std::mutex> lock(message_mutex_);
+  message_ = message;
+}
+
 void App::UpdateImGui() {
   ImGui_ImplVulkan_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -275,16 +418,72 @@ void App::UpdateImGui() {
   if (ImGui::Begin(u8"调试窗口", nullptr,
                    ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_AlwaysAutoResize)) {
+    static const char *const mode_list[] = {u8"单机", u8"联机（客户端）",
+                                            u8"联机（服务器）"};
+    int mode_id = chosen_mode_;
+    ImGui::Combo(u8"选择模式", &mode_id, mode_list, 3u);
+    chosen_mode_ = Mode(mode_id);
+    if (chosen_mode_ == kClient) {
+      ImGui::InputText(u8"服务器IP", ip_, max_ip_length - 1);
+      int port = port_;
+      ImGui::InputInt(u8"端口", &port);
+      port_ = port;
+    }
+    if (chosen_mode_ == kServer) {
+      int port = port_;
+      ImGui::InputInt(u8"端口", &port);
+      port_ = port;
+    }
+    ImGui::SameLine();
+    if (ImGui::Button(u8"确定并重启")) {
+      should_reset_ = true;
+    }
+
+    {
+      std::lock_guard<std::mutex> lock(message_mutex_);
+      if (!message_.empty()) {
+        ImGui::Text("%s", message_.c_str());
+      }
+    }
+
+    if (mode_ == kServer) {
+      ImGui::Checkbox(u8"渲染", &render_);
+      if (server_) {
+        ImGui::SameLine();
+        if (!server_->IsRunning()) {
+          if (ImGui::Button(u8"开始")) {
+            server_->Start();
+            Start();
+          }
+        } else {
+          if (ImGui::Button(u8"停止")) {
+            server_->Stop();
+            Stop();
+          }
+        }
+      }
+    } else {
+      render_ = true;
+    }
+
+    if (mode_ == kOffline || mode_ == kClient) {
+      const auto &selectable_list = game_core_->GetSelectableUnitList();
+      int selected_unit = selected_unit_;
+      ImGui::Combo(u8"选择你的单位（重生后生效）", &selected_unit,
+                   selectable_list.data(), selectable_list.size());
+      selected_unit_ = selected_unit;
+    }
+
     auto player = game_core_->GetPlayer(my_player_id_);
     if (player) {
       auto selectable_list = game_core_->GetSelectableUnitList();
       auto selectable_list_skill = game_core_->GetSelectableUnitListSkill();
-      ImGui::Combo(u8"选择你的单位（重生后生效）", &player->SelectedUnit(),
-                   selectable_list.data(), selectable_list.size());
-      if (ImGui::Button(u8"自毁")) {
-        auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
-        if (unit) {
-          game_core_->PushEventRemoveUnit(unit->GetId());
+      if (mode_ == kOffline) {
+        if (ImGui::Button(u8"自毁")) {
+          auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());
+          if (unit) {
+            game_core_->PushEventRemoveUnit(unit->GetId());
+          }
         }
       }
       auto unit = game_core_->GetUnit(player->GetPrimaryUnitId());

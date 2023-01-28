@@ -15,6 +15,29 @@ GameCore::GameCore() {
   GeneratePrimaryUnitList();
 }
 
+void GameCore::Reset() {
+  units_.clear();
+  bullets_.clear();
+  particles_.clear();
+  obstacles_.clear();
+  players_.clear();
+  respawn_points_.clear();
+
+  while (!event_queue_.empty()) {
+    event_queue_.pop();
+  }
+
+  unit_index_ = 1;
+  bullet_index_ = 1;
+  particle_index_ = 1;
+  obstacle_index_ = 1;
+  player_index_ = 1;
+
+  random_device_.seed(0);
+
+  SetScene();
+}
+
 /*
  * Update for 1 game tick.
  * Order: obstacles, bullets, units, particles

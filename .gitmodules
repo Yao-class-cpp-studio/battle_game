@@ -4,3 +4,6 @@
 [submodule "external/abseil-cpp"]
 	path = external/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
+[submodule "external/asio"]
+	path = external/asio
+	url = https://github.com/chriskohlhoff/asio.git
