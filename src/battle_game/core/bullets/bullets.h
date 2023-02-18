@@ -13,3 +13,4 @@
 #include "battle_game/core/bullets/udongein_directional_bullet.h"
 #include "battle_game/core/bullets/warning_line.h"
 #include "battle_game/core/bullets/water_drop.h"
+#include "battle_game/core/bullets/joker.h"
