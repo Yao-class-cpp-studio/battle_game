@@ -1,7 +1,7 @@
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
 #include "battle_game/graphics/graphics.h"
-#include "joker_tank.h"
+#include "random_tank.h"
 
 namespace battle_game::unit {
 
@@ -10,12 +10,12 @@ uint32_t tank_body_model_index = 0xffffffffu;
 uint32_t tank_turret_model_index = 0xffffffffu;
 }  // namespace
 
-JokerTank::JokerTank(GameCore *game_core, uint32_t id, uint32_t player_id)
+RandomTank::RandomTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     : Unit(game_core, id, player_id) {
   if (!~tank_body_model_index) {
     auto mgr = AssetsManager::GetInstance();
     {
-      /* JokerTank Body */
+      /* RandomTank Body */
       tank_body_model_index = mgr->RegisterModel(
           {
               {{-0.8f, 0.8f}, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}},
@@ -30,7 +30,7 @@ JokerTank::JokerTank(GameCore *game_core, uint32_t id, uint32_t player_id)
     }
 
     {
-      /* JokerTank Turret */
+      /* RandomTank Turret */
       std::vector<ObjectVertex> turret_vertices;
       std::vector<uint32_t> turret_indices;
       const int precision = 60;
@@ -67,15 +67,11 @@ JokerTank::JokerTank(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
-  Skill skill;
-  skill.name = "HP->ATK";
-  skill.description = "The lower  HP, the higher damage";
-  skill.type = P;
-  skills_.push_back(skill);
+ 
 }
 
 
-void JokerTank::Render() {
+void RandomTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
   battle_game::SetTexture(0);
   battle_game::SetColor(game_core_->GetPlayerColor(player_id_));
@@ -84,14 +80,14 @@ void JokerTank::Render() {
   battle_game::DrawModel(tank_turret_model_index);
 }
 
-void JokerTank::Update() {
+void RandomTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
-  Passive();
+  
 }
 
-void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
+void RandomTank::TankMove(float move_speed, float rotate_angular_speed) {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -102,7 +98,8 @@ void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
-    float speed = move_speed * GetSpeedScale();
+    float speed =
+        move_speed * GetSpeedScale() * 2 * game_core_->RandomFloat();
     offset *= kSecondPerTick * speed;
     auto new_position =
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
@@ -118,12 +115,13 @@ void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
     if (input_data.key_down[GLFW_KEY_D]) {
       rotation_offset -= 1.0f;
     }
-    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+    rotation_offset *= kSecondPerTick * rotate_angular_speed *
+                       GetSpeedScale()* 2 * game_core_->RandomFloat();
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
 
-void JokerTank::TurretRotate() {
+void RandomTank::TurretRotate() {
   auto player = game_core_->GetPlayer(player_id_);
   if (player) {
     auto &input_data = player->GetInputData();
@@ -136,12 +134,9 @@ void JokerTank::TurretRotate() {
   }
 }
 
-    float JokerTank::GetDamageScale() const {
-  
-    return 3.0 - 2 * GetHealthScale();
-  }
+   
 
-void JokerTank::Fire() {
+void RandomTank::Fire() {
   if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
     if (player) {
@@ -150,8 +145,10 @@ void JokerTank::Fire() {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
         GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
-            turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+            turret_rotation_, GetDamageScale() * 2.5 * game_core_->RandomFloat(),
+            velocity );
+        fire_count_down_ =
+            kTickPerSecond * 1.5 * game_core_->RandomFloat();  // Fire interval 1 second.
       }
     }
   }
@@ -160,18 +157,18 @@ void JokerTank::Fire() {
   }
 }
 
-bool JokerTank::IsHit(glm::vec2 position) const {
+bool RandomTank::IsHit(glm::vec2 position) const {
   position = WorldToLocal(position);
   return position.x > -0.8f && position.x < 0.8f && position.y > -1.0f &&
          position.y < 1.0f && position.x + position.y < 1.6f &&
          position.y - position.x < 1.6f;
 }
 
-const char *JokerTank::UnitName() const {
-  return "Joker Tank";
+const char *RandomTank::UnitName() const {
+  return "Random Tank";
 }
 
-const char *JokerTank::Author() const {
+const char *RandomTank::Author() const {
   return "Joker zhs";
 }
 }  // namespace battle_game::unit
