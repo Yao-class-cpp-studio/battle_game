@@ -67,7 +67,13 @@ JokerTank::JokerTank(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
+  Skill skill;
+  skill.name = "HP->ATK";
+  skill.description = "The lower  HP, the higher damage";
+  skill.type = P;
+  skills_.push_back(skill);
 }
+
 
 void JokerTank::Render() {
   battle_game::SetTransformation(position_, rotation_);
@@ -82,6 +88,7 @@ void JokerTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  Passive();
 }
 
 void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
@@ -129,6 +136,11 @@ void JokerTank::TurretRotate() {
   }
 }
 
+    float JokerTank::GetDamageScale() const {
+  
+    return 3.0 - 2 * GetHealthScale();
+  }
+
 void JokerTank::Fire() {
   if (fire_count_down_ == 0) {
     auto player = game_core_->GetPlayer(player_id_);
@@ -136,7 +148,7 @@ void JokerTank::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::Joker>(
+        GenerateBullet<bullet::CannonBall>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
         fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
