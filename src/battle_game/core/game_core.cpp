@@ -226,6 +226,7 @@ void GameCore::PushEventDealDamage(uint32_t dst_unit_id,
         PushEventKillUnit(dst_unit_id, src_unit_id);
       }
     }
+
   });
  
 }
@@ -243,6 +244,7 @@ void GameCore::PushEventRemoveBullet(uint32_t bullet_id) {
     if (bullets_.count(bullet_id)) {
       bullets_.erase(bullet_id);
     }
+ 
   });
   
 }
