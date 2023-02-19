@@ -68,13 +68,6 @@ Tank::Tank(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
-  Skill temp;
-  temp.name = "Switch Mode";
-  temp.description = "Switch Mode";
-  temp.time_remain = 0;
-  temp.time_total = 480;
-  temp.type = E;
-  skills_.push_back(temp);
 }
 
 void Tank::Render() {
