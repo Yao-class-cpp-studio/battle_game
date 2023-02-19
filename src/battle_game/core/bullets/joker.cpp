@@ -37,7 +37,7 @@ void Joker::Update() {
     }
     if (unit.second->IsHit(position_)) {
       game_core_->PushEventDealDamage(
-          unit.first, id_, damage_scale_ * (game_core_->RandomFloat()) * 20.0f);
+          unit.first, id_, damage_scale_ * (game_core_->RandomFloat()) * 25.0f);
       should_die = true;
     }
   }

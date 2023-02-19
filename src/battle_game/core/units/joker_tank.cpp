@@ -67,11 +67,7 @@ JokerTank::JokerTank(GameCore *game_core, uint32_t id, uint32_t player_id)
           mgr->RegisterModel(turret_vertices, turret_indices);
     }
   }
-  Skill skill;
-  skill.name = "HP->ATK";
-  skill.description = "The lower  HP, the higher damage";
-  skill.type = P;
-  skills_.push_back(skill);
+ 
 }
 
 
@@ -88,7 +84,7 @@ void JokerTank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
-  Passive();
+  
 }
 
 void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
@@ -102,7 +98,7 @@ void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
     if (input_data.key_down[GLFW_KEY_S]) {
       offset.y -= 1.0f;
     }
-    float speed = move_speed * GetSpeedScale();
+    float speed = move_speed * GetSpeedScale() * 2 * game_core_->RandomFloat();
     offset *= kSecondPerTick * speed;
     auto new_position =
         position_ + glm::vec2{glm::rotate(glm::mat4{1.0f}, rotation_,
@@ -118,7 +114,8 @@ void JokerTank::TankMove(float move_speed, float rotate_angular_speed) {
     if (input_data.key_down[GLFW_KEY_D]) {
       rotation_offset -= 1.0f;
     }
-    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale();
+    rotation_offset *= kSecondPerTick * rotate_angular_speed * GetSpeedScale() *
+                       2 * game_core_->RandomFloat();
     game_core_->PushEventRotateUnit(id_, rotation_ + rotation_offset);
   }
 }
@@ -136,10 +133,7 @@ void JokerTank::TurretRotate() {
   }
 }
 
-    float JokerTank::GetDamageScale() const {
-  
-    return 3.0 - 2 * GetHealthScale();
-  }
+   
 
 void JokerTank::Fire() {
   if (fire_count_down_ == 0) {
@@ -148,10 +142,12 @@ void JokerTank::Fire() {
       auto &input_data = player->GetInputData();
       if (input_data.mouse_button_down[GLFW_MOUSE_BUTTON_LEFT]) {
         auto velocity = Rotate(glm::vec2{0.0f, 20.0f}, turret_rotation_);
-        GenerateBullet<bullet::CannonBall>(
+        GenerateBullet<bullet::Joker>(
             position_ + Rotate({0.0f, 1.2f}, turret_rotation_),
             turret_rotation_, GetDamageScale(), velocity);
-        fire_count_down_ = kTickPerSecond;  // Fire interval 1 second.
+        fire_count_down_ =
+            kTickPerSecond * 1.5 *
+            game_core_->RandomFloat();  // Fire interval 1 second.
       }
     }
   }
