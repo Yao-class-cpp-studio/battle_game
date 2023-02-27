@@ -83,6 +83,7 @@ void Tank::Update() {
   TankMove(3.0f, glm::radians(180.0f));
   TurretRotate();
   Fire();
+  
 }
 
 void Tank::TankMove(float move_speed, float rotate_angular_speed) {
