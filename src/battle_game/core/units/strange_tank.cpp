@@ -159,7 +159,6 @@ bool StrangeTank::IsHit(glm::vec2 position) const {
 const char *StrangeTank::UnitName() const {
   return "Strange Tank";
 }
-
 const char *StrangeTank::Author() const {
   return "Joker zhs";
 }
