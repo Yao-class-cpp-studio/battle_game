@@ -1,5 +1,4 @@
 #include "battle_game/core/player.h"
-
 #include "battle_game/core/game_core.h"
 
 namespace battle_game {
