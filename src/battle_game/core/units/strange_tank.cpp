@@ -1,4 +1,4 @@
-#include "strange_tank.h"
+#include "src/battle_game/core/units/strange_tank.h"
 
 #include "battle_game/core/bullets/bullets.h"
 #include "battle_game/core/game_core.h"
